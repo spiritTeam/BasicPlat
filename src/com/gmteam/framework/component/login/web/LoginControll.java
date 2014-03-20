@@ -3,12 +3,11 @@ package com.gmteam.framework.component.login.web;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class LoginControll {
-    @RequestMapping(value="/login.do",method=RequestMethod.POST)
+    @RequestMapping(value="/login.do")
     public @ResponseBody String Login(HttpServletRequest request) {
         System.out.println("进入l  losgin Contsdsoller");
         String loginMessage = null;
