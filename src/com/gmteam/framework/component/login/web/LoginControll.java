@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class LoginControll {
     @RequestMapping(value="/login.do",method=RequestMethod.POST)
     public @ResponseBody String Login(HttpServletRequest request) {
-        System.out.println("进入 login Controller");
+        System.out.println("进入l  login Controller");
         String loginMessage = null;
         String name = request.getParameter("name");
         String password = request.getParameter("password");
