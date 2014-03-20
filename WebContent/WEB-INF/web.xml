@@ -79,6 +79,6 @@
   <!-- end Servlet设置 -->
 
   <welcome-file-list>
-    <welcome-file>_index.jsp</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>
 </web-app>
