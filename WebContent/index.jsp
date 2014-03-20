@@ -27,7 +27,7 @@
 			handler:function(){
 				//console.info('点击我登录了');
 				$.ajax({
-					url:'/login.do',
+					url:'<%=path %>/login.do',
 					data:{
 						name:$('#loginInputForm input[name=name]').val(),
 						password:$('#loginInputForm input[name=password]').val()
