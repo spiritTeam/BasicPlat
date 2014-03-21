@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%String path = request.getContextPath();%>
+<%
+  String path = request.getContextPath();
+%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -26,19 +28,27 @@
 			text:'登录',
 			handler:function(){
 				//console.info('点击我登录了');
-				$.ajax({
-					url:'<%=path %>/login.do',
-					data:{
-						name:$('#loginInputForm input[name=name]').val(),
-						password:$('#loginInputForm input[name=password]').val()
-					},
-					cache:false,
-					dataType:'json',
-					sucess:function(r){
-						console.info(r.msg);
-					}
-					
-				});
+				//if($('#loginInputForm').form('validate')){
+					$.ajax({
+	                    url:'<%=path %>/login.do',
+	                    type:'post',
+	                    //采用表单序列化的形式来提交
+	                    data:$('#loginInputForm').serialize(),
+	                    cache:false,
+	                    dataType:'json',
+	                    success:function(r){
+	                        if(r&&r.success){
+	                            loginAndRegDialog.dialog('close');
+	                            $.messager.show({
+	                                title:'登录信息',
+	                                msg:r.message
+	                            });
+	                        }else{
+	                            $.messager.alert('登录信息',r.message);
+	                        }
+	                    }
+	                });
+				//}
 			}
 		}]
 	  });
@@ -52,11 +62,11 @@
 	      <table>
 	        <tr>
 	            <th align="right">用户名:</th>
-	            <td><input name="name"/></td>
+	            <td><input name="name" class="easyui-validatebox" required="true" /></td>
 	        </tr>
 	        <tr>
 	            <th align="right">密码：</th>
-	            <td><input type="password" name="password"/></td>
+	            <td><input type="password" name="password" class="easyui-validatebox" required="true"/></td>
 	        </tr>
 	      </table>
       </form>      
