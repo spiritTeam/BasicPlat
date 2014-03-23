@@ -22,7 +22,6 @@ import com.gmteam.framework.core.dao.dialect.*;
 import com.gmteam.framework.ext.mybatis.PageBounds;
 import com.gmteam.framework.ext.mybatis.PageList;
 import com.gmteam.framework.ext.mybatis.Paginator;
-import com.gmteam.framework.utils.ReflectUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

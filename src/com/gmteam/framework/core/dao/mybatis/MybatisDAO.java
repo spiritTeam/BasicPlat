@@ -36,8 +36,6 @@ public class MybatisDAO <T extends BaseObject> extends SqlSessionDaoSupport impl
 
     @Override
     public int insert(Object newData) throws Exception {
-        java.math.BigDecimal b = new java.math.BigDecimal("ABC");
-
         return insert(insertkey, newData);
     }
 
