@@ -5,10 +5,10 @@ import java.util.Date;
 
 import com.gmteam.framework.model.BaseObject;
 
-public class UserLoginInfo extends BaseObject {
+public class UserLogin extends BaseObject {
     private static final long serialVersionUID = 796788171985762931L;
     
-    public String loginname;
+    public String loginName;
     public String password;
     private String sessionId;//SessionID
     private String clientIp;//客户端IP
@@ -16,11 +16,11 @@ public class UserLoginInfo extends BaseObject {
     private String browser;//客户端浏览器信息
     private long time = (new Date()).getTime();//创建时间，此信息在创建时就确定了，不能进行修改
 
-    public String getLoginname() {
-        return loginname;
+    public String getLoginName() {
+        return loginName;
     }
-    public void setLoginname(String loginname) {
-        this.loginname = loginname;
+    public void setLoginName(String loginName) {
+        this.loginName = loginName;
     }
     public String getPassword() {
         return password;

@@ -46,6 +46,7 @@
       </list>
     </property>
   </bean>
+
   <!-- 处理文件上传 -->
   <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" >
     <property name="defaultEncoding" value="utf-8"/> <!-- 默认编码 (ISO-8859-1) -->
@@ -55,4 +56,6 @@
     <!--resolveLazily属性启用是为了推迟文件解析，以便在UploadAction 中捕获文件大小异常-->
     <property name="resolveLazily" value="true"/>
   </bean>
+
+  <!-- 以下为文件上传的测试代码 -->
 </beans>

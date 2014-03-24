@@ -11,13 +11,11 @@ import java.util.Set;
  * 2-半角转全角
  * 3-全角转半角
  */
-public class ChineseCharactersUtils {
+public abstract class ChineseCharactersUtils {
 
     private static LinkedHashMap<String, Integer> spellMap = null;
     static {
-        if (spellMap == null) {
-            spellMap = new LinkedHashMap<String, Integer>(400);
-        }
+        if (spellMap == null) spellMap = new LinkedHashMap<String, Integer>(400);
         initialize();
     }
 
@@ -431,14 +429,11 @@ public class ChineseCharactersUtils {
      */
     public static int getCnAscii(char cn) {
         byte[] bytes = (String.valueOf(cn)).getBytes();
-        if (bytes == null || bytes.length > 2 || bytes.length <= 0) {
-            // 错误
-            return 0;
-        }
-        if (bytes.length == 1) {
-            // 英文字符
-            return bytes[0];
-        }
+        // 错误
+        if (bytes == null || bytes.length > 2 || bytes.length <= 0) return 0;
+        // 英文字符
+        if (bytes.length == 1) return bytes[0];
+        // 中文
         if (bytes.length == 2) {
             int hightByte = 256 + bytes[0];
             int lowByte = 256 + bytes[1];

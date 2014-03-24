@@ -3,20 +3,17 @@ package com.gmteam.framework.core.web;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
-
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
-
 import com.gmteam.framework.cache.CacheEle;
 import com.gmteam.framework.cache.CachePool;
 import com.gmteam.framework.cache.CatchLifecycle;
 import com.gmteam.framework.cache.SystemCache;
-import com.gmteam.framework.component.login.pojo.UserLoginInfo;
+import com.gmteam.framework.component.login.pojo.UserLogin;
 import com.gmteam.framework.IConstants;
 
 /**
@@ -46,7 +43,7 @@ public class InitSysConfigListener {
 
             //Session结构缓存
             SystemCache.setCache(
-                new CacheEle<Map<String, UserLoginInfo>>(IConstants.USERSESSIONMAP, "用户Session缓存", new HashMap<String, UserLoginInfo>())
+                new CacheEle<Map<String, UserLogin>>(IConstants.USERSESSIONMAP, "用户Session缓存", new HashMap<String, UserLogin>())
             );
 
             //缓存框架存储

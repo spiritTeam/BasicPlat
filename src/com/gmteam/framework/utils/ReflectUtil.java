@@ -13,7 +13,7 @@ import org.apache.log4j.Logger;
  * 反射工具类
  * @author zhuhua
  */
-public class ReflectUtil {
+public abstract class ReflectUtil {
     private final static Logger logger = Logger.getLogger(ReflectUtil.class);
 
     /**

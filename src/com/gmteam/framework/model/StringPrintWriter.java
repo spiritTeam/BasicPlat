@@ -1,4 +1,4 @@
-package com.gmteam.framework.utils;
+package com.gmteam.framework.model;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;

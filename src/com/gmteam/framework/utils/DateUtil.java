@@ -12,7 +12,7 @@ import java.util.Locale;
  * 对时间日期类型做了统一处理，可以满足绝大多数对日期型操作的要求
  * @author zhuhua
  */
-public class DateUtil {
+public abstract class DateUtil {
 
     //获取时间的字符串，把时间转换为字符串
     /**

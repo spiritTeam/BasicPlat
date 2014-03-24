@@ -2,7 +2,11 @@ package com.gmteam.framework.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class JsonUtil {
+/**
+ * 处理Json的方法类
+ * @author wh
+ */
+public abstract class JsonUtil {
 
     private static ObjectMapper mapper;  
 
@@ -12,12 +16,9 @@ public class JsonUtil {
      * @return ObjectMapper实例
      */
     public static synchronized ObjectMapper getMapperInstance(boolean createNew) {     
-        if (createNew) {
-            return new ObjectMapper();     
-        } else if (mapper==null) {     
-            mapper=new ObjectMapper();     
-        }
-        return mapper;     
+        if (createNew)  return new ObjectMapper();
+        else if (mapper==null) mapper=new ObjectMapper();
+        return mapper;
     }
 
     /**

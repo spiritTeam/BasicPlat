@@ -10,7 +10,7 @@ import javax.servlet.http.HttpSession;
 import com.gmteam.framework.IConstants;
 import com.gmteam.framework.cache.CacheEle;
 import com.gmteam.framework.cache.SystemCache;
-import com.gmteam.framework.component.login.pojo.UserLoginInfo;
+import com.gmteam.framework.component.login.pojo.UserLogin;
 import com.gmteam.framework.model.User;
 
 public class LoginFilter implements Filter {
@@ -35,10 +35,10 @@ public class LoginFilter implements Filter {
             if (isIngore(path, ingoresArray)) chain.doFilter(req, res);
             else if (session.getAttribute(IConstants.SESSION_USER)!=null) {
                 //判断是否用其他Sesson登录了
-                CacheEle<Map<String, UserLoginInfo>> userSessionMap =
-                    (CacheEle<Map<String, UserLoginInfo>>)SystemCache.getCache(IConstants.USERSESSIONMAP);
+                CacheEle<Map<String, UserLogin>> userSessionMap =
+                    (CacheEle<Map<String, UserLogin>>)SystemCache.getCache(IConstants.USERSESSIONMAP);
                 User user = (User)session.getAttribute(IConstants.SESSION_USER);
-                UserLoginInfo uli = userSessionMap.getContent().get(user.getUserId());
+                UserLogin uli = userSessionMap.getContent().get(user.getUserId());
                 if (uli!=null&&!uli.getSessionId().equals(session.getId())) {
                     String loginInfo = "";
                     loginInfo += "&clientIp="+uli.getClientIp();
