@@ -42,6 +42,10 @@
   <listener>
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
   </listener>
+  <!-- 平台监听器，加载平台信息 -->
+  <listener>
+    <listener-class>com.gmteam.framework.core.web.InitSysConfigListener</listener-class>
+  </listener>
   <!-- end监听设置 -->
 
   <!-- begin过滤器 -->

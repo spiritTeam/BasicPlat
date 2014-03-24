@@ -1,4 +1,4 @@
-package com.gmteam.framework.web;
+package com.gmteam.framework.core.web;
 
 import java.util.HashMap;
 import java.util.Map;

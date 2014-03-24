@@ -19,9 +19,10 @@
 
   <!-- 扫描类包，将标注Spring注解的类自动转化Bean，同时完成Bean的注入 -->
   <context:component-scan base-package="com.gmteam.framework.*">
-    <context:include-filter type="regex" expression=".*.Controller.*"/>
+    <context:include-filter type="regex" expression=".core.web.Controller.*"/>
   </context:component-scan>
 
+  <!-- 符合Spring3.5之后的配置；支持自动把object转变为json串的配置 -->
   <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping"/>
   <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
     <property name="messageConverters">
@@ -44,5 +45,14 @@
         </bean>
       </list>
     </property>
+  </bean>
+  <!-- 处理文件上传 -->
+  <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" >
+    <property name="defaultEncoding" value="utf-8"/> <!-- 默认编码 (ISO-8859-1) -->
+    <property name="maxInMemorySize" value="10240"/> <!-- 最大内存大小 (10240)-->
+    <property name="uploadTempDir" value="/upload/"/> <!-- 此路径为临时路径上传后的目录名 (WebUtils#TEMP_DIR_CONTEXT_ATTRIBUTE) -->
+    <property name="maxUploadSize" value="52428800"/> <!-- 5000kb最大文件大小，这个属性的限制不针对单个文件，而是所有文件的容量之和，-1为无限止(-1) -->
+    <!--resolveLazily属性启用是为了推迟文件解析，以便在UploadAction 中捕获文件大小异常-->
+    <property name="resolveLazily" value="true"/>
   </bean>
 </beans>
