@@ -21,4 +21,7 @@ public class PlatUserService {
 	public PlatUser getPlatUserByLoginName(String loginName) throws Exception{
            return dao.getInfoObject("selectPlatUserByLoginName", loginName);
 	}
+	public void addPlatUser(PlatUser user) throws Exception{
+	    dao.insert(user);
+	}
 }
