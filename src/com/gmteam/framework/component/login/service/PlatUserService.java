@@ -15,16 +15,10 @@ public class PlatUserService {
 
 	@PostConstruct
 	public void initParam() {
-	dao.setNamespace("Plat_User");
+	    dao.setNamespace("Plat_User");
 	}
 	
-	public PlatUser getPlatUserByLoginName(String loginName){
-	    try {
-            return dao.getInfoObject("selectPlatUserByLoginName", loginName);
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-	    return null;
+	public PlatUser getPlatUserByLoginName(String loginName) throws Exception{
+           return dao.getInfoObject("selectPlatUserByLoginName", loginName);
 	}
 }
