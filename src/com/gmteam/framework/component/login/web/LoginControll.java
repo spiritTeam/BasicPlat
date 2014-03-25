@@ -48,12 +48,10 @@ public class LoginControll {
                 retObj.put("type", "2");
                 retObj.put("data", "密码不匹配！");
             }else{
-                HttpSession session = req.getSession();
                 //设置用户Session缓存
+                HttpSession session = req.getSession();
                 Map<String,UserLogin> userSessionMap = (Map<String, UserLogin>) SystemCache.getCache(IConstants.USERSESSIONMAP);
-                System.out.println(user.getId());
                 UserLogin userLogin = ((Map<String, UserLogin>)SystemCache.getCache(IConstants.USERSESSIONMAP)).remove(user.getId());
-                System.out.println("bbbbb");
                 userLogin.setSessionId(session.getId());
                 ((Map<String,UserLogin>)SystemCache.getCache(IConstants.USERSESSIONMAP)).put(user.getId(), userLogin);
                 //写用户信息
