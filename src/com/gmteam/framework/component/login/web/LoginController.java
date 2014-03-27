@@ -49,7 +49,7 @@ public class LoginController {
                 //写用户信息
                 session.setAttribute(IConstants.SESSION_USER, user);
                 retObj.put("type", "1");
-                retObj.put("data", oldUserLogin);
+                retObj.put("data", "登录成功");
             }
         } catch (Exception e) {
             e.printStackTrace();
