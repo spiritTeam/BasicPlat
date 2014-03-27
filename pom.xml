@@ -8,7 +8,7 @@
 
   <!-- 配置编码格式，与eclpse的IDE环境编码格式匹配 -->
   <properties>
-    <build.webProjectDir>D:\workIDE\workspace\BasicPlat</build.webProjectDir>
+    <build.webProjectDir>D:\GitWorkSpaces\base</build.webProjectDir>
   </properties>
 
   <parent>
@@ -42,6 +42,16 @@
       <artifactId>commons-codec</artifactId>
       <version>1.9</version>
     </dependency>
+    <dependency>
+    		<groupId>commons-fileupload</groupId>
+    		<artifactId>commons-fileupload</artifactId>
+    		<version>1.2.1</version>
+    </dependency>
+    <dependency>
+    	<groupId>commons-io</groupId>
+    	<artifactId>commons-io</artifactId>
+    	<version>1.4</version>
+    </dependency>
   </dependencies>
 
   <build>
@@ -71,27 +81,6 @@
             </resource>
           </webResources>
         </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <version>2.4</version>
-        <executions>
-          <execution>
-            <id>gJar</id>
-            <phase>install</phase>
-            <goals>
-              <goal>jar</goal>
-            </goals>
-            <configuration>
-              <classesDirectory>${build.webProjectDir}/WebContent/WEB-INF/classes/</classesDirectory>
-              <jarName>plat.framework</jarName>
-              <archive>
-                <addMavenDescriptor>false</addMavenDescriptor>
-              </archive>
-            </configuration>
-          </execution>
-        </executions>
       </plugin>
     </plugins>
   </build>

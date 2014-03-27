@@ -7,11 +7,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>jQuery easy-ui</title>
-<script type="text/javascript" src="<%=path %>/js/jquery-easyui-1.3.5/jquery.min.js"></script><!-- 引入jquery-->
-<script type="text/javascript" src="<%=path %>/js/jquery-easyui-1.3.5/jquery.easyui.min.js"></script>
-<script type="text/javascript" src="<%=path %>/js/jquery-easyui-1.3.5/locale/easyui-lang-zh_CN.js"></script>
-<link rel="stylesheet" type="text/css" href="<%=path %>/js/jquery-easyui-1.3.5/themes/default/easyui.css"></link>
-<link rel="stylesheet" type="text/css" href="<%=path %>/js/jquery-easyui-1.3.5/themes/icon.css"></link>
+<script type="text/javascript" src="<%=path %>/resources/plugins/jquery/jquery-1.10.2.min.js"></script><!-- 引入jquery-->
+<script type="text/javascript" src="<%=path %>/resources/plugins/easyui-1.3.4/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="<%=path %>/resources/plugins/easyui-1.3.4/locale/easyui-lang-zh_CN.js"></script>
+<link rel="stylesheet" type="text/css" href="<%=path %>/resources/plugins/easyui-1.3.4/themes/default/easyui.css"></link>
+<link rel="stylesheet" type="text/css" href="<%=path %>/resources/plugins/easyui-1.3.4/themes/icon.css"></link>
 <script type="text/javascript" charset="utf-8">
   var loginAndRegDialog;
   $(function (){
@@ -37,14 +37,14 @@
 	                    cache:false,
 	                    dataType:'json',
 	                    success:function(r){
-	                        if(r&&r.success){
+	                        if(r&&r.type==1){
 	                            loginAndRegDialog.dialog('close');
 	                            $.messager.show({
 	                                title:'登录信息',
-	                                msg:r.message
+	                                msg:r.data
 	                            });
 	                        }else{
-	                            $.messager.alert('登录信息',r.message);
+	                            $.messager.alert('登录信息',r.data);
 	                        }
 	                    }
 	                });
@@ -55,14 +55,14 @@
   });
 </script>
 </head>
-<body>
+<body>地方大幅度
     <!-- 用dialog实现登录 -->
     <div  id="loginAndRegDialog" title="用户登录" style="width:250px;height:200px;">
       <form id="loginInputForm" method="post" action="">
 	      <table>
 	        <tr>
 	            <th align="right">用户名:</th>
-	            <td><input name="name" class="easyui-validatebox" required="true" /></td>
+	            <td><input name="loginName" class="easyui-validatebox" required="true" /></td>
 	        </tr>
 	        <tr>
 	            <th align="right">密码：</th>
