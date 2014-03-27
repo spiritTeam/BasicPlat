@@ -1,0 +1,188 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%
+  String path = request.getContextPath();
+%>
+<div class="easyui-layout" fit="true" border="false">
+  <div title="用户管理" border="false" >
+  <table id="datagrid"></table>
+  </div>
+</div>
+<script type="text/javascript" charset="utf-8">
+//sy.ns('sy.admin.user');
+  $(function(){
+    //这个变量用于防止多行添加
+    user_editRow = undefined;
+    $('#datagrid').datagrid({
+      //获取数据的url
+      url:'<%=path %>/findAll.do',
+      title:'',
+      iconCls:'icon-save',
+      //pagination:true这个属性表示分页工具条
+      pagination:true,
+      //每页多少条
+      pageSize:5,
+      //pageList:可以更改的每页多少条，是一个数组，
+      //类似一个下拉选,其中pageSize必须在pageList中，因为
+      //以pageList为准
+      pageList:[5,10],
+      fit:true,
+      //横向滚动条，如果列数很多，设置成false(滚动)，很少就为true(不滚动)
+      fitColumns:true,
+      //nowarp：是否显示全部的信息，如果一个td中的内容过多，想全部显示，用false，否则为true
+      nowarp:false,
+      border:false,
+      //idField用于记录标识，分页也会标识，不会消失
+      idField:'id',
+      //sortName只能是field中的
+      //排序考三个属性实现，sortName，sortOrder，sortbale
+      sortName:'loginName',
+      sortOrder:'desc',
+      //支持多级表头。。。。
+      columns:[[{
+      title:'编号',
+      //对应返回数据的属性
+      field:'id',
+      //必须给个列宽
+      width:100,
+      sortable:true
+      },{
+      title:'登录名',
+      field:'loginName',
+      width:100,
+      sortable:true,
+      //选则要开启编辑模式的列名，required表示必填
+      editor:{
+        type:'validatebox',
+        options:{
+          required:true
+        }
+      }
+      },{
+        title:'密码',
+        field:'password',
+        width:100,
+        sortable:true,
+        editor:{
+          type:'validatebox',
+          options:{
+            required:true
+          }
+        }
+      },{
+        title:'注册时间',
+        field:'time',
+        width:100,
+        sortable:true,
+        editor:{
+          type:'datetimebox',
+          options:{
+            required:true
+          }
+        }
+    }]],
+    toolbar:[{
+      text:'增加',
+      iconCls:'icon-add',
+      handler:function(){
+        //进行判读，防止编辑多条
+        if(user_editRow!=undefined){
+          $('#dg').datagrid('endEdit',user_editRow);
+        }
+        if(user_editRow==undefined){
+          //开启行编辑模式
+          $('#dg').datagrid('insertRow',{
+            index:0,
+            row:{
+              id:'id',
+              laoginName:'请输入登录名',
+              password:'输入密码'
+            }
+          });
+          $('#dg').datagrid('beginEdit',0);
+          user_editRow=0;
+        }
+        
+      }
+    },'-',{
+      text:'删除',
+      iconCls:'icon-remove',
+      handler:function(){
+        var rows = $('#dg').datagrid('getSelctions');
+        if(rows.length>0){
+          $.messger.confirm('请确认','确定删除?',function(b){
+            //b是个boolean，根据选中的确定还是取消来赋值
+            if(b){
+              var ids =[];
+              for(var i=0;i<rows.length;i++){
+                ids.push(rows[i].id);
+              }
+            }
+          });
+        }else{
+         $.messager.alert('提示','请选择要删除的记录!','error');
+        }
+      }
+    },'-',{
+      text:'修改',
+      iconCls:'icon-edit',
+      handler:function(){
+        //getSelctions获得选中的行数
+        var rows = $('#dg').datagrid('getSelctions');
+        if(rows.length==1){
+          if(user_editRow!=undefined){
+          //先把上一条结束   
+            $('#dg').datagrid('endEdit',user_editRow);
+          }
+         if(user_editRow==undefined){
+           //获取索引,getRowIndex获取行索引
+           var index = $('#dg').datagrid('getRowIndex',rows[0]);
+           //开启新的一条   
+           $('#dg').datagrid('beginEdit',index);
+           user_editRow=index;
+           $('#dg').datagrid('unselectAll');
+         }
+        }
+      }
+    },'-',{
+      text:'查询',
+      iconCls:'icon-search',
+      handler:function(){
+      }
+    },'-',{
+      text:'保存',
+      iconCls:'icon-save',
+      handler:function(){
+        $('#dg').datagrid('endEdit',user_editRow);
+      }
+    },'-',{
+      text:'取消编辑',
+      iconCls:'icon-redo',
+      handler:function(){
+        user_editRow=undefined;
+        //rejectChanges回滚
+        $('#dg').datagrid('rejectChanges');
+          //撤销所选项
+        $('#dg').datagrid('unselectAll');
+      }
+    }],
+    //编辑之后
+    onAfterEdit:function(rowIndex,rowData,changes){
+      user_editRow=undefined;
+    },
+    //双击编辑
+    onDblClickRow:function(rowIndex,rowData){
+      if(user_editRow!=undefined){
+          //先把上一条结束     
+        $('#dg').datagrid('endEdit',user_editRow);
+      }
+      if(user_editRow==undefined){
+        //开启新的一条   
+        $('#dg').datagrid('beginEdit',rowIndex);
+        user_editRow=rowIndex;
+      }
+    }
+    });
+  });
+</script>
+
+
