@@ -1,4 +1,4 @@
-package com.gmteam.framework.model;
+package com.gmteam.framework.ext.io;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
