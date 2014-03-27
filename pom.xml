@@ -8,7 +8,7 @@
 
   <!-- 配置编码格式，与eclpse的IDE环境编码格式匹配 -->
   <properties>
-    <build.webProjectDir>D:\GitWorkSpaces\base</build.webProjectDir>
+    <build.webProjectDir>D:\workIDE\projects\BasicPlat</build.webProjectDir>
   </properties>
 
   <parent>
@@ -41,16 +41,6 @@
       <groupId>commons-codec</groupId>
       <artifactId>commons-codec</artifactId>
       <version>1.9</version>
-    </dependency>
-    <dependency>
-    		<groupId>commons-fileupload</groupId>
-    		<artifactId>commons-fileupload</artifactId>
-    		<version>1.2.1</version>
-    </dependency>
-    <dependency>
-    	<groupId>commons-io</groupId>
-    	<artifactId>commons-io</artifactId>
-    	<version>1.4</version>
     </dependency>
   </dependencies>
 

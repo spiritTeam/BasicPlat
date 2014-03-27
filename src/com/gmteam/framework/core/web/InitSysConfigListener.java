@@ -3,16 +3,20 @@ package com.gmteam.framework.core.web;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
+
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
-import com.gmteam.framework.cache.CacheEle;
-import com.gmteam.framework.cache.CachePool;
-import com.gmteam.framework.cache.CatchLifecycle;
-import com.gmteam.framework.cache.SystemCache;
+
+import com.gmteam.framework.core.cache.CacheEle;
+import com.gmteam.framework.core.cache.CachePool;
+import com.gmteam.framework.core.cache.CatchLifecycle;
+import com.gmteam.framework.core.cache.SystemCache;
 import com.gmteam.framework.component.login.pojo.UserLogin;
 import com.gmteam.framework.IConstants;
 
@@ -21,7 +25,7 @@ import com.gmteam.framework.IConstants;
  * Mar 15, 2010
  * 系统初始化监听器
  */
-public class InitSysConfigListener {
+public class InitSysConfigListener implements ServletContextListener {
     /** 日志 */
     private Logger logger = Logger.getLogger(InitSysConfigListener.class);
     /** 缓存管理 */
@@ -35,8 +39,6 @@ public class InitSysConfigListener {
     public void contextInitialized(ServletContextEvent event) {
         try {
             ServletContext sc = event.getServletContext();
-            //依赖注入，注入本类，为cacheManager做准备
-            dependencyInject(sc);
 
             //装载系统服务器路径到缓存中
             SystemCache.setCache(new CacheEle<String>(IConstants.ROOTPATH, "系统服务器路径", sc.getRealPath("/")));
@@ -46,12 +48,16 @@ public class InitSysConfigListener {
                 new CacheEle<Map<String, UserLogin>>(IConstants.USERSESSIONMAP, "用户Session缓存", new HashMap<String, UserLogin>())
             );
 
+            //依赖注入，注入本类，为cacheManager做准备
+            dependencyInject(sc);
             //缓存框架存储
-            Map<String,CatchLifecycle> catchMap = new TreeMap<String,CatchLifecycle>();
-            catchMap.putAll(cachePool.getCaches());
-            for (String key : catchMap.keySet()) {
-                CatchLifecycle ic = catchMap.get(key);
-                ic.init();
+            if (cachePool!=null) {
+                Map<String,CatchLifecycle> catchMap = new TreeMap<String,CatchLifecycle>();
+                catchMap.putAll(cachePool.getCaches());
+                for (String key : catchMap.keySet()) {
+                    CatchLifecycle ic = catchMap.get(key);
+                    ic.init();
+                }
             }
         } catch (Exception e) {
             logger.error("运行环境初始化失败：",e);
@@ -63,7 +69,7 @@ public class InitSysConfigListener {
     }
 
     /**
-     * 根据TYPE用setter方法做注入
+     * 根据TYPE用setter方法做注入，此方法用于吧CachePool从bean中引入
      */
     private void dependencyInject(ServletContext sc) {
         WebApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(sc);

@@ -1,4 +1,4 @@
-package com.gmteam.framework.cache;
+package com.gmteam.framework.core.cache;
 
 /**
  * 缓存生命周期接口。

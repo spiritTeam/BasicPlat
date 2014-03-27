@@ -1,4 +1,4 @@
-package com.gmteam.framework.cache;
+package com.gmteam.framework.core.cache;
 
 import java.util.ArrayList;
 import java.util.Collections;

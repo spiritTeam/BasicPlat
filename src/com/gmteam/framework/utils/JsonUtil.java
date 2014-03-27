@@ -1,5 +1,8 @@
 package com.gmteam.framework.utils;
 
+import java.util.HashMap;
+import java.util.Map;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
@@ -25,16 +28,13 @@ public abstract class JsonUtil {
      * 将java对象转换成json字符串
      * @param obj 准备转换的对象
      * @return json字符串
+     * @throws JsonProcessingException 
      * @throws Exception
      */
-    public static String beanToJson(Object obj) throws Exception {
-        try {
-            ObjectMapper objectMapper=getMapperInstance(false);
-            String json=objectMapper.writeValueAsString(obj);
-            return json;
-        } catch (Exception e) {
-            throw new Exception(e.getMessage());
-        }
+    public static String beanToJson(Object obj) throws JsonProcessingException {
+        ObjectMapper objectMapper=getMapperInstance(false);
+        String json=objectMapper.writeValueAsString(obj);
+        return json;
     }
 
     /**
@@ -87,5 +87,31 @@ public abstract class JsonUtil {
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
+    }
+
+    /**
+     * 将对象转换为AjaxJson对象。type是输出类型。
+     * 输出的json对象为{jsonType:#type, data:#cls2json}
+     * @param obj 欲转换的对象，如果是String 则直接返回到data中
+     * @param type 类型：1是成功，0是失败，其他整型类型可自己定义
+     * @return AjaxJson对象
+     * @throws JsonProcessingException 异常 
+     */
+    public static String Obj2AjaxJson(Object obj, int type) throws JsonProcessingException {
+        return JsonUtil.beanToJson(JsonUtil.Obj2AjaxMap(obj, type));
+    }
+
+    /**
+     * 将对象转换为AjaxMap对象。type是输出类型。
+     * @param obj 欲转换的对象，如果是String 则直接返回到data中
+     * @param type 类型：1是成功，0是失败，其他整型类型可自己定义
+     * @return AjaxMap对象
+     * @throws Exception 异常 
+     */
+    public static Map<String, Object> Obj2AjaxMap(Object obj, int type) {
+        Map<String, Object> m = new HashMap<String, Object>();
+        m.put("jsonType", type);
+        m.put("data", obj);
+        return m;
     }
 }

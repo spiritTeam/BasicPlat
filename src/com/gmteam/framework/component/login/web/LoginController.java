@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gmteam.framework.IConstants;
-import com.gmteam.framework.cache.CacheEle;
-import com.gmteam.framework.cache.SystemCache;
+import com.gmteam.framework.core.cache.CacheEle;
+import com.gmteam.framework.core.cache.SystemCache;
 import com.gmteam.framework.component.login.pojo.PlatUser;
 import com.gmteam.framework.component.login.pojo.UserLogin;
 import com.gmteam.framework.component.login.service.PlatUserService;

@@ -1,4 +1,4 @@
-package com.gmteam.framework.cache;
+package com.gmteam.framework.core.cache;
 
 /**
  * 缓存项目，所有缓存项目都要继承此类。系统缓存SystemCache的内容就是这个对象
