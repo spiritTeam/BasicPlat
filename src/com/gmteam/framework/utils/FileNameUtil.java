@@ -46,27 +46,46 @@ public abstract class FileNameUtil {
 
     /**
      * 得到文件的路径，默认认为，文件的最后一个分割符前是文件路径
-     * @param LocalFullPath 文件名称
+     * @param localFullPath 文件名称
      * @return 文件路径
      */
-    public static String getFileName(String LocalFullPath){
-        String FileName = "";
-        int LastDirPos = 0;
-        LastDirPos = LocalFullPath.lastIndexOf(File.separator);
-        FileName = LocalFullPath.substring(LastDirPos + 1);
-        return FileName;
+    public static String getFilePath(String localFullPath){
+        int lastDirPos = localFullPath.lastIndexOf(File.separator);
+        if (lastDirPos!=-1) return localFullPath.substring(0, lastDirPos);
+        else return "";
+    }
+
+    /**
+     * 得到文件的路径，默认认为，文件的最后一个分割符前是文件路径
+     * @param localFullPath 文件名称
+     * @return 文件路径
+     */
+    public static String getFileName(String localFullPath){
+        int lastDirPos = localFullPath.lastIndexOf(File.separator);
+        if (lastDirPos!=-1) return localFullPath.substring(lastDirPos + 1);
+        return localFullPath;
+    }
+
+    /**
+     * 得到文件的路径，默认认为，文件的最后一个分割符前是文件路径
+     * @param localFullPath 文件名称
+     * @return 文件路径
+     */
+    public static String getPureFileName(String localFullPath){
+        String fileName = FileNameUtil.getFileName(localFullPath);
+        int lastDirPos = fileName.lastIndexOf(".");
+        if (lastDirPos!=-1) return fileName.substring(0, lastDirPos);
+        else return fileName;
     }
 
     /**
      * 得到文件的扩展名
-     * @param LocalFullPath 文件名称
+     * @param localFullPath 文件名称
      * @return 文件扩展名
      */
-    public static String getExt(String LocalFullPath){
-        String FileExt = "";
-        int LastDirPos = 0;
-        LastDirPos = LocalFullPath.lastIndexOf(".");
-        FileExt = LocalFullPath.substring(LastDirPos);
-        return FileExt;
+    public static String getExt(String localFullPath){
+        int lastDirPos = localFullPath.lastIndexOf(".");
+        if (lastDirPos!=-1) return localFullPath.substring(lastDirPos);
+        else return "";
     }
 }
