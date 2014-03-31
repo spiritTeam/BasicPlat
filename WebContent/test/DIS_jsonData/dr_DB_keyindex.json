@@ -1,0 +1,7 @@
+{"total":5,"rows":[
+	{"db_tkiname":"主键用户ID","db_tkitype":"主键","db_tkirel":"id"},
+	{"db_tkiname":"所在组","db_tkitype":"外键","db_tkirel":"plat_group.id"},
+	{"db_tkiname":"用户类型","db_tkitype":"不唯一索引","db_tkirel":"uType"},
+	{"db_tkiname":"用户排序","db_tkitype":"唯一索引","db_tkirel":"uSort"},
+	{"db_tkiname":"身份证","db_tkitype":"唯一索引","db_tkirel":"SFZHM"}
+]}

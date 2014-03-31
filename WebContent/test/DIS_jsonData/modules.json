@@ -1,0 +1,27 @@
+modules = [
+  { "id":"1","selected":true,"title":"数据管理","icon":"resources/images/sys/skin0/icon/moduleIcon/12.png",
+    "treeData": [{
+      "id":11,
+	  "text":"数据源注册",
+	  "iconCls":"icon-8",
+	  "attributes":{
+	    "url":"/appSys/dataIS/manage/dataSource/dsManage.jsp",
+        "icon":"resources/images/sys/skin0/icon/moduleIcon/1.gif"
+      }
+    },{
+	  "id":12,
+	  "text":"数据资源注册",
+	  "iconCls":"icon-9",
+	  "attributes":{"url":"", "icon":"resources/images/sys/skin0/icon/moduleIcon/12.png"}
+    },{
+	  "id":13,
+	  "text":"资源关系管理",
+	  "iconCls":"icon-10",
+	  "attributes":{"url":"", "icon":"resources/images/sys/skin0/icon/moduleIcon/13.png"}
+    }]
+  },
+  { "id":"2","selected":false,"title":"数据目录管理","icon":"resources/images/sys/skin0/icon/moduleIcon/11.gif"
+  },
+  { "id":"3","selected":false,"title":"服务及申请管理","icon":"resources/images/sys/skin0/icon/moduleIcon/13.png"
+  }
+]

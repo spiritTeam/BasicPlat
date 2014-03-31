@@ -1,0 +1,8 @@
+{"total":6,"rows":[
+	{"db_tcname":"ID","db_tctype":"NUMBER","db_tcnull":"否","db_tcmemo":"用户ID"},
+	{"db_tcname":"NAME","db_tctype":"VARCHAR2(20)","db_tcnull":"否","db_tcmemo":"用户名称"},
+	{"db_tcname":"uType","db_tctype":"NUMBER","db_tcnull":"否","db_tcmemo":"用户类型"},
+	{"db_tcname":"uSort","db_tctype":"NUMBER","db_tcnull":"是","db_tcmemo":"用户排序"},
+	{"db_tcname":"inGroup","db_tctype":"NUMBER","db_tcnull":"是","db_tcmemo":"用户所在组"},
+	{"db_tcname":"SFZHM","db_tctype":"VARCHAR2(20)","db_tcnull":"否","db_tcmemo":"身份证号码"}
+]}
