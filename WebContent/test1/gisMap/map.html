@@ -1,0 +1,55 @@
+<HTML xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml">
+<HEAD>
+<title>µØÍ¼</title>
+<style>
+v\: * {
+  behavior: url(#default#VML);
+  display: inline-block
+}
+</style>
+<script type="text/javascript" src="http://192.168.1.103:8080/Nasoft_MapClient/maps?"></script>
+<script type="text/javascript" src="/BJLQ/resources/gis/Dialog/js/dialog.js"></script> 
+<script type="text/javascript" src="mouseTip.js"></script> 
+
+<!-- 
+document.writeln("<SCRIPT  type='text/javascript' src='"+m_mapgis+"/lib/MousePositionControl.js'></SCRIPT>");
+ -->
+<SCRIPT>
+var map = null;
+var dialog = null;
+function onLoad() {
+  if (typeof map == "undefined") {
+    window.setTimeout("onLoad()", 10);
+    return;
+  }
+  map=new DMap.Map(document.getElementById('map'));
+  map.showZoomBarControl();
+  map.showOverviewMap();
+  map.showMapTypeControl();
+  map.showScaleControl();
+//  var mousePosControl=new DMap.MousePositionControl();
+//  map.addControl(mousePosControl);
+  map.showCopyright();
+ // setTimeout("onMapResizeWin()",100);
+}
+
+function getMapApp() {
+  return map;
+}
+
+window.onresize = function () {
+  var webHeight = parent.document.body.clientHeight;
+  var webWidth = parent.document.body.clientWidth;
+ //       alert(webHeight+" "+webWidth);
+  try {
+    document.getElementById("map").style.height=webHeight;
+    document.getElementById("map").style.width=webWidth;
+  } catch (ex) {}
+};
+
+</SCRIPT>
+</HEAD>
+<body onload="onLoad()">
+<div id="map"  style="left: 1px; width: 102%; height: 100%;"></div>
+</body>
+</HTML>

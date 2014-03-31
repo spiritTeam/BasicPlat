@@ -1,0 +1,7 @@
+{"total":5,"rows":[
+	{"dbsOType":"表","dbsOName":"plat_user","dbsOCount":10,"dbsOmemo":"用户表"},
+	{"dbsOType":"表","dbsOName":"plat_group","dbsOCount":23,"dbsOmemo":"用户组表"},
+	{"dbsOType":"表","dbsOName":"plat_userInGroup","dbsOCount":140,"dbsOmemo":"用户所在用户组表"},
+	{"dbsOType":"视图","dbsOName":"view_groupUser","dbsOCount":314,"dbsOmemo":"用户用户组视图"},
+	{"dbsOType":"表","dbsOName":"plat_serialNo","dbsOCount":4,"dbsOmemo":"系统编号表"}
+]}

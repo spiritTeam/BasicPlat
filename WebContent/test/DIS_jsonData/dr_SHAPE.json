@@ -1,0 +1,7 @@
+{"total":5,"rows":[
+	{"dbsSType":"点","dbsSName":"hospital_pt","dbsSCount":10,"dbsSmemo":"医院"},
+	{"dbsSType":"线","dbsSName":"road_pl","dbsSCount":23,"dbsSmemo":"城市路"},
+	{"dbsSType":"面","dbsSName":"region_pg","dbsSCount":140,"dbsSmemo":"片区"},
+	{"dbsSType":"点","dbsSName":"ps_pt","dbsSCount":314,"dbsSmemo":"派出所"},
+	{"dbsSType":"线","dbsSName":"higeway_pl","dbsSCount":4,"dbsSmemo":"高速路"}
+]}

@@ -1,0 +1,7 @@
+subApps = 
+{"total":4,"susApps":[
+  {"id":"1","selected":true,"title":"管理首页","icon":"/resource/images/sys/skin0/icon/btnIcon/1.png","url":"/test/appSys/dataIS/manage/manageMain.jsp"},
+  {"id":"2","selected":false,"title":"数据远监控","icon":"/resource/images/sys/skin0/icon/btnIcon/3.png","url":"/test/appSys/dataIS/manage/manageMain.jsp1"},
+  {"id":"3","selected":false,"title":"资源目录监控","icon":"/resource/images/sys/skin0/icon/btnIcon/4.png","url":"/test/appSys/dataIS/manage/manageMain.jsp2"},
+  {"id":"4","selected":false,"title":"用户访问监控","icon":"/resource/images/sys/skin0/icon/btnIcon/5.png","url":"/test/appSys/dataIS/manage/manageMain.jsp3"}
+]}
