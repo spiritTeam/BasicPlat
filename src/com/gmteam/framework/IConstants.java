@@ -12,7 +12,7 @@ public class IConstants {
     
     
     //系统路径
-    public final static String ROOTPATH="rootPath";
+    public final static String APPOSPATH="AppOSPath";
     //用户Session缓存，用于处理不同用户的登录
     public final static String USERSESSIONMAP="userSessionMap";
    
