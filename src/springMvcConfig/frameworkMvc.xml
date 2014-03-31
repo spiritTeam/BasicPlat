@@ -35,7 +35,6 @@
             </list>
           </property>
         </bean>
-        <!--  -->
         <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
           <property name="supportedMediaTypes">
             <list>
@@ -58,11 +57,11 @@
   </bean>
 
   <!-- 以下为文件上传的测试代码 -->
-  <bean name="/uploadtest.do" class="com.gmteam.framework.core.web.FileUploadController">
+  <bean name="/uploadtest.do" class="com.gmteam.framework.component.fileUploadDownload.SimpleFileUploadController">
     <property name="savePath" value="abc"/> <!-- 保存的路径,与上一个参数 -->
     <property name="filePrefix" value="aabbcc"/> <!-- 保存文件的前缀名 -->
   </bean>
   <!-- 以下为文件上传的测试代码 -->
-  <bean name="/uploadtest1.do" class="com.gmteam.framework.core.web.FileUploadController">
+  <bean name="/uploadtest1.do" class="com.gmteam.framework.component.fileUploadDownload.SimpleFileUploadController">
   </bean>
 </beans>

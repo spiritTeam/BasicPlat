@@ -2,10 +2,10 @@ package com.gmteam.framework.utils;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.nio.channels.FileChannel;
 import java.util.List;
 
 /**
@@ -61,44 +61,54 @@ public abstract class FileUtil {
     }
 
     /**
-     * 将单个文件复制到指定位置
+     * 将单个文件复制到指定位置，采用NIO方式
      * 
      * @param sourceFile 源文件
      * @param desFile 目标文件
-     * @return
+     * @return 若拷贝成功返回true，若拷贝失败返回false
+     * @throws IOException 
      */
     public static boolean copyFile(String sourceFile, String desFile) {
+        File desfile = new File(desFile);
+        desfile.delete();
+
+        FileChannel inChannel=null, outChannel = null;
+        FileInputStream fileInputStream = null;
+        FileOutputStream fileOutputStream = null;
         try {
-            File desfile = new File(desFile);
-            desfile.delete();
-            FileOutputStream fout = new FileOutputStream(desFile);
-            FileInputStream fin = new FileInputStream(sourceFile);
-            copy(fin, fout);
-            fin.close();
-            fout.close();
+            fileInputStream = new FileInputStream(new File(sourceFile));
+            inChannel = fileInputStream.getChannel();
+            fileOutputStream = new FileOutputStream(desfile);
+            outChannel = fileOutputStream.getChannel();
+
+            int maxCount = (64*1024*1024)-(32*1024);//一次传输大小
+            long size = inChannel.size();
+            long position = 0;
+            while (position < size) {
+                position += inChannel.transferTo(position, maxCount, outChannel);
+            }
             return true;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return false;
         } catch (IOException e) {
             e.printStackTrace();
             return false;
+        } finally {
+            if (inChannel!=null) {
+                try {inChannel.close();}catch(IOException e) {e.printStackTrace();}
+            }
+            if (outChannel!=null) {
+                try {outChannel.close();}catch(IOException e) {e.printStackTrace();}
+            }
+            if (fileInputStream!=null) {
+                try {fileInputStream.close();}catch(IOException e) {e.printStackTrace();}
+            }
+            if (fileOutputStream!=null) {
+                try {fileOutputStream.close();}catch(IOException e) {e.printStackTrace();}
+            }
         }
-    }
-
-    /**
-     * 将输入流pull到输出流中
-     * 
-     * @param in
-     * @param out
-     * @throws IOException
-     */
-    private static void copy(InputStream in, OutputStream out)
-            throws IOException {
-        byte[] buffer = new byte[1024];
-        while (true) {
-            int bytesRead = in.read(buffer);
-            if (bytesRead == -1)
-                break;
-            out.write(buffer, 0, bytesRead);
-        }
+    
     }
 
     /**
