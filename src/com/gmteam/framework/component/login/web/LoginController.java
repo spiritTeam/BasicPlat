@@ -28,7 +28,7 @@ public class LoginController {
      * @param req 
      * @return
      */
-    @RequestMapping("/login.do")
+    @RequestMapping("common/login.do")
     public @ResponseBody Map<String,Object> Login(UserLogin userLogin,HttpServletRequest req) {
         Map<String,Object> retObj = new HashMap<String,Object>();
         try {
