@@ -22,7 +22,6 @@ import com.gmteam.framework.component.login.service.PlatUserService;
 public class LoginController {
 	@Resource
     private PlatUserService userService;
-    
     /**
      * 用户登录
      * @param userLogin 用户登录信息
