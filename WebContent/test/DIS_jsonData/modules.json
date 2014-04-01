@@ -5,7 +5,7 @@ modules = [
 	  "text":"数据源注册",
 	  "iconCls":"icon-8",
 	  "attributes":{
-	    "url":"/appSys/dataIS/manage/dataSource/dsManage.jsp",
+	    "url":"test/appSys/dataIS/manage/dataSource/dsManage.jsp",
         "icon":"resources/images/sys/skin0/icon/moduleIcon/1.gif"
       }
     },{

@@ -7,6 +7,8 @@ public class IConstants {
     public final static String PLATFORM_NAME ="BasicPlat";
     /** 当前用户名*/
     public final static String USER_NAME = "User_Name";
+    /** 当前用户功能列表*/
+    public final static String USER_MODULES = "User_Modules";
     
   //---------------------------------------------------------------------
     

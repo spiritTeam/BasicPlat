@@ -3,7 +3,7 @@
 <%@page import="com.gmteam.framework.IConstants"%>
 <%
   String path = request.getContextPath();
-  String username = (String)session.getAttribute("username");
+  String username = (String)session.getAttribute(IConstants.USER_NAME);
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -62,7 +62,7 @@ body {margin:0 auto; width:1000px;}
     </div>
   </div>
   <div id="foot" data-options="region:'south',border:false" style="width:1000px"></div>
-  <div data-options="region:'center',href:'<%=path %>/appView/main/t1.jsp'" style="width:1000px">
+  <div data-options="region:'center'" style="width:1000px">
   </div>
 </div>
 </center></body>
@@ -70,7 +70,6 @@ body {margin:0 auto; width:1000px;}
 var currentUrl = null, currentId = null;
 $(function() {
   $(subApps.susApps).each(function() {
-	  alert(this.url);
     $("#user").html($("#user").html()
       +"<a href='javascript:void(0);' onclick='turnSubApp(\""+this.id+"\",\""+this.url+"\")' class='mainMenu' id='"+this.id+"'>"+this.title+"</a></div>");
     if (this.selected) {currentUrl=this.url;currentId=this.id;}

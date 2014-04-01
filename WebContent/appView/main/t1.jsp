@@ -14,7 +14,7 @@
 		<link rel="stylesheet" type="text/css" href="<%=path %>/resources/plugins/easyui-1.3.4/themes/icon.css"></link>
 	</head>
 	<body>
-    <ul id="tt2" >
+    <ul id="tt2" lines="true" >
     </ul>
 	</body>
 	<script type="text/javascript">

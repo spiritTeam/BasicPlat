@@ -300,13 +300,11 @@ function buildMainTab(tabList) {
     $("#mainTab").append(newTab);
     $("#mainTab").append("<div id='mts"+i+"' class='mtabSM'></div>");
   });
-  alert("_curTab::"+_curTab);
   buildModule(_curTab, 0);
 }
 //构建导航部分
 function buildModule(tabId, tabIndex){
   if (curTab==tabId) return;
-  alert("===========");
   //变换显示效果
   //-重置所有效果，恢复为初始状态
   $("#mainTab").find(".mtabText").css({
@@ -343,10 +341,8 @@ function buildModule(tabId, tabIndex){
 
   //构建导航部分
   var moduleList = null;
-  alert("===========002");
   $(userAuthData.children).each(function(){
     if (this.id==tabId) {
-    	alert(this.id);
       moduleList = this.children;
     }
   });
@@ -360,11 +356,9 @@ function buildModule(tabId, tabIndex){
     for (i=moduleArray.length-1; i>=0; i--) moduleArray.removeByIndex(i);
   }
   //加入新的
-  alert("===========003:"+moduleList.length);
   $(moduleList).each(function(i){
     if (i==0) curModule=i;
     var url = "";//this.attributes.v_jumpurl;
-    alert(url);
     //if (this.attributes.v_urltype==0) url = "<%=path%>/"+url;
     moduleArray.push({"id":this.id, "url":url, title:this.title});
     var _content = '<iframe name="'+this.id+'" id="'+this.id+'"scrolling="no" frameborder="0"  src="'+url+'" style="width:100%;height:100%;"></iframe>';

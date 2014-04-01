@@ -1,18 +1,17 @@
 <%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@page import="java.util.List"%>
 <%@page import="com.gmteam.framework.IConstants"%>
-<%@page import="com.ccid.framework.component.module.pojo.Module"%>
+<%@page import="com.gmteam.framework.model.tree.BaseTreeNode"%>
 <%
   String path = request.getContextPath();
   String username = (String)session.getAttribute(IConstants.USER_NAME);
-  List<Module> modules = (List<Module>)session.getAttribute(IConstants.USER_MODULES);
+  List<BaseTreeNode> modules = (List<BaseTreeNode>)session.getAttribute(IConstants.USER_MODULES);
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <jsp:include page="/common/sysInclude.jsp" flush="true"/>
-<script src="<%=path%>/DIS_jsonData/modules.json" type="text/javascript"></script>
-<script src="<%=path%>/resources/js/js.common.utils.js" type="text/javascript"></script>
+<script src="<%=path%>/test/DIS_jsonData/modules.json" type="text/javascript"></script>
 <title><%=IConstants.PLATFORM_NAME%></title>
 <style>
 body {margin:0 auto; width:1000px;}
@@ -100,12 +99,12 @@ $(function() {
   });
   //--从后台读取
   <%if(modules != null) {
-  for(Module module : modules) {%>
-    if (<%=module.getLevels()%>==1) {
+  for(BaseTreeNode module : modules) {%>
+    if (<%=module.getLevel()%>==1) {
       $("#navigate").accordion("add",{
         selected:false,
         iconCls:"icon-add",
-        title:"<%=module.getModuleName()%>"
+        title:"<%=module.getTitle()%>"
       });
       thisAccordion = $("#navigate").accordion("getPanel", $("#navigate").accordion("panels").length-1);
       $(thisAccordion).parent().find(".panel-icon").css("background-image", "url(<%=path%>/<%=module.getIconsFowShow()%>)");
@@ -119,7 +118,7 @@ $(function() {
     } else {
       var newTreeNode = {
         "id": "<%=module.getId()%>",
-        "text": "<%=module.getModuleName()%>",
+        "text": "<%=module.getTitle()%>",
         "iconCls": "icon-"+(++_temp),
         "attributes":{"icon":"<%=module.getIconsFowShow()%>", "url":"<%=module.getUrl()%>"}
       };
@@ -141,7 +140,7 @@ $(function() {
   //加首页
   $("#tabBar").tabs("add",{
     title: "首页",
-    content: '<iframe scrolling="no" frameborder="0"  src="<%=path%>/appSys/dataIS/manage/portal.jsp" style="width:100%;height:100%;"></iframe>',
+    content: '<iframe scrolling="no" frameborder="0"  src="<%=path%>/test/appSys/dataIS/manage/portal.jsp" style="width:100%;height:100%;"></iframe>',
     tools: [{iconCls:"icon-mini-refresh", title:"刷新", handler:refreshTab}],
     closable: false
   });

@@ -6,7 +6,7 @@
 <html>
 <head>
 <jsp:include page="/common/sysInclude.jsp" flush="true"/>
-<script src="<%=path%>/DIS_jsonData/dataResource.json" type="text/javascript"></script>
+<script src="<%=path%>/test/DIS_jsonData/dataResource.json" type="text/javascript"></script>
 <title>数据源管理</title>
 <style>
 body {margin:0 auto;}
@@ -60,7 +60,7 @@ body {margin:0 auto;}
       <a id="db_MBview" href="#" class="easyui-linkbutton" iconCls="icon-view" plain="true" style="float:right;" onclick="showDb()">查看</a>
     </div>
     <div id="dd_DBtvDiv"><table class="easyui-datagrid" id="dd_DBtableview"
-      data-options="url:'<%=path%>/DIS_jsonData/dr_DB_tableview.json',
+      data-options="url:'<%=path%>/test/DIS_jsonData/dr_DB_tableview.json',
         method:'get',border:false,singleSelect:true,fitColumns:true,rownumbers:true,
         pagination:true,pageSize:10">
       <thead>
@@ -88,7 +88,7 @@ body {margin:0 auto;}
       <a id="file_MBview" href="#" class="easyui-linkbutton" iconCls="icon-view" plain="true" style="float:right;" onclick="showFile()">查看</a>
     </div>
     <div id="dd_FILEvDiv"><table class="easyui-treegrid" id="dd_FILEview"
-      data-options="url:'<%=path%>/DIS_jsonData/dr_FILE.json',
+      data-options="url:'<%=path%>/test/DIS_jsonData/dr_FILE.json',
         method:'get',border:false,singleSelect:true,fitColumns:true,rownumbers:true,
         pagination:false,idField:'id',treeField:'name'">
       <thead>
@@ -115,7 +115,7 @@ body {margin:0 auto;}
       <a id="shape_MBview" href="#" class="easyui-linkbutton" iconCls="icon-view" plain="true" style="float:right;" onclick="showShape()">查看</a>
     </div>
     <div id="dd_SHAPEvDiv"><table class="easyui-datagrid" id="dd_SHAPEview"
-      data-options="url:'<%=path%>/DIS_jsonData/dr_SHAPE.json',
+      data-options="url:'<%=path%>/test/DIS_jsonData/dr_SHAPE.json',
         method:'get',border:false,singleSelect:true,fitColumns:true,rownumbers:true,
         pagination:true,pageSize:10">
       <thead>
@@ -279,7 +279,7 @@ body {margin:0 auto;}
       <div id="wd_SHAPETabBar" class="easyui-tabs" data-options="fit:true,border:false">
         <div title="列">
           <table class="easyui-datagrid"
-            data-options="url:'<%=path%>/DIS_jsonData/dr_DB_tablecolumn.json',
+            data-options="url:'<%=path%>/test/DIS_jsonData/dr_DB_tablecolumn.json',
             method:'get',border:false,singleSelect:true,fitColumns:true,rownumbers:true,
             pagination:true,pageSize:10,fit:true">
           <thead>
@@ -294,7 +294,7 @@ body {margin:0 auto;}
         </div>
         <div title="键及索引">
           <table class="easyui-datagrid"
-            data-options="url:'<%=path%>/DIS_jsonData/dr_DB_keyindex.json',
+            data-options="url:'<%=path%>/test/DIS_jsonData/dr_DB_keyindex.json',
             method:'get',border:false,singleSelect:true,fitColumns:true,rownumbers:true,
             pagination:true,pageSize:10,fit:true">
           <thead>
@@ -341,7 +341,7 @@ body {margin:0 auto;}
       <div id="wd_SHAPETabBar" class="easyui-tabs" data-options="fit:true,border:false">
         <div title="列">
           <table class="easyui-datagrid"
-            data-options="url:'<%=path%>/DIS_jsonData/dr_DB_tablecolumn.json',
+            data-options="url:'<%=path%>/test/DIS_jsonData/dr_DB_tablecolumn.json',
             method:'get',border:false,singleSelect:true,fitColumns:true,rownumbers:true,
             pagination:true,pageSize:10,fit:true">
           <thead>
@@ -356,7 +356,7 @@ body {margin:0 auto;}
         </div>
         <div title="键及索引">
           <table class="easyui-datagrid"
-            data-options="url:'<%=path%>/DIS_jsonData/dr_DB_keyindex.json',
+            data-options="url:'<%=path%>/test/DIS_jsonData/dr_DB_keyindex.json',
             method:'get',border:false,singleSelect:true,fitColumns:true,rownumbers:true,
             pagination:true,pageSize:10,fit:true">
           <thead>

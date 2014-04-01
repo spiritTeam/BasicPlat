@@ -8,6 +8,7 @@ import com.gmteam.framework.model.BaseObject;
  */
 @SuppressWarnings("serial")
 public abstract class TreeNodeModel extends BaseObject {
+    
     //树节点ID
     String id;
     /**

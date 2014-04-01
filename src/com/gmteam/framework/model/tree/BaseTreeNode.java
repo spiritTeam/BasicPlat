@@ -26,6 +26,47 @@ public class BaseTreeNode<T extends TreeNodeModel> extends BaseObject implements
         this.allowChildren=true;
     }
 
+    /**
+     * 处理图标的属性
+     * 看之前pf的代码，还能处理图标，觉得不错，先拷过来
+     * 用用，看看显示结果
+     * 添加属性：url，icons，
+     * 我添加的代码是“===========之间的部分”
+     */
+    //=======================================================
+    private String url;
+    private String icons;
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+    public String getIcons() {
+        return icons;
+    }
+    /**
+     * 取得显示的图标，若为空或不可访问的文件或URL则返回默认图标，否则返回记录中所存的图标
+     * 这个默认图标应该有不同的图片，通过后台参数进行统一管理。
+     * @return 图标的路径
+     */
+    public String getIconsFowShow() {
+        if (icons==null||"".equals(icons)) {
+            return "resources/images/sys/skin0/icon/moduleIcon/6.gif";
+        } else {
+            //判断是否确实存在这个文件，路径或URL都可以，若判断通过，则直接返回，否则要返回默认图标
+            //判断实体是否可访问
+            //若不能够访问，则从系统参数中取得默认的图标
+            //**系统参数中可能会维护多个默认图标，如：模块组、模块；用户组、用户；字典组、字典；任务等等。
+            return icons;
+        }
+    }
+
+    public void setIcons(String icons) {
+        this.icons = icons;
+    }
+    //=======================================================
     //树节点ID
     String id;
     public String getId() {
