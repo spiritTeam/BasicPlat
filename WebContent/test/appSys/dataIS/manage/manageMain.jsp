@@ -60,7 +60,7 @@ body {margin:0 auto; width:1000px;}
 <style type="text/css">
 </style>
 <body class="easyui-layout" style="background:#E6EEF8">
-  <div id="left" data-options="region:'west',split:true,title:'功能导航'" style="width:205px;">
+  <div id="left" data-options="region:'west',split:true,title:'功能导航',closable:true" style="width:205px;">
     <div id="navigate" class="easyui-accordion" data-options="fit:true,border:false"></div>
   </div>
   <div data-options="region:'center'" data-options="border:true, fit:false">
