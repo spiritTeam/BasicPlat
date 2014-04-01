@@ -34,7 +34,7 @@
 
 body {
   font-family: Arial, Helvetica, sans-serif;
-  background: url(../resources/images/grass.jpg);
+  background: url(../resources/images/login/grass.jpg);
   font-size: 13px;
 }
 
@@ -46,7 +46,7 @@ img {
   width: 468px;
   height: 468px;
   margin: 100px auto;
-  background: url(../resources/images/login_bg.png) no-repeat;
+  background: url(../resources/images/login/login_bg.png) no-repeat;
 }
 
 .lg_top {
@@ -72,7 +72,7 @@ img {
   color: #666;
   width: 236px;
   margin: 4px 28px;
-  background: url(../resources/images/user.png) no-repeat;
+  background: url(../resources/images/login/user.png) no-repeat;
   padding-left: 10px;
   font-size: 16pt;
   font-family: Arial, Helvetica, sans-serif;
@@ -84,7 +84,7 @@ img {
   color: #666;
   width: 236px;
   margin: 4px 28px;
-  background: url(../resources/images/password.png) no-repeat;
+  background: url(../resources/images/login/password.png) no-repeat;
   padding-left: 10px;
   font-size: 16pt;
   font-family: Arial, Helvetica, sans-serif;
@@ -93,7 +93,7 @@ img {
 .bn {
   width: 330px;
   height: 72px;
-  background: url(../resources/images/enter.png) no-repeat;
+  background: url(../resources/images/login/enter.png) no-repeat;
   border: 0;
   display: block;
   font-size: 18px;
