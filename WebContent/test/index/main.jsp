@@ -96,9 +96,12 @@ function turnSubApp(id, url) {
     }
   });
   if (!hasFind) {
+	  alert("hasFind");
     var newIframe = window.document.createElement("iframe");
+    alert("in hasFinds");
     $(newIframe).css("display", "inline")
       .attr("frameborder", "0").attr("scrolling", "no").attr("id", ""+id).attr("src", "<%=path%>"+url);
+    alert("end hasFinds");
     $("div[data-options='region:\'center\'']").append($(newIframe));
   }
   onResize();

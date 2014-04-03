@@ -22,16 +22,20 @@ public class TestLogin {
         TreeA t2 = null;
         TreeA t3 = null;
         t.setId(""+1);
+        t.setUrl("/test/appSys/dataIS/manage/manageMain.jsp");
         t.setAllowChildren(true);
         t.setTitle("主功能");
         List<TreeA> list = new ArrayList<TreeA>();
-        for(int i=2;i<4;i++){
+        for(int i=2;i<=4;i++){
             List<TreeA> list2 = new ArrayList<TreeA>();
             t2 = new TreeA();
             t2.setId(""+i);
+            t2.setSelected(true);
+            t2.setUrl("/test/appSys/dataIS/manage/manageMain.jsp");
             t2.setTitle("功能"+i);
-            for(int k=5;k<7;k++){
+            for(int k=5;k<=7;k++){
                 t3 = new TreeA();
+                t3.setUrl("/test/appSys/dataIS/manage/manageMain.jsp");
                 t3.setId(""+k+i);
                 t3.setTitle("子功能"+k+i);
                 list2.add(t3);

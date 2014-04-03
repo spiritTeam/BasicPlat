@@ -1,9 +1,10 @@
 <%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@page import="java.util.List"%>
+<%@page import="java.util.*"%>
 <%@page import="com.gmteam.framework.IConstants"%>
+<%@page import="com.gmteam.framework.component.login.web.TreeA"%>
 <%
   String path = request.getContextPath();
-  String username = (String)session.getAttribute(IConstants.USER_NAME);
+  String username = (String)session.getAttribute("username");
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -52,15 +53,7 @@
 #logout li a {margin-left:3px; vertical-align:bottom; display:inline-block;}
 body {margin:0 auto; width:1000px;}
 </style>
-<body>
-<!-- 遮罩层 -->
-<div id="mask" style="display:none">
-  <table id="maskContent" style="position:relative;"><tr><td style="vertical-align:middle;align:center"><center>
-    <img align="middle" src="<%=path%>/test1/images/waiting_circle.gif"/><br/><br/>
-    <span style="font-weight:bold" id="maskTitle">请稍候，正在读取用户权限...</span>
-  </center></td></tr></table>
-</div>
-<center>
+<body><center>
 <div class="easyui-layout" style="width:1000px;height:500px" data-options="border:false">
   <div id="top" data-options="region:'north',border:false" style="width:1000px">
     <div id="top_top"></div>
@@ -70,85 +63,101 @@ body {margin:0 auto; width:1000px;}
     </div>
   </div>
   <div id="foot" data-options="region:'south',border:false" style="width:1000px"></div>
-  <div data-options="region:'center'" style="width:1000px">
+  <div id="mainCenter" data-options="region:'center'" style="width:1000px">
+  <!-- 功能菜单 -->
+    <div class="easyui-layout" data-options="fit:true">  
+	    <div id="left" data-options="region:'west',split:true,title:'功能导航',collapsible:false" style="width:205px;">
+	    <div id="navigate" class="easyui-accordion" data-options="fit:true,border:false"></div>
+	    </div>
+		    <div data-options="region:'center'" data-options="border:true, fit:false">
+		    <div id="tabBar" class="easyui-tabs" data-options="fit:true,border:false"></div>
+      </div>
+      <div id="center_east" data-options="region:'east',split:false" style="width:0px;background:#E6EEF8"></div>
+     </div>  
   </div>
 </div>
 </center></body>
 <script>
-var setTimeoutHandle = null;
-var westWidth=300, minWidth=640, minHeight=480;
-var westExpand=true, isFullScreen=false, _westExpand=true;//_westExpand是点击全屏时westExpand的状态
-var userAuthData=null;
-var curTab=null, curModule=null, curMframe=null;
-var hasRefreshCacheAuth = false;
-var moduleArray=[];//模块列表
-var currentUrl = null, currentId = null;
+var currentUrl = null, currentId = null,sanList = null;
+var thisAccordion = null,newTree=null;idx = 0;
+var tabArray = [],tabIndex,treeData = null;
+var newTree = null, _temp = 0;
 $(function() {
-	//调用遮罩
-	resizeMask();
-	_resizeTimeout();
-	$(window).resize(_resizeTimeout);
-	$("#mask").show();
-  //获取树
-  var url="<%=path%>/toLogin.do";
-  $.ajax({type:"post", async:true, url:url, data:null, dataType:"json",
-    success: function(json) {
-      if (json.type==1) {
-        var authData=json.data;
-        if (!authData) {
-          $.messager.alert("提示", "您没有操作本系统的任何权限，请联系管理员！<br/>现返回登录页面。", "info", function(){
-            window.location.href="<%=path%>/common/login.jsp?noAuth";
-          });
-          return;
-        }
-        userAuthData = authData;
-        init(authData);
-      } else {
-        $.messager.alert("错误", "获取用户权限失败："+json.data+"！<br/>返回登录页面。", "error", function(){
-          window.location.href="<%=path%>/common/login.jsp?noAuth";
-        });
-      }
-    },
-    error: function(errorData) {
-      $.messager.alert("错误", "获取用户权限异常："+(errorData?errorData.responseText:"")+"！<br/>返回登录页面。", "error", function(){
-        window.location.href="<%=path%>/common/login.jsp?noAuth";
-      });
-    }
-  });
-  /*$(subApps.susApps).each(function() {
-    $("#user").html($("#user").html()
-      +"<a href='javascript:void(0);' onclick='turnSubApp(\""+this.id+"\",\""+this.url+"\")' class='mainMenu' id='"+this.id+"'>"+this.title+"</a></div>");
-    if (this.selected) {currentUrl=this.url;currentId=this.id;}
-  });*/
-  $("div[data-options='region:\'center\'']").css("background", "#E6EEF8")
-    .css("border-top", "1px solid #E6EEF8")
-    .css("border-right", "0px solid #E6EEF8")
-    .css("border-bottom", "0px solid #E6EEF8")
-    .css("border-left", "5px solid #E6EEF8");
-  $("div[data-options='region:\'center\'']").css("overflow", "hidden");
-  turnSubApp(currentId, currentUrl);
-  $(window).resize(onResize);
+	$("#center_east").css("border", "0px");
+    $("#left").parent().find(".panel-header").find(".panel-title").css("font-size", "14px");
+    $("#left").parent().find(".panel-header").css("text-align", "center").css("height", "18px");
+    $("#left").css("height", (parseInt($("#left").css("height"))-2)+"px");
+	//加载树
+	  var url="<%=path%>/toLogin.do";
+	  $.ajax({type:"post", async:true, url:url, data:null, dataType:"json",
+	    success: function(json) {
+	      if (json.type==1) {
+	        var authData=json.data;
+	        if (!authData) {
+	          $.messager.alert("提示", "您没有操作本系统的任何权限，请联系管理员！<br/>现返回登录页面。", "info", function(){
+	            window.location.href="<%=path%>/common/login.jsp?noAuth";
+	          });
+	          return;
+	        }
+	        userAuthData = authData.children;
+	        $(userAuthData).each(function() {
+	        	sanList = this.children;
+	        	alert(sanList.length);
+	            $("#user").html($("#user").html()
+	              +"<a href='javascript:void(0);' onclick='turnSubApp(\""+this.id+"\",\""+this.url+"\",\""+this.children+"\")' class='mainMenu' id='"+this.id+"'>"+this.title+"</a></div>");
+	            if (this.selected) {currentUrl=this.url;currentId=this.id;}
+	          });
+	          $("#mainCenters").css("background", "#E6EEF8")
+	            .css("border-top", "1px solid #E6EEF8")
+	            .css("border-right", "0px solid #E6EEF8")
+	            .css("border-bottom", "0px solid #E6EEF8")
+	            .css("border-left", "5px solid #E6EEF8");
+	          $("#mainCenter").css("overflow", "hidden");
+	          turnSubApp(currentId, currentUrl,sanList);
+	          $(window).resize(onResize);
+	      } else {
+	        $.messager.alert("错误", "获取用户权限失败："+json.data+"！<br/>返回登录页面。", "error", function(){
+	          window.location.href="<%=path%>/common/login.jsp?noAuth";
+	        });
+	      }
+	    },
+	    error: function(errorData) {
+	      $.messager.alert("错误", "获取用户权限异常："+(errorData?errorData.responseText:"")+"！<br/>返回登录页面。", "error", function(){
+	        window.location.href="<%=path%>/common/login.jsp?noAuth";
+	      });
+	    }
+	  });
 });
-//调整遮罩层大小
-function resizeMask() {
-  $("#mask").css({
-    "top": "0px",
-    "left": "0px",
-    "width": $(window).width(),
-    "height": $(window).height()
-  });
-  $("#maskContent").css({
-    "top": ($(window).height()-$("#maskContent").height())/2,
-    "left": ($(window).width()-$("#maskContent").width())/2
-  });
-}
-function _resizeTimeout() {
-	  setTimeout("onResizeWin()",200);
-	  setTimeout("onResizeWin()",400);
-}
-function turnSubApp(id, url) {
-  currentUrl = url; currentId = id;
-  var ifs = $("div[data-options='region:\'center\'']").find("iframe");
+function turnSubApp(id, url,children) {
+	alert(children);
+	$(children).each(function() {
+		alert("each");
+		$("#navigate").accordion("add",{
+		      selected:false,
+		      iconCls:"icon-add",
+		      title:this.title
+		    });
+		    thisAccordion = $("#navigate").accordion("getPanel", $("#navigate").accordion("panels").length-1);
+		    $(thisAccordion).parent().find(".panel-icon").css("background-image", "url('<%=path%>/"+this.icon+"')");
+		    newTree = window.document.createElement("div");
+		    $(newTree).attr("class", "easyui-tree tree").attr("id", "mTree"+idx);
+		    $(newTree).appendTo($(thisAccordion));
+		    $("#mTree"+idx).tree({data:this.treeData});
+		    idx++;
+	});
+	
+	//删除原有
+	  var fp = $("#navigate").accordion("getPanel", 0);
+	  while(fp) {
+		  alert("fp");
+	    $("#leftModule").accordion("remove", 0);
+	    fp = $("#leftModule").accordion("getDiv", 0);
+	  }
+	  if (moduleArray) {
+	    for (i=moduleArray.length-1; i>=0; i--) moduleArray.removeByIndex(i);
+	  }
+  currentUrl = url; currentId = id; sanList =children;
+  var ifs = $("#mainCenters").find("iframe");
   var hasFind = false;
   $(ifs).each(function() {
     if ($(this).attr("id")==currentId) {
@@ -162,14 +171,14 @@ function turnSubApp(id, url) {
     var newIframe = window.document.createElement("iframe");
     $(newIframe).css("display", "inline")
       .attr("frameborder", "0").attr("scrolling", "no").attr("id", ""+id).attr("src", "<%=path%>"+url);
-    $("div[data-options='region:\'center\'']").append($(newIframe));
+    $("#mainCenters").append($(newIframe));
   }
   onResize();
 }
 function onResize() {
   var _height = $(window).height()-$("#top").height()-$("#foot").height();
   $(".easyui-layout").css("height",$(window).height()+"px");
-  $("div[data-options='region:\'center\'']").css("height", _height);
+  $("#mainCenter").css("height", _height);
   $("#foot").parent().css("top", _height+$("#top").height());
   $("iframe").each(function(){
     if ($(this).attr("id")==currentId) {

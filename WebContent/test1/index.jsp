@@ -295,6 +295,7 @@ function buildMainTab(tabList) {
         $(this).css("color", "black");
       }
     }).click(function(){
+    	alert("111");
       buildModule(this.id, i);
     });
     $("#mainTab").append(newTab);
@@ -304,6 +305,7 @@ function buildMainTab(tabList) {
 }
 //构建导航部分
 function buildModule(tabId, tabIndex){
+	alert("222");
   if (curTab==tabId) return;
   //变换显示效果
   //-重置所有效果，恢复为初始状态
@@ -318,6 +320,7 @@ function buildModule(tabId, tabIndex){
   $("#mtsf").css({
     "background-image":"url('<%=path%>/test1/images/mainPage/mtabSf.jpg')"
   });
+  alert("取消选中效果");
   //-设置选中效果
   $("#"+tabId).css({
     "background-image":"url('<%=path%>/test1/images/mainPage/mtabSelected.jpg')",
@@ -337,12 +340,15 @@ function buildModule(tabId, tabIndex){
   $("#mts"+tabIndex).css({
     "background-image":"url('<%=path%>/test1/images/mainPage/mtabSSelectedR.png')"
   });
+  alert("从新选中效果");
   curTab=tabId;
 
   //构建导航部分
   var moduleList = null;
   $(userAuthData.children).each(function(){
+	  alert("333");
     if (this.id==tabId) {
+    	alert("构建导航部分"+this.children.length);
       moduleList = this.children;
     }
   });
@@ -357,6 +363,7 @@ function buildModule(tabId, tabIndex){
   }
   //加入新的
   $(moduleList).each(function(i){
+	  alert("4444");
     if (i==0) curModule=i;
     var url = "";//this.attributes.v_jumpurl;
     //if (this.attributes.v_urltype==0) url = "<%=path%>/"+url;

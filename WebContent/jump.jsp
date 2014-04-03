@@ -13,7 +13,7 @@
 var isOpenWin=true;//是否弹出窗口
 var isOpenWinIndex="yes";//主界面是否弹出窗口
 
-isOpenWin=true;
+isOpenWin=false;
 isOpenWinIndex="yes";
 
 if (isOpenWin) {
