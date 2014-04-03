@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="Module" >
+  <resultMap id="ModuletMap" type="Module" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="parent_id" property="parentId" jdbcType="INTEGER" />
+    <result column="has_child" property="hasChild" jdbcType="INTEGER" />
+    <result column="levels" property="levels" jdbcType="INTEGER" />
+    <result column="sorts" property="sorts" jdbcType="INTEGER" />
+    <result column="isValidate" property="isvalidate" jdbcType="INTEGER" />
+    <result column="types" property="types" jdbcType="INTEGER" />
+    <result column="module_name" property="moduleName" jdbcType="VARCHAR" />
+    <result column="display_name" property="displayName" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="style" property="style" jdbcType="VARCHAR" />
+    <result column="icon" property="icon" jdbcType="VARCHAR" />
+    <result column="descn" property="descn" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, parent_id, has_child, levels, sorts, isValidate, types, module_name, display_name, 
+    url, style, icon, descn
+  </sql>
+  <select id="getList" resultMap="ModuletMap">
+  select * from plat_module
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ModuletMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from plat_module
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from plat_module
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="Module" >
+    insert into plat_module (id, p_id, has_child, 
+      levels, sorts, isValidate, 
+      types, module_name, display_name, 
+      url, style, icon, descn
+      )
+    values (#{id,jdbcType=INTEGER}, #{pId,jdbcType=INTEGER}, #{hasChild,jdbcType=INTEGER}, 
+      #{levels,jdbcType=INTEGER}, #{sorts,jdbcType=INTEGER}, #{isvalidate,jdbcType=INTEGER}, 
+      #{types,jdbcType=INTEGER}, #{moduleName,jdbcType=VARCHAR}, #{displayName,jdbcType=VARCHAR}, 
+      #{url,jdbcType=VARCHAR}, #{style,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR}, #{descn,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="Module" >
+    insert into plat_module
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="pId != null" >
+        p_id,
+      </if>
+      <if test="hasChild != null" >
+        has_child,
+      </if>
+      <if test="levels != null" >
+        levels,
+      </if>
+      <if test="sorts != null" >
+        sorts,
+      </if>
+      <if test="isvalidate != null" >
+        isValidate,
+      </if>
+      <if test="types != null" >
+        types,
+      </if>
+      <if test="moduleName != null" >
+        module_name,
+      </if>
+      <if test="displayName != null" >
+        display_name,
+      </if>
+      <if test="url != null" >
+        url,
+      </if>
+      <if test="style != null" >
+        style,
+      </if>
+      <if test="icon != null" >
+        icon,
+      </if>
+      <if test="descn != null" >
+        descn,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="pId != null" >
+        #{pId,jdbcType=INTEGER},
+      </if>
+      <if test="hasChild != null" >
+        #{hasChild,jdbcType=INTEGER},
+      </if>
+      <if test="levels != null" >
+        #{levels,jdbcType=INTEGER},
+      </if>
+      <if test="sorts != null" >
+        #{sorts,jdbcType=INTEGER},
+      </if>
+      <if test="isvalidate != null" >
+        #{isvalidate,jdbcType=INTEGER},
+      </if>
+      <if test="types != null" >
+        #{types,jdbcType=INTEGER},
+      </if>
+      <if test="moduleName != null" >
+        #{moduleName,jdbcType=VARCHAR},
+      </if>
+      <if test="displayName != null" >
+        #{displayName,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="style != null" >
+        #{style,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null" >
+        #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="descn != null" >
+        #{descn,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="Module" >
+    update plat_module
+    <set >
+      <if test="pId != null" >
+        p_id = #{pId,jdbcType=INTEGER},
+      </if>
+      <if test="hasChild != null" >
+        has_child = #{hasChild,jdbcType=INTEGER},
+      </if>
+      <if test="levels != null" >
+        levels = #{levels,jdbcType=INTEGER},
+      </if>
+      <if test="sorts != null" >
+        sorts = #{sorts,jdbcType=INTEGER},
+      </if>
+      <if test="isvalidate != null" >
+        isValidate = #{isvalidate,jdbcType=INTEGER},
+      </if>
+      <if test="types != null" >
+        types = #{types,jdbcType=INTEGER},
+      </if>
+      <if test="moduleName != null" >
+        module_name = #{moduleName,jdbcType=VARCHAR},
+      </if>
+      <if test="displayName != null" >
+        display_name = #{displayName,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="style != null" >
+        style = #{style,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null" >
+        icon = #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="descn != null" >
+        descn = #{descn,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="Module" >
+    update plat_module
+    set p_id = #{pId,jdbcType=INTEGER},
+      has_child = #{hasChild,jdbcType=INTEGER},
+      levels = #{levels,jdbcType=INTEGER},
+      sorts = #{sorts,jdbcType=INTEGER},
+      isValidate = #{isvalidate,jdbcType=INTEGER},
+      types = #{types,jdbcType=INTEGER},
+      module_name = #{moduleName,jdbcType=VARCHAR},
+      display_name = #{displayName,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
+      style = #{style,jdbcType=VARCHAR},
+      icon = #{icon,jdbcType=VARCHAR},
+      descn = #{descn,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
