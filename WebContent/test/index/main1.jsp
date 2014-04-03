@@ -82,7 +82,9 @@ var currentUrl = null, currentId = null,sanList = null;
 var thisAccordion = null,newTree=null;idx = 0;
 var treeData = null, newTree = null, _temp = 0;
 var moduleArray=[];//模块列表
+var tabArray = [];//tab
 $(function() {
+	addMainTab();
 	$("#center_east").css("border", "0px");
     $("#left").parent().find(".panel-header").find(".panel-title").css("font-size", "14px");
     $("#left").parent().find(".panel-header").css("text-align", "center").css("height", "18px");
@@ -136,47 +138,54 @@ function turnSubApp(id, url,children) {
           fp = $("#navigate").accordion("getPanel", 0);
         }
         if (moduleArray) {
-          alert("moduleArray 长度:"+moduleArray.length);
           for (i=moduleArray.length-1; i>=0; i--) moduleArray.removeByIndex(i);
         }
     }
+  //创建新的
 	$(userAuthData).each(function() {
-		alert("构建导航");
 		if(this.id==id){
 			children = this.children;
 			$(children).each(function() {
+				children = this.children;
 		    $("#navigate").accordion("add",{
 	          selected:false,
 	          iconCls:"icon-add",
 	          title:this.title
         });
         thisAccordion = $("#navigate").accordion("getPanel", $("#navigate").accordion("panels").length-1);
-        $(thisAccordion).parent().find(".panel-icon").css("background-image", "url('<%=path%>/"+this.icon+"')");
+       //用于绑定导航栏的图标
+        //$(thisAccordion).parent().find(".panel-icon").css("background-image", "url('<%=path%>/"+this.icon+"')");
         newTree = window.document.createElement("div");
         $(newTree).attr("class", "easyui-tree tree").attr("id", "mTree"+idx);
         $(newTree).appendTo($(thisAccordion));
         $("#mTree"+idx).tree({data:this.treeData});
+        treeData = new Array();
         idx++;
-			  });
+        //建立分支
+        if(children){
+        	$(children).each(function() {
+        		var newTreeNode = {
+        	        "id": this.id,
+        	        "text": this.title,
+        	        "iconCls":"" ,
+        	        "attributes":{"data":this.data,"url":""}
+        	      };
+        	      treeData.push(newTreeNode);
+        	      $("#mTree"+(idx-1)).tree({data:treeData});
+        	    //加载数据后，处理图标、处理onclick事件
+        	      $("#left").find(".easyui-tree").each(function(i) {
+        	        $(this).tree({
+        	          onSelect: function(node) {
+        	            showTab(node.id,node.text,node.attributes.url,node.attributes.data,node.iconCls);
+        	          }
+        	        });
+        	      });
+        	});
+        }
+		  });
 		}
 	});
-  currentUrl = url; currentId = id; sanList =children;
-  var ifs = $("#mainCenters").find("iframe");
-  var hasFind = false;
-  $(ifs).each(function() {
-    if ($(this).attr("id")==currentId) {
-      $(this).css("display", "inline");
-      hasFind = true;
-    } else {
-      $(this).css("display", "none");
-    }
-  });
-  if (!hasFind) {
-    var newIframe = window.document.createElement("iframe");
-    $(newIframe).css("display", "inline")
-      .attr("frameborder", "0").attr("scrolling", "no").attr("id", ""+id).attr("src", "<%=path%>"+url);
-    $("#mainCenters").append($(newIframe));
-  }
+  
   onResize();
 }
 function onResize() {
@@ -192,6 +201,53 @@ function onResize() {
       });
     }
   });
+}
+function showTab(_id,_title, _url,_data, _icon) {
+	  var hasTab = false;
+	  for (var i=0; i<tabArray.length; i++) {
+	    if (tabArray[i].title==_title&&tabArray[i].url==_url) {
+	      //重新显示tab
+	      $("#tabBar").tabs("select", i+1);
+	      hasTab = true;
+	    }
+	  }
+	  if (!hasTab) {
+	    var _content = '<iframe scrolling="no" frameborder="0"  src="'+'<%=path%>/'+_url+'" style="width:100%;height:100%;"></iframe>';
+	    if (!_url||_url=="") {
+	      _content = _data;  
+	    }
+	    //创建新的tab
+	    $("#tabBar").tabs("add",{
+	      title: _title,
+	      content: _content,
+	      iconCls: _icon,
+	      tools: [{iconCls:"icon-mini-refresh", title:"刷新", handler:refreshTab}],
+	      closable: true
+	    });
+	    var _tab = {"title":_title, "url": _url};
+	    tabArray.push(_tab);
+	  }
+	}
+function refreshTab() {
+  var refresh_tab = $("#tabBar").tabs('getSelected');
+  if (refresh_tab&&refresh_tab.find('iframe').length>0) {
+    var _refresh_ifram = refresh_tab.find('iframe')[0];
+    _refresh_ifram.contentWindow.location.href=_refresh_ifram.src;
+  } 
+}
+function addMainTab(){
+	//添加首页
+  // add a new tab panel    
+  $('#tabBar').tabs('add',{    
+      title:'首页',    
+      content:'萨瓦迪卡', 
+      //不让关闭
+      closable:false,    
+      tools:[{    
+          iconCls:'icon-mini-refresh',    
+          handler:refreshTab
+      }]
+  });  
 }
 </script>
 </html>

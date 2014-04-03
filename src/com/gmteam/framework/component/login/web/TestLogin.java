@@ -39,10 +39,18 @@ public class TestLogin {
             for(int k=5;k<=7;k++){
                 //第四层
                 List<TreeA> list3 = new ArrayList<TreeA>();
+                for(int j=8;j<=10;j++){
+                     t4 = new TreeA();
+                     t4.setData("模块"+i+k+j+"的数据");
+                     t4.setId(""+i+k+j);
+                     t4.setTitle("模块"+i+k+j);
+                     list3.add(t4);
+                }
                 t3 = new TreeA();
+                t3.setChildren(list3);
                 t3.setUrl("/test/appSys/dataIS/manage/manageMain.jsp");
-                t3.setId(""+k+i);
-                t3.setTitle("子功能"+k+i);
+                t3.setId(""+i+k);
+                t3.setTitle("子功能"+i+k);
                 list2.add(t3);
             }
             t2.setChildren(list2);
