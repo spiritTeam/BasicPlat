@@ -67,9 +67,9 @@ body {margin:0 auto; width:1000px;}
   <!-- 功能菜单 -->
     <div class="easyui-layout" data-options="fit:true">  
 	    <div id="left" data-options="region:'west',split:true,title:'功能导航',collapsible:false" style="width:205px;">
-	    <div id="navigate" class="easyui-accordion" data-options="fit:true,border:false"></div>
+	      <div id="navigate" class="easyui-accordion" data-options="fit:true,border:false"></div>
 	    </div>
-		    <div data-options="region:'center'" data-options="border:true, fit:false">
+		  <div data-options="region:'center'" data-options="border:true, fit:false">
 		    <div id="tabBar" class="easyui-tabs" data-options="fit:true,border:false"></div>
       </div>
       <div id="center_east" data-options="region:'east',split:false" style="width:0px;background:#E6EEF8"></div>
@@ -80,8 +80,8 @@ body {margin:0 auto; width:1000px;}
 <script>
 var currentUrl = null, currentId = null,sanList = null;
 var thisAccordion = null,newTree=null;idx = 0;
-var tabArray = [],tabIndex,treeData = null;
-var newTree = null, _temp = 0;
+var treeData = null, newTree = null, _temp = 0;
+var moduleArray=[];//模块列表
 $(function() {
 	$("#center_east").css("border", "0px");
     $("#left").parent().find(".panel-header").find(".panel-title").css("font-size", "14px");
@@ -102,9 +102,8 @@ $(function() {
 	        userAuthData = authData.children;
 	        $(userAuthData).each(function() {
 	        	sanList = this.children;
-	        	alert(sanList.length);
 	            $("#user").html($("#user").html()
-	              +"<a href='javascript:void(0);' onclick='turnSubApp(\""+this.id+"\",\""+this.url+"\",\""+this.children+"\")' class='mainMenu' id='"+this.id+"'>"+this.title+"</a></div>");
+	              +"<a href='javascript:void(0);' onclick='turnSubApp(\""+this.id+"\")' class='mainMenu' id='"+this.id+"'>"+this.title+"</a></div>");
 	            if (this.selected) {currentUrl=this.url;currentId=this.id;}
 	          });
 	          $("#mainCenters").css("background", "#E6EEF8")
@@ -129,33 +128,38 @@ $(function() {
 	  });
 });
 function turnSubApp(id, url,children) {
-	alert(children);
-	$(children).each(function() {
-		alert("each");
-		$("#navigate").accordion("add",{
-		      selected:false,
-		      iconCls:"icon-add",
-		      title:this.title
-		    });
-		    thisAccordion = $("#navigate").accordion("getPanel", $("#navigate").accordion("panels").length-1);
-		    $(thisAccordion).parent().find(".panel-icon").css("background-image", "url('<%=path%>/"+this.icon+"')");
-		    newTree = window.document.createElement("div");
-		    $(newTree).attr("class", "easyui-tree tree").attr("id", "mTree"+idx);
-		    $(newTree).appendTo($(thisAccordion));
-		    $("#mTree"+idx).tree({data:this.treeData});
-		    idx++;
+	//remove原有的
+    var fp = $("#navigate").accordion("getPanel", 0);
+    if(fp){
+        while(fp) {
+          $("#navigate").accordion("remove", 0);
+          fp = $("#navigate").accordion("getPanel", 0);
+        }
+        if (moduleArray) {
+          alert("moduleArray 长度:"+moduleArray.length);
+          for (i=moduleArray.length-1; i>=0; i--) moduleArray.removeByIndex(i);
+        }
+    }
+	$(userAuthData).each(function() {
+		alert("构建导航");
+		if(this.id==id){
+			children = this.children;
+			$(children).each(function() {
+		    $("#navigate").accordion("add",{
+	          selected:false,
+	          iconCls:"icon-add",
+	          title:this.title
+        });
+        thisAccordion = $("#navigate").accordion("getPanel", $("#navigate").accordion("panels").length-1);
+        $(thisAccordion).parent().find(".panel-icon").css("background-image", "url('<%=path%>/"+this.icon+"')");
+        newTree = window.document.createElement("div");
+        $(newTree).attr("class", "easyui-tree tree").attr("id", "mTree"+idx);
+        $(newTree).appendTo($(thisAccordion));
+        $("#mTree"+idx).tree({data:this.treeData});
+        idx++;
+			  });
+		}
 	});
-	
-	//删除原有
-	  var fp = $("#navigate").accordion("getPanel", 0);
-	  while(fp) {
-		  alert("fp");
-	    $("#leftModule").accordion("remove", 0);
-	    fp = $("#leftModule").accordion("getDiv", 0);
-	  }
-	  if (moduleArray) {
-	    for (i=moduleArray.length-1; i>=0; i--) moduleArray.removeByIndex(i);
-	  }
   currentUrl = url; currentId = id; sanList =children;
   var ifs = $("#mainCenters").find("iframe");
   var hasFind = false;

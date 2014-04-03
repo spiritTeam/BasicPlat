@@ -13,7 +13,14 @@ public class TreeA  {
     private boolean allowChildren;
     private String url;
     private boolean selected;
+    private Object data;
     
+    public Object getData() {
+        return data;
+    }
+    public void setData(Object data) {
+        this.data = data;
+    }
     public boolean isSelected() {
         return selected;
     }

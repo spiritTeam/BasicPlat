@@ -21,12 +21,15 @@ public class TestLogin {
         TreeA t = new TreeA();
         TreeA t2 = null;
         TreeA t3 = null;
+        TreeA t4 = null;
         t.setId(""+1);
         t.setUrl("/test/appSys/dataIS/manage/manageMain.jsp");
         t.setAllowChildren(true);
         t.setTitle("主功能");
+        //第二层
         List<TreeA> list = new ArrayList<TreeA>();
         for(int i=2;i<=4;i++){
+            //第三层
             List<TreeA> list2 = new ArrayList<TreeA>();
             t2 = new TreeA();
             t2.setId(""+i);
@@ -34,6 +37,8 @@ public class TestLogin {
             t2.setUrl("/test/appSys/dataIS/manage/manageMain.jsp");
             t2.setTitle("功能"+i);
             for(int k=5;k<=7;k++){
+                //第四层
+                List<TreeA> list3 = new ArrayList<TreeA>();
                 t3 = new TreeA();
                 t3.setUrl("/test/appSys/dataIS/manage/manageMain.jsp");
                 t3.setId(""+k+i);
