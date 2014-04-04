@@ -10,7 +10,6 @@
 <html>
 <head>
 <jsp:include page="/common/sysInclude.jsp" flush="true"/>
-<script src="<%=path%>/test/DIS_jsonData/subApp_data.json" type="text/javascript"></script>
 <title><%=IConstants.PLATFORM_NAME%></title>
 </head>
 <style type="text/css">
@@ -54,12 +53,13 @@
 body {margin:0 auto; width:1000px;}
 </style>
 <body><center>
-<div class="easyui-layout" style="width:1000px;height:500px" data-options="border:false">
+<div id="mainLayout" class="easyui-layout" style="width:1000px;height:500px" data-options="border:false">
   <div id="top" data-options="region:'north',border:false" style="width:1000px">
     <div id="top_top"></div>
     <div id="top_under">
       <div id="mainBar"><div id="user"> <span>欢迎您，<%=username%>!</span> </div></div>
-      <div id="logout"><img src="<%=path%>/resources/images/sys/skin0/icon/logout.gif"/><a href="#" onclick="dologout()">注销</a></div>
+     <!--   <div class="mainTabButton imgTabButton fullscrenn" id="fullscreen">全屏</div>-->
+      <div id="logout"><div class="mainTabButton imgTabButton fullscrenn" id="fullscreen">全屏</div></div>
     </div>
   </div>
   <div id="foot" data-options="region:'south',border:false" style="width:1000px"></div>
@@ -80,8 +80,10 @@ body {margin:0 auto; width:1000px;}
 var currentUrl = null, currentId = null,sanList = null;
 var thisAccordion = null,newTree=null;idx = 0;
 var treeData = null, newTree = null, _temp = 0;
+var westExpand=true, isFullScreen=false, _westExpand=true;//_westExpand是点击全屏时westExpand的状态
 var moduleArray=[];//模块列表
 var tabArray = [];//tab
+var hasRefreshCacheAuth = false;
 var tabIndex;
 $(function() {
   $("#center_east").css("border", "0px");
@@ -222,6 +224,12 @@ function refreshTab() {
   } 
 }
 function addMainTab(){
+	$(".mainTabButton").mouseover(function(){
+    $(this).css("border", "1px solid #DADADA").css("margin-top", "3px").css("margin-right", "6px").css("color", "blue");
+  }).mouseout(function(){
+    $(this).css("border", "0px solid #DADADA").css("margin-top", "4px").css("margin-right", "8px").css("color", "black");;
+  });
+	fullscreen();
   //添加首页
   // add a new tab panel    
   $('#tabBar').tabs('add',{    
@@ -252,6 +260,68 @@ function onResize() {
         width: "998px"
       });
     }
+  });
+}
+function fullscreen(){
+$("#fullscreen").click(function(){
+    var centerP = $("#mainLayout").layout("panel","center");
+    if (isFullScreen) {//退出全屏
+      $(this).css({
+        //"background-image":"url('<%=path%>/test1/images/mainPage/expand.png')"
+      }).html("全屏");
+      $("#mainLayout").layout("panel","north").panel("resize", {"height":80});
+      $("#mainTab").css("margin-top","53px");
+      //$("#top").css({
+    	  //"background-image":"url('<%=path%>/test1/images/mainPage/topBanner.jpg')"
+     // });
+      $("#mainLayout").layout("resize");
+      $("#west").css("height", $("#west").height()-52);
+      $("#gisMain").css("height", $("#gisMain").height()-52);
+      $("#gisFrame").css("height", $("#gisFrame").height()-52);
+      $("#splitbutton").css("left", westExpand?(westWidth+4):4);
+      $("#logoImg").show();
+      $("#titleImg").show();
+      if (_westExpand!=westExpand) $("#splitbutton").click();
+      /*
+      $("#mainTab").find(".mtabText").show();
+      $("#mainTab").find(".mtabSM").show();
+      $("#mainTab").find(".mtabSF").show();
+      $("#mainTab").css("margin-left","301px");
+      */
+      $("#welcom").css("float","right").css("margin-top","32px").css("margin-right","20px");
+      $("#commonFunc").show();
+      $("#logoutD").hide();
+      $("#refreshCacheD").hide();
+      _resizeTimeout();
+    } else {//全屏
+      _westExpand=westExpand;//记录左边栏的状态
+      $(this).css({
+       // "background-image":"url('<%=path%>/test1/images/mainPage/collapse.png')"
+      }).html("退出全屏");
+      $("#mainLayout").layout("panel","north").panel("resize", {"height":28});
+      $("#mainTab").css("margin-top","1px");
+      //$("#top").css({
+        //"background-image":"url('<%=path%>/test1/images/mainPage/topBanner_.jpg')"
+      //});
+      $("#mainLayout").layout("resize");
+      $("#west").css("height", $("#west").height()+52);
+      $("#gisMain").css("height", $("#gisMain").height()+52);
+      $("#gisFrame").css("height", $("#gisFrame").height()+52);
+      if (westExpand) $("#splitbutton").click();
+      $("#logoImg").hide();
+      $("#titleImg").hide();
+      /*
+      $("#mainTab").find(".mtabText").hide();
+      $("#mainTab").find(".mtabSM").hide();
+      $("#mainTab").find(".mtabSF").hide();
+      $("#mainTab").css("margin-left","0px");
+      */
+      $("#welcom").css("float","left").css("margin-top","6px").css("margin-left","20px");
+      $("#commonFunc").hide();
+      $("#logoutD").show();
+      if (hasRefreshCacheAuth) $("#refreshCacheD").show();
+    }
+    isFullScreen=!isFullScreen;
   });
 }
 </script>
