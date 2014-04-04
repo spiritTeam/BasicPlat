@@ -62,7 +62,7 @@ public class LoginController {
      * @param req
      * @return
      */
-    @RequestMapping("/outlogin.do")
+    @RequestMapping("common/outlogin.do")
     public @ResponseBody Map<String,Object> outlogin(HttpServletRequest req){
         Map<String, Object> retObj = new HashMap<String, Object>();
         try {

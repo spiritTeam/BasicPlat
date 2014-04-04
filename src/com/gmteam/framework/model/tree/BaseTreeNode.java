@@ -8,7 +8,7 @@ import java.util.Map;
 import com.gmteam.framework.model.BaseObject;
 
 @SuppressWarnings("serial")
-public class BaseTreeNode<T extends TreeNodeModel> extends BaseObject implements TreeNode<T>, Comparable<T> {
+public class BaseTreeNode<T extends TreeNodeModel> extends BaseObject{
 
     private T tnEntity;//树模型实体
 
@@ -20,53 +20,15 @@ public class BaseTreeNode<T extends TreeNodeModel> extends BaseObject implements
         this.tnEntity = tnEntity;
         this.id = tnEntity.id;
         this.parentId = tnEntity.parentId;
-        this.title = tnEntity.title;
+        this.title = tnEntity.displayName;
         this.order=tnEntity.order;
         this.orderType=tnEntity.orderType;
         this.allowChildren=true;
     }
 
-    /**
-     * 处理图标的属性
-     * 看之前pf的代码，还能处理图标，觉得不错，先拷过来
-     * 用用，看看显示结果
-     * 添加属性：url，icons，
-     * 我添加的代码是“===========之间的部分”
-     */
-    //=======================================================
-    private String url;
-    private String icons;
-    public String getUrl() {
-        return url;
+    public T getTnEntity() {
+        return tnEntity;
     }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-    public String getIcons() {
-        return icons;
-    }
-    /**
-     * 取得显示的图标，若为空或不可访问的文件或URL则返回默认图标，否则返回记录中所存的图标
-     * 这个默认图标应该有不同的图片，通过后台参数进行统一管理。
-     * @return 图标的路径
-     */
-    public String getIconsFowShow() {
-        if (icons==null||"".equals(icons)) {
-            return "resources/images/sys/skin0/icon/moduleIcon/6.gif";
-        } else {
-            //判断是否确实存在这个文件，路径或URL都可以，若判断通过，则直接返回，否则要返回默认图标
-            //判断实体是否可访问
-            //若不能够访问，则从系统参数中取得默认的图标
-            //**系统参数中可能会维护多个默认图标，如：模块组、模块；用户组、用户；字典组、字典；任务等等。
-            return icons;
-        }
-    }
-
-    public void setIcons(String icons) {
-        this.icons = icons;
-    }
-    //=======================================================
     //树节点ID
     String id;
     public String getId() {
@@ -76,7 +38,7 @@ public class BaseTreeNode<T extends TreeNodeModel> extends BaseObject implements
         tnEntity.setId(id);
         this.id=id;
         if (!this.isLeaf()) {
-            for (TreeNode<T> c: this.getChildren()) {
+            for (BaseTreeNode<T> c: this.getChildren()) {
                 c.setParentId(id);
             }
         }
@@ -91,12 +53,12 @@ public class BaseTreeNode<T extends TreeNodeModel> extends BaseObject implements
         tnEntity.setParentId(parentId);
     }
     //父节点
-    TreeNode<T> parent;
-    public TreeNode<T> getParent() {
+    BaseTreeNode<T> parent;
+    public BaseTreeNode<T> getParent() {
         return this.parent;
     }
     @Deprecated
-    public void setParent(TreeNode<T> parent) {
+    public void setParent(BaseTreeNode<T> parent) {
         this.parent = parent;
         this.parentId = parent.getId();
     }
@@ -126,8 +88,8 @@ public class BaseTreeNode<T extends TreeNodeModel> extends BaseObject implements
         return (this.getParent()==null);
     }
 
-    public TreeNode<T> getRoot() {
-        TreeNode<T> rootNode = this;
+    public BaseTreeNode<T> getRoot() {
+        BaseTreeNode<T> rootNode = this;
         while (!rootNode.isRoot()) rootNode=rootNode.getParent();
         return rootNode;
     }
@@ -135,7 +97,7 @@ public class BaseTreeNode<T extends TreeNodeModel> extends BaseObject implements
     public int getAllCount() {
         int ret = this.children.size();
         if (ret>0) {
-            for (TreeNode<T> tn: this.getChildren()) {
+            for (BaseTreeNode<T> tn: this.getChildren()) {
                 ret += tn.getAllCount();
             }
         }
@@ -147,14 +109,14 @@ public class BaseTreeNode<T extends TreeNodeModel> extends BaseObject implements
     public String getTitle() {
         return this.title;
     }
-    public void setTitle(String title) {
+    public void setTitle(String displayName) {
         this.title = title;
-        tnEntity.setTitle(title);
+        tnEntity.setDisplayName(displayName);
     }
 
     public String getTreePathName() {
         String ret = this.title;
-        TreeNode<T> _parent = this.parent;
+        BaseTreeNode<T> _parent = this.parent;
         while(_parent!=null) {
             ret = _parent.getTitle()+"/"+ret;
             _parent = _parent.getParent();
@@ -172,7 +134,7 @@ public class BaseTreeNode<T extends TreeNodeModel> extends BaseObject implements
         int _level = level;
         String _s = (split==null?"/":split);
         String ret = this.title;
-        TreeNode<T> _parent = this.parent;
+        BaseTreeNode<T> _parent = this.parent;
         boolean canContinue = true;
         while(_parent!=null&&canContinue) {
             if (level<=-1) canContinue=true;
@@ -188,18 +150,18 @@ public class BaseTreeNode<T extends TreeNodeModel> extends BaseObject implements
         return ret;
     }
     //子节点列表
-    List<TreeNode<T>> children;
-    public List<TreeNode<T>> getChildren() {
+    List<BaseTreeNode<T>> children;
+    public List<BaseTreeNode<T>> getChildren() {
         return this.children;
     }
-    public void setChildren(List<TreeNode<T>> children) {
+    public void setChildren(List<BaseTreeNode<T>> children) {
         if (!this.allowChildren) throw new IllegalStateException("节点不允许有子节点！");
         this.children = children;
     }
 
-    public void addChild(TreeNode<T> child) {
+    public void addChild(BaseTreeNode<T> child) {
         if (!allowChildren) throw new IllegalStateException("本节点[id="+this.id+";text="+this.title+"]不允许有子节点！");
-        if (this.children==null) this.children = new ArrayList<TreeNode<T>>();
+        if (this.children==null) this.children = new ArrayList<BaseTreeNode<T>>();
         this.removeChild(child.getId());
         child.setParent(this);
         child.setParentId(this.getId());
@@ -207,10 +169,10 @@ public class BaseTreeNode<T extends TreeNodeModel> extends BaseObject implements
         this.children.add(child);
     }
 
-    public void addChildren(List<TreeNode<T>> children) {
+    public void addChildren(List<BaseTreeNode<T>> children) {
         if (!allowChildren) throw new IllegalStateException("节点不允许有子节点！");
-        if (this.children==null) this.children = new ArrayList<TreeNode<T>>();
-        for (TreeNode<T> tn: children) {
+        if (this.children==null) this.children = new ArrayList<BaseTreeNode<T>>();
+        for (BaseTreeNode<T> tn: children) {
             this.removeChild(tn.getId());
             tn.setParent(this);
             tn.setParentId(this.getId());
@@ -219,11 +181,11 @@ public class BaseTreeNode<T extends TreeNodeModel> extends BaseObject implements
         this.children.addAll(children);
     }
 
-    public TreeNode<T> getChild(String id) {
+    public BaseTreeNode<T> getChild(String id) {
         if (!allowChildren) throw new IllegalStateException("本节点[id="+this.id+" text="+this.title+"]不允许有子节点！");
-        TreeNode<T> retNode=null;
+        BaseTreeNode<T> retNode=null;
         for (int i=0; i<this.children.size(); i++) {
-            TreeNode<T> tn = this.children.get(i);
+            BaseTreeNode<T> tn = this.children.get(i);
             if (tn.getId().equals(id)) {
                 retNode=tn;
                 break;
@@ -232,11 +194,11 @@ public class BaseTreeNode<T extends TreeNodeModel> extends BaseObject implements
         return retNode;
     }
 
-    public TreeNode<T> removeChild(String id) {
+    public BaseTreeNode<T> removeChild(String id) {
         if (!allowChildren) throw new IllegalStateException("本节点[id="+this.id+" text="+this.title+"]不允许有子节点！");
         int removeIndex=-1;
         for (int i=0; i<this.children.size(); i++) {
-            TreeNode<T> tn = this.children.get(i);
+            BaseTreeNode<T> tn = this.children.get(i);
             if (tn.getId().equals(id)) {
                 removeIndex=i;
                 break;
@@ -244,17 +206,17 @@ public class BaseTreeNode<T extends TreeNodeModel> extends BaseObject implements
         }
         if (removeIndex==-1) return null;
         else {
-            TreeNode<T> removeNode = this.children.remove(removeIndex);
+            BaseTreeNode<T> removeNode = this.children.remove(removeIndex);
             return removeNode;
         }
     }
 
-    public TreeNode<T> findNode(String id) {
+    public BaseTreeNode<T> findNode(String id) {
         if (!allowChildren) return null;
         if (this.isLeaf()) return null;
-        TreeNode<T> retNode=null;
+        BaseTreeNode<T> retNode=null;
         for (int i=0; i<this.children.size(); i++) {
-            TreeNode<T> tn = this.children.get(i);
+            BaseTreeNode<T> tn = this.children.get(i);
             if (tn.getId().equals(id)) {
                 retNode=tn;
                 break;
@@ -262,7 +224,7 @@ public class BaseTreeNode<T extends TreeNodeModel> extends BaseObject implements
         }
         if (retNode==null) {
             for (int i=0; i<this.children.size(); i++) {
-                TreeNode<T> tn = this.children.get(i);
+                BaseTreeNode<T> tn = this.children.get(i);
                 if (!tn.isLeaf()) retNode = tn.findNode(id);
                 if (retNode!=null) break;
             }
@@ -348,21 +310,21 @@ public class BaseTreeNode<T extends TreeNodeModel> extends BaseObject implements
         this.orderType=orderType;
     }
 
-    public TreeNode<T> preNode() {
+    public BaseTreeNode<T> preNode() {
         if (this.parent==null) return null;
         int i=0;
         for (; i<this.parent.getChildren().size()-1; i++) {
-            TreeNode<T> n = this.parent.getChildren().get(i);
+            BaseTreeNode<T> n = this.parent.getChildren().get(i);
             if (n.getId().equals(this.id)) break;
         }
         return (i==0?null:this.parent.getChildren().get(i-1));
     }
 
-    public TreeNode<T> nextNode() {
+    public BaseTreeNode<T> nextNode() {
         if (this.parent==null) return null;
         int i=this.parent.getChildren().size()-1;
         for (; i>=0; i--) {
-            TreeNode<T> n = this.parent.getChildren().get(i);
+            BaseTreeNode<T> n = this.parent.getChildren().get(i);
             if (n.getId().equals(this.id)) break;
         }
         return (i==(this.parent.getChildren().size()-1)?null:this.parent.getChildren().get(i+1));

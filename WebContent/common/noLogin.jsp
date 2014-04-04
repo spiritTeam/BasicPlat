@@ -13,7 +13,7 @@
 <script>
 var url=window.location.href;
 var mainPage=getMainPage();
-var noLoginUrl="<%=path%>/common/login.jsp?nolog";
+var noLoginUrl="<%=path%>/common/login.jsp";
 if (mainPage==null) {
   window.location.href=noLoginUrl;
 } else {
