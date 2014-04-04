@@ -62,6 +62,32 @@
     <filter-name>CharacterEncodingFilter</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
+  <!-- 登录 -->
+  <filter>
+    <filter-name>loginFilter</filter-name>
+    <filter-class>com.gmteam.framework.component.login.web.LoginFilter</filter-class>
+    <init-param>
+      <param-name>ingores</param-name>
+      <param-value>jump.jsp,login.jsp,login.do,hasNewLogin.jsp,noLogin.jsp</param-value>
+    </init-param>
+    <init-param>
+      <param-name>noLogin</param-name>
+      <param-value>/common/noLogin.jsp</param-value>
+    </init-param>
+    <init-param>
+      <param-name>hasNewLogin</param-name>
+      <param-value>/common/hasNewLogin.jsp</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>loginFilter</filter-name>
+    <url-pattern>*.jsp</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>loginFilter</filter-name>
+    <url-pattern>*.do</url-pattern>
+  </filter-mapping>
+  
   <!-- end过滤器 -->
 
   <!-- begin Servlet设置 -->
@@ -81,7 +107,7 @@
     <url-pattern>*.do</url-pattern>
   </servlet-mapping>
   <!-- end Servlet设置 -->
- 
+  
 
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>
