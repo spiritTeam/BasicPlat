@@ -11,7 +11,13 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
+/**
+ * 造tree--用嵌套循环实现
+ * 这个tree分为4层，第一层是根t
+ * 第二层是功能模块list，第三层是子功能模块list2
+ * 第四层是数据层list3,
+ * @author 马海涛
+ */
 @Controller
 public class TestLogin {
     @RequestMapping("/toLogin.do")
@@ -61,7 +67,6 @@ public class TestLogin {
         map.put("isPass", true);
         map.put("msg","登陆成功");
         map.put("type", 1);
-        System.out.println(t.getId().equals("1"));
         map.put("data", t);
         session.setAttribute("username", name);
         return map;
