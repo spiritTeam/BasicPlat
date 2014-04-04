@@ -9,8 +9,6 @@ public class Module extends TreeNodeModel{
     private static final long serialVersionUID = -5024436009679818215L;
 
 
-    private String title;
-
     private Integer hasChild;
 
     private Integer levels;
@@ -23,25 +21,8 @@ public class Module extends TreeNodeModel{
 
     private String moduleName;
 
-    private String displayName;
-
-    private String url;
-
     private String style;
 
-    private String icon;
-
-    private String descn;
-
-
-    
-    public String getTitle() {
-        return displayName;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
     public Integer getHasChild() {
         return hasChild;
     }
@@ -90,44 +71,12 @@ public class Module extends TreeNodeModel{
         this.moduleName = moduleName == null ? null : moduleName.trim();
     }
 
-    public String getDisplayName() {
-        return displayName;
-    }
-
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName == null ? null : displayName.trim();
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url == null ? null : url.trim();
-    }
-
     public String getStyle() {
         return style;
     }
 
     public void setStyle(String style) {
         this.style = style == null ? null : style.trim();
-    }
-
-    public String getIcon() {
-        return icon;
-    }
-
-    public void setIcon(String icon) {
-        this.icon = icon == null ? null : icon.trim();
-    }
-
-    public String getDescn() {
-        return descn;
-    }
-
-    public void setDescn(String descn) {
-        this.descn = descn == null ? null : descn.trim();
     }
 }
 

@@ -42,20 +42,20 @@ public abstract class TreeNodeModel extends BaseObject {
         this.parentId = parentId;
     }
     //节点名称
-    String title;
+    String displayName;
     /**
      * 得到本节点名称
      * @return 本节点名称
      */
-    public String getTitle() {
-        return this.title;
+    public String getDisplayName() {
+        return this.displayName;
     }
     /**
      * 设置本节点名称
      * @param title 节点名称
      */
-    public void setTitle(String title) {
-        this.title = title;
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
     //排序
     int order;
@@ -69,5 +69,39 @@ public abstract class TreeNodeModel extends BaseObject {
     int orderType;
     public void setOrderType(int orderType) {
         this.orderType = orderType;
+    }
+    //节点url
+    public String url;
+    //设置节点url
+    public void setUrl(String url){
+        this.url=url;
+    }
+    //得到节点的url
+    public String getUrl(){
+        return this.url;
+    }
+    //节点的类型
+    public Integer types;
+    public Integer getTypes() {
+        return types;
+    }
+    public void setTypes(Integer types) {
+        this.types = types;
+    }
+    //节点的图片icon的衔接
+    public String icon;
+    public String getIcon() {
+        return icon;
+    }
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+    //节点说明descn
+    public String descn;
+    public String getDescn() {
+        return descn;
+    }
+    public void setDescn(String descn) {
+        this.descn = descn;
     }
 }

@@ -1,6 +1,9 @@
 package com.gmteam.framework.component.module.web;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -8,12 +11,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.gmteam.framework.component.module.pojo.Module;
 import com.gmteam.framework.component.module.service.ModuleService;
 import com.gmteam.framework.model.tree.BaseTreeNode;
-import com.gmteam.framework.model.tree.EasyUiTree;
-import com.gmteam.framework.utils.JsonUtil;
+import com.gmteam.framework.model.tree.ui.EasyUiTree;
 
 @Controller
 public class ModuleController {
@@ -22,46 +23,20 @@ public class ModuleController {
     private ModuleService moduleService;
 
     @RequestMapping("test.do")
-    public @ResponseBody
-    BaseTreeNode test() {
+    @ResponseBody
+    public Map<String,Object>  test() {
+        Map<String,Object> map = new HashMap<String, Object>();
         List<BaseTreeNode<Module>> root = moduleService.getRoot();
         BaseTreeNode<Module> node = root.get(0);
-        //List<BaseTreeNode<Module>> roots = (List<BaseTreeNode<Module>>) toNollParentNode((List<TreeNode<Module>>)root);
-//        EasyUiTree t = new EasyUiTree(node);
-//        try {
-//              String s = JsonUtil.beanToJson(t);
-//              System.out.println(s);
-//        } catch (JsonProcessingException e) {
-//               TODO Auto-generated catch block
-//            e.printStackTrace();
-//        }
-        // int i=0;
-        // for(BaseTreeNode<Module> node : root){
-        // i++;
-        // System.out.println(i);
-        // }
-        // List<Module> l = moduleService.getList();
-        // Module m = l.get(0);
-        // BaseTreeNode<Module> oneNode = new BaseTreeNode<Module>();
-        // oneNode.setTnEntity(m);
-        // for(Module m : l){
-        // // System.out.print(m.getId()+"  ");
-        // // System.out.print(m.getParentId()+"  ");
-        // // System.out.println(m.getDisplayName());
-        //
-        // }
-        // Test t = new Test();
-        return node;
-
+        EasyUiTree t = new EasyUiTree(node);
+        EasyUiTree s = new EasyUiTree();
+        s.setChildren(new ArrayList<EasyUiTree>());
+        s.getChildren().add(t);
+        map.put("isPass", true);
+        map.put("msg","登陆成功");
+        map.put("type", 1);
+        System.out.println(t.getId().equals("1"));
+        map.put("data", s);
+        return map;
     }
-
-//    public List<BaseTreeNode<Module>> toNollParentNode(List<BaseTreeNode<Module>> roots) {
-//        for (TreeNode<Module> n : list) {
-//            n.setParent(null);
-//            if (n.getChildren().size() != 0) {
-//                toNollParentNode(n.getChildren());
-//            }
-//        }
-//        return (List<BaseTreeNode<Module>>)list;
-//    }
 }

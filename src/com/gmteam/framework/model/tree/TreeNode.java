@@ -8,6 +8,7 @@ import java.util.List;
  */
 
 public interface TreeNode<T extends TreeNodeModel> {
+    
     /**
      * 得到本节点ID
      * @return 本节点ID
@@ -204,4 +205,6 @@ public interface TreeNode<T extends TreeNodeModel> {
      * @return 后序节点
      */
     public TreeNode<T> nextNode();
+
+    public TreeNodeModel getTnEntity();
 }
