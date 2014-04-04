@@ -70,7 +70,7 @@
     </property>
   </bean>
 -->
-  <bean id="defaultDAO" class="com.gmteam.framework.core.dao.mybatis.MybatisDAO" init-method="initialize">
+  <bean id="defaultDAO" class="com.gmteam.framework.core.dao.mybatis.MybatisDAO"  scope="prototype" init-method="initialize">
     <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
   </bean>
 
