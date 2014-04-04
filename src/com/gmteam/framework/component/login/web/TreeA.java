@@ -1,7 +1,10 @@
 package com.gmteam.framework.component.login.web;
 
 import java.util.List;
-
+/**
+ * 树的模型，
+ * @author admi
+ */
 public class TreeA  {
     private String id;
     private String title;

@@ -129,7 +129,7 @@ $(function(){
       dataType:"json",
       success: function(json){
         if(json.type==1){
-          url = "<%=path%>/test/index/main.jsp";
+          url = "<%=path%>/test/index/main1.jsp";
           window.location.href=url;
         }else if(json.type==2){
           alert("登录失败："+json.data);
