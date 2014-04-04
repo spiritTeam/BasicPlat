@@ -2,22 +2,6 @@
 <%@  page  import="java.io.*"%>
 <%
     String path = request.getContextPath();
-    String ip = request.getRemoteAddr();
-    String buf="";
-    try {
-        Process p1 = Runtime.getRuntime().exec("ipconfig  /all");
-        BufferedReader br = new BufferedReader(new InputStreamReader(p1.getInputStream()));
-        int i=1;
-        while( buf !=null){
-            buf=br.readLine();
-            if(buf.indexOf("物理地址") >=0){
-                buf=buf.substring(buf.indexOf(':')+2);
-                break;
-            }
-        }
-    } catch (Exception e) {
-    }
-    String Mac=buf;
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -26,6 +10,19 @@
 <script type="text/javascript" src="../resources/plugins/jquery/jquery-1.10.2.min.js"></script>
 <script type="text/javascript" src="../resources/js/common.utils.js"></script>
 <title>平台登录</title>
+<SCRIPT language=JScript event="OnCompleted(hResult,pErrorObject, pAsyncContext)" for=foo>
+document.forms[0].txtMACAddr.value=unescape(MACAddr);
+document.forms[0].txtIPAddr.value=unescape(IPAddr);
+document.forms[0].txtDNSName.value=unescape(sDNSName);
+</SCRIPT>
+<SCRIPT language=JScript event=OnObjectReady(objObject,objAsyncContext) for=foo>
+if(objObject.IPEnabled != null && objObject.IPEnabled != "undefined" && objObject.IPEnabled == true){
+  if(objObject.MACAddress != null && objObject.MACAddress != "undefined") MACAddr = objObject.MACAddress;
+  if(objObject.IPEnabled && objObject.IPAddress(0) != null && objObject.IPAddress(0) != "undefined") IPAddr = objObject.IPAddress(0);
+  if(objObject.DNSHostName != null && objObject.DNSHostName != "undefined") sDNSName = objObject.DNSHostName;
+}
+</SCRIPT>
+<META content="MSHTML 6.00.2800.1106" name=GENERATOR>
 <style>
 * {
   padding: 0px;
@@ -108,19 +105,40 @@ img {
   padding: 6px 68px 0 68px;
 }
 </style>
+</head>
+<body class="b">
+
+<OBJECT id=locator classid=CLSID:76A64158-CB41-11D1-8B02-00600806D9B6 VIEWASTEXT></OBJECT>
+<OBJECT id=foo classid=CLSID:75718C9A-F029-11d1-A1AC-00C04FB6C223></OBJECT>
+<SCRIPT language=JScript>
+  var service = locator.ConnectServer();
+  var MACAddr ;
+  var IPAddr ;
+  var DomainAddr;
+  var sDNSName;
+  service.Security_.ImpersonationLevel=3;
+  service.InstancesOfAsync(foo, 'Win32_NetworkAdapterConfiguration');
+</SCRIPT>
+
+<FORM id="formfoo" name="formbar" action="" method="post" style="display:none">
+  <INPUT value=00:05:5D:0E:C7:FA name=txtMACAddr>
+  <INPUT value=192.168.0.2 name=txtIPAddr>
+  <INPUT value=typ name=txtDNSName>
+</FORM>
 <script type="text/javascript" charset="utf-8">
 var url="<%=path%>/common/login.do";
-var ip="<%=ip%>";
-var buf="<%=Mac%>";
 $(function(){
   $("#login_btn").click(function(){
     var pData={
         "loginName":$("#loginName").val(),
         "password":$("#password").val(),
-        "clientMacAddr":buf,
-        "clientIp":ip,
+        "clientMacAddr":formfoo.txtMACAddr.value,
+        "clientIp":formfoo.txtIPAddr.value,
         "browser":getBrowserVersion()
       };
+    alert(getBrowserVersion());
+    alert(formfoo.txtIPAddr.value);
+    alert(formfoo.txtMACAddr.value);
     $.ajax({
       type:"post",
       async:false,
@@ -129,7 +147,7 @@ $(function(){
       dataType:"json",
       success: function(json){
         if(json.type==1){
-          url = "<%=path%>/test/index/main1.jsp";
+          url = "<%=path%>/main.jsp";
           window.location.href=url;
         }else if(json.type==2){
           alert("登录失败："+json.data);
@@ -147,8 +165,6 @@ $(function(){
   });
 });
 </script>
-</head>
-<body class="b">
   <div class="lg">
     <form action="../login.do" method="post" id="login_form">
       <div class="lg_top"></div>

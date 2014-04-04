@@ -89,7 +89,7 @@ $(function() {
     $("#left").parent().find(".panel-header").css("text-align", "center").css("height", "18px");
     $("#left").css("height", (parseInt($("#left").css("height"))-2)+"px");
   //加载树
-    var url="<%=path%>/toLogin.do";
+    var url="<%=path%>/test.do";
     $.ajax({type:"post", async:true, url:url, data:null, dataType:"json",
       success: function(json) {
         if (json.type==1) {

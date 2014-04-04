@@ -9,6 +9,9 @@
 <meta http-equiv="pragma" content="no-cache"/>
 <meta http-equiv="cache-control" content="no-cache"/>
 <meta http-equiv="expires" content="0"/>
+<script type="text/javascript" src="../resources/js/mainPage.utils.js"></script>
+<script type="text/javascript" src="../resources/js/framework.utils.js"></script>
+<script type="text/javascript" src="../resources/js/common.utils.js"></script>
 <script>
 var url=window.location.href;
 var ip = getUrlParam(url, "clientIp");
@@ -17,11 +20,12 @@ var browser = decodeURI(getUrlParam(url, "browser"));
 
 var mainPage = getMainPage();
 if (mainPage==null) {
-  $.ajax({type:"post", async:true, url:(path+"/outlogin.do"), data:null, dataType:"json",
+  alert("aaa");
+  $.ajax({type:"post", async:true, url:"common/outlogin.do", data:null, dataType:"json",
     success: function(json) {
       if (json.type==1) {
         alert("提示", "您已经在["+ip+"("+mac+")]机器上用["+browser+"]浏览器重新登陆了，当前登录失效！", "info", function(){
-          window.location.href="/login.jsp";
+          window.location.href="/common/login.jsp";
         });
       }
     },
