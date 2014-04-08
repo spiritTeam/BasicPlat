@@ -91,7 +91,7 @@ $(function() {
     $("#left").parent().find(".panel-header").css("text-align", "center").css("height", "18px");
     $("#left").css("height", (parseInt($("#left").css("height"))-2)+"px");
   //加载树
-    var url="<%=path%>/test.do";
+    var url="<%=path%>/toLogin.do";
     $.ajax({type:"post", async:true, url:url, data:null, dataType:"json",
       success: function(json) {
         if (json.type==1) {
@@ -163,8 +163,9 @@ function turnSubApp(id, url,children) {
         $("#mTree"+idx).tree({data:this.treeData});
         treeData = new Array();
         idx++;
-        //建立分支
-        if(children){
+        //建立分支这里直接把对象传给树即可，不管是一个集合还是一个单独的树
+        $("#mTree"+(idx-1)).tree({data:children});
+        /*if(children){
           $(children).each(function() {
             var newTreeNode = {
               "id": this.id,
@@ -184,7 +185,7 @@ function turnSubApp(id, url,children) {
             });
            $("#navigate").accordion("select", 0);
           });
-        }
+        }*/
       });
     }
   });
