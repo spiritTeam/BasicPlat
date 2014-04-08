@@ -1,7 +1,6 @@
 <%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@page import="java.util.*"%>
 <%@page import="com.gmteam.framework.IConstants"%>
-<%@page import="com.gmteam.framework.component.login.web.TreeA"%>
 <%
   String path = request.getContextPath();
   String username = (String)session.getAttribute("username");
@@ -23,8 +22,15 @@
   width:996px;
   background:url('<%=path%>/resources/images/sys/skin0/banner/top.jpg') no-repeat fixed;
 }
-#top_under {
+.top_under {
   position:absolute;
+  top:76px;
+  height:26px;
+  width:100%;
+  background:url('<%=path%>/resources/images/sys/skin0/banner/under1_b.jpg') repeat;
+}
+.top_under1 {
+  //position:absolute;
   top:76px;
   height:26px;
   width:100%;
@@ -55,12 +61,12 @@ body {margin:0 auto; width:1000px;}
 <body><center>
 <div id="mainLayout" class="easyui-layout" style="width:1000px;height:500px" data-options="border:false">
   <div id="top" data-options="region:'north',border:false" style="width:1000px">
-    <div id="top_top"></div>
-    <div id="top_under">
+    <div id="top_under" class="top_under">
       <div id="mainBar"><div id="user"> <span>欢迎您，<%=username%>!</span> </div></div>
-     <!--   <div class="mainTabButton imgTabButton fullscrenn" id="fullscreen">全屏</div>-->
+      <!--   <div class="mainTabButton imgTabButton fullscrenn" id="fullscreen">全屏</div>-->
       <div id="logout"><div class="mainTabButton imgTabButton fullscrenn" id="fullscreen">全屏</div></div>
     </div>
+    <div id="top_top"></div>
   </div>
   <div id="foot" data-options="region:'south',border:false" style="width:1000px"></div>
   <div id="mainCenter" data-options="region:'center'" style="width:1000px">
@@ -91,6 +97,7 @@ $(function() {
     $("#left").parent().find(".panel-header").css("text-align", "center").css("height", "18px");
     $("#left").css("height", (parseInt($("#left").css("height"))-2)+"px");
   //加载树
+  fullscreen();
     var url="<%=path%>/toLogin.do";
     $.ajax({type:"post", async:true, url:url, data:null, dataType:"json",
       success: function(json) {
@@ -163,7 +170,7 @@ function turnSubApp(id, url,children) {
         $("#mTree"+idx).tree({data:this.treeData});
         treeData = new Array();
         idx++;
-        //建立分支这里直接把对象传给树即可，不管是一个集合还是一个单独的树
+        //建立分支
         $("#mTree"+(idx-1)).tree({data:children});
         /*if(children){
           $(children).each(function() {
@@ -225,12 +232,11 @@ function refreshTab() {
   } 
 }
 function addMainTab(){
-	$(".mainTabButton").mouseover(function(){
+  $(".mainTabButton").mouseover(function(){
     $(this).css("border", "1px solid #DADADA").css("margin-top", "3px").css("margin-right", "6px").css("color", "blue");
   }).mouseout(function(){
     $(this).css("border", "0px solid #DADADA").css("margin-top", "4px").css("margin-right", "8px").css("color", "black");;
   });
-	fullscreen();
   //添加首页
   // add a new tab panel    
   $('#tabBar').tabs('add',{    
@@ -266,39 +272,45 @@ function onResize() {
 function fullscreen(){
 $("#fullscreen").click(function(){
     var centerP = $("#mainLayout").layout("panel","center");
+    alert("11111"+isFullScreen);
+    $("#top_under").removeClass("top_under");
+    $("#top_under").removeClass("top_under1");
+    $("#top_under").addClass("top_under");
     if (isFullScreen) {//退出全屏
       $(this).css({
         //"background-image":"url('<%=path%>/test1/images/mainPage/expand.png')"
       }).html("全屏");
-      $("#mainLayout").layout("panel","north").panel("resize", {"height":80});
+      $("#mainLayout").layout("panel","north").panel("resize", {"height":100});
       $("#mainTab").css("margin-top","53px");
       //$("#top").css({
-    	  //"background-image":"url('<%=path%>/test1/images/mainPage/topBanner.jpg')"
+        //"background-image":"url('<%=path%>/test1/images/mainPage/topBanner.jpg')"
      // });
       $("#mainLayout").layout("resize");
       $("#west").css("height", $("#west").height()-52);
       $("#gisMain").css("height", $("#gisMain").height()-52);
       $("#gisFrame").css("height", $("#gisFrame").height()-52);
-      $("#splitbutton").css("left", westExpand?(westWidth+4):4);
+      //$("#splitbutton").css("left", westExpand?(westWidth+4):4);
       $("#logoImg").show();
       $("#titleImg").show();
-      if (_westExpand!=westExpand) $("#splitbutton").click();
+      //if (_westExpand!=westExpand) $("#splitbutton").click();
       /*
       $("#mainTab").find(".mtabText").show();
       $("#mainTab").find(".mtabSM").show();
       $("#mainTab").find(".mtabSF").show();
       $("#mainTab").css("margin-left","301px");
       */
-      $("#welcom").css("float","right").css("margin-top","32px").css("margin-right","20px");
-      $("#commonFunc").show();
-      $("#logoutD").hide();
-      $("#refreshCacheD").hide();
-      _resizeTimeout();
+      //$("#welcom").css("float","right").css("margin-top","32px").css("margin-right","20px");
+      isFullScreen=false;
     } else {//全屏
+      alert("in 全屏");
       _westExpand=westExpand;//记录左边栏的状态
+      $("#top_under").removeClass("top_under");
+      $("#top_under").removeClass("top_under1");
+      $("#top_under").addClass("top_under1");
       $(this).css({
        // "background-image":"url('<%=path%>/test1/images/mainPage/collapse.png')"
       }).html("退出全屏");
+      //返回指定的面板
       $("#mainLayout").layout("panel","north").panel("resize", {"height":28});
       $("#mainTab").css("margin-top","1px");
       //$("#top").css({
@@ -308,7 +320,7 @@ $("#fullscreen").click(function(){
       $("#west").css("height", $("#west").height()+52);
       $("#gisMain").css("height", $("#gisMain").height()+52);
       $("#gisFrame").css("height", $("#gisFrame").height()+52);
-      if (westExpand) $("#splitbutton").click();
+      //if (westExpand) $("#splitbutton").click();
       $("#logoImg").hide();
       $("#titleImg").hide();
       /*
@@ -317,13 +329,13 @@ $("#fullscreen").click(function(){
       $("#mainTab").find(".mtabSF").hide();
       $("#mainTab").css("margin-left","0px");
       */
-      $("#welcom").css("float","left").css("margin-top","6px").css("margin-left","20px");
-      $("#commonFunc").hide();
-      $("#logoutD").show();
+      //$("#welcom").css("float","left").css("margin-top","6px").css("margin-left","20px");
       if (hasRefreshCacheAuth) $("#refreshCacheD").show();
+      isFullScreen=true;
     }
-    isFullScreen=!isFullScreen;
+    alert("2222"+isFullScreen);
   });
+  alert("out Method fullscreen");
 }
 </script>
 </html>
