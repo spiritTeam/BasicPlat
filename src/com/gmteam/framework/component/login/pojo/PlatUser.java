@@ -1,6 +1,6 @@
 package com.gmteam.framework.component.login.pojo;
 
-import com.gmteam.framework.model.BaseObject;
+import com.gmteam.framework.core.model.BaseObject;
 
 public class PlatUser extends BaseObject{
     

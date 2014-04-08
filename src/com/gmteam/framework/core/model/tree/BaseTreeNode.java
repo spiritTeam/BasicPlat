@@ -1,11 +1,11 @@
-package com.gmteam.framework.model.tree;
+package com.gmteam.framework.core.model.tree;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.gmteam.framework.model.BaseObject;
+import com.gmteam.framework.core.model.BaseObject;
 
 @SuppressWarnings("serial")
 public class BaseTreeNode<T extends TreeNodeModel> extends BaseObject{

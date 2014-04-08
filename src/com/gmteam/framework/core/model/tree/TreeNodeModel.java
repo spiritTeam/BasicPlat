@@ -1,6 +1,6 @@
-package com.gmteam.framework.model.tree;
+package com.gmteam.framework.core.model.tree;
 
-import com.gmteam.framework.model.BaseObject;
+import com.gmteam.framework.core.model.BaseObject;
 
 /**
  * 树节点的数据结构，所有的树对象都应继承这个类。

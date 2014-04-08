@@ -1,4 +1,4 @@
-package com.gmteam.framework.model;
+package com.gmteam.framework.core.model;
 
 public interface User {
     /**

@@ -3,7 +3,7 @@ package com.gmteam.framework.component.login.pojo;
 import java.io.Serializable;
 import java.util.Date;
 
-import com.gmteam.framework.model.BaseObject;
+import com.gmteam.framework.core.model.BaseObject;
 
 public class UserLogin extends BaseObject {
     private static final long serialVersionUID = 796788171985762931L;

@@ -1,4 +1,4 @@
-package com.gmteam.framework.model.tree;
+package com.gmteam.framework.core.model.tree;
 
 import java.util.List;
 

@@ -17,8 +17,8 @@ import com.gmteam.framework.component.module.pojo.Module;
 import com.gmteam.framework.core.cache.CacheEle;
 import com.gmteam.framework.core.cache.SystemCache;
 import com.gmteam.framework.core.dao.mybatis.MybatisDAO;
-import com.gmteam.framework.model.tree.BaseTreeNode;
-import com.gmteam.framework.model.tree.TreeNode;
+import com.gmteam.framework.core.model.tree.BaseTreeNode;
+import com.gmteam.framework.core.model.tree.TreeNode;
 
 @Service
 public class ModuleService {
@@ -109,5 +109,4 @@ public class ModuleService {
         // 返回的roots是一个List，也就是一个森林(这个list里面可能也就只有一棵树)
         return roots;
     }
-
 }

@@ -1,6 +1,6 @@
 package com.gmteam.framework.component.module.pojo;
 
-import com.gmteam.framework.model.tree.TreeNodeModel;
+import com.gmteam.framework.core.model.tree.TreeNodeModel;
 
 public class Module extends TreeNodeModel{
     /**

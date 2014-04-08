@@ -2,7 +2,7 @@ package com.gmteam.framework.core.dao.mybatis;
 
 import java.util.List;
 import com.gmteam.framework.core.dao.GeneralDao;
-import com.gmteam.framework.model.Page;
+import com.gmteam.framework.core.model.Page;
 
 /**
  * mybatis形式DAO的接口，继承自GeneralDao<T><br/>

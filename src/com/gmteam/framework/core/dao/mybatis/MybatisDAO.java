@@ -5,8 +5,8 @@ import org.apache.ibatis.session.SqlSession;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 import com.gmteam.framework.ext.mybatis.PageBounds;
 import com.gmteam.framework.ext.mybatis.PageList;
-import com.gmteam.framework.model.BaseObject;
-import com.gmteam.framework.model.Page;
+import com.gmteam.framework.core.model.BaseObject;
+import com.gmteam.framework.core.model.Page;
 
 public class MybatisDAO <T extends BaseObject> extends SqlSessionDaoSupport implements GeneralMybatisDAO<T> {
 

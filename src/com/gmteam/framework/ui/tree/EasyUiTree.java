@@ -1,8 +1,8 @@
-package com.gmteam.framework.model.tree.ui;
+package com.gmteam.framework.ui.tree;
 
 import java.util.ArrayList;
 import java.util.List;
-import com.gmteam.framework.model.tree.BaseTreeNode;
+import com.gmteam.framework.core.model.tree.BaseTreeNode;
 
 public class EasyUiTree {
 

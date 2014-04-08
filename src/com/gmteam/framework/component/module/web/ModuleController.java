@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gmteam.framework.component.module.pojo.Module;
 import com.gmteam.framework.component.module.service.ModuleService;
-import com.gmteam.framework.model.tree.BaseTreeNode;
-import com.gmteam.framework.model.tree.ui.EasyUiTree;
+import com.gmteam.framework.core.model.tree.BaseTreeNode;
+import com.gmteam.framework.ui.tree.EasyUiTree;
 
 @Controller
 public class ModuleController {
