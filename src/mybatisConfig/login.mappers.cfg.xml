@@ -3,9 +3,9 @@
 <configuration>
   <!-- 类别名设置 -->
   <typeAliases>
-    <typeAlias alias="PlatUser" type="com.gmteam.framework.component.login.pojo.PlatUser"/>
+    <typeAlias alias="User" type="com.gmteam.framework.component.login.pojo.User"/>
   </typeAliases>
   <mappers>
-    <mapper resource="com/gmteam/framework/component/login/sql/PlatUser.mapper.xml"/>
+    <mapper resource="com/gmteam/framework/component/login/sql/User.mapper.xml"/>
   </mappers>
 </configuration>
