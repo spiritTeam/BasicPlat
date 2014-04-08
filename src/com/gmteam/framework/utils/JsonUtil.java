@@ -10,8 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * @author wh
  */
 public abstract class JsonUtil {
-
-    private static ObjectMapper mapper;  
+    private static ObjectMapper mapper;
 
     /**
      * 获取ObjectMapper实例

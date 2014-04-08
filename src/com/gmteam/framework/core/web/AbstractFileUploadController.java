@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -107,7 +109,7 @@ public abstract class AbstractFileUploadController implements Controller, Handle
         MappingJackson2JsonView mjjv = new MappingJackson2JsonView();
         response.setHeader("Cache-Control", "no-cache");
         mjjv.setContentType("text/html; charset=UTF-8");
-        mjjv.setAttributesMap(JsonUtil.Obj2AjaxMap(strintPrintWriter.getString(), 0) );
+        mjjv.setAttributesMap(JsonUtil.Obj2AjaxMap(strintPrintWriter.getString(), 0));
         ModelAndView mav = new ModelAndView();
         mav.setView(mjjv);
         return mav;
@@ -139,6 +141,7 @@ public abstract class AbstractFileUploadController implements Controller, Handle
         }
         if (storeFileNames!=null) if (storeFileNames.length==0) storeFileNames=null;
 
+        List<Map<String, Object>> retl = new ArrayList<Map<String, Object>>();
         multipartRequest.getParameterValues("filename");
         Iterator<String> iterator=files.keySet().iterator();
         while (iterator.hasNext()) {
@@ -151,16 +154,42 @@ public abstract class AbstractFileUploadController implements Controller, Handle
             if (this.filePrefix!=null&&this.filePrefix.trim().length()>0) storeFileName = this.filePrefix+"_"+storeFileName;
             storeFileName = FileNameUtil.concatPath(_path, storeFileName);
             //拷贝文件
-            Map<String, Object> oneFileDealResult = saveMultipartFile2File(file, storeFileName);
-            
-            
+            Map<String, Object> oneFileDealRetMap = saveMultipartFile2File(file, storeFileName);
+            boolean isBreak=false;
+            if (((String)oneFileDealRetMap.get("success")).equalsIgnoreCase("TRUE")) {//处理成功
+                /**
+                 * 调用虚方法，处理每个文件的后需部分
+                 */
+                Map<String, Object> myDealRetMap = beforeUploadOneFileOnSuccess(oneFileDealRetMap);
+                if (myDealRetMap!=null) {
+                    boolean mySuccess = true;
+                    try {
+                        mySuccess = Boolean.parseBoolean((String)myDealRetMap.get("success"));
+                    } catch(Exception e) {
+                        mySuccess = true;
+                    }
+                    if (!mySuccess) {
+                        boolean myOnFialdBreak=false;
+                        try {
+                            myOnFialdBreak = Boolean.parseBoolean((String)myDealRetMap.get("onFialdBreak"));
+                        } catch(Exception e) {
+                            myOnFialdBreak=false;
+                        }
+                        isBreak = myOnFialdBreak;
+                    }
+                }
+            } else {//处理失败
+                isBreak = this.breakOnOneFaild;
+            }
+            retl.add(oneFileDealRetMap);
+            if (isBreak) break;
         }
-        
-
+        beforeUploadAllFiles(retl);
+        //json处理
         MappingJackson2JsonView mjjv = new MappingJackson2JsonView();
         response.setHeader("Cache-Control", "no-cache");
         mjjv.setContentType("text/html; charset=UTF-8");
-        mjjv.setAttributesMap(null);
+        mjjv.setAttributesMap(JsonUtil.Obj2AjaxMap(retl, 0));
         ModelAndView mav = new ModelAndView();
         mav.setView(mjjv);
         return mav;
@@ -280,6 +309,7 @@ public abstract class AbstractFileUploadController implements Controller, Handle
             }
             m.put("success", true);
             m.put("storeFileName", fileName);
+            m.put("uploadTime", (new Date()).getTime());
             return m;
         } catch (Exception e) {
             em.put("errCode", "FUE_E");
@@ -314,8 +344,8 @@ public abstract class AbstractFileUploadController implements Controller, Handle
      * 若上传失败，还会有error信息;<br/>
      * 警告信息会存储在warn信息中。<>
      * @return  此方法的返回值是Map，此Map需要有如下两个key:<br/>
-     * 1-success:处理是否成功<br/>
-     * 2-onFialdBreak:若失败是否退出后需的处理<br/>
+     * 1-success:String类型,处理是否成功<br/>
+     * 2-onFialdBreak:String类型("true" or "false"),若失败是否退出后需的处理<br/>
      * 如果返回值为空，或没有这些信息，本方法将按照sucess=true进行处理
      */
     public abstract Map<String, Object> beforeUploadOneFileOnSuccess(Map<String, Object> m);
