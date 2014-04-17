@@ -59,7 +59,7 @@
 body {margin:0 auto; width:1000px;}
 </style>
 <body><center>
-<div id="mainLayout" class="easyui-layout" style="width:1000px;height:500px" data-options="border:false">
+<div id="mainLayout" class="easyui-layout" style="width:1000px;height:500px" data-options="border:false,fit:true">
   <div id="top" data-options="region:'north',border:false" style="width:1000px">
     <div id="top_under" class="top_under">
       <div id="mainBar"><div id="user"> <span>欢迎您，<%=username%>!</span> </div></div>
@@ -68,8 +68,7 @@ body {margin:0 auto; width:1000px;}
     </div>
     <div id="top_top"></div>
   </div>
-  <div id="foot" data-options="region:'south',border:false" style="width:1000px"></div>
-  <div id="mainCenter" data-options="region:'center'" style="width:1000px">
+  <div id="mainCenter" data-options="region:'center',fit:true">
   <!-- 功能菜单 -->
     <div class="easyui-layout" data-options="fit:true,border:false">  
       <div id="left" data-options="region:'west',split:true,title:'功能导航',collapsible:true" style="width:205px;">
@@ -96,8 +95,8 @@ $(function() {
     $("#left").parent().find(".panel-header").find(".panel-title").css("font-size", "14px");
     $("#left").parent().find(".panel-header").css("text-align", "center").css("height", "18px");
     $("#left").css("height", (parseInt($("#left").css("height"))-2)+"px");
-  //加载树
-  fullscreen();
+    //加载树
+    fullscreen();
     var url="<%=path%>/toLogin.do";
     $.ajax({type:"post", async:true, url:url, data:null, dataType:"json",
       success: function(json) {
@@ -172,6 +171,15 @@ function turnSubApp(id, url,children) {
         idx++;
         //建立分支
         $("#mTree"+(idx-1)).tree({data:children});
+      //加载数据后，处理图标、处理onclick事件
+        $("#left").find(".easyui-tree").each(function(i) {
+          $(this).tree({
+            onSelect: function(node) {
+              showTab(node.id,node.text,node.attributes.url,node.iconCls);
+            }
+          });
+        });
+       $("#navigate").accordion("select", 0);
         /*if(children){
           $(children).each(function() {
             var newTreeNode = {
@@ -272,7 +280,6 @@ function onResize() {
 function fullscreen(){
 $("#fullscreen").click(function(){
     var centerP = $("#mainLayout").layout("panel","center");
-    alert("11111"+isFullScreen);
     $("#top_under").removeClass("top_under");
     $("#top_under").removeClass("top_under1");
     $("#top_under").addClass("top_under");
@@ -302,7 +309,6 @@ $("#fullscreen").click(function(){
       //$("#welcom").css("float","right").css("margin-top","32px").css("margin-right","20px");
       isFullScreen=false;
     } else {//全屏
-      alert("in 全屏");
       _westExpand=westExpand;//记录左边栏的状态
       $("#top_under").removeClass("top_under");
       $("#top_under").removeClass("top_under1");
@@ -333,9 +339,7 @@ $("#fullscreen").click(function(){
       if (hasRefreshCacheAuth) $("#refreshCacheD").show();
       isFullScreen=true;
     }
-    alert("2222"+isFullScreen);
   });
-  alert("out Method fullscreen");
 }
 </script>
 </html>
