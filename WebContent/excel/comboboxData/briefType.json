@@ -1,17 +1,21 @@
 [{    
-    "id":1,    
+    "id":1,
+    "value":"年报",    
     "text":"年报"   
 },{    
-    "id":2,    
+    "id":2,
+    "value":"月报",    
     "text":"月报"   
 },{    
-    "id":3,    
-    "text":"周报",    
-    "selected":true   
+    "id":3, 
+    "value":"周报",   
+    "text":"周报"  
 },{    
-    "id":4,    
+    "id":4,
+    "value":"日报",    
     "text":"日报"   
 },{    
-    "id":5,    
+    "id":5, 
+    "value":"全部",   
     "text":"全部"   
 }]  
