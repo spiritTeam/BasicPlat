@@ -12,8 +12,12 @@
 <title><%=IConstants.PLATFORM_NAME%></title>
 </head>
 <style type="text/css">
+.noborder{
+  border-style: solid;
+  border-top-width: 0px
+}
 #top {
-  height:105px;
+  height:102px;
   overflow:hidden;
   background:url('<%=path%>/resources/images/sys/skin0/banner/top_b.jpg') repeat-x fixed #E6EEF8;
 }
@@ -63,18 +67,17 @@ body {margin:0 auto; width:1000px;}
   <div id="top" data-options="region:'north',border:false" style="width:1000px">
     <div id="top_under" class="top_under">
       <div id="mainBar"><div id="user"> <span>欢迎您，<%=username%>!</span> </div></div>
-      <!--   <div class="mainTabButton imgTabButton fullscrenn" id="fullscreen">全屏</div>-->
       <div id="logout"><div class="mainTabButton imgTabButton fullscrenn" id="fullscreen">全屏</div></div>
     </div>
     <div id="top_top"></div>
   </div>
-  <div id="mainCenter" data-options="region:'center',fit:true">
-  <!-- 功能菜单 -->
+  <div id="mainCenter" data-options="region:'center',border:false,fit:true">
+    <!-- 功能菜单 -->
     <div class="easyui-layout" data-options="fit:true,border:false">  
-      <div id="left" data-options="region:'west',split:true,title:'功能导航',collapsible:true" style="width:205px;">
+      <div id="left"  data-options="region:'west',split:false,title:'功能导航',collapsible:true,border:true" style="width:205px;border:1px solid #95B8E7;border-width:0px 1px 1px 1px ;">
         <div id="navigate" class="easyui-accordion" data-options="fit:true,border:false"></div>
       </div>
-      <div data-options="region:'center'" data-options="border:true, fit:false">
+      <div data-options="region:'center'" data-options="border:true, fit:true" class="noborder">
         <div id="tabBar" class="easyui-tabs" data-options="fit:true,border:false"></div>
       </div>
      </div>  
@@ -180,27 +183,6 @@ function turnSubApp(id, url,children) {
           });
         });
        $("#navigate").accordion("select", 0);
-        /*if(children){
-          $(children).each(function() {
-            var newTreeNode = {
-              "id": this.id,
-              "text": this.title,
-              "iconCls":"" ,
-              "attributes":{"data":this.data,"url":""}
-            };
-            treeData.push(newTreeNode);
-            $("#mTree"+(idx-1)).tree({data:treeData});
-            //加载数据后，处理图标、处理onclick事件
-            $("#left").find(".easyui-tree").each(function(i) {
-              $(this).tree({
-                onSelect: function(node) {
-                  showTab(node.id,node.text,node.attributes.url,node.iconCls);
-                }
-              });
-            });
-           $("#navigate").accordion("select", 0);
-          });
-        }*/
       });
     }
   });
@@ -225,8 +207,9 @@ function showTab(_id,_title, _url, _icon) {
       title: _title,
       content: _content,
       iconCls: _icon,
-      tools: [{iconCls:"icon-mini-refresh", title:"刷新", handler:refreshTab}],
-      closable: true
+      border:false,
+      closable: true,
+      tools: [{iconCls:"icon-mini-refresh", title:"刷新", handler:refreshTab}]
     });
     var _tab = {"title":_title, "url": _url};
     tabArray.push(_tab);
@@ -285,28 +268,15 @@ $("#fullscreen").click(function(){
     $("#top_under").addClass("top_under");
     if (isFullScreen) {//退出全屏
       $(this).css({
-        //"background-image":"url('<%=path%>/test1/images/mainPage/expand.png')"
       }).html("全屏");
       $("#mainLayout").layout("panel","north").panel("resize", {"height":100});
       $("#mainTab").css("margin-top","53px");
-      //$("#top").css({
-        //"background-image":"url('<%=path%>/test1/images/mainPage/topBanner.jpg')"
-     // });
       $("#mainLayout").layout("resize");
       $("#west").css("height", $("#west").height()-52);
       $("#gisMain").css("height", $("#gisMain").height()-52);
       $("#gisFrame").css("height", $("#gisFrame").height()-52);
-      //$("#splitbutton").css("left", westExpand?(westWidth+4):4);
       $("#logoImg").show();
       $("#titleImg").show();
-      //if (_westExpand!=westExpand) $("#splitbutton").click();
-      /*
-      $("#mainTab").find(".mtabText").show();
-      $("#mainTab").find(".mtabSM").show();
-      $("#mainTab").find(".mtabSF").show();
-      $("#mainTab").css("margin-left","301px");
-      */
-      //$("#welcom").css("float","right").css("margin-top","32px").css("margin-right","20px");
       isFullScreen=false;
     } else {//全屏
       _westExpand=westExpand;//记录左边栏的状态
@@ -314,32 +284,27 @@ $("#fullscreen").click(function(){
       $("#top_under").removeClass("top_under1");
       $("#top_under").addClass("top_under1");
       $(this).css({
-       // "background-image":"url('<%=path%>/test1/images/mainPage/collapse.png')"
       }).html("退出全屏");
       //返回指定的面板
       $("#mainLayout").layout("panel","north").panel("resize", {"height":28});
       $("#mainTab").css("margin-top","1px");
-      //$("#top").css({
-        //"background-image":"url('<%=path%>/test1/images/mainPage/topBanner_.jpg')"
-      //});
       $("#mainLayout").layout("resize");
       $("#west").css("height", $("#west").height()+52);
       $("#gisMain").css("height", $("#gisMain").height()+52);
       $("#gisFrame").css("height", $("#gisFrame").height()+52);
-      //if (westExpand) $("#splitbutton").click();
       $("#logoImg").hide();
       $("#titleImg").hide();
-      /*
-      $("#mainTab").find(".mtabText").hide();
-      $("#mainTab").find(".mtabSM").hide();
-      $("#mainTab").find(".mtabSF").hide();
-      $("#mainTab").css("margin-left","0px");
-      */
-      //$("#welcom").css("float","left").css("margin-top","6px").css("margin-left","20px");
       if (hasRefreshCacheAuth) $("#refreshCacheD").show();
       isFullScreen=true;
     }
   });
 }
+Array.prototype.removeByIndex = function (i){
+  if (i>=0 && i < this.length) {
+    var ret = this.slice(0,i).concat(this.slice(i+1));
+    this.length = 0;
+    this.push.apply(this,ret);
+  }
+};
 </script>
 </html>
