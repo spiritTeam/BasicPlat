@@ -17,7 +17,7 @@ public abstract class JsonUtil {
      * @param createNew 方式：true，新实例；false,存在的mapper实例
      * @return ObjectMapper实例
      */
-    public static synchronized ObjectMapper getMapperInstance(boolean createNew) {     
+    private static synchronized ObjectMapper getMapperInstance(boolean createNew) {     
         if (createNew)  return new ObjectMapper();
         else if (mapper==null) mapper=new ObjectMapper();
         return mapper;
@@ -89,11 +89,11 @@ public abstract class JsonUtil {
     }
 
     /**
-     * 将对象转换为AjaxJson对象。type是输出类型。
+     * 将对象转换为Json字符串。type是输出类型。
      * 输出的json对象为{jsonType:#type, data:#cls2json}
      * @param obj 欲转换的对象，如果是String 则直接返回到data中
      * @param type 类型：1是成功，0是失败，其他整型类型可自己定义
-     * @return AjaxJson对象
+     * @return Json字符串
      * @throws JsonProcessingException 异常 
      */
     public static String Obj2AjaxJson(Object obj, int type) throws JsonProcessingException {

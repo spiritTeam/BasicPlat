@@ -17,7 +17,6 @@ import com.gmteam.framework.component.module.pojo.Module;
 import com.gmteam.framework.core.cache.CacheEle;
 import com.gmteam.framework.core.cache.SystemCache;
 import com.gmteam.framework.core.dao.mybatis.MybatisDAO;
-import com.gmteam.framework.core.model.tree.BaseTreeNode;
 import com.gmteam.framework.core.model.tree.TreeNode;
 
 @Service
@@ -39,17 +38,17 @@ public class ModuleService {
         return null;
     }
 
-    public List<BaseTreeNode<Module>> getRoot() {
+    public List<TreeNode<Module>> getRoot() {
         List<Module> list = getList();
-        List<BaseTreeNode<Module>> root = new ArrayList<BaseTreeNode<Module>>();
+        List<TreeNode<Module>> root = new ArrayList<TreeNode<Module>>();
         for (Module m : list) {
-            BaseTreeNode<Module> oneNode = new BaseTreeNode<Module>();
+            TreeNode<Module> oneNode = new TreeNode<Module>();
             oneNode.setTnEntity(m);
             if (root.size() == 0) {
                 root.add(oneNode);
             } else {
                 // 判断roots连有没有oneNode的子节点或者父节点
-                for (BaseTreeNode<Module> node : root) {
+                for (TreeNode<Module> node : root) {
                     // 判断node是不是oneNode的子节点
                     if (node.getParentId().equals(oneNode.getId())) {
                         oneNode.addChild(node);
@@ -62,8 +61,8 @@ public class ModuleService {
                 root.add(oneNode);
             }
         }
-        List<BaseTreeNode<Module>> roots = new ArrayList<BaseTreeNode<Module>>();
-        for (BaseTreeNode<Module> node : root) {
+        List<TreeNode<Module>> roots = new ArrayList<TreeNode<Module>>();
+        for (TreeNode<Module> node : root) {
             if (node.getParentId().equals("0")) {
                 roots.add(node);
             }
@@ -78,16 +77,16 @@ public class ModuleService {
      * @param list
      * @return
      */
-    public List<BaseTreeNode<Module>> getRoots(List<Module> list) {
-        List<BaseTreeNode<Module>> root = new ArrayList<BaseTreeNode<Module>>();
+    public List<TreeNode<Module>> getRoots(List<Module> list) {
+        List<TreeNode<Module>> root = new ArrayList<TreeNode<Module>>();
         for (Module m : list) {
-            BaseTreeNode<Module> oneNode = new BaseTreeNode<Module>();
+            TreeNode<Module> oneNode = new TreeNode<Module>();
             oneNode.setTnEntity(m);
             if (root.size() == 0) {
                 root.add(oneNode);
             } else {
                 // 判断roots连有没有oneNode的子节点或者父节点
-                for (BaseTreeNode<Module> node : root) {
+                for (TreeNode<Module> node : root) {
                     // 判断node是不是oneNode的子节点
                     if (node.getParentId().equals(oneNode.getId())) {
                         oneNode.addChild(node);
@@ -100,8 +99,8 @@ public class ModuleService {
                 root.add(oneNode);
             }
         }
-        List<BaseTreeNode<Module>> roots = new ArrayList<BaseTreeNode<Module>>();
-        for (BaseTreeNode<Module> node : root) {
+        List<TreeNode<Module>> roots = new ArrayList<TreeNode<Module>>();
+        for (TreeNode<Module> node : root) {
             if (node.getParentId().equals("0")) {
                 roots.add(node);
             }

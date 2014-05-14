@@ -3,105 +3,96 @@ package com.gmteam.framework.core.model.tree;
 import com.gmteam.framework.core.model.BaseObject;
 
 /**
- * 树节点的数据结构，所有的树对象都应继承这个类。
+ * 树结点数据，所有的树对象的数据都应继承这个类。<br/>
+ * 树对象是由树结点数据和树结点结构两部分组成的。树结点数据，一般是从数据库或文件中读取的数据。树结点结构是根据这些数据组织好的树对象。<br/>
+ * 本结构除基本的本节点ID，父节点ID和本节点名称外，还有树结点的排序，并指明排序的方向，排序字段是用来按顺序在同级结点间排列次序用的。<br/>
+ *
  * @author wh
+ * @see com.gmteam.framework.core.model.tree.TreeNode
+ * @since 0.1
  */
 @SuppressWarnings("serial")
-public abstract class TreeNodeModel extends BaseObject {
-    
+public class TreeNodeModel extends BaseObject implements Cloneable {
     //树节点ID
-    String id;
+    private String id;
     /**
-     * 得到本节点ID
-     * @return 本节点ID
+     * 得到结点点ID
+     * @return 结点点ID
      */
     public String getId() {
         return this.id;
     }
     /**
-     * 设置本节点ID,同时把下级节点parentid设置为新的ID
+     * 设置结点点ID,同时把下级节点parentid设置为新的ID
      * @param id
      */
     public void setId(String id) {
+        if (id.equals("")) this.id=null;
         this.id=id;
     }
     //父节点ID
-    String parentId;
+    private String parentId;
     /**
-     * 得到本节点的父节点ID，若本节点是根，则返回null
-     * @return 父节点ID，若本节点是根，则返回null
+     * 得到结点点的父节点ID，若结点点是根，则返回null
+     * @return 父节点ID，若结点点是根，则返回null
      */
     public String getParentId() {
         return this.parentId;
     }
     /**
-     * 设置本节点的父节点ID
+     * 设置结点的父节点ID
      * @param parentId
      */
     public void setParentId(String parentId) {
-        this.parentId = parentId;
+        if (parentId.equals("")) this.parentId=null;
+        else this.parentId = parentId;
     }
     //节点名称
-    String displayName;
+    private String nodeName;
     /**
      * 得到本节点名称
      * @return 本节点名称
      */
-    public String getDisplayName() {
-        return this.displayName;
+    public String getNodeName() {
+        return this.nodeName;
     }
     /**
      * 设置本节点名称
-     * @param title 节点名称
+     * @param nodeName 节点名称
      */
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
+    public void setNodeName(String nodeName) {
+        this.nodeName = nodeName;
     }
     //排序
-    int order;
+    private int order;
+    /**
+     * 设置结点的排序序号
+     * @return 树节点的排序号
+     */
     public int getOrder() {
         return this.order;
     }
+    /**
+     * 设置结点的排序序号
+     * @param order 树节点的排序号
+     */
     public void setOrder(int order) {
         this.order=order;
     }
     //排序模式:若orderType=0从大到小排列；若orderType=1从小到大排列，默认为0从大到小排序
-    int orderType;
+    protected int orderType=0;
+    /**
+     * 设置结点的排序模式
+     * @param orderType 排序模式：若orderType=0从大到小排列；若orderType=1从小到大排列
+     */
     public void setOrderType(int orderType) {
         this.orderType = orderType;
     }
-    //节点url
-    public String url;
-    //设置节点url
-    public void setUrl(String url){
-        this.url=url;
-    }
-    //得到节点的url
-    public String getUrl(){
-        return this.url;
-    }
-    //节点的类型
-    public Integer types;
-    public Integer getTypes() {
-        return types;
-    }
-    public void setTypes(Integer types) {
-        this.types = types;
-    }
-    //节点的图片icon的衔接
-    public String icon;
-    public String getIcon() {
-        return icon;
-    }
-    public void setIcon(String icon) {
-        this.icon = icon;
-    }
-    //节点说明descn
-    public String descn;
-    public String getDescn() {
-        return descn;
-    }
-    public void setDescn(String descn) {
-        this.descn = descn;
+
+    /**
+     * 浅层Clone方法，树clone时需要
+     */
+    public <V extends TreeNodeModel> V clone() throws CloneNotSupportedException {
+        return (V)super.clone();
     }
 }

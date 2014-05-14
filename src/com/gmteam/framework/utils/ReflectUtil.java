@@ -6,16 +6,20 @@ import java.lang.reflect.Modifier;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.apache.log4j.Logger;
 
 /**
  * 反射工具类
- * @author zhuhua
+ * @author zhuhua wh
  */
 public abstract class ReflectUtil {
     private final static Logger logger = Logger.getLogger(ReflectUtil.class);
-
+    private final static String[] classList= {"java.lang.Integer", "java.lang.Short", "java.lang.Long"
+        ,"java.lang.Double", "java.lang.Float", "java.lang.Byte", "java.lang.Character", "java.lang.Boolean"
+        ,"java.lang.String", "java.util.Date", "java.util.Calendar", "java.lang.StringBuffer"
+        ,"java.math.BigDecimal", "java.math.BigInteger"};
+    private final static String[] baseClass= {"int", "short", "long", "double", "float", "byte", "char", "boolean"};
+    
     /**
      * 可以绕过java的访问控制,为私有成员变量赋值
      * @param target 目标对象，这个类的一个实例
@@ -131,6 +135,46 @@ public abstract class ReflectUtil {
     }
 
     /**
+     * 从Bean实例转换为Map，不包括get或is为空的方法。但不对Collection这类的属性进行进一步处理
+     * @param clazz 类对象
+     * @param target 类的实例
+     * @return 返回的Map对象，注意这个Map对象中，key是属性的名称，value是属性的值的字符串表现形式
+     */
+    public static Map<String,Object> Bean2MapWithoutNull(Class<?> clazz, Object target) {
+        Map<String,Object> map = new HashMap<String,Object>();
+        try {
+            Method[] methods=clazz.getDeclaredMethods();
+            for (Method m : methods) {
+                m.setAccessible(true);
+                String key = m.getName();
+                if ((key.startsWith("get")&&key.length()>3)||(key.startsWith("is")&&key.length()>2)) {
+                    Class<?> _type = m.getReturnType();
+                    Object value = null;
+                    try {
+                        value = m.invoke(target);
+                    } catch(Exception e) {
+                        
+                    }
+                    if (ReflectUtil.isMyClass(_type, value)) {
+                        if ((key.startsWith("get")&&key.length()>3)) {
+                            key = key.substring(3);
+                            key = key.substring(0, 1).toLowerCase()+key.substring(1);
+                        }
+                        map.put(key, formatValue(m.getReturnType(), value));
+                    }
+                }
+            }
+            //如果父类不是Object则将递归遍历父类属性
+            Class<?> superClass = clazz.getSuperclass();
+            if (!superClass.isInterface()&&!superClass.getName().equals("java.lang.Object")) map.putAll(Bean2MapWithoutNull(superClass, target));
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.info(e);
+        }
+        return map;
+    }
+
+    /**
      * 将对象的属性值转化为格式化字符串
      * 注意:如果是复杂类型，将直接调用其toString方法返回
      * 暂时不支持复杂对象的处理
@@ -153,5 +197,40 @@ public abstract class ReflectUtil {
             value = "";
         }
         return value;
+    }
+
+    private static boolean isMyClass(Class<?> c, Object o) {
+        if (o==null) return false;
+        //判断是否是基础类
+        Class<?> _c = c;
+        String cName = _c.getName();
+        boolean isBaseClass = false;
+        for (String s: baseClass) {
+            if (cName.equals(s)) {
+                isBaseClass = true;
+                break;
+            }
+        }
+        if (isBaseClass) return true;
+        //判断返回类型
+        boolean isMyClass = false;
+        boolean isInterface = false;
+        _c=o.getClass();
+        cName = _c.getName();
+        isInterface = _c.isInterface();
+        while (!isInterface&&!cName.equals("java.lang.Object")) {
+            for (String s: classList) {
+                if (cName.equals(s)) {
+                    isMyClass = true;
+                    break;
+                }
+            }
+            if (!isMyClass) {
+                _c = _c.getSuperclass();
+                cName = _c.getName();
+                isInterface = _c.isInterface();
+            } else break;
+        }
+        return isMyClass;
     }
 }

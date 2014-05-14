@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gmteam.framework.component.module.pojo.Module;
 import com.gmteam.framework.component.module.service.ModuleService;
-import com.gmteam.framework.core.model.tree.BaseTreeNode;
+import com.gmteam.framework.core.model.tree.TreeNode;
 import com.gmteam.framework.ui.tree.EasyUiTree;
 
 @Controller
@@ -26,8 +26,8 @@ public class ModuleController {
     @ResponseBody
     public Map<String,Object>  test() {
         Map<String,Object> map = new HashMap<String, Object>();
-        List<BaseTreeNode<Module>> root = moduleService.getRoot();
-        BaseTreeNode<Module> node = root.get(0);
+        List<TreeNode<Module>> root = moduleService.getRoot();
+        TreeNode<Module> node = root.get(0);
         EasyUiTree t = new EasyUiTree(node);
         EasyUiTree s = new EasyUiTree();
         s.setChildren(new ArrayList<EasyUiTree>());

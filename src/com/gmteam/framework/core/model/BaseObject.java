@@ -20,7 +20,7 @@ public abstract class BaseObject implements Serializable {
     transient protected Logger log = Logger.getLogger(this.getClass());
 
     /**
-     * 将javaBean中不为空的属性放入HashMap
+     * 将java中不为空的属性放入HashMap
      * @return Map
      */
     public Map<String, Object> toHashMap() {
@@ -35,9 +35,27 @@ public abstract class BaseObject implements Serializable {
         return propertiesMap;
     }
 
+    /**
+     * 将java中不为空的属性放入HashMap
+     * @return Map
+     */
+    public Map<String, Object> toHashMapAsBean() {
+        Map<String, Object> propertiesMap = new HashMap<String, Object>();
+        try {
+            Class<? extends BaseObject> clazz = this.getClass();
+            propertiesMap = ReflectUtil.Bean2MapWithoutNull(clazz, this);
+        } catch(Exception e) {
+            log.info("转换类"+this.getClass().getName()+"实例为HASHMAP失败",e);
+            propertiesMap = null;
+        }
+        return propertiesMap;
+    }
+
+    /**
+     * 以Map为数据源，设置类实例的各属性
+     * @param propertiesMap Map源数据
+     */
     public void fromHashMap(Map<String, Object> propertiesMap) {
-            //带下划线的
-            //不带下划线的
         try {
             if(propertiesMap == null || propertiesMap.size() == 0) return;
             Class<? extends BaseObject> clazz = this.getClass();

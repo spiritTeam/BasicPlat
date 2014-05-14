@@ -2,7 +2,8 @@ package com.gmteam.framework.ui.tree;
 
 import java.util.ArrayList;
 import java.util.List;
-import com.gmteam.framework.core.model.tree.BaseTreeNode;
+
+import com.gmteam.framework.core.model.tree.TreeNode;
 
 public class EasyUiTree {
 
@@ -19,16 +20,16 @@ public class EasyUiTree {
     public EasyUiTree(){
         
     }
-    public EasyUiTree(BaseTreeNode<?> tree){
+    public EasyUiTree(TreeNode<?> tree){
         this.setId(tree.getId());
         this.setParentId(tree.getParentId());
-        this.setIconCss(tree.getTnEntity().getIcon());
-        this.setText(tree.getTitle());
-        this.setTitle(tree.getTitle());
-        this.setUrl(tree.getTnEntity().getUrl());
+//        this.setIconCss(tree.getTnEntity().getIcon());
+  //      this.setText(tree.getTitle());
+    //    this.setTitle(tree.getTitle());
+      //  this.setUrl(tree.getTnEntity().getUrl());
         if (tree.getChildren()!=null) {
             this.children = new ArrayList<EasyUiTree>();
-            for (BaseTreeNode<?> tn: tree.getChildren()) {
+            for (TreeNode<?> tn: tree.getChildren()) {
                 this.addChild(new EasyUiTree(tn));
             }
         }
