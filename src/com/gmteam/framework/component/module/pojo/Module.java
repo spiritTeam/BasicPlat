@@ -1,13 +1,11 @@
 package com.gmteam.framework.component.module.pojo;
 
 import com.gmteam.framework.core.model.tree.TreeNodeModel;
-
+/**
+ * 
+ */
 public class Module extends TreeNodeModel{
-    /**
-     * 
-     */
     private static final long serialVersionUID = -5024436009679818215L;
-
 
     private Integer hasChild;
 

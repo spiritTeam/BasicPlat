@@ -2,7 +2,7 @@
   overflow: hidden;
 }
 .tabs-header {
-  border-width: 1px;
+  border-width: 0px;
   border-style: solid;
   border-bottom-width: 0;
   position: relative;

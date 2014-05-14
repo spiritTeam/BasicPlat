@@ -19,7 +19,7 @@ function allPrpos(obj) {
       }
     }
   }
-  props = "[allPrposCount="+i+"]\n"+props
+  props = "[allPrposCount="+i+"]\n"+props;
   return props;
 }
 
@@ -28,7 +28,7 @@ function allPrpos(obj) {
  */
 String.prototype.cnLength = function () {
   return ((this.replace(/[^x00-xFF]/g, "**")).length);
-}
+};
 
 /**
  * 删除数组中的元素
@@ -39,7 +39,7 @@ Array.prototype.removeByIndex = function (i){
     this.length = 0;
     this.push.apply(this,ret);
   }
-}
+};
 
 /**
  * 获得url中参数名为paramName的参数值
