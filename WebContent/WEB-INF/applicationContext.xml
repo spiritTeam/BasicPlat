@@ -84,12 +84,12 @@
     </property>
   </bean>
   <!--缓存管理类begin-->
-  <bean id="cacheManager" class="com.gmteam.framework.core.cache.test.CacheManager">
+  <bean id="cacheManager" class="com.gmteam.framework.core.cache.manager.CacheManager">
     <property name="cacheService" ref="cacheService"/>
   </bean>
   <!--end缓存-->
   <!--缓存service Begin-->
-  <bean id="cacheService" class="com.gmteam.framework.core.cache.test.CacheService" init-method="init">
+  <bean id="cacheService" class="com.gmteam.framework.core.cache.service.CacheService" init-method="init">
     <!--<property name="smDAO" ref="ibatisDao_DCM"/>-->
   </bean>
   <context:annotation-config/>
