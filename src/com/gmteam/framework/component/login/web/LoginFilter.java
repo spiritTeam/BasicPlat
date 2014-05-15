@@ -10,7 +10,7 @@ import javax.servlet.http.HttpSession;
 import com.gmteam.framework.IConstants;
 import com.gmteam.framework.core.cache.CacheEle;
 import com.gmteam.framework.core.cache.SystemCache;
-import com.gmteam.framework.component.login.pojo.PlatUser;
+import com.gmteam.framework.component.login.pojo.User;
 import com.gmteam.framework.component.login.pojo.UserLogin;
 
 public class LoginFilter implements Filter {
@@ -37,7 +37,7 @@ public class LoginFilter implements Filter {
                 //判断是否用其他Sesson登录了
                 CacheEle<Map<String, UserLogin>> userSessionMap =
                     (CacheEle<Map<String, UserLogin>>)SystemCache.getCache(IConstants.USERSESSIONMAP);
-                PlatUser user = (PlatUser)session.getAttribute(IConstants.SESSION_USER);
+                User user = (User)session.getAttribute(IConstants.SESSION_USER);
                 UserLogin uli = userSessionMap.getContent().get(user.getId());
                 if (uli!=null&&!uli.getSessionId().equals(session.getId())) {
                     String loginInfo = "";

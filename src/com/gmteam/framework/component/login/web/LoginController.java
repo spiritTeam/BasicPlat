@@ -12,16 +12,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gmteam.framework.IConstants;
+import com.gmteam.framework.component.login.pojo.User;
+import com.gmteam.framework.component.login.pojo.UserLogin;
+import com.gmteam.framework.component.login.service.UserService;
 import com.gmteam.framework.core.cache.CacheEle;
 import com.gmteam.framework.core.cache.SystemCache;
-import com.gmteam.framework.component.login.pojo.PlatUser;
-import com.gmteam.framework.component.login.pojo.UserLogin;
-import com.gmteam.framework.component.login.service.PlatUserService;
-
 @Controller
 public class LoginController {
-	@Resource
-    private PlatUserService userService;
+    @Resource
+    private UserService userService;
     /**
      * 用户登录
      * @param userLogin 用户登录信息
@@ -32,7 +31,7 @@ public class LoginController {
     public @ResponseBody Map<String,Object> Login(UserLogin userLogin,HttpServletRequest req) {
         Map<String,Object> retObj = new HashMap<String,Object>();
         try {
-            PlatUser user = userService.getPlatUserByLoginName(userLogin.getLoginName());
+            User user = (User) userService.getPlatUserByLoginName(userLogin.getLoginName());
             if(user==null){
                 retObj.put("type", "2");
                 retObj.put("data", "没有登录名为["+userLogin.getLoginName()+"]的用户！");
@@ -69,7 +68,7 @@ public class LoginController {
             //清除用户Session缓存
             Map<String, UserLogin> userSessionMap = ((CacheEle<Map<String, UserLogin>>)SystemCache.getCache(IConstants.USERSESSIONMAP)).getContent();
             HttpSession session = req.getSession();
-            PlatUser user = (PlatUser)session.getAttribute(IConstants.SESSION_USER);
+            User user = (User)session.getAttribute(IConstants.SESSION_USER);
             UserLogin userLogin = userSessionMap.get(user.getId());
             if (userLogin!=null&&userLogin.getSessionId().equals(session.getId())) {
                 userSessionMap.remove(user.getId());

@@ -1,21 +1,11 @@
 package com.gmteam.framework.component.module.service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
-
-import org.junit.Test;
 import org.springframework.stereotype.Service;
-
-import com.gmteam.framework.IConstants;
-import com.gmteam.framework.component.login.pojo.UserLogin;
 import com.gmteam.framework.component.module.pojo.Module;
-import com.gmteam.framework.core.cache.CacheEle;
-import com.gmteam.framework.core.cache.SystemCache;
 import com.gmteam.framework.core.dao.mybatis.MybatisDAO;
 import com.gmteam.framework.core.model.tree.TreeNode;
 

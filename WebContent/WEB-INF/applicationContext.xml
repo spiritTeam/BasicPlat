@@ -73,6 +73,24 @@
   <bean id="defaultDAO" class="com.gmteam.framework.core.dao.mybatis.MybatisDAO"  scope="prototype" init-method="initialize">
     <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
   </bean>
-
+  <!-- 平台缓存池-->
+  <bean id="cachePool" class=" com.gmteam.framework.core.cache.CachePool">
+    <property name="caches">
+      <map>
+        <entry key="0" value-ref="cacheManager"/>
+        <!-- <entry key="0" value-ref="cacheGisSmManager"/> -->
+        <!-- <entry key="1" value-ref="cacheBjlqManager"/>  -->
+      </map>
+    </property>
+  </bean>
+  <!--缓存管理类begin-->
+  <bean id="cacheManager" class="com.gmteam.framework.core.cache.manager.CacheManager">
+    <property name="cacheService" ref="cacheService"/>
+  </bean>
+  <!--end缓存-->
+  <!--缓存service Begin-->
+  <bean id="cacheService" class="com.gmteam.framework.core.cache.service.CacheService" init-method="init">
+    <!--<property name="smDAO" ref="ibatisDao_DCM"/>-->
+  </bean>
   <context:annotation-config/>
 </beans>

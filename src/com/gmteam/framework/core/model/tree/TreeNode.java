@@ -18,7 +18,7 @@ import com.gmteam.framework.core.model.BaseObject;
  * @see com.gmteam.framework.core.model.tree.TreeNode
  * @since 0.1
  */
-public class TreeNode<T extends TreeNodeModel> extends BaseObject implements Cloneable, Comparable<TreeNode<T>> {
+public class TreeNode<T extends TreeNodeBean> extends BaseObject implements Cloneable, Comparable<TreeNode<T>> {
     private static final long serialVersionUID = -4718111007014669779L;
 
     protected T tnEntity;//树模型实体
@@ -46,11 +46,17 @@ public class TreeNode<T extends TreeNodeModel> extends BaseObject implements Clo
         return tnEntity;
     }
 
-    //构造函数
+    /**
+     * 无参数构造函数
+     */
     public TreeNode() {
         this.allowChildren=true;
     }
 
+    /**
+     * 由树结点数据构造类
+     * @param tnEntity 树结点数据
+     */
     public TreeNode(T tnEntity) {
         super();
         this.setTnEntity(tnEntity);
@@ -539,9 +545,9 @@ public class TreeNode<T extends TreeNodeModel> extends BaseObject implements Clo
 
     /**
      * 得到深度树遍历中本结点的前序结点，在排序树中更有意义。<br/>
-     * 前序节点：深度树遍历中，本结点的上一个结点——若本结点是其父结点的子结点的列表中非first结点，则返回的节点是子结点列表中序号减1的结点；若本结点是其父结点的子结点的列表中的first结点，则返回的结点是父节点；若本结点是根，则返回空，即根结点没有前序结点。<br/>
+     * 前序结点：深度树遍历中，本结点的上一个结点——若本结点是其父结点的子结点的列表中非first结点，则返回的结点是子结点列表中序号减1的结点；若本结点是其父结点的子结点的列表中的first结点，则返回的结点是父结点；若本结点是根，则返回空，即根结点没有前序结点。<br/>
      * 若TreeNode!=root,则TreeNode.preNode()!=null，即若结点不是根，则必有前序结点；若TreeNode==root,则TreeNode.preNode()==null，即若结点是根，则必没有前序结点。
-     * @return 前序节点
+     * @return 前序结点
      */
     public TreeNode<T> preNode() {
         if (this.isRoot()) return null;
@@ -555,8 +561,8 @@ public class TreeNode<T extends TreeNodeModel> extends BaseObject implements Clo
 
     /**
      * 得到深度树遍历中本结点的后序结点，在排序树中更有意义。<br/>
-     * 后序节点：深度树遍历中，本结点的下一个结点。<br/>
-     * @return 后序节点
+     * 后序结点：深度树遍历中，本结点的下一个结点。<br/>
+     * @return 后序结点
      */
     public TreeNode<T> nextNode() {
         if (this.isLeaf()) {
@@ -599,19 +605,18 @@ public class TreeNode<T extends TreeNodeModel> extends BaseObject implements Clo
      * 深度克隆树，但不包括parent属性。克隆后的结点为根
      */
     public TreeNode<T> clone() throws CloneNotSupportedException {
-        T cloneEntity = this.tnEntity.clone();
+        T cloneEntity = (T)this.tnEntity.clone();
         TreeNode<T> cloneTn = new TreeNode<T>(cloneEntity);
-        cloneTn.setAllowChildren(this.isAllowChildren());
-        cloneTn.setOrder(this.order);
-        cloneTn.setOrderType(this.orderType);
-        cloneTn.setParent(null);
         cloneTn.setAttributes((HashMap<String, Object>)((HashMap<String, Object>)this.getAttributes()).clone());
+        cloneTn.setParent(null);
+
         if (!this.isLeaf()) {
             for (TreeNode<T> tn: this.getChildren()) {
                 TreeNode<T> cTn = tn.clone();
                 cloneTn.addChild(cTn);
             }
         }
+
         return cloneTn;
     }
 }

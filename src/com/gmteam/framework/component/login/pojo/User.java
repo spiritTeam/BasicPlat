@@ -2,7 +2,9 @@ package com.gmteam.framework.component.login.pojo;
 
 import com.gmteam.framework.core.model.BaseObject;
 
-public class PlatUser extends BaseObject{
+
+
+public class User extends BaseObject{
     
     private static final long serialVersionUID = 6013739951194460125L;
     private String id;

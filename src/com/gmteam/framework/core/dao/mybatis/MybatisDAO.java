@@ -166,7 +166,7 @@ public class MybatisDAO <T extends BaseObject> extends SqlSessionDaoSupport impl
     public <V> V queryForObjectAutoTranform(String statementId, Object parameterObject) throws Exception {
         String key=namespace+"."+statementId;
         if (sqlSession ==null) this.sqlSession = this.getSqlSession();
-        return this.sqlSession.selectOne(key, parameterObject);
+        return (V)this.sqlSession.selectOne(key, parameterObject);
     }
 
     @Override

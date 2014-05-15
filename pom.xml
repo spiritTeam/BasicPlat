@@ -8,7 +8,7 @@
 
   <!-- 配置编码格式，与eclpse的IDE环境编码格式匹配 -->
   <properties>
-    <build.webProjectDir>D:\workIDE\projects</build.webProjectDir>
+    <build.webProjectDir>D:\workIDE\projects\BasicPlat</build.webProjectDir>
   </properties>
 
   <parent>
@@ -55,6 +55,7 @@
     <testOutputDirectory>${build.webProjectDir}\target\test-classes</testOutputDirectory>
     <!-- 这里定义的资源将作为资源拷贝或打包到目标中。所有的配置文件(xml,propertis)都会按目录进行打包了 -->
     <plugins>
+      <!-- 打war包，作为底层框架不应打成jar包，这里只是参考 -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
@@ -71,6 +72,53 @@
             </resource>
           </webResources>
         </configuration>
+      </plugin>
+      <!-- 打jar包 -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>2.4</version>
+        <configuration>
+          <archive>
+            <index>false</index>
+            <manifest>
+              <addClasspath>false</addClasspath>
+            </manifest>
+            <manifestEntries>
+              <Built-By>gmteam</Built-By>
+              <mode>release</mode>
+            </manifestEntries>
+          </archive>
+        </configuration>
+      </plugin>
+      <!-- 打源码包
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <version>2.1.2</version>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>jar-no-fork</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin> -->
+      <!-- 打javadoc包 -->
+      <plugin>          
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>2.7</version>
+        <executions>
+          <execution>
+            <id>attach-javadocs</id>
+              <goals>
+                <goal>jar</goal>
+              </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>

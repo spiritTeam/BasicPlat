@@ -12,8 +12,12 @@
 <title><%=IConstants.PLATFORM_NAME%></title>
 </head>
 <style type="text/css">
+.noborder{
+  border-style: solid;
+  border-top-width: 0px
+}
 #top {
-  height:105px;
+  height:102px;
   overflow:hidden;
   background:url('<%=path%>/resources/images/sys/skin0/banner/top_b.jpg') repeat-x fixed #E6EEF8;
 }
@@ -22,8 +26,15 @@
   width:996px;
   background:url('<%=path%>/resources/images/sys/skin0/banner/top.jpg') no-repeat fixed;
 }
-#top_under {
+.top_under {
   position:absolute;
+  top:76px;
+  height:26px;
+  width:100%;
+  background:url('<%=path%>/resources/images/sys/skin0/banner/under1_b.jpg') repeat;
+}
+.top_under1 {
+  //position:absolute;
   top:76px;
   height:26px;
   width:100%;
@@ -52,23 +63,21 @@
 body {margin:0 auto; width:1000px;}
 </style>
 <body><center>
-<div id="mainLayout" class="easyui-layout" style="width:1000px;height:500px" data-options="border:false">
+<div id="mainLayout" class="easyui-layout" style="width:1000px;height:500px" data-options="border:false,fit:true">
   <div id="top" data-options="region:'north',border:false" style="width:1000px">
-    <div id="top_top"></div>
-    <div id="top_under">
+    <div id="top_under" class="top_under">
       <div id="mainBar"><div id="user"> <span>欢迎您，<%=username%>!</span> </div></div>
-     <!--   <div class="mainTabButton imgTabButton fullscrenn" id="fullscreen">全屏</div>-->
       <div id="logout"><div class="mainTabButton imgTabButton fullscrenn" id="fullscreen">全屏</div></div>
     </div>
+    <div id="top_top"></div>
   </div>
-  <div id="foot" data-options="region:'south',border:false" style="width:1000px"></div>
-  <div id="mainCenter" data-options="region:'center'" style="width:1000px">
-  <!-- 功能菜单 -->
+  <div id="mainCenter" data-options="region:'center',border:false,fit:true">
+    <!-- 功能菜单 -->
     <div class="easyui-layout" data-options="fit:true,border:false">  
-      <div id="left" data-options="region:'west',split:true,title:'功能导航',collapsible:true" style="width:205px;">
+      <div id="left"  data-options="region:'west',split:false,title:'功能导航',collapsible:true,border:true" style="width:205px;border:1px solid #95B8E7;border-width:0px 1px 1px 1px ;">
         <div id="navigate" class="easyui-accordion" data-options="fit:true,border:false"></div>
       </div>
-      <div data-options="region:'center'" data-options="border:true, fit:false">
+      <div data-options="region:'center'" data-options="border:true, fit:true" class="noborder">
         <div id="tabBar" class="easyui-tabs" data-options="fit:true,border:false"></div>
       </div>
      </div>  
@@ -89,7 +98,8 @@ $(function() {
     $("#left").parent().find(".panel-header").find(".panel-title").css("font-size", "14px");
     $("#left").parent().find(".panel-header").css("text-align", "center").css("height", "18px");
     $("#left").css("height", (parseInt($("#left").css("height"))-2)+"px");
-  //加载树
+    //加载树
+    fullscreen();
     var url="<%=path%>/toLogin.do";
     $.ajax({type:"post", async:true, url:url, data:null, dataType:"json",
       success: function(json) {
@@ -162,29 +172,17 @@ function turnSubApp(id, url,children) {
         $("#mTree"+idx).tree({data:this.treeData});
         treeData = new Array();
         idx++;
-        //建立分支这里直接把对象传给树即可，不管是一个集合还是一个单独的树
+        //建立分支
         $("#mTree"+(idx-1)).tree({data:children});
-        /*if(children){
-          $(children).each(function() {
-            var newTreeNode = {
-              "id": this.id,
-              "text": this.title,
-              "iconCls":"" ,
-              "attributes":{"data":this.data,"url":""}
-            };
-            treeData.push(newTreeNode);
-            $("#mTree"+(idx-1)).tree({data:treeData});
-            //加载数据后，处理图标、处理onclick事件
-            $("#left").find(".easyui-tree").each(function(i) {
-              $(this).tree({
-                onSelect: function(node) {
-                  showTab(node.id,node.text,node.attributes.url,node.iconCls);
-                }
-              });
-            });
-           $("#navigate").accordion("select", 0);
+      //加载数据后，处理图标、处理onclick事件
+        $("#left").find(".easyui-tree").each(function(i) {
+          $(this).tree({
+            onSelect: function(node) {
+              showTab(node.id,node.text,node.attributes.url,node.iconCls);
+            }
           });
-        }*/
+        });
+       $("#navigate").accordion("select", 0);
       });
     }
   });
@@ -209,8 +207,9 @@ function showTab(_id,_title, _url, _icon) {
       title: _title,
       content: _content,
       iconCls: _icon,
-      tools: [{iconCls:"icon-mini-refresh", title:"刷新", handler:refreshTab}],
-      closable: true
+      border:false,
+      closable: true,
+      tools: [{iconCls:"icon-mini-refresh", title:"刷新", handler:refreshTab}]
     });
     var _tab = {"title":_title, "url": _url};
     tabArray.push(_tab);
@@ -224,12 +223,11 @@ function refreshTab() {
   } 
 }
 function addMainTab(){
-	$(".mainTabButton").mouseover(function(){
+  $(".mainTabButton").mouseover(function(){
     $(this).css("border", "1px solid #DADADA").css("margin-top", "3px").css("margin-right", "6px").css("color", "blue");
   }).mouseout(function(){
     $(this).css("border", "0px solid #DADADA").css("margin-top", "4px").css("margin-right", "8px").css("color", "black");;
   });
-	fullscreen();
   //添加首页
   // add a new tab panel    
   $('#tabBar').tabs('add',{    
@@ -265,64 +263,48 @@ function onResize() {
 function fullscreen(){
 $("#fullscreen").click(function(){
     var centerP = $("#mainLayout").layout("panel","center");
+    $("#top_under").removeClass("top_under");
+    $("#top_under").removeClass("top_under1");
+    $("#top_under").addClass("top_under");
     if (isFullScreen) {//退出全屏
       $(this).css({
-        //"background-image":"url('<%=path%>/test1/images/mainPage/expand.png')"
       }).html("全屏");
-      $("#mainLayout").layout("panel","north").panel("resize", {"height":80});
+      $("#mainLayout").layout("panel","north").panel("resize", {"height":100});
       $("#mainTab").css("margin-top","53px");
-      //$("#top").css({
-    	  //"background-image":"url('<%=path%>/test1/images/mainPage/topBanner.jpg')"
-     // });
       $("#mainLayout").layout("resize");
       $("#west").css("height", $("#west").height()-52);
       $("#gisMain").css("height", $("#gisMain").height()-52);
       $("#gisFrame").css("height", $("#gisFrame").height()-52);
-      $("#splitbutton").css("left", westExpand?(westWidth+4):4);
       $("#logoImg").show();
       $("#titleImg").show();
-      if (_westExpand!=westExpand) $("#splitbutton").click();
-      /*
-      $("#mainTab").find(".mtabText").show();
-      $("#mainTab").find(".mtabSM").show();
-      $("#mainTab").find(".mtabSF").show();
-      $("#mainTab").css("margin-left","301px");
-      */
-      $("#welcom").css("float","right").css("margin-top","32px").css("margin-right","20px");
-      $("#commonFunc").show();
-      $("#logoutD").hide();
-      $("#refreshCacheD").hide();
-      _resizeTimeout();
+      isFullScreen=false;
     } else {//全屏
       _westExpand=westExpand;//记录左边栏的状态
+      $("#top_under").removeClass("top_under");
+      $("#top_under").removeClass("top_under1");
+      $("#top_under").addClass("top_under1");
       $(this).css({
-       // "background-image":"url('<%=path%>/test1/images/mainPage/collapse.png')"
       }).html("退出全屏");
+      //返回指定的面板
       $("#mainLayout").layout("panel","north").panel("resize", {"height":28});
       $("#mainTab").css("margin-top","1px");
-      //$("#top").css({
-        //"background-image":"url('<%=path%>/test1/images/mainPage/topBanner_.jpg')"
-      //});
       $("#mainLayout").layout("resize");
       $("#west").css("height", $("#west").height()+52);
       $("#gisMain").css("height", $("#gisMain").height()+52);
       $("#gisFrame").css("height", $("#gisFrame").height()+52);
-      if (westExpand) $("#splitbutton").click();
       $("#logoImg").hide();
       $("#titleImg").hide();
-      /*
-      $("#mainTab").find(".mtabText").hide();
-      $("#mainTab").find(".mtabSM").hide();
-      $("#mainTab").find(".mtabSF").hide();
-      $("#mainTab").css("margin-left","0px");
-      */
-      $("#welcom").css("float","left").css("margin-top","6px").css("margin-left","20px");
-      $("#commonFunc").hide();
-      $("#logoutD").show();
       if (hasRefreshCacheAuth) $("#refreshCacheD").show();
+      isFullScreen=true;
     }
-    isFullScreen=!isFullScreen;
   });
 }
+Array.prototype.removeByIndex = function (i){
+  if (i>=0 && i < this.length) {
+    var ret = this.slice(0,i).concat(this.slice(i+1));
+    this.length = 0;
+    this.push.apply(this,ret);
+  }
+};
 </script>
 </html>
