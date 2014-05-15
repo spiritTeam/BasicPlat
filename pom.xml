@@ -53,7 +53,37 @@
     <outputDirectory>${build.webProjectDir}\WebContent\WEB-INF\classes</outputDirectory>
     <!-- 设置测试代码编译后的字节代码的目录 -->
     <testOutputDirectory>${build.webProjectDir}\target\test-classes</testOutputDirectory>
-    <!-- 这里定义的资源将作为资源拷贝或打包到目标中。所有的配置文件(xml,propertis)都会按目录进行打包了 -->
+
+    <!-- m2e插件 若用myeclipse，可能需要加入如下内容
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.eclipse.m2e</groupId>
+          <artifactId>lifecycle-mapping</artifactId>
+          <version>1.0.0</version>
+          <configuration>
+            <lifecycleMappingMetadata>
+               <pluginExecutions>
+                  <pluginExecution>
+                  <pluginExecutionFilter>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <versionRange>[1.0.0,)</versionRange>
+                    <goals>
+                      <goal>copy-dependencies</goal>
+                    </goals>
+                  </pluginExecutionFilter>
+                  <action>
+                    <ignore />
+                  </action>
+                </pluginExecution>
+              </pluginExecutions>
+            </lifecycleMappingMetadata>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement> -->
+
     <plugins>
       <!-- 打war包，作为底层框架不应打成jar包，这里只是参考 -->
       <plugin>
@@ -110,13 +140,13 @@
       <plugin>          
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>2.7</version>
+        <version>2.9.1</version>
         <executions>
           <execution>
             <id>attach-javadocs</id>
-              <goals>
-                <goal>jar</goal>
-              </goals>
+            <goals>
+              <goal>jar</goal>
+            </goals>
           </execution>
         </executions>
       </plugin>
