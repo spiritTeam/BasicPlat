@@ -1,5 +1,4 @@
-﻿/target
-/doc/javaDoc
+﻿/doc
 /WebContent/log
 /WebContent/WEB-INF/lib
 /WebContent/WEB-INF/classes
@@ -8,3 +7,4 @@
 
 /.classpath
 /.project
+/target
