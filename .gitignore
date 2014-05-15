@@ -1,9 +1,10 @@
-﻿/上传
-/target
+﻿/target
 /doc/javaDoc
 /WebContent/log
 /WebContent/WEB-INF/lib
 /WebContent/WEB-INF/classes
 /
 /pom.xml
-/target
+
+.classpath
+.project
