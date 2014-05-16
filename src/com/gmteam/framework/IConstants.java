@@ -23,4 +23,6 @@ public class IConstants {
     public final static String SESSION_USER="userInfo";
     public final static String SESSION_USERINGROUP="userInGroup";
     public final static String SESSION_USERAUTHORITY="userAuthority";
+
+    public final static String CATCH_MODULE="ModuleInMemory";
 }

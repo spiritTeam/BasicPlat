@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.gmteam.framework.utils.JsonUtil;
+import com.gmteam.framework.util.JsonUtil;
 
 /**
  * @author WH

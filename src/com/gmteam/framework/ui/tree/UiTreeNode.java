@@ -8,7 +8,7 @@ import java.util.Map;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.gmteam.framework.core.model.tree.TreeNode;
 import com.gmteam.framework.core.model.tree.TreeNodeBean;
-import com.gmteam.framework.utils.JsonUtil;
+import com.gmteam.framework.util.JsonUtil;
 
 
 /**

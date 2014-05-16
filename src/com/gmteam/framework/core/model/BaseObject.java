@@ -8,7 +8,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import com.gmteam.framework.utils.ReflectUtil;
+import com.gmteam.framework.util.ReflectUtil;
 
 /**
  * 所有pojo的基类

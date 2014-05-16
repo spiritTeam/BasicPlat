@@ -61,7 +61,7 @@ public class TreeNodeBean extends BaseObject implements Cloneable {
      * @param nodeName 结点名称
      */
     public void setNodeName(String nodeName) {
-        this.nodeName = nodeName;
+        this.nodeName = (nodeName==null?null:nodeName.trim());
     }
     //排序
     private int order;
@@ -72,6 +72,7 @@ public class TreeNodeBean extends BaseObject implements Cloneable {
     public int getOrder() {
         return this.order;
     }
+
     /**
      * 设置结点的排序序号
      * @param order 树结点的排序号
@@ -79,6 +80,7 @@ public class TreeNodeBean extends BaseObject implements Cloneable {
     public void setOrder(int order) {
         this.order=order;
     }
+
     //排序模式:若orderType=0从大到小排列；若orderType=1从小到大排列，默认为0从大到小排序
     protected int orderType=0;
     /**

@@ -25,8 +25,8 @@ import com.gmteam.framework.IConstants;
 import com.gmteam.framework.core.cache.CacheEle;
 import com.gmteam.framework.core.cache.SystemCache;
 import com.gmteam.framework.ext.io.StringPrintWriter;
-import com.gmteam.framework.utils.FileNameUtil;
-import com.gmteam.framework.utils.JsonUtil;
+import com.gmteam.framework.util.FileNameUtil;
+import com.gmteam.framework.util.JsonUtil;
 
 import org.springframework.web.servlet.mvc.Controller;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;

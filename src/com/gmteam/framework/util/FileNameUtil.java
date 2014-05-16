@@ -1,4 +1,4 @@
-package com.gmteam.framework.utils;
+package com.gmteam.framework.util;
 
 import java.io.File;
 

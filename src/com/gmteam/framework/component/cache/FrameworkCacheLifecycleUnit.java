@@ -1,22 +1,62 @@
 package com.gmteam.framework.component.cache;
 
+import java.util.Map;
+
 import javax.annotation.Resource;
 
-import com.gmteam.framework.component.module.service.ModuleService;
+import org.apache.log4j.Logger;
+
+import com.gmteam.framework.IConstants;
+import com.gmteam.framework.component.module.service.ModuleCacheService;
 import com.gmteam.framework.core.cache.AbstractCacheLifecycleUnit;
+import com.gmteam.framework.core.cache.CacheEle;
+import com.gmteam.framework.core.cache.SystemCache;
 
 public class FrameworkCacheLifecycleUnit extends AbstractCacheLifecycleUnit {
+    /**
+     * 日志
+     */
+    private Logger logger = Logger.getLogger(FrameworkCacheLifecycleUnit.class);
 
     @Resource
-    private ModuleService moduleService;
+    private ModuleCacheService moduleCacheService;
 
     @Override
     public void init() {
-        System.out.println("ABC");
+        try {
+            //装载模块信息
+            loadModule();
+        } catch (Exception e) {
+            logger.info("启动时加载{框架}缓存出错", e);
+        }
     }
 
+    /**
+     * 刷新缓存中指定的缓存单元(CacheEle)
+     * @param key 缓存单元的标识
+     */
     @Override
     public void refresh(String key) {
-        
+        try {
+            if (key.equals(IConstants.CATCH_MODULE)) {
+                SystemCache.remove(IConstants.CATCH_MODULE);
+                loadModule();
+            }
+        } catch (Exception e) {
+            logger.info("重载缓存项{框架[" + key + "]}失败：", e);
+        }
+    }
+
+    /**
+     * 装载模块缓存
+     * @throws Exception
+     */
+    public void loadModule() throws Exception {
+        try {
+            Map<String, Object> mo = moduleCacheService.makeCacheObject();
+            SystemCache.setCache(new CacheEle<Map<String, Object>>(IConstants.APPOSPATH, "模块", mo));
+        } catch(Exception e) {
+            throw new Exception("加载缓存项{框架[模块]}失败：", e);
+        }
     }
 }
