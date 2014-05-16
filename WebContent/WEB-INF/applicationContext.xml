@@ -45,7 +45,6 @@
 
   <bean id="sqlSessionFactory" class="com.gmteam.framework.ext.spring.mybatis.MySqlSessionFactoryBean">
     <property name="configLocations">
-      <!--此功能等待扩展-->
       <list merge="default">
         <value>classpath*:mybatisConfig\frameworkMybatis.xml</value>
         <value>classpath*:mybatisConfig\*.mappers.cfg.xml</value>

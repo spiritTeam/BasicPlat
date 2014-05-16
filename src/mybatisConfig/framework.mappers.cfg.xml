@@ -4,8 +4,10 @@
   <!-- 类别名设置 -->
   <typeAliases>
     <typeAlias alias="User" type="com.gmteam.framework.component.login.pojo.User"/>
+    <typeAlias alias="Module" type="com.gmteam.framework.component.module.pojo.Module"/>
   </typeAliases>
   <mappers>
     <mapper resource="com/gmteam/framework/component/login/sql/User.mapper.xml"/>
+    <mapper resource="com/gmteam/framework/component/module/sql/Module.mapper.xml"/>
   </mappers>
 </configuration>
