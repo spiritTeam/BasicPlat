@@ -7,19 +7,19 @@
   xmlns:tx="http://www.springframework.org/schema/tx"
   xmlns:mvc="http://www.springframework.org/schema/mvc"
   xsi:schemaLocation="http://www.springframework.org/schema/beans
-       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-       http://www.springframework.org/schema/context
-       http://www.springframework.org/schema/context/spring-context-3.0.xsd
-       http://www.springframework.org/schema/mvc
-       http://www.springframework.org/schema/mvc/spring-mvc.xsd
-       http://www.springframework.org/schema/aop
-       http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-3.0.xsd
+    http://www.springframework.org/schema/mvc
+    http://www.springframework.org/schema/mvc/spring-mvc.xsd
+    http://www.springframework.org/schema/aop
+    http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
 
   <mvc:resources mapping="/resources/**" location="/resources/"/>
 
   <!-- 扫描类包，将标注Spring注解的类自动转化Bean，同时完成Bean的注入 -->
-  <context:component-scan base-package="com.gmteam.framework.*">
-    <context:include-filter type="regex" expression=".core.web.Controller.*"/>
+  <context:component-scan base-package="com.gmteam.framework.component" use-default-filters="false">
+    <context:include-filter type="regex" expression=".*.web.*Controller"/>
   </context:component-scan>
 
   <!-- 符合Spring3.5之后的配置；支持自动把object转变为json串的配置 -->
@@ -46,22 +46,4 @@
     </property>
   </bean>
 
-  <!-- 处理文件上传 -->
-  <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" >
-    <property name="defaultEncoding" value="utf-8"/> <!-- 默认编码 (ISO-8859-1) -->
-    <property name="maxInMemorySize" value="10240"/> <!-- 最大内存大小 (10240)-->
-    <property name="uploadTempDir" value="/upload/"/> <!-- 此路径为临时路径上传后的目录名 (WebUtils#TEMP_DIR_CONTEXT_ATTRIBUTE) -->
-    <property name="maxUploadSize" value="52428800"/> <!-- 5000kb最大文件大小，这个属性的限制不针对单个文件，而是所有文件的容量之和，-1为无限止(-1) -->
-    <!--resolveLazily属性启用是为了推迟文件解析，以便在UploadAction 中捕获文件大小异常-->
-    <property name="resolveLazily" value="true"/>
-  </bean>
-
-  <!-- 以下为文件上传的测试代码 -->
-  <bean name="/uploadtest.do" class="com.gmteam.framework.component.fileUploadDownload.SimpleFileUploadController">
-    <property name="savePath" value="abc"/> <!-- 保存的路径,与上一个参数 -->
-    <property name="filePrefix" value="aabbcc"/> <!-- 保存文件的前缀名 -->
-  </bean>
-  <!-- 以下为文件上传的测试代码 -->
-  <bean name="/uploadtest1.do" class="com.gmteam.framework.component.fileUploadDownload.SimpleFileUploadController">
-  </bean>
 </beans>

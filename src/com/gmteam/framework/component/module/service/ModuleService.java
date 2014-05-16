@@ -11,6 +11,7 @@ import com.gmteam.framework.core.model.tree.TreeNode;
 
 @Service
 public class ModuleService {
+
     @Resource(name="defaultDAO")
     private MybatisDAO<Module> dao;
 

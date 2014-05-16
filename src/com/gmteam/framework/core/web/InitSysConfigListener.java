@@ -26,11 +26,17 @@ import com.gmteam.framework.IConstants;
  * 系统初始化监听器
  */
 public class InitSysConfigListener implements ServletContextListener {
-    /** 日志 */
     private Logger logger = Logger.getLogger(InitSysConfigListener.class);
-    /** 缓存管理 */
-    //CacheLifecycleManager cacheManager;
-    CachePool cachePool;
+    /**
+     * 缓存管理
+     */
+    private CachePool cachePool;
+    public CachePool getCachePool() {
+        return cachePool;
+    }
+    public void setCachePool(CachePool cachePool) {
+        this.cachePool=cachePool;
+    }
 
     /**
      * context初始化
@@ -49,6 +55,8 @@ public class InitSysConfigListener implements ServletContextListener {
             );
 
             //依赖注入，注入本类，为cacheManager做准备
+            WebApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(sc);
+            Object o = context.getBean("moduleService");
             dependencyInject(sc);
             //缓存框架存储
             if (cachePool!=null) {
@@ -69,19 +77,11 @@ public class InitSysConfigListener implements ServletContextListener {
     }
 
     /**
-     * 根据TYPE用setter方法做注入，此方法用于吧CachePool从bean中引入
+     * 根据TYPE用setter方法做注入，此方法用于把CachePool从bean中引入
      */
     private void dependencyInject(ServletContext sc) {
         WebApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(sc);
         AutowireCapableBeanFactory factory = context.getAutowireCapableBeanFactory();
         factory.autowireBeanProperties(this, AutowireCapableBeanFactory.AUTOWIRE_BY_TYPE, false);
-    }
-
-    public CachePool getCachePool() {
-        return cachePool;
-    }
-
-    public void setCachePool(CachePool cachePool) {
-        this.cachePool=cachePool;
     }
 }
