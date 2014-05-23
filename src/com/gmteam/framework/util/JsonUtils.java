@@ -9,7 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * 处理Json的方法类
  * @author wh
  */
-public abstract class JsonUtil {
+public abstract class JsonUtils {
     private static ObjectMapper mapper;
 
     /**
@@ -97,7 +97,7 @@ public abstract class JsonUtil {
      * @throws JsonProcessingException 异常 
      */
     public static String Obj2AjaxJson(Object obj, int type) throws JsonProcessingException {
-        return JsonUtil.beanToJson(JsonUtil.Obj2AjaxMap(obj, type));
+        return JsonUtils.beanToJson(JsonUtils.Obj2AjaxMap(obj, type));
     }
 
     /**

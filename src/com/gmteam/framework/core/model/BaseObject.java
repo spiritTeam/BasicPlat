@@ -5,10 +5,8 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
 import org.apache.log4j.Logger;
-
-import com.gmteam.framework.util.ReflectUtil;
+import com.gmteam.framework.util.ReflectUtils;
 
 /**
  * 所有pojo的基类
@@ -27,7 +25,7 @@ public abstract class BaseObject implements Serializable {
         Map<String, Object> propertiesMap = new HashMap<String, Object>();
         try {
             Class<? extends BaseObject> clazz = this.getClass();
-            propertiesMap = ReflectUtil.Object2MapWithoutNull(clazz, this);
+            propertiesMap = ReflectUtils.Object2MapWithoutNull(clazz, this);
         } catch(Exception e) {
             log.info("转换类"+this.getClass().getName()+"实例为HASHMAP失败",e);
             propertiesMap = null;
@@ -43,7 +41,7 @@ public abstract class BaseObject implements Serializable {
         Map<String, Object> propertiesMap = new HashMap<String, Object>();
         try {
             Class<? extends BaseObject> clazz = this.getClass();
-            propertiesMap = ReflectUtil.Bean2MapWithoutNull(clazz, this);
+            propertiesMap = ReflectUtils.Bean2MapWithoutNull(clazz, this);
         } catch(Exception e) {
             log.info("转换类"+this.getClass().getName()+"实例为HASHMAP失败",e);
             propertiesMap = null;

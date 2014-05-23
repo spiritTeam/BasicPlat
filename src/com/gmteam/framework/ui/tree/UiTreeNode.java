@@ -8,7 +8,7 @@ import java.util.Map;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.gmteam.framework.core.model.tree.TreeNode;
 import com.gmteam.framework.core.model.tree.TreeNodeBean;
-import com.gmteam.framework.util.JsonUtil;
+import com.gmteam.framework.util.JsonUtils;
 
 
 /**
@@ -39,7 +39,7 @@ public class UiTreeNode<T extends UiTreeNodeBean> extends TreeNode<T> {
      * @throws JsonProcessingException
      */
     protected String toJsonTree() throws JsonProcessingException {
-        return JsonUtil.beanToJson(this.toTreeMap());
+        return JsonUtils.beanToJson(this.toTreeMap());
     }
 
     /**
@@ -71,7 +71,7 @@ public class UiTreeNode<T extends UiTreeNodeBean> extends TreeNode<T> {
      * @throws JsonProcessingException
      */
     protected String toJsonTreeGrid() throws JsonProcessingException {
-        return JsonUtil.beanToJson(this.toTreeGridMap());
+        return JsonUtils.beanToJson(this.toTreeGridMap());
     }
 
     /**

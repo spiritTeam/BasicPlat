@@ -1,5 +1,6 @@
 package com.gmteam.framework.component.cache;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -7,6 +8,7 @@ import javax.annotation.Resource;
 import org.apache.log4j.Logger;
 
 import com.gmteam.framework.IConstants;
+import com.gmteam.framework.component.module.pojo.Module;
 import com.gmteam.framework.component.module.service.ModuleCacheService;
 import com.gmteam.framework.core.cache.AbstractCacheLifecycleUnit;
 import com.gmteam.framework.core.cache.CacheEle;
@@ -54,6 +56,11 @@ public class FrameworkCacheLifecycleUnit extends AbstractCacheLifecycleUnit {
     public void loadModule() throws Exception {
         try {
             Map<String, Object> mo = moduleCacheService.makeCacheObject();
+            List<Module> el = (List<Module>)mo.get("errors");
+            for (Module m: el) {
+                logger.debug("结点没有对应的根结点：{id="+m.getId()+"; name="+m.getNodeName()+"; parentId="+m.getParentId()+"}");
+            }
+            mo.remove("errors");
             SystemCache.setCache(new CacheEle<Map<String, Object>>(IConstants.APPOSPATH, "模块", mo));
         } catch(Exception e) {
             throw new Exception("加载缓存项{框架[模块]}失败：", e);

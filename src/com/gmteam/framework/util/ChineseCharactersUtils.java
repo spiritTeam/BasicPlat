@@ -11,7 +11,7 @@ import java.util.Set;
  * 2-半角转全角
  * 3-全角转半角
  */
-public abstract class ChineseCharactersUtil {
+public abstract class ChineseCharactersUtils {
 
     private static LinkedHashMap<String, Integer> spellMap = null;
     static {

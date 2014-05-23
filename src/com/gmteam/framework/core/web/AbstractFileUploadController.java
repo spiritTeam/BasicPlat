@@ -25,8 +25,8 @@ import com.gmteam.framework.IConstants;
 import com.gmteam.framework.core.cache.CacheEle;
 import com.gmteam.framework.core.cache.SystemCache;
 import com.gmteam.framework.ext.io.StringPrintWriter;
-import com.gmteam.framework.util.FileNameUtil;
-import com.gmteam.framework.util.JsonUtil;
+import com.gmteam.framework.util.FileNameUtils;
+import com.gmteam.framework.util.JsonUtils;
 
 import org.springframework.web.servlet.mvc.Controller;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
@@ -109,7 +109,7 @@ public abstract class AbstractFileUploadController implements Controller, Handle
         MappingJackson2JsonView mjjv = new MappingJackson2JsonView();
         response.setHeader("Cache-Control", "no-cache");
         mjjv.setContentType("text/html; charset=UTF-8");
-        mjjv.setAttributesMap(JsonUtil.Obj2AjaxMap(strintPrintWriter.getString(), 0));
+        mjjv.setAttributesMap(JsonUtils.Obj2AjaxMap(strintPrintWriter.getString(), 0));
         ModelAndView mav = new ModelAndView();
         mav.setView(mjjv);
         return mav;
@@ -124,14 +124,14 @@ public abstract class AbstractFileUploadController implements Controller, Handle
         Map<String, MultipartFile> files = multipartRequest.getFileMap();
 
         //处理路径
-        String _path = FileNameUtil.concatPath(this.appOSPath, this.defaultPath);
+        String _path = FileNameUtils.concatPath(this.appOSPath, this.defaultPath);
         File f;
         if (this.savePath!=null&&this.savePath.trim().length()>0) {//有路径
             f = new File(this.savePath);
             if (f.isAbsolute()) _path=this.savePath;
-            else _path = FileNameUtil.concatPath(_path, this.savePath);
+            else _path = FileNameUtils.concatPath(_path, this.savePath);
         }
-        if (this.isDatePath) _path=FileNameUtil.getDateRulePath(_path);
+        if (this.isDatePath) _path=FileNameUtils.getDateRulePath(_path);
         //处理文件名称字段
         String[] storeFileNames = null;
         if (this.storeFileNameFieldName!=null) {
@@ -152,7 +152,7 @@ public abstract class AbstractFileUploadController implements Controller, Handle
             if (storeFileName==null) storeFileName = file.getOriginalFilename();
 
             if (this.filePrefix!=null&&this.filePrefix.trim().length()>0) storeFileName = this.filePrefix+"_"+storeFileName;
-            storeFileName = FileNameUtil.concatPath(_path, storeFileName);
+            storeFileName = FileNameUtils.concatPath(_path, storeFileName);
             //拷贝文件
             Map<String, Object> oneFileDealRetMap = saveMultipartFile2File(file, storeFileName);
             boolean isBreak=false;
@@ -189,7 +189,7 @@ public abstract class AbstractFileUploadController implements Controller, Handle
         MappingJackson2JsonView mjjv = new MappingJackson2JsonView();
         response.setHeader("Cache-Control", "no-cache");
         mjjv.setContentType("text/html; charset=UTF-8");
-        mjjv.setAttributesMap(JsonUtil.Obj2AjaxMap(retl, 0));
+        mjjv.setAttributesMap(JsonUtils.Obj2AjaxMap(retl, 0));
         ModelAndView mav = new ModelAndView();
         mav.setView(mjjv);
         return mav;
@@ -211,7 +211,7 @@ public abstract class AbstractFileUploadController implements Controller, Handle
 
         //处理文件名
         try {
-            String dirName = FileNameUtil.getFilePath(fileName);
+            String dirName = FileNameUtils.getFilePath(fileName);
             File storeFilePath = new File(dirName);
             if (!storeFilePath.isDirectory()) storeFilePath.mkdirs();
 
@@ -232,13 +232,13 @@ public abstract class AbstractFileUploadController implements Controller, Handle
                         m.put("storeFileName", fileName);
                     }
                 } else {
-                    String _fPath, _fPureName, _fExt, _orgFPureName=FileNameUtil.getPureFileName(fileName);
+                    String _fPath, _fPureName, _fExt, _orgFPureName=FileNameUtils.getPureFileName(fileName);
                     int i=10;
                     while (i>0) {
-                        _fPath = FileNameUtil.getFilePath(fileName);
-                        _fPureName = FileNameUtil.getPureFileName(fileName)+"(1)";
-                        _fExt = FileNameUtil.getExt(fileName);
-                        fileName = FileNameUtil.concatPath(_fPath, _fPureName+_fExt);
+                        _fPath = FileNameUtils.getFilePath(fileName);
+                        _fPureName = FileNameUtils.getPureFileName(fileName)+"(1)";
+                        _fExt = FileNameUtils.getExt(fileName);
+                        fileName = FileNameUtils.concatPath(_fPath, _fPureName+_fExt);
                         storeFile = new File(fileName);
                         if (!storeFile.isFile()) break;
                         i--;
@@ -249,9 +249,9 @@ public abstract class AbstractFileUploadController implements Controller, Handle
                         for (int j=0; j<l; j++) {
                             _orgFPureName = _orgFPureName+"(1)";
                         }
-                        _fPath = FileNameUtil.getFilePath(fileName);
-                        _fExt = FileNameUtil.getExt(fileName);
-                        fileName = FileNameUtil.concatPath(_fPath, _orgFPureName+_fExt);
+                        _fPath = FileNameUtils.getFilePath(fileName);
+                        _fExt = FileNameUtils.getExt(fileName);
+                        fileName = FileNameUtils.concatPath(_fPath, _orgFPureName+_fExt);
                         storeFile = new File(fileName);
                         if (storeFile.isFile()) {
                             if (!storeFile.delete()) {

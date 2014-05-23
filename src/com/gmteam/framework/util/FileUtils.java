@@ -12,7 +12,7 @@ import java.util.List;
  * @author zhuhua
  * 封装了文件操作
  */
-public abstract class FileUtil {
+public abstract class FileUtils {
     /**
      * 删除文件或文件夹下的文件，包括子目录中的文件，但不删除文件夹
      * 
@@ -39,7 +39,7 @@ public abstract class FileUtil {
      */
     public static boolean copyPath(String sourcePath, String desPath) {
         File file = new File(sourcePath);
-        String desFile = FileNameUtil.concatPath(desPath, file.getName());
+        String desFile = FileNameUtils.concatPath(desPath, file.getName());
         if (file.isDirectory()) {
             File desfile = new File(desFile);
             if (desfile.isFile()) return false;
@@ -49,7 +49,7 @@ public abstract class FileUtil {
             String[] fileArray = file.list();
             for (int i = 0; i < fileArray.length; i++) {
                 String subFile = fileArray[i];
-                if (!copyPath(FileNameUtil.concatPath(sourcePath, subFile), desFile))
+                if (!copyPath(FileNameUtils.concatPath(sourcePath, subFile), desFile))
                     return false;
             }
             return true;

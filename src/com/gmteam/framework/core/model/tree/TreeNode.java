@@ -2,6 +2,7 @@ package com.gmteam.framework.core.model.tree;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -618,5 +619,18 @@ public class TreeNode<T extends TreeNodeBean> extends BaseObject implements Clon
         }
 
         return cloneTn;
+    }
+
+    /**
+     * 按深度遍历，得到本结点以及所有下级结点的树对象列表
+     * @return 树对象列表
+     */
+    public List<T> getAllBeansList() {
+        List<T> l = new ArrayList<T>();
+        l.add(this.getTnEntity());
+        if (!this.isLeaf()) {
+            for (TreeNode<T> tn: this.getChildren()) l.addAll(tn.getAllBeansList());
+        }
+        return l;
     }
 }

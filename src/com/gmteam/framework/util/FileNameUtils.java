@@ -2,7 +2,7 @@ package com.gmteam.framework.util;
 
 import java.io.File;
 
-public abstract class FileNameUtil {
+public abstract class FileNameUtils {
     /**
      * 用系统文件分割符号连接文件路径
      * @param path1 第一个路径
@@ -37,7 +37,7 @@ public abstract class FileNameUtil {
      */
     public static String getDateRulePath(String filePrefix) {
         String strRulePath = "";
-        strRulePath = DateUtil.getDateValue(new java.util.Date());
+        strRulePath = DateUtils.getDateValue(new java.util.Date());
         String[] tmpArr = strRulePath.split("-");
         strRulePath = "";
         for (String tmp: tmpArr) strRulePath += tmp + File.separator;
@@ -72,7 +72,7 @@ public abstract class FileNameUtil {
      * @return 文件路径
      */
     public static String getPureFileName(String localFullPath){
-        String fileName = FileNameUtil.getFileName(localFullPath);
+        String fileName = FileNameUtils.getFileName(localFullPath);
         int lastDirPos = fileName.lastIndexOf(".");
         if (lastDirPos!=-1) return fileName.substring(0, lastDirPos);
         else return fileName;

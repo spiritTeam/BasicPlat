@@ -12,7 +12,7 @@ import java.util.Locale;
  * 对时间日期类型做了统一处理，可以满足绝大多数对日期型操作的要求
  * @author zhuhua
  */
-public abstract class DateUtil {
+public abstract class DateUtils {
 
     //获取时间的字符串，把时间转换为字符串
     /**
@@ -92,7 +92,7 @@ public abstract class DateUtil {
     public static String[] splitDatetime(Date date) {
         GregorianCalendar calendar = new GregorianCalendar();
         calendar.setTime(date);
-        return DateUtil.splitDatetime(calendar);
+        return DateUtils.splitDatetime(calendar);
     }
 
     /**
@@ -102,7 +102,7 @@ public abstract class DateUtil {
      * @return 生成的日期，格式为YYYY-MM-DD HH24:MI:SS
      */
     public static String getDateTimeStr(GregorianCalendar calendar) {
-        String timeStr[] = DateUtil.splitDatetime(calendar);
+        String timeStr[] = DateUtils.splitDatetime(calendar);
         return timeStr[0]+"-"+timeStr[1]+"-"+timeStr[2]+" "+timeStr[3]+":"+timeStr[4]+":"+timeStr[5];
     }
 
@@ -113,7 +113,7 @@ public abstract class DateUtil {
      * @return 生成的日期，格式为YYYY年MM月DD日 HH24时MI分SS秒
      */
     public static String getDateTimeChineseStr(GregorianCalendar calendar) {
-        String timeStr[] = DateUtil.splitDatetime(calendar);
+        String timeStr[] = DateUtils.splitDatetime(calendar);
         return timeStr[0]+"年"+timeStr[1]+"月"+timeStr[2]+"日 "+timeStr[3]+"时"+timeStr[4]+"分"+timeStr[5]+"秒";
     }
 
@@ -126,7 +126,7 @@ public abstract class DateUtil {
     public static String getDateTimeStr(Date date) {
         GregorianCalendar calendar = new GregorianCalendar();
         calendar.setTime(date);
-        return DateUtil.getDateTimeStr(calendar);
+        return DateUtils.getDateTimeStr(calendar);
     }
 
     /**
@@ -138,7 +138,7 @@ public abstract class DateUtil {
     public static String getDateTimeChineseStr(Date date) {
         GregorianCalendar calendar = new GregorianCalendar();
         calendar.setTime(date);
-        return DateUtil.getDateTimeChineseStr(calendar);
+        return DateUtils.getDateTimeChineseStr(calendar);
     }
 
     /**
@@ -148,7 +148,7 @@ public abstract class DateUtil {
      * @return 生成的时间字符串，格式为HH24:MI:SS
      */
     public static String getTimeStr(GregorianCalendar calendar) {
-        String timeStr[] = DateUtil.splitDatetime(calendar);
+        String timeStr[] = DateUtils.splitDatetime(calendar);
         return timeStr[3]+":"+timeStr[4]+":"+timeStr[5]+"."+timeStr[6];
     }
 
@@ -159,7 +159,7 @@ public abstract class DateUtil {
      * @return 生成的时间字符串，格式为HH24时MI分SS秒
      */
     public static String getTimeChineseStr(GregorianCalendar calendar) {
-        String timeStr[] = DateUtil.splitDatetime(calendar);
+        String timeStr[] = DateUtils.splitDatetime(calendar);
         return timeStr[3]+":"+timeStr[4]+":"+timeStr[5]+"."+timeStr[6];
     }
 
@@ -172,7 +172,7 @@ public abstract class DateUtil {
     public static String getTimeStr(Date date) {
         GregorianCalendar calendar = new GregorianCalendar();
         calendar.setTime(date);
-        return DateUtil.getTimeStr(calendar);
+        return DateUtils.getTimeStr(calendar);
     }
 
     /**
@@ -184,7 +184,7 @@ public abstract class DateUtil {
     public static String getTimeChineseStr(Date date) {
         GregorianCalendar calendar = new GregorianCalendar();
         calendar.setTime(date);
-        return DateUtil.getTimeChineseStr(calendar);
+        return DateUtils.getTimeChineseStr(calendar);
     }
 
     //时间计算方法
@@ -218,7 +218,7 @@ public abstract class DateUtil {
     public final static Date getDayStart(Date date) {
         GregorianCalendar calendar = new GregorianCalendar();
         calendar.setTime(date);
-        DateUtil.setDayStart(calendar);
+        DateUtils.setDayStart(calendar);
         return calendar.getTime();
     }
 
@@ -231,7 +231,7 @@ public abstract class DateUtil {
     public final static Date getDayEnd(Date date) {
         GregorianCalendar calendar = new GregorianCalendar();
         calendar.setTime(date);
-        DateUtil.setDayEnd(calendar);
+        DateUtils.setDayEnd(calendar);
         return calendar.getTime();
     }
 
@@ -245,7 +245,7 @@ public abstract class DateUtil {
         GregorianCalendar calendar = new GregorianCalendar();
         calendar.setTime(date);
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
-        DateUtil.setDayStart(calendar);
+        DateUtils.setDayStart(calendar);
         return calendar.getTime();
     }
 
@@ -259,7 +259,7 @@ public abstract class DateUtil {
         GregorianCalendar calendar = new GregorianCalendar();
         calendar.setTime(date);
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
-        DateUtil.setDayEnd(calendar);
+        DateUtils.setDayEnd(calendar);
         return calendar.getTime();
     }
 
@@ -273,7 +273,7 @@ public abstract class DateUtil {
         GregorianCalendar calendar = new GregorianCalendar();
         calendar.setTime(date);
         calendar.set(Calendar.DAY_OF_MONTH, 1);
-        DateUtil.setDayStart(calendar);
+        DateUtils.setDayStart(calendar);
         return calendar.getTime();
     }
 
@@ -289,7 +289,7 @@ public abstract class DateUtil {
         calendar.set(Calendar.DAY_OF_MONTH, 1);
         calendar.add(Calendar.MONTH, 1);
         calendar.add(Calendar.DATE, -1);
-        DateUtil.setDayEnd(calendar);
+        DateUtils.setDayEnd(calendar);
         return calendar.getTime();
     }
 
@@ -303,7 +303,7 @@ public abstract class DateUtil {
         GregorianCalendar calendar = new GregorianCalendar();
         calendar.setTime(date);
         calendar.set(Calendar.DAY_OF_YEAR, 1);
-        DateUtil.setDayStart(calendar);
+        DateUtils.setDayStart(calendar);
         return calendar.getTime();
     }
 
@@ -319,7 +319,7 @@ public abstract class DateUtil {
         calendar.add(Calendar.YEAR, 1);
         calendar.set(Calendar.DAY_OF_YEAR, 1);
         calendar.add(Calendar.DAY_OF_YEAR, -1);
-        DateUtil.setDayEnd(calendar);
+        DateUtils.setDayEnd(calendar);
         return calendar.getTime();
     }
 

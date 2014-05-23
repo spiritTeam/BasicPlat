@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.gmteam.framework.util.JsonUtil;
+import com.gmteam.framework.util.JsonUtils;
 
 /**
  * @author WH
@@ -77,6 +77,6 @@ public class SystemCache {
             m.put("cacheEleContentClass", (ce.getContent()).getClass().getName());
             cl.add(m);
         }
-        return JsonUtil.beanToJson(cl);
+        return JsonUtils.beanToJson(cl);
     }
 }

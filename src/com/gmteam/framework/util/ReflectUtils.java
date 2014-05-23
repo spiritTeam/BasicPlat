@@ -12,8 +12,8 @@ import org.apache.log4j.Logger;
  * 反射工具类
  * @author zhuhua wh
  */
-public abstract class ReflectUtil {
-    private final static Logger logger = Logger.getLogger(ReflectUtil.class);
+public abstract class ReflectUtils {
+    private final static Logger logger = Logger.getLogger(ReflectUtils.class);
     private final static String[] classList= {"java.lang.Integer", "java.lang.Short", "java.lang.Long"
         ,"java.lang.Double", "java.lang.Float", "java.lang.Byte", "java.lang.Character", "java.lang.Boolean"
         ,"java.lang.String", "java.util.Date", "java.util.Calendar", "java.lang.StringBuffer"
@@ -155,7 +155,7 @@ public abstract class ReflectUtil {
                     } catch(Exception e) {
                         
                     }
-                    if (ReflectUtil.isMyClass(_type, value)) {
+                    if (ReflectUtils.isMyClass(_type, value)) {
                         if ((key.startsWith("get")&&key.length()>3)) {
                             key = key.substring(3);
                             key = key.substring(0, 1).toLowerCase()+key.substring(1);
@@ -189,7 +189,7 @@ public abstract class ReflectUtil {
             if (object!=null) {
                 if (typeName.equals("java.util.Date")) {
                     Date date = (Date) object;
-                    value = DateUtil.getDateTimeStr(date);
+                    value = DateUtils.getDateTimeStr(date);
                 } else value = object.toString(); //复杂类型暂时不处理，调用默认toString方法。
             }
         } catch (Exception e) {
