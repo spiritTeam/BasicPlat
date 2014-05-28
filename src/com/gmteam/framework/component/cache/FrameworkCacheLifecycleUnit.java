@@ -61,7 +61,7 @@ public class FrameworkCacheLifecycleUnit extends AbstractCacheLifecycleUnit {
                 logger.debug("结点没有对应的根结点：{id="+m.getId()+"; name="+m.getNodeName()+"; parentId="+m.getParentId()+"}");
             }
             mo.remove("errors");
-            SystemCache.setCache(new CacheEle<Map<String, Object>>(IConstants.APPOSPATH, "模块", mo));
+            SystemCache.setCache(new CacheEle<Map<String, Object>>(IConstants.CATCH_MODULE, "模块", mo));
         } catch(Exception e) {
             throw new Exception("加载缓存项{框架[模块]}失败：", e);
         }
