@@ -1,8 +1,6 @@
 package com.gmteam.framework.component.module.web;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -14,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.gmteam.framework.component.module.pojo.Module;
 import com.gmteam.framework.component.module.service.ModuleService;
 import com.gmteam.framework.core.model.tree.TreeNode;
-import com.gmteam.framework.ui.tree.EasyUiTree;
+import com.gmteam.framework.ui.tree.easyUi.EasyUiTree;
 
 @Controller
 public class ModuleController {
@@ -22,21 +20,29 @@ public class ModuleController {
     @Resource
     private ModuleService moduleService;
 
-    @RequestMapping("test.do")
+    @RequestMapping("showAllTree.do")
     @ResponseBody
-    public Map<String,Object>  test() {
+    public Map<String,Object> showAllTree() throws CloneNotSupportedException {
         Map<String,Object> map = new HashMap<String, Object>();
-        List<TreeNode<Module>> root = moduleService.getRoot();
-        TreeNode<Module> node = root.get(0);
-        EasyUiTree t = new EasyUiTree(node);
-        EasyUiTree s = new EasyUiTree();
-        s.setChildren(new ArrayList<EasyUiTree>());
-        s.getChildren().add(t);
-        map.put("isPass", true);
-        map.put("msg","登陆成功");
-        map.put("type", 1);
-        System.out.println(t.getId().equals("1"));
-        map.put("data", s);
+        TreeNode<Module> root = moduleService.getModuleRoot();
+        EasyUiTree<Module> met = new EasyUiTree<Module>(root);
+        for (TreeNode<Module> eut: met.getChildren()) {
+            ((EasyUiTree<Module>)eut).setState("open");
+        }
+        map = met.toTreeMap();
+        return map;
+    }
+
+    @RequestMapping("showAllTreeGrid.do")
+    @ResponseBody
+    public Map<String,Object> showAllTreeGrid() throws CloneNotSupportedException {
+        Map<String,Object> map = new HashMap<String, Object>();
+        TreeNode<Module> root = moduleService.getModuleRoot();
+        EasyUiTree<Module> met = new EasyUiTree<Module>(root);
+        for (TreeNode<Module> eut: met.getChildren()) {
+            ((EasyUiTree<Module>)eut).setState("open");
+        }
+        map = met.toTreeGridMap();
         return map;
     }
 }

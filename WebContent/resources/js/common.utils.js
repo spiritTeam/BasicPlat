@@ -93,26 +93,6 @@ function getBrowserVersion() {
         version = '未知浏览器';
     }
     return version;
-} 
-/**
- * 单例的setTimeOut,节省资源
- */
-var TIMEOUTHANDLE=null;
-var _EXCUTED=true;
-function singleSetTimeOut(fun, ms) {
-  if (TIMEOUTHANDLE!=null) {
-    if (_EXCUTED) clearTimeout(TIMEOUTHANDLE);
-    else {
-      while(!_EXCUTED) {;}
-      clearTimeout(TIMEOUTHANDLE);
-    }
-  }
-  _EXCUTED = false;
-  TIMEOUTHANDLE=setTimeout(_fun, ms);
-  function _fun() {
-    fun;
-    excuted=true;
-  }
 }
 
 /**
@@ -138,8 +118,12 @@ function getUUID(len,radix) {
   return uuid.join("");
 }
 
-
-function string2Object(string) {
+/**
+ * 把json串转换为对象
+ * @param jsonStr json串
+ * @returns javascript对象
+ */
+function string2Object(jsonStr) {
 	eval("var result = " + decodeURI(string));
 	return result;
 }

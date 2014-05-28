@@ -41,3 +41,4 @@ values('1008', '1007', 1, 1, 2, 'portal1', 'portlet2', '/portDemo/portlet2.jsp',
 
 insert into plat_module(id,pId,sort,isValidate,moduleType,moduleName,displayName,url,levels,style,icon,descn)
 values('1009', '2007', 1, 1, 2, 'error1', '错误结点', null, 1, null, null, '造一个错误结点，以便测试');
+
