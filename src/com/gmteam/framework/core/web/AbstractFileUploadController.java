@@ -57,7 +57,7 @@ public abstract class AbstractFileUploadController implements Controller, Handle
      * 保存上传文件存储文件名的界面字段名称，与前台页面中的内容相互匹配。<br/>
      * 若不设置，则按照默认的字段名称"storeFileName"从前台页面获取保存文件的名称。<br/>
      * 若通过前台取不到文件名称，则采用源文件的名称进行存储
-     * @param savePath 保存上传文件存储文件名的界面字段名称
+     * @param storeFileNameFieldName 保存上传文件存储文件名的界面字段名称
      */
     public void setStoreFileNameFieldName(String storeFileNameFieldName) {
         this.storeFileNameFieldName = storeFileNameFieldName;
@@ -271,7 +271,6 @@ public abstract class AbstractFileUploadController implements Controller, Handle
                     }
                 }
             }
-            
         } catch(Exception e) {
             em.put("errCode", "FUE_E");
             em.put("errMsg", e.getMessage());

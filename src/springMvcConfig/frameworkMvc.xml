@@ -46,4 +46,21 @@
     </property>
   </bean>
 
+  <!-- 处理文件上传 -->
+  <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" >
+    <property name="defaultEncoding" value="utf-8"/> <!-- 默认编码 (ISO-8859-1) -->
+    <property name="maxInMemorySize" value="10240"/> <!-- 最大内存大小 (10240)-->
+    <property name="maxUploadSize" value="52428800"/> <!-- 5000kb最大文件大小，这个属性的限制不针对单个文件，而是所有文件的容量之和，-1为无限止(-1) -->
+    <property name="uploadTempDir" value="/tempUpload/"/> <!-- 此路径为临时路径上传后的目录名 (WebUtils#TEMP_DIR_CONTEXT_ATTRIBUTE) -->
+    <property name="resolveLazily" value="true"/> <!--resolveLazily属性启用是为了推迟文件解析，以便在UploadAction 中捕获文件大小异常-->
+  </bean>
+
+  <!-- 以下为文件上传的测试代码 -->
+  <bean name="/uploadtest.do" class="com.gmteam.framework.component.fileUploadDownload.SimpleFileUploadController">
+    <property name="savePath" value="abc"/> <!-- 保存的路径 -->
+    <property name="filePrefix" value="aabbcc"/> <!-- 保存文件的前缀名 -->
+  </bean>
+  <!-- 以下为文件上传的测试代码 -->
+  <bean name="/uploadtest1.do" class="com.gmteam.framework.component.fileUploadDownload.SimpleFileUploadController">
+  </bean>
 </beans>

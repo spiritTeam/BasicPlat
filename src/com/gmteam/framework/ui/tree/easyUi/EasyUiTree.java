@@ -1,11 +1,7 @@
 package com.gmteam.framework.ui.tree.easyUi;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import javax.annotation.Resource;
-import com.gmteam.framework.component.module.pojo.Module;
-import com.gmteam.framework.component.module.service.ModuleService;
 import com.gmteam.framework.core.model.tree.TreeNode;
 import com.gmteam.framework.core.model.tree.TreeNodeBean;
 import com.gmteam.framework.ui.tree.UiTree;
@@ -106,5 +102,4 @@ public class EasyUiTree<T extends TreeNodeBean> extends UiTree<T> {
         treeGridM.putAll(this.convert4Attributes());
         return treeGridM;
     }
-    
 }
