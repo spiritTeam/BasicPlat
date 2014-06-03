@@ -91,11 +91,11 @@ public class EasyUiTree<T extends TreeNodeBean> extends UiTree<T> {
         Map<String, Object> m=this.getTnEntity().toHashMapAsBean();
         if (m.get("displayName")!=null) treeM.put("nodeName", m.get("displayName")+"");
         if(parentId.equals("0")){
-            this.setParentNodeName("模块");
-        }if(!parentId.isEmpty()&&!parentId.equals("0")&&!parentId.equals("-1")){
+            this.setParentNodeName("root");
+        }else{
             Module mm = ms.getModuleById(this.parentId);
-            System.out.println("");
-            this.setParentNodeName(mm.getDisplayName());
+            System.out.println(mm.getDisplayName());
+            //this.setParentNodeName(mm.getDisplayName());
         }
         treeM.put("parentNodeName", this.getParentNodeName());
         return treeM;
