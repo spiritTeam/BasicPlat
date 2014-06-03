@@ -49,14 +49,12 @@ public class InitSysConfigListener implements ServletContextListener {
             //装载系统服务器路径到缓存中
             SystemCache.setCache(new CacheEle<String>(IConstants.APPOSPATH, "系统服务器路径", sc.getRealPath("/")));
 
-            //Session结构缓存
+            //用户Session缓存，用于处理不同用户的登录
             SystemCache.setCache(
                 new CacheEle<Map<String, UserLogin>>(IConstants.USERSESSIONMAP, "用户Session缓存", new HashMap<String, UserLogin>())
             );
 
             //依赖注入，注入本类，为cacheManager做准备
-            WebApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(sc);
-            Object o = context.getBean("moduleService");
             dependencyInject(sc);
             //缓存框架存储
             if (cachePool!=null) {

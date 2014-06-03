@@ -1,0 +1,2 @@
+1-loginfilter:
+.css/.js/.json不过滤；images/login中的不过滤

@@ -14,9 +14,7 @@
 var url=window.location.href;
 var mainPage=getMainPage();
 var noLoginUrl="<%=path%>/common/login.jsp";
-if (mainPage==null) {
-  window.location.href=noLoginUrl;
-} else {
-  mainPage.location.href=noLoginUrl;
-}
+
+if (mainPage) mainPage.location.href=noLoginUrl;
+else window.location.href=noLoginUrl;
 </script>

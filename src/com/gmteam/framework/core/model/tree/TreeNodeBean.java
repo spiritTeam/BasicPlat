@@ -1,6 +1,7 @@
 package com.gmteam.framework.core.model.tree;
 
 import com.gmteam.framework.core.model.BaseObject;
+import com.gmteam.framework.util.StringUtils;
 
 /**
  * 树结点数据Bean，所有的树对象的数据都应继承这个类。<br/>
@@ -44,7 +45,7 @@ public class TreeNodeBean extends BaseObject implements Cloneable {
      * @param parentId
      */
     public void setParentId(String parentId) {
-        if (parentId.equals("")) this.parentId=null;
+        if (StringUtils.isNullOrEmptyOrSpace(parentId)) this.parentId=null;
         else this.parentId = parentId;
     }
     //结点名称

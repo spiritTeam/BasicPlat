@@ -2,6 +2,7 @@ package com.gmteam.framework.core.model.tree;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -91,7 +92,7 @@ public class TreeNode<T extends TreeNodeBean> extends BaseObject implements Clon
     }
 
     //父结点ID
-    protected String parentId;
+    protected String parentId = null;
 
     /**
      * 得到本结点的父结点ID，若本结点是根，则返回null
@@ -133,8 +134,13 @@ public class TreeNode<T extends TreeNodeBean> extends BaseObject implements Clon
      */
     private void setParent(TreeNode<T> parent) {
         this.parent = parent;
-        this.parentId=parent.getId();
-        tnEntity.setParentId(parent.getId());
+        if (parent!=null) {
+            this.parentId=parent.getId();
+            tnEntity.setParentId(parent.getId());
+        } else {
+            this.parentId=null;
+            tnEntity.setParentId(null);
+        }
     }
 
     //树结点名称
@@ -605,7 +611,7 @@ public class TreeNode<T extends TreeNodeBean> extends BaseObject implements Clon
      * 深度克隆树，但不包括parent属性。克隆后的结点为根
      */
     public TreeNode<T> clone() throws CloneNotSupportedException {
-        T cloneEntity = (T)this.tnEntity.clone();
+        T cloneEntity = this.tnEntity.clone();
         TreeNode<T> cloneTn = new TreeNode<T>(cloneEntity);
         cloneTn.setAttributes((HashMap<String, Object>)((HashMap<String, Object>)this.getAttributes()).clone());
         cloneTn.setParent(null);
@@ -628,7 +634,7 @@ public class TreeNode<T extends TreeNodeBean> extends BaseObject implements Clon
         List<T> l = new ArrayList<T>();
         l.add(this.getTnEntity());
         if (!this.isLeaf()) {
-            for (TreeNode<T> tn: this.getChildren()) l.addAll(tn.getAllBeansList());
+            for (TreeNode<T> tn: this.getChildren()) l.addAll((Collection<? extends T>) tn.getAllBeansList());
         }
         return l;
     }

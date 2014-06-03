@@ -2,7 +2,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>测试</title>
 <meta charset="UTF-8">
 <meta http-equiv="pragma" content="no-cache"/>
 <meta http-equiv="cache-control" content="no-cache"/>
@@ -21,27 +20,15 @@
   <div class="demo-tip icon-tip"></div>
   <div>一次加载树表</div>
 </div>
-<table id="moduleTreeGrid"></table>
+<div>
+  <table id="moduleTreeGrid"></table>
+</div>
 </body>
 
 <script>
 $(function(){
   $("#moduleTree").css({"width":299, "height":100, "overflow":"auto", "border":"1px red solid"});
   $("#moduleTree").tree({});
-  $("#moduleTreeGrid").css({"width":470, "height":100, "overflow":"auto", "border":"1px red solid"});
-  $("#moduleTreeGrid").treegrid({
-    width:470,
-    height:100,
-    nowrap:false,
-    animate:true,
-    collapsible:true,
-    idField:"id",
-    treeField:"displayNamne",
-    columns:[[
-      {field:"displayName", title:"模块名称", width:100, align:'center'},
-      {field:"url", title:"对应Url", width:170, align:'center'}
-    ]]
-  });
 
   var url=_PATH+"/showAllTree.do";
   $.ajax({type:"post", async:true, url:url, data:null, dataType:"json",
@@ -51,11 +38,25 @@ $(function(){
   });
 
   url=_PATH+"/showAllTreeGrid.do";
-//  $.ajax({type:"post", async:true, url:url, data:null, dataType:"json",
-  //  success: function(json) {
-    //  $("#moduleTreeGrid").treegrid("loadData", json.children);
-    //}
-  //});
+  $("#moduleTreeGrid").parent().css({"width":470, "height":200, "border":"0px red solid"});
+  $("#moduleTreeGrid").css({
+    "width":470,
+    "height":200
+  });
+  $("#moduleTreeGrid").treegrid({
+    idField: 'id',
+    treeField: 'displayName',
+    columns:[[
+      {title:'模块id',field:'id',width:60}, 
+      {title:'模块显示名',field:'displayName',width:110},
+      {title:'模块名称',field:'nodeName',width:110}
+    ]] 
+  });
+  $.ajax({type:"post", async:true, url:url, data:null, dataType:"json",
+    success: function(json) {
+      $("#moduleTreeGrid").treegrid("loadData", json.children);
+    }
+  });
 });
 </script>
 </html>

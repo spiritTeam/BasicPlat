@@ -1,6 +1,7 @@
 package com.gmteam.framework.util;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,12 +10,11 @@ import com.gmteam.framework.core.model.tree.TreeNode;
 import com.gmteam.framework.core.model.tree.TreeNodeBean;
 
 public abstract class TreeUtils {
-
     /**
      * 把以"树结点数据Bean"为元素的list转换为树对象
      * @param l 以"树结点数据Bean"为元素的list
      * @return 转换后的对象，是一个Map，有两个元素：<br/>
-     * forest——符合id/pid关系的树结点的List，一个森林，实际是以TreeNode为元素的List{List<TreeNode<?>>}；
+     * forest——符合id/pid关系的树结点的List，一个森林，实际是以TreeNode为元素的List{List<TreeNode<String>>}；符合的标准是，树的根结点的pid="0";
      * errors——不符合id/pid结构的树结点数据Bean的List，是错误的数据，实际是以TreeNodeBean为元素的List{List<TreeNodeBean>}；
      */
     public static Map<String, Object> convertFromList(List<? extends TreeNodeBean> l) {
@@ -119,5 +119,74 @@ public abstract class TreeUtils {
             treeIndexMap.put(tn.getId(), tn);
             if (!tn.isLeaf()) TreeUtils.setTreeIndexMap(tn.getChildren(), treeIndexMap);
         }
+    }
+
+    /**
+     * 重组树，根据idc中的结点id，重组forest中的树，新的树包括仅包括idc中所有id结点的所有祖宗结点和子结点
+     * @param forest 树对象的列表，此对象是需要重组树的全集
+     * @param idc 结点id的Collection
+     * @return 重组后的树，此树是原树的一个重组后的拷贝
+     * @throws CloneNotSupportedException
+     */
+    public static <V extends TreeNodeBean> List<TreeNode<V>> restructureTree(List<TreeNode<V>> forest, Collection<String> idc) throws CloneNotSupportedException {
+        if (forest==null||forest.size()==0) return null;
+        List<TreeNode<V>> restructureForest = new ArrayList<TreeNode<V>>();
+        idc = TreeUtils.distinctList(idc);
+        for (String id: idc) {
+            for (TreeNode<V> tn: forest) {
+                TreeNode<V> _ftn = tn.getId().equals(id.trim())?tn:tn.findNode(id.trim());//在原树中查找是否有id结点
+                if (_ftn!=null) {//若有
+                    TreeNode<V> ctn = _ftn.clone();//以此id为根的树的克隆
+                    boolean hasDeal = false;
+                    for (TreeNode<V> rn: restructureForest) {
+                        TreeNode<V> _rftn = rn.findNode(ctn.getId());
+                        hasDeal = (_rftn!=null);
+                    }
+                    while (!hasDeal) {
+                        if (!_ftn.isRoot()) _ftn=_ftn.getParent();
+                        else {
+                            restructureForest.add(ctn);
+                            hasDeal = true;
+                        }
+                        if (!hasDeal) {
+                            for (TreeNode<V> rn: restructureForest) {//查找合适的位置插入
+                                TreeNode<V> _rftn = rn.getId().equals(_ftn.getId())?rn:rn.findNode(_ftn.getId());
+                                if (_rftn!=null) {
+                                    _rftn.addChild(ctn);
+                                    hasDeal = true;
+                                }
+                            }
+                        }
+                        if (!hasDeal) {
+                            //造上级结点
+                            TreeNode<V> _ptn = new TreeNode<V>(_ftn.getTnEntity());
+                            _ptn.addChild(ctn);
+                            ctn=_ptn;
+                        }
+                    }
+                }
+            }
+        }
+        return restructureForest;
+    }
+
+    /**
+     * 给list消重
+     * @param sl 要消重的list
+     * @return 消重后的list
+     */
+    private static Collection<String> distinctList(Collection<String> sl) {
+        Collection<String> rl = new ArrayList<String>();
+        for (String o: sl) {
+            boolean isAdd = true;
+            for (String _o: rl) {
+                if (_o.equals(o)) {
+                    isAdd = false;
+                    break;
+                }
+            }
+            if (isAdd) rl.add(o);
+        }
+        return rl;
     }
 }
