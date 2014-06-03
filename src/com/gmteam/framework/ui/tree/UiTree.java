@@ -8,6 +8,14 @@ import java.util.Map;
 import com.gmteam.framework.core.model.tree.TreeNode;
 import com.gmteam.framework.core.model.tree.TreeNodeBean;
 
+/**
+ * 为显示层提供的树对象的抽象方法，显示层的树都应是此类的子类。<br/>
+ * 提供把树对象转换为树Map和树表Map的基础方法。<br/>
+ * 本类的实现类要提供convert4Tree/convert4TreeGrid/convert4Attributes的方法。<br/>
+ * 框架的思路是：把后台用到的树对象转换为显示层树对象，显示层树对象不影响后台树对象的结构，之后由显示层逻辑对显示层树对象进行处理。
+ * @author wh
+ * @param <T>
+ */
 @SuppressWarnings("serial")
 public abstract class UiTree<T extends TreeNodeBean> extends TreeNode<T> {
 

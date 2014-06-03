@@ -3,10 +3,11 @@
 <%@page import="com.gmteam.framework.IConstants"%>
 <%@page import="com.gmteam.framework.core.cache.SystemCache"%>
 <%@page import="com.gmteam.framework.component.login.pojo.UserLogin"%>
+<%@page import="com.gmteam.framework.core.cache.CacheEle"%>
 <%
   String path = request.getContextPath();
-  Map<String, UserLogin> userSessionMap = (Map<String, UserLogin>)SystemCache.getCache(IConstants.USERSESSIONMAP);
-//  User u = null;
+  CacheEle<Map<String, UserLogin>> mc = (CacheEle<Map<String, UserLogin>>)SystemCache.getCache(IConstants.USERSESSIONMAP);
+  Map<String, UserLogin> userSessionMap = mc.getContent();
 //  u = (User)session.getAttribute(IConstants.SESSION_USER);
 //  UserLoginInfo uli = null;
 //  if (u!=null) uli=userSessionMap.get(u.getV_userid());

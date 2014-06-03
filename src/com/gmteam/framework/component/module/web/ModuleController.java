@@ -1,6 +1,5 @@
 package com.gmteam.framework.component.module.web;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,9 +21,9 @@ import com.gmteam.framework.ui.tree.easyUi.EasyUiTree;
 
 @Controller
 public class ModuleController {
-
     @Resource
     private ModuleService moduleService;
+
     @RequestMapping("showAllTree.do")
     @ResponseBody
     public Map<String,Object> showAllTree() throws CloneNotSupportedException {
@@ -40,17 +39,26 @@ public class ModuleController {
 
     @RequestMapping("showAllTreeGrid.do")
     @ResponseBody
-    public List<Map<String,Object>> showAllTreeGrid() throws CloneNotSupportedException {
-        List<Map<String,Object>> treeList = new ArrayList<Map<String,Object>>();
+    public Map<String,Object> showAllTreeGrid() throws CloneNotSupportedException {
         Map<String,Object> map = new HashMap<String, Object>();
         TreeNode<Module> root = moduleService.getModuleRoot();
         EasyUiTree<Module> met = new EasyUiTree<Module>(root);
         for (TreeNode<Module> eut: met.getChildren()) {
             ((EasyUiTree<Module>)eut).setState("open");
         }
+        setParentName(met);
         map = met.toTreeGridMap();
-        treeList.add(map);
-        return treeList;
+        return map;
+    }
+    private void setParentName(EasyUiTree<Module> e) {
+        if (e.isRoot()) e.setAttribute("parentName", "模块");
+        else e.setAttribute("parentName", e.getParent().getNodeName());
+        if (!e.isLeaf()) {
+            for (TreeNode<?> t: e.getChildren()) {
+                EasyUiTree<Module> _e = (EasyUiTree<Module>)t;
+                setParentName(_e);
+            }
+        }
     }
     /**
      * 插入

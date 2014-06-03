@@ -9,6 +9,14 @@ import com.gmteam.framework.component.module.service.ModuleService;
 import com.gmteam.framework.core.model.tree.TreeNode;
 import com.gmteam.framework.core.model.tree.TreeNodeBean;
 import com.gmteam.framework.ui.tree.UiTree;
+/**
+ * EasyUi中的树，继承自UiTree，所有用easyUi作为前台树显示的模块都可以直接用这个类。
+ * 只要设置相应的T就可以了。<br/>
+ * 如：EasyUiTree<Module> met = new EasyUiTree<Module>(root);<br/>
+ * 个性化的功能还在调用的类中自己实现，如自动展开到第几级等。本类中提供的构造树的方法，所有结点都是收起的。
+ * @author wh
+ * @param <T>
+ */
 public class EasyUiTree<T extends TreeNodeBean> extends UiTree<T> {
     private static final long serialVersionUID = 1810248521425568689L;
 
@@ -60,15 +68,11 @@ public class EasyUiTree<T extends TreeNodeBean> extends UiTree<T> {
     public void setIconCls(String iconCls) {
         this.iconCls = iconCls;
     }
-    /**
-     * 改了open
-     * @param tn
-     * @throws CloneNotSupportedException
-     */
+
     public EasyUiTree(TreeNode<? extends TreeNodeBean> tn) throws CloneNotSupportedException {
         super(tn);
-        if (tn.isLeaf()) this.state="open"; else {
-            this.state="open";
+        if (tn.isLeaf()) this.state="close"; else {
+            this.state="closed";
             for (TreeNode<?> t: tn.getChildren()) this.addChild(new EasyUiTree<T>(t));
         }
     }
@@ -77,7 +81,6 @@ public class EasyUiTree<T extends TreeNodeBean> extends UiTree<T> {
     protected Map<String, Object> convert4Tree() {
         Map<String, Object> treeM = new HashMap<String, Object>();
         treeM.put("id", this.getId());
-        this.getTnEntity().toHashMapAsBean();
         treeM.put("text", this.getNodeName());
         treeM.put("state", this.getState());
         treeM.put("iconCls", this.getIconCls());
@@ -89,37 +92,19 @@ public class EasyUiTree<T extends TreeNodeBean> extends UiTree<T> {
 
     @Override
     protected Map<String, Object> convert4Attributes() {
-        return this.getTnEntity().toHashMapAsBean();
+        Map<String, Object> retM = this.getTnEntity().toHashMapAsBean();
+        retM.putAll(this.getAttributes());
+        return retM;
     }
-    @Resource
-    ModuleService ms = new ModuleService();
+
     @Override
     protected Map<String, Object> convert4TreeGrid() {
-        Map<String, Object> treeM = new HashMap<String, Object>();
-        treeM.put("state", this.getState());
-        treeM.put("iconCls", this.getIconCls());
-        treeM.put("checked", this.isChecked());
-        treeM.putAll(this.getTnEntity().toHashMapAsBean());
-        Map<String, Object> m=this.getTnEntity().toHashMapAsBean();
-        if (m.get("displayName")!=null){
-            treeM.put("displayName", m.get("displayName")+"");
-        }else{
-            treeM.put("displayName", m.get("moduleName")+"");
-        }
-        treeM.put("moduleName", this.getTnEntity().getNodeName());
-        System.out.println(this.getTnEntity().getNodeName());
-        if(parentId.equals("0")){
-            this.setParentNodeName("root");
-        }else{
-            List<Module> lM = ms.getModuleList();
-            for(Module mm :lM){
-                if(this.getParentId().equals(mm.getId())){
-                    this.setParentNodeName(mm.getDisplayName());   
-                }
-            }
-        }
-        treeM.put("pName", this.getParentNodeName());
-        return treeM;
+        Map<String, Object> treeGridM = new HashMap<String, Object>();
+        treeGridM.put("state", this.getState());
+        treeGridM.put("iconCls", this.getIconCls());
+        treeGridM.put("checked", this.isChecked());
+        treeGridM.putAll(this.convert4Attributes());
+        return treeGridM;
     }
     
 }

@@ -34,8 +34,7 @@ $(function(){
 function init(){
 	$.ajax({type:"post", async:true, url:'<%=path%>/showAllTreeGrid.do', dataType:"json",
     success: function(data) {
-      var jsondata = data;
-      getTreeGrid(jsondata);
+      getTreeGrid(data.children);
     }
   });
 }
@@ -117,13 +116,13 @@ function getTreeGrid(data){
   columns:[[
 	  {
 	    title:'模块名称',
-	    field: 'moduleName',
+	    field: 'nodeName',
 	    width: 100,
 	    align:'right'
 	  },
     {
       title:'上级模块',
-      field: 'pName',
+      field: 'parentName',
       width: 100,
       align:'right'
     },
