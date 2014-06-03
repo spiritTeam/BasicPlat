@@ -1,8 +1,6 @@
 package com.gmteam.framework.component.module.web;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -20,9 +18,9 @@ import com.gmteam.framework.ui.tree.easyUi.EasyUiTree;
 
 @Controller
 public class ModuleController {
-
     @Resource
     private ModuleService moduleService;
+
     @RequestMapping("showAllTree.do")
     @ResponseBody
     public Map<String,Object> showAllTree() throws CloneNotSupportedException {
@@ -39,8 +37,7 @@ public class ModuleController {
 
     @RequestMapping("showAllTreeGrid.do")
     @ResponseBody
-    public List<Map<String,Object>> showAllTreeGrid() throws CloneNotSupportedException {
-        List<Map<String,Object>> treeList = new ArrayList<Map<String,Object>>();
+    public Map<String,Object> showAllTreeGrid() throws CloneNotSupportedException {
         Map<String,Object> map = new HashMap<String, Object>();
         TreeNode<Module> root = moduleService.getModuleRoot();
         EasyUiTree<Module> met = new EasyUiTree<Module>(root);
@@ -48,8 +45,7 @@ public class ModuleController {
             ((EasyUiTree<Module>)eut).setState("open");
         }
         map = met.toTreeGridMap();
-        treeList.add(map);
-        return treeList;
+        return map;
     }
     /**
      * 插入
