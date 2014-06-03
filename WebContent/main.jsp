@@ -9,6 +9,7 @@
 <html>
 <head>
 <jsp:include page="/common/sysInclude.jsp" flush="true"/>
+<script type="text/javascript" src="<%=path %>/resources/js/mainPage.utils.js"></script>
 <title><%=IConstants.PLATFORM_NAME%></title>
 </head>
 <style type="text/css">
@@ -100,11 +101,11 @@ $(function() {
     $("#left").css("height", (parseInt($("#left").css("height"))-2)+"px");
     //加载树
     fullscreen();
-    var url="<%=path%>/toLogin.do";
+    var url="<%=path%>/showAllTree.do";
     $.ajax({type:"post", async:true, url:url, data:null, dataType:"json",
-      success: function(json) {
-        if (json.type==1) {
-          var authData=json.data;
+      success: function(data) {
+        //if (json.type==1) {
+          var authData=data;
           if (!authData) {
             $.messager.alert("提示", "您没有操作本系统的任何权限，请联系管理员！<br/>现返回登录页面。", "info", function(){
               window.location.href="<%=path%>/common/login.jsp?noAuth";
@@ -116,7 +117,7 @@ $(function() {
           $(userAuthData).each(function() {
             sanList = this.children;
               $("#user").html($("#user").html()
-                +"<a href='javascript:void(0);' onclick='turnSubApp(\""+this.id+"\")' class='mainMenu' id='"+this.id+"'>"+this.title+"</a></div>");
+                +"<a href='javascript:void(0);' onclick='turnSubApp(\""+this.id+"\")' class='mainMenu' id='"+this.id+"'>"+this.text+"</a></div>");
               if (this.selected) {currentUrl=this.url;currentId=this.id;}
             });
             $("#mainCenters").css("background", "#E6EEF8")
@@ -127,11 +128,11 @@ $(function() {
             $("#mainCenter").css("overflow", "hidden");
             turnSubApp(currentId, currentUrl,sanList);
             $(window).resize(onResize);
-        } else {
-          $.messager.alert("错误", "获取用户权限失败："+json.data+"！<br/>返回登录页面。", "error", function(){
-            window.location.href="<%=path%>/common/login.jsp?noAuth";
-          });
-        }
+        //} else {
+          //$.messager.alert("错误", "获取用户权限失败："+data+"！<br/>返回登录页面。", "error", function(){
+            //window.location.href="<%=path%>/common/login.jsp?noAuth";
+          //});
+        //}
       },
       error: function(errorData) {
         $.messager.alert("错误", "获取用户权限异常："+(errorData?errorData.responseText:"")+"！<br/>返回登录页面。", "error", function(){

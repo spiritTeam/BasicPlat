@@ -53,6 +53,7 @@ public class FrameworkCacheLifecycleUnit extends AbstractCacheLifecycleUnit {
      * 装载模块缓存
      * @throws Exception
      */
+    @SuppressWarnings("unchecked")
     public void loadModule() throws Exception {
         try {
             Map<String, Object> mo = moduleCacheService.makeCacheObject();

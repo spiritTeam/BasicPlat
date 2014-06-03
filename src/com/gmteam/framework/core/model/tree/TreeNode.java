@@ -604,6 +604,7 @@ public class TreeNode<T extends TreeNodeBean> extends BaseObject implements Clon
     /**
      * 深度克隆树，但不包括parent属性。克隆后的结点为根
      */
+    @SuppressWarnings("unchecked")
     public TreeNode<T> clone() throws CloneNotSupportedException {
         T cloneEntity = (T)this.tnEntity.clone();
         TreeNode<T> cloneTn = new TreeNode<T>(cloneEntity);

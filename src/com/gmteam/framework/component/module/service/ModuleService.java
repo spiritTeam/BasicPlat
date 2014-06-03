@@ -18,6 +18,7 @@ public class ModuleService {
      * @param id 模块ID
      * @return id所对应的模块树
      */
+    @SuppressWarnings("unchecked")
     public TreeNode<Module> getModuleTreeById(String id) {
         if (id==null||id.trim().length()==0) return null;
         TreeNode<Module> tnM = null;
@@ -44,6 +45,7 @@ public class ModuleService {
      * 得到模块信息的列表
      * @return 模块信息的列表
      */
+    @SuppressWarnings("unchecked")
     public List<Module> getModuleLis() {
         List<Module> lM = null;
         CacheEle<?> mc = SystemCache.getCache(IConstants.CATCH_MODULE);
@@ -57,6 +59,7 @@ public class ModuleService {
      * 得到模块树的根，注意，此根是造出的结点，名称为“模块”;ID=-1;
      * @return 模块树的根
      */
+    @SuppressWarnings("unchecked")
     public TreeNode<Module> getModuleRoot() {
         TreeNode<Module> tnM = null;
         CacheEle<?> mc = SystemCache.getCache(IConstants.CATCH_MODULE);

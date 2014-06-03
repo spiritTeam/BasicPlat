@@ -25,6 +25,7 @@ public abstract class UiTree<T extends TreeNodeBean> extends TreeNode<T> {
      * 将显示树转换为Map对象
      * @return 显示树所对应的Map对象，若树为空，则返回null
      */
+    @SuppressWarnings("unchecked")
     public Map<String, Object> toTreeMap() {
         Map<String, Object> uiTreeMap = new HashMap<String, Object>();
         uiTreeMap.putAll(this.convert4Tree());
@@ -45,6 +46,7 @@ public abstract class UiTree<T extends TreeNodeBean> extends TreeNode<T> {
      * 将显示树转换为TreeGrid相对应的Map对象
      * @return 显示树所对应的Map对象，若树为空，则返回null
      */
+    @SuppressWarnings("unchecked")
     public Map<String, Object> toTreeGridMap() {
         Map<String, Object> uiTreeGridMap = new HashMap<String, Object>();
         uiTreeGridMap.putAll(this.convert4TreeGrid());
