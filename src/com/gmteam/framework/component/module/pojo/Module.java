@@ -6,16 +6,21 @@ import com.gmteam.framework.core.model.tree.TreeNodeBean;
  */
 public class Module extends TreeNodeBean{
     private static final long serialVersionUID = -5024436009679818215L;
-
     private String displayName;
     private int levels;
+    private String pName;
     private int isValidate;
     private int moduleType;
     private int style;
     private String icon;
     private String url;
     private String descn;
-
+    public String getpName() {
+        return pName;
+    }
+    public void setpName(String pName) {
+        this.pName = pName;
+    }
     public String getDisplayName() {
         return displayName;
     }

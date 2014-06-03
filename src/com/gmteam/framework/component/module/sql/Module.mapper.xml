@@ -19,5 +19,87 @@
 <select id="getList" resultMap="ModuleMap">
 select * from plat_module
 </select>
-
+<delete id="delete" parameterType="java.lang.String" >
+    delete from plat_module
+    where id = #{id,jdbcType=VARCHAR}
+</delete>
+<insert id="insert" parameterType="Module" >
+    insert into plat_module
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="parentId != null" >
+        pid,
+      </if>
+      <if test="levels != null" >
+        levels,
+      </if>
+      <if test="order != null" >
+        sort,
+      </if>
+      <if test="isValidate != null" >
+        isValidate,
+      </if>
+      <if test="moduleType != null" >
+        moduleType,
+      </if>
+      <if test="nodeName != null" >
+        moduleName,
+      </if>
+      <if test="displayName != null" >
+        displayname,
+      </if>
+      <if test="url != null" >
+        url,
+      </if>
+      <if test="style != null" >
+        style,
+      </if>
+      <if test="icon != null" >
+        icon,
+      </if>
+      <if test="descn != null" >
+        descn,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null" >
+        #{parentId,jdbcType=VARCHAR},
+      </if>
+      <if test="levels != null" >
+        #{levels,jdbcType=INTEGER},
+      </if>
+      <if test="order != null" >
+        #{order,jdbcType=INTEGER},
+      </if>
+      <if test="isValidate != null" >
+        #{isValidate,jdbcType=INTEGER},
+      </if>
+      <if test="moduleType != null" >
+        #{moduleType,jdbcType=INTEGER},
+      </if>
+      <if test="nodeName != null" >
+        #{nodeName,jdbcType=VARCHAR},
+      </if>
+      <if test="displayName != null" >
+        #{displayName,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="style != null" >
+        #{style,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null" >
+        #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="descn != null" >
+        #{descn,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
 </mapper>

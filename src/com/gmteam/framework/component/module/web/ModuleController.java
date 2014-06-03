@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -26,7 +28,6 @@ public class ModuleController {
     @RequestMapping("showAllTree.do")
     @ResponseBody
     public Map<String,Object> showAllTree() throws CloneNotSupportedException {
-        System.out.println("in Controller");
         Map<String,Object> map = new HashMap<String, Object>();
         TreeNode<Module> root = moduleService.getModuleRoot();
         EasyUiTree<Module> met = new EasyUiTree<Module>(root);
@@ -57,18 +58,35 @@ public class ModuleController {
      * @return
      */
     @RequestMapping(value="insertModule.do",method = RequestMethod.POST)
-    public @ResponseBody int insertModule(@ModelAttribute("formTree") EasyUiTree formTree){
-        return 0;
-//        Module m = TreeToModuleUtils.treeToModule(formTree);
-//        int rsp;
-//        try {
-//            rsp = ms.insertModule(m);
-//            return rsp;
-//        } catch (Exception e) {
-//            rsp = 0;
-//            e.printStackTrace();
-//            return rsp;
-//        }
-       
+    public @ResponseBody int insertModule(@ModelAttribute("formModule") Module formModule){
+        Module m =formModule;
+        UUID uuid = UUID.randomUUID();
+        List<Module> lM = moduleService.getModuleList();
+        for(Module mm :lM){
+            if(m.getpName().equals(mm.getDisplayName())){
+                m.setParentId(mm.getId());
+            }
+        }
+        m.setId(uuid+"");
+        int rsp = 0;
+        try {
+            rsp = moduleService.insertModule(m);
+            return rsp;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return rsp;
+        }
+    }
+    @RequestMapping(value="deleteModule.do",method = RequestMethod.POST)
+    public @ResponseBody int deleteModule(HttpServletRequest req){
+        String id = req.getParameter("nodeId");
+        int rsp = 0;
+        try {
+            rsp = moduleService.deleteModule(id);
+            return rsp;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return rsp;
+        }
     }
 }

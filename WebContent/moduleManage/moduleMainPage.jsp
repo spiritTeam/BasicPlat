@@ -10,8 +10,8 @@
   <div id="toolbar" align="left" style="height:35px;">
     <div style="height:5px;"></div>
     &nbsp;<a id="btnAdd" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick="toAdd();">新增</a> 
-    <a id="btnEdit" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" onclick="toEdit();">修改</a>
-    <a id="btnRemove" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-remove'" onclick="toRemove();">删除</a> 
+    <a id="btnEdit" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" onclick="toUpdate();">修改</a>
+    <a id="btnRemove" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-remove'" onclick="toDelete();">删除</a> 
   </div>
   <table id="treegrid" style="border:0px #FF0000 solid;"></table>
 </body>
@@ -57,23 +57,27 @@ function toAdd(){
 		addWid = openWin("新增模块", "<%=path%>/moduleManage/addModule.jsp","300", "500", "", true, null);
 	}
 }
-function toEdit(){
+function toUpdate(){
 	var node= $('#treegrid').treegrid('getSelected');
 	if(node==null){
 		$.messager.alert('提示信息','请先选择一个节点','info');
   }else{
 	  var id = node.id;
-	  var text = node.text;
+	  var displayName = node.displayName;
+	  var moduleName = node.moduleName;
+	  var iconCls = node.iconCls;
+	  var style = node.style;
 	  var url = node.url;
-	  var iconCss = node.iconCss;
 	  var descn = node.descn;
-	  alert(id+text+url+iconCss+descn);
+	  var moduleType = node.moduleType;
+	  var pName = node.pName;
+	  alert(pName+"--"+displayName+"--"+moduleName+"--"+iconCls);
 	  var wId = openWin("修改模块", 
-			  "<%=path%>/moduleManage/updateModule.jsp?id="+id+"&text="+text+"&url="+url+"&iconCss="+iconCss+"&descn="+descn,"300", "500", "", true, null);
+			  "<%=path%>/moduleManage/updateModule.jsp?id="+id+"&displayName="+displayName+"&moduleName="+moduleName+"&iconCls="+iconCls+"&style="+style+"&url="+url+"&descn="+descn+"&moduleType"+moduleType+"&pName="+pName,"300", "500", "", true, null);
 	  alert(wId);
   }
 }
-function toRemove(){
+function toDelete(){
 	var node= $('#treegrid').treegrid('getSelected');
 	if(node==null){
 		$.messager.alert('提示信息','请先选择一个节点','info');
@@ -81,6 +85,7 @@ function toRemove(){
 	  $.messager.confirm('确认信息', '您想要删除该模块么？', function(r){
 		  if (r){
 			  var nodeId=node.id;
+			  alert(nodeId);
 			  $.ajax({type:"post", async:true,data:nodeId,url:'<%=path%>/deleteModule.do?nodeId='+nodeId, dataType:"json",
 				    success: function(data) {
 				    	if(data=='1'){
@@ -103,16 +108,22 @@ function getTreeGrid(data){
   nowrap:false,
   border:true,
   idField:'id',
-  treeField:'nodeName',
+  treeField:'displayName',
   frozenColumns:[[{
-    title:'模块名称',
-    field: 'nodeName',
+    title:'显示名称',
+    field: 'displayName',
     width: 200
   }]],
   columns:[[
+	  {
+	    title:'模块名称',
+	    field: 'moduleName',
+	    width: 100,
+	    align:'right'
+	  },
     {
       title:'上级模块',
-      field: 'parentNodeName',
+      field: 'pName',
       width: 100,
       align:'right'
     },

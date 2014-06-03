@@ -28,7 +28,6 @@ public class ModuleCacheService {
     public void initParam() {
         dao.setNamespace("Module");
     }
-
     @SuppressWarnings("unchecked")
     public Map<String, Object> makeCacheObject() throws Exception {
         Map<String, Object> ret = new HashMap<String, Object>();

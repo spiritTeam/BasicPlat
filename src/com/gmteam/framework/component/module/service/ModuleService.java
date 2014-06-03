@@ -3,16 +3,53 @@ package com.gmteam.framework.component.module.service;
 import java.util.Map;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
+
 import org.springframework.stereotype.Service;
 
 import com.gmteam.framework.IConstants;
 import com.gmteam.framework.component.module.pojo.Module;
 import com.gmteam.framework.core.cache.CacheEle;
 import com.gmteam.framework.core.cache.SystemCache;
+import com.gmteam.framework.core.dao.mybatis.MybatisDAO;
 import com.gmteam.framework.core.model.tree.TreeNode;
 
 @Service
 public class ModuleService {
+    @Resource(name="defaultDAO")
+    private MybatisDAO<Module> dao;
+    @PostConstruct
+    public void initParam() {
+        dao.setNamespace("Module");
+    }
+    /**
+     * insert
+     * @return
+     * @throws Exception 
+     */
+    public int insertModule(Module m) throws Exception{
+        return dao.insert(m);
+    }
+    /**
+     * update
+     * @param m
+     * @return
+     * @throws Exception 
+     */
+    public int updateModule(Module m) throws Exception{
+        return dao.update(m);
+    }
+    /**
+     * delete
+     * @param id
+     * @return
+     * @throws Exception 
+     * @throws NumberFormatException 
+     */
+    public int deleteModule(String id) throws NumberFormatException, Exception{
+        return dao.delete(id);
+    }
     /**
      * 根据模块ID，得到所对应的模块树
      * @param id 模块ID
@@ -46,7 +83,7 @@ public class ModuleService {
      * @return 模块信息的列表
      */
     @SuppressWarnings("unchecked")
-    public List<Module> getModuleLis() {
+    public List<Module> getModuleList() {
         List<Module> lM = null;
         CacheEle<?> mc = SystemCache.getCache(IConstants.CATCH_MODULE);
         if (mc!=null&&mc.getContent()!=null) {

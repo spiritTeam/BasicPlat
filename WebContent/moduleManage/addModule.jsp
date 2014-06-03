@@ -18,8 +18,8 @@
   <form action="" id="add_module_form" >
     <table id="add_table">
       <tr>
-        <td width="100px;" align="right"><label for="nodeName">模块名称:</label></td>
-        <td><input name="nodeName" type="text" style="width:120px;"/></td>
+        <td width="100px;" align="right"><label for="displayName">显示名称:</label></td>
+        <td><input id="displayName" name="displayName" type="text" style="width:120px;"/></td>
         <td width="100px;" align="right">模块类型:</td>
         <td><input id="moduleType" name="moduleType" value="" style="width: 120px;"></td>
       </tr>
@@ -32,8 +32,8 @@
       <tr>
         <td width="100px;" align="right"><label for="pName">上级模块:</label></td>
         <td><input id="pName" name="pName" style="width:120px;" value=""/></td>
-        <td width="100px;" align="right"><label for="levels" >模块层级:</label></td>
-        <td><input id="levels" name="levels"  style="width:120px;" value=""/></td>
+        <td width="100px;" align="right"><label for="moduleName" >模块名称:</label></td>
+        <td><input id="moduleName" name="moduleName"  style="width:120px;" value=""/></td>
       </tr>
       <tr>
         <td width="100px;" align="right"><label for="url">url:</label></td><td colspan="3"><input id="url" name="url" style="width:300px;"/></td>
