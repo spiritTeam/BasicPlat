@@ -91,6 +91,7 @@ function newWin(title, url, height, width, icon, _modal, expandAttr) {
 
   $(newWinDiv).attr("winID", _uuid);
   //设置效果
+  /**
   var winObj = $(newWinDiv).parent();
   winObj.css("padding", "0");
   winObj.css("border", "1px solid #999999");
@@ -152,6 +153,7 @@ function newWin(title, url, height, width, icon, _modal, expandAttr) {
     tempObj=tempObj.find("iframe");
     tempObj.attr("height", (parseInt(_bodyHeight)-4)+"px");
   }
+  */
   $(newWinDiv).window("open");
   //全局变量处理
   winArray.push({"winID": _uuid, "winOBJ": $(newWinDiv)});

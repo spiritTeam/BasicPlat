@@ -42,3 +42,16 @@ values('1008', '1007', 1, 1, 2, 'portal1', 'portlet2', '/portDemo/portlet2.jsp',
 insert into plat_module(id,pId,sort,isValidate,moduleType,moduleName,displayName,url,levels,style,icon,descn)
 values('1009', '2007', 1, 1, 2, 'error1', '错误结点', null, 1, null, null, '造一个错误结点，以便测试');
 
+insert into plat_module(id,pId,sort,isValidate,moduleType,moduleName,displayName,url,levels,style,icon,descn)
+values('1010', '0', 1, 1, 2, 'SystemManager', '系统管理', null, 1, null, null, '功能演示大菜单，因此没有url');
+
+insert into plat_module(id,pId,sort,isValidate,moduleType,moduleName,displayName,url,levels,style,icon,descn)
+values('1011', '1010', 1, 1, 2, 'ModuleManager', '模块管理', '/moduleManage/moduleMainPage.jsp', 2, null, null, '窗口功能演示');
+insert into plat_module(id,pId,sort,isValidate,moduleType,moduleName,displayName,url,levels,style,icon,descn)
+values('1012', '1011', 1, 1, 2, 'ModuleManager', '模块管理', '/moduleManage/moduleMainPage.jsp', 3, null, null, '模块管理');
+
+
+
+
+
+

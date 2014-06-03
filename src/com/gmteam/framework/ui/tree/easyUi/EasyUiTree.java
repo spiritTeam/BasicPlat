@@ -3,6 +3,10 @@ package com.gmteam.framework.ui.tree.easyUi;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.Resource;
+
+import com.gmteam.framework.component.module.pojo.Module;
+import com.gmteam.framework.component.module.service.ModuleService;
 import com.gmteam.framework.core.model.tree.TreeNode;
 import com.gmteam.framework.core.model.tree.TreeNodeBean;
 import com.gmteam.framework.ui.tree.UiTree;
@@ -13,6 +17,13 @@ public class EasyUiTree<T extends TreeNodeBean> extends UiTree<T> {
     private String state;
     private String iconCls;
     private boolean checked;
+    private String parentNodeName;
+    public String getParentNodeName() {
+        return parentNodeName;
+    }
+    public void setParentNodeName(String parentNodeName) {
+        this.parentNodeName = parentNodeName;
+    }
 
     public boolean isChecked() {
         return checked;
@@ -37,11 +48,15 @@ public class EasyUiTree<T extends TreeNodeBean> extends UiTree<T> {
     public void setIconCls(String iconCls) {
         this.iconCls = iconCls;
     }
-
+    /**
+     * 改了open
+     * @param tn
+     * @throws CloneNotSupportedException
+     */
     public EasyUiTree(TreeNode<? extends TreeNodeBean> tn) throws CloneNotSupportedException {
         super(tn);
-        if (tn.isLeaf()) this.state="close"; else {
-            this.state="closed";
+        if (tn.isLeaf()) this.state="open"; else {
+            this.state="open";
             for (TreeNode<?> t: tn.getChildren()) this.addChild(new EasyUiTree<T>(t));
         }
     }
@@ -50,10 +65,13 @@ public class EasyUiTree<T extends TreeNodeBean> extends UiTree<T> {
     protected Map<String, Object> convert4Tree() {
         Map<String, Object> treeM = new HashMap<String, Object>();
         treeM.put("id", this.getId());
+        this.getTnEntity().toHashMapAsBean();
         treeM.put("text", this.getNodeName());
         treeM.put("state", this.getState());
         treeM.put("iconCls", this.getIconCls());
         treeM.put("checked", this.isChecked());
+        Map<String, Object> m=this.getTnEntity().toHashMapAsBean();
+        if (m.get("displayName")!=null) treeM.put("text", m.get("displayName")+"");
         return treeM;
     }
 
@@ -61,7 +79,8 @@ public class EasyUiTree<T extends TreeNodeBean> extends UiTree<T> {
     protected Map<String, Object> convert4Attributes() {
         return this.getTnEntity().toHashMapAsBean();
     }
-
+    @Resource
+    ModuleService ms = new ModuleService();
     @Override
     protected Map<String, Object> convert4TreeGrid() {
         Map<String, Object> treeM = new HashMap<String, Object>();
@@ -69,6 +88,16 @@ public class EasyUiTree<T extends TreeNodeBean> extends UiTree<T> {
         treeM.put("iconCls", this.getIconCls());
         treeM.put("checked", this.isChecked());
         treeM.putAll(this.getTnEntity().toHashMapAsBean());
+        Map<String, Object> m=this.getTnEntity().toHashMapAsBean();
+        if (m.get("displayName")!=null) treeM.put("nodeName", m.get("displayName")+"");
+        if(parentId.equals("0")){
+            this.setParentNodeName("root");
+        }else{
+            Module mm = ms.getModuleById(this.parentId);
+            System.out.println(mm.getDisplayName());
+            //this.setParentNodeName(mm.getDisplayName());
+        }
+        treeM.put("parentNodeName", this.getParentNodeName());
         return treeM;
     }
 }

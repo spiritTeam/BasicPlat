@@ -1,0 +1,11 @@
+[{    
+    "id":1,    
+    "text":"样式A"   
+},{    
+    "id":2,    
+    "text":"样式B"   
+},{    
+    "id":3,    
+    "text":"样式C",    
+    "selected":true   
+}]  
