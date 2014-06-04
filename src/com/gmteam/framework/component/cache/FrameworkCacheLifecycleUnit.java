@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Component;
 
 import com.gmteam.framework.IConstants;
 import com.gmteam.framework.component.module.pojo.Module;
@@ -13,7 +14,7 @@ import com.gmteam.framework.component.module.service.ModuleCacheService;
 import com.gmteam.framework.core.cache.AbstractCacheLifecycleUnit;
 import com.gmteam.framework.core.cache.CacheEle;
 import com.gmteam.framework.core.cache.SystemCache;
-
+@Component
 public class FrameworkCacheLifecycleUnit extends AbstractCacheLifecycleUnit {
     /**
      * 日志

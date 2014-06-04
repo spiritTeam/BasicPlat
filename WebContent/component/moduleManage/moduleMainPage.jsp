@@ -12,6 +12,7 @@
     &nbsp;<a id="btnAdd" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick="toAdd();">新增</a> 
     <a id="btnEdit" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" onclick="toUpdate();">修改</a>
     <a id="btnRemove" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-remove'" onclick="toDelete();">删除</a> 
+    <a id="btnRefresh" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-reload'" onclick="toRefresh();">刷新</a>
   </div>
   <table id="treegrid" style="border:0px #FF0000 solid;"></table>
 </body>
@@ -41,8 +42,7 @@ function init(){
 function toRefresh(){
 	$.ajax({type:"post", async:true, url:'<%=path%>/refreshManager.do', dataType:"json",
 	    success: function(data) {
-	    	var jsondata = data;
-        getTreeGrid(jsondata);
+	    	getTreeGrid(data.children);
 	    }
 	  });
 }
@@ -51,9 +51,9 @@ function toAdd(){
 	if(node&&node.id!=null){
 		var pText = node.text;
 		var pLevel = node.level;
-		addWid = openWin("新增模块", "<%=path%>/moduleManage/addModule.jsp?pText="+pText+"&pLevel="+pLevel,"300", "500", "", true, null);
+		addWid = openWin("新增模块", "<%=path%>/component/moduleManage/addModule.jsp?pText="+pText+"&pLevel="+pLevel,"300", "500", "", true, null);
 	}else{
-		addWid = openWin("新增模块", "<%=path%>/moduleManage/addModule.jsp","300", "500", "", true, null);
+		addWid = openWin("新增模块", "<%=path%>/component/moduleManage/addModule.jsp","300", "500", "", true, null);
 	}
 }
 function toUpdate(){
@@ -63,16 +63,16 @@ function toUpdate(){
   }else{
 	  var id = node.id;
 	  var displayName = node.displayName;
-	  var moduleName = node.moduleName;
+	  var moduleName = node.nodeName;
 	  var iconCls = node.iconCls;
 	  var style = node.style;
 	  var url = node.url;
 	  var descn = node.descn;
 	  var moduleType = node.moduleType;
-	  var pName = node.pName;
-	  alert(pName+"--"+displayName+"--"+moduleName+"--"+iconCls);
+	  var pName = node.parentName;
+	  alert(id);
 	  var wId = openWin("修改模块", 
-			  "<%=path%>/moduleManage/updateModule.jsp?id="+id+"&displayName="+displayName+"&moduleName="+moduleName+"&iconCls="+iconCls+"&style="+style+"&url="+url+"&descn="+descn+"&moduleType"+moduleType+"&pName="+pName,"300", "500", "", true, null);
+			  "<%=path%>/component/moduleManage/updateModule.jsp?id="+id+"&displayName="+displayName+"&moduleName="+moduleName+"&iconCls="+iconCls+"&style="+style+"&url="+url+"&descn="+descn+"&moduleType"+moduleType+"&pName="+pName,"300", "500", "", true, null);
 	  alert(wId);
   }
 }

@@ -1,10 +1,6 @@
 <%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
   String path = request.getContextPath();
-  //String username = (String)session.getAttribute("username");
-  //byte[] nodepText = request.getParameter("pText").getBytes("iso8859-1");
-  //int pLevel = Integer.parseInt(request.getParameter("pLevel"))+1; 
-  //String pText = new String(nodepText,"UTF-8");
 %>
 <html>
 <head>
@@ -31,7 +27,9 @@
       </tr>
       <tr>
         <td width="100px;" align="right"><label for="pName">上级模块:</label></td>
-        <td><input id="pName" name="pName" style="width:120px;" value=""/></td>
+        <td>
+          <input id="pName" class="easyui-combotree" data-options="method:'get',required:true" style="width:120px;">
+        </td>
         <td width="100px;" align="right"><label for="moduleName" >模块名称:</label></td>
         <td><input id="moduleName" name="moduleName"  style="width:120px;" value=""/></td>
       </tr>
@@ -43,8 +41,8 @@
       </tr>
       <tr height="50px;" align="right">
         <td width="100px;" colspan="4">
-          <a id="btnEdit" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="save();">提交</a>
-          <a id="btnEdit" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="reset();">清空</a>
+          <a id="save" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="save();">提交</a>
+          <a id="reset" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="reset();">清空</a>
         </td>
       </tr>
     </table>
@@ -52,22 +50,32 @@
 </div>
 </body>
 <script type="text/javascript">
+var treeData;
 $(function(){
 	initcombox();
 });
 function initcombox(){
 	$('#moduleType').combobox({    
-    url:'<%=path%>/moduleManage/comboboxData/moduleType.json',    
+    url:'<%=path%>/component/moduleManage/comboboxData/moduleType.json',    
     valueField:'id',
     editable:false,
     textField:'text'   
   });  
   $('#style').combobox({    
-    url:'<%=path%>/moduleManage/comboboxData/style.json',    
+    url:'<%=path%>/component/moduleManage/comboboxData/style.json',    
     valueField:'id',
     editable:false,
     textField:'text'   
-  });  
+  });
+  $.ajax({type:"post", async:true, url:'<%=path%>/showAllTree.do', dataType:"json",
+    success: function(data) {
+      treeData=data;
+       $('#pName').combotree({    
+          data:treeData.children,
+          editable:false
+       });
+    }
+  });
 }
 function save(){
 	console.info(serializeObject($('#add_module_form').form()));
