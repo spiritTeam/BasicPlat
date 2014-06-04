@@ -102,5 +102,4 @@ public class EasyUiTree<T extends TreeNodeBean> extends UiTree<T> {
         treeGridM.putAll(this.convert4Attributes());
         return treeGridM;
     }
-    
 }

@@ -14,10 +14,12 @@ public class SimpleFileUploadController extends AbstractFileUploadController{
 
     @Override
     public Map<String, Object> beforeUploadOneFileOnSuccess(Map<String, Object> m) {
+        System.out.println(m.toString());
         return null;
     }
 
     @Override
     public void beforeUploadAllFiles(List<Map<String, Object>> fl) {
+        System.out.println(fl.toString());
     }
 }
