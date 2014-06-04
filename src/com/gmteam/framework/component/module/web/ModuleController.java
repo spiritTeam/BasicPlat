@@ -5,16 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.gmteam.framework.IConstants;
 import com.gmteam.framework.component.cache.FrameworkCacheLifecycleUnit;
 import com.gmteam.framework.component.module.pojo.Module;
@@ -127,12 +124,12 @@ public class ModuleController {
         String mName = req.getParameter("moduleName");
         m.setNodeName(mName);
         UUID uuid = UUID.randomUUID();
-        List<Module> lM = moduleService.getModuleList();
-        for(Module mm :lM){
-            if(m.getpName().equals(mm.getDisplayName())){
-                m.setParentId(mm.getId());
-            }
-        }
+//        List<Module> lM = moduleService.getModuleList();
+//        for(Module mm :lM){
+//            if(m.getpName().equals(mm.getDisplayName())){
+//                m.setParentId(mm.getId());
+//            }
+//        }
         m.setId(uuid+"");
         int rsp = 0;
         try {

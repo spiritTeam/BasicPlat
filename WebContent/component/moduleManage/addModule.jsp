@@ -26,9 +26,9 @@
         <td><input id="style" name="style" value="" style="width: 120px;"></td>
       </tr>
       <tr>
-        <td width="100px;" align="right"><label for="pName">上级模块:</label></td>
+        <td width="100px;" align="right"><label for="parentId">上级模块:</label></td>
         <td>
-          <input id="pName" class="easyui-combotree" data-options="method:'get',required:true" style="width:120px;">
+          <input id="parentId" name="parentId" class="easyui-combotree" data-options="method:'get',required:true" style="width:120px;">
         </td>
         <td width="100px;" align="right"><label for="moduleName" >模块名称:</label></td>
         <td><input id="moduleName" name="moduleName"  style="width:120px;" value=""/></td>
@@ -70,7 +70,7 @@ function initcombox(){
   $.ajax({type:"post", async:true, url:'<%=path%>/showAllTree.do', dataType:"json",
     success: function(data) {
       treeData=data;
-       $('#pName').combotree({    
+       $('#parentId').combotree({    
           data:treeData.children,
           editable:false
        });
