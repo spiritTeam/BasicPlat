@@ -15,7 +15,45 @@
   <result column="icon"        property="icon"        jdbcType="VARCHAR" />
   <result column="descn"       property="descn"       jdbcType="VARCHAR" />
 </resultMap>
-
+<update id="update" parameterType="Module" >
+    update plat_module
+    <set >
+      <if test="parentId != null" >
+        p_id = #{parentId,jdbcType=VARCHAR},
+      </if>
+      <if test="levels != null" >
+        levels = #{levels,jdbcType=INTEGER},
+      </if>
+      <if test="order != null" >
+        sort = #{order,jdbcType=INTEGER},
+      </if>
+      <if test="isValidate != null" >
+        isValidate = #{isValidate,jdbcType=INTEGER},
+      </if>
+      <if test="moduleType != null" >
+        moduleType = #{moduleType,jdbcType=INTEGER},
+      </if>
+      <if test="nodeName != null" >
+        moduleName = #{nodeName,jdbcType=VARCHAR},
+      </if>
+      <if test="displayName != null" >
+        displayName = #{displayName,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="style != null" >
+        style = #{style,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null" >
+        icon = #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="descn != null" >
+        descn = #{descn,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
 <select id="getList" resultMap="ModuleMap">
 select * from plat_module
 </select>
