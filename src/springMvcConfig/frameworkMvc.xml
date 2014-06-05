@@ -56,7 +56,7 @@
   </bean>
 
   <!-- 以下为文件上传的测试代码 -->
-  <bean name="/uploadtest.do" class="com.gmteam.framework.component.fileUploadDownload.SimpleFileUploadController">
+  <bean name="uploadtest.do" class="com.gmteam.framework.component.fileUploadDownload.SimpleFileUploadController">
     <property name="savePath" value="abc"/> <!-- 保存的路径 -->
     <property name="filePrefix" value="aabbcc"/> <!-- 保存文件的前缀名 -->
   </bean>

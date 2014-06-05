@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Component;
 
 import com.gmteam.framework.IConstants;
 import com.gmteam.framework.component.module.pojo.Module;
@@ -13,7 +14,7 @@ import com.gmteam.framework.component.module.service.ModuleCacheService;
 import com.gmteam.framework.core.cache.AbstractCacheLifecycleUnit;
 import com.gmteam.framework.core.cache.CacheEle;
 import com.gmteam.framework.core.cache.SystemCache;
-
+@Component
 public class FrameworkCacheLifecycleUnit extends AbstractCacheLifecycleUnit {
     /**
      * 日志
@@ -57,6 +58,7 @@ public class FrameworkCacheLifecycleUnit extends AbstractCacheLifecycleUnit {
     public void loadModule() throws Exception {
         try {
             Map<String, Object> mo = moduleCacheService.makeCacheObject();
+            if (mo==null) throw new Exception("没有[模块]数据。");
             List<Module> el = (List<Module>)mo.get("errors");
             for (Module m: el) {
                 logger.debug("结点没有对应的根结点：{id="+m.getId()+"; name="+m.getNodeName()+"; parentId="+m.getParentId()+"}");

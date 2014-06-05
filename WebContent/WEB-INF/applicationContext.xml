@@ -67,10 +67,8 @@
     <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
   </bean>
 
-  <!-- 平台缓存池-->
-  <!--业务缓存-->
-  <bean id="cacheFrameworkManager" class="com.gmteam.framework.component.cache.FrameworkCacheLifecycleUnit"/>
-  <bean id="cachePool" class=" com.gmteam.framework.core.cache.CachePool">
+  <!--平台缓存池-->
+  <bean id="cachePool" class="com.gmteam.framework.core.cache.CachePool">
     <property name="caches">
       <map>
         <entry key="0" value-ref="cacheFrameworkManager"/>

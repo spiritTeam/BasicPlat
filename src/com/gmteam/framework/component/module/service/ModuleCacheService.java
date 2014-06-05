@@ -20,7 +20,6 @@ import com.gmteam.framework.util.TreeUtils;
  */
 @Service
 public class ModuleCacheService {
-
     @Resource(name="defaultDAO")
     private MybatisDAO<Module> dao;
 
@@ -28,6 +27,7 @@ public class ModuleCacheService {
     public void initParam() {
         dao.setNamespace("Module");
     }
+
     @SuppressWarnings("unchecked")
     public Map<String, Object> makeCacheObject() throws Exception {
         Map<String, Object> ret = new HashMap<String, Object>();
