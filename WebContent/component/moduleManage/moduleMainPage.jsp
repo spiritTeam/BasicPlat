@@ -106,6 +106,7 @@ function getTreeGrid(data){
 	var treeData = data;
 	$('#treegrid').treegrid({    
   data:treeData,
+  fit:true,
   nowrap:false,
   border:true,
   idField:'id',
