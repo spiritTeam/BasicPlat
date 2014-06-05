@@ -68,8 +68,6 @@
   </bean>
 
   <!-- 平台缓存池-->
-  <!--业务缓存-->
-  <bean id="cacheFrameworkManager" class="com.gmteam.framework.component.cache.FrameworkCacheLifecycleUnit"/>
   <bean id="cachePool" class=" com.gmteam.framework.core.cache.CachePool">
     <property name="caches">
       <map>

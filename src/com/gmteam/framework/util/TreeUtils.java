@@ -53,6 +53,7 @@ public abstract class TreeUtils {
             int _fSize = 0, fSize = forest.size();
             //int n=0;
             while (_fSize!=fSize&&fSize>1) {//n++;
+                fSize = forest.size();
                 int index=0;
                 TreeNode<TreeNodeBean> node = forest.get(index);//标记结点
                 while (node!=null) {

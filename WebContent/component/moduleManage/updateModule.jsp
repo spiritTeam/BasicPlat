@@ -19,10 +19,7 @@
   String style = request.getParameter("style");
   //moduleType
   String moduleType = request.getParameter("moduleType");
-  //pName
-  //byte[] nodePName = (request.getParameter("descn").getBytes("iso8859-1"));
-  //String pName = new String(nodePName,"UTF-8");
-  String pName = request.getParameter("pName");
+  String pId = request.getParameter("pId");
 %>
 <html>
 <head>
@@ -49,7 +46,7 @@
       </tr>
       <tr>
         <td width="100px;" align="right"><label for="pName">上级模块:</label></td>
-        <td><input id="pName" name="pName" value="<%=pName %>" class="easyui-combotree" data-options="method:'get',required:true" style="width:120px;"></td>
+        <td><input id="pName" name="parentId" value="<%=pId %>" class="easyui-combotree" data-options="method:'get',required:true" style="width:120px;"></td>
         <td width="100px;" align="right"><label for="moduleName" >模块名称:</label></td>
         <td><input id="moduleName" name="moduleName"  style="width:120px;" value="<%=moduleName%>"/></td>
       </tr>
@@ -100,12 +97,14 @@ function update(){
 	console.info(serializeObject($('#update_module_form').form()));
 	var formData = serializeObject($('#update_module_form').form());
 	$.ajax({type:"post", async:true,data:formData, url:'<%=path%>/updateModule.do', dataType:"json",
-        success: function(data) {
-       	  $.messager.alert('更新信息','操作成功!','info');
-        },error:function(data){
-        	$.messager.alert('更新信息','操作失败!','info');
-        }
-      });
+    success: function(data) {
+   	  $.messager.alert('更新信息','操作成功!','info');
+    },error:function(data){
+    	$.messager.alert('更新信息','操作失败!','info');
+    }
+  });
+	wId = getUrlParam(window.location.href, "_winID");
+  closeWin(wId);
 }
 function reset(){
 	$('#add_module_form').form().find('input').val('');

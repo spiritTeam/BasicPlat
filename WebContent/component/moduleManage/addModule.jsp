@@ -1,6 +1,8 @@
 <%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
   String path = request.getContextPath();
+  String pId = request.getParameter("pId");
+  int pLevels = Integer.parseInt(request.getParameter("pLevels"))+1;
 %>
 <html>
 <head>
@@ -12,6 +14,7 @@
 <div  style="width:500px;height:250px;">
   <div style="height:10px;"></div>
   <form action="" id="add_module_form" >
+    <input type="hidden" name="levels" value="<%=pLevels%>">
     <table id="add_table">
       <tr>
         <td width="100px;" align="right"><label for="displayName">显示名称:</label></td>
@@ -28,7 +31,7 @@
       <tr>
         <td width="100px;" align="right"><label for="parentId">上级模块:</label></td>
         <td>
-          <input id="parentId" name="parentId" class="easyui-combotree" data-options="method:'get',required:true" style="width:120px;">
+          <input id="parentId" name="parentId" value="<%=pId %>" class="easyui-combotree" data-options="method:'get',required:true" style="width:120px;">
         </td>
         <td width="100px;" align="right"><label for="moduleName" >模块名称:</label></td>
         <td><input id="moduleName" name="moduleName"  style="width:120px;" value=""/></td>
@@ -50,6 +53,7 @@
 </div>
 </body>
 <script type="text/javascript">
+var wId;
 var treeData;
 $(function(){
 	initcombox();
@@ -81,12 +85,14 @@ function save(){
 	console.info(serializeObject($('#add_module_form').form()));
 	var formData = serializeObject($('#add_module_form').form());
 	$.ajax({type:"post", async:true,data:formData, url:'<%=path%>/insertModule.do', dataType:"json",
-        success: function(data) {
-       	  $.messager.alert('新增信息','操作成功!','info');
-        },error:function(data){
-          $.messager.alert('新增信息','操作失败!','info');
-        }
-      });
+    success: function(data) {
+   	  $.messager.alert('新增信息','操作成功!','info');
+    },error:function(data){
+      $.messager.alert('新增信息','操作失败!','info');
+    }
+  });
+	wId = getUrlParam(window.location.href, "_winID");
+  closeWin(wId);
 }
 function reset(){
 	$('#add_module_form').form().find('input').val('');
