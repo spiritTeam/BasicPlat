@@ -19,7 +19,7 @@
     update plat_module
     <set >
       <if test="parentId != null" >
-        p_id = #{parentId,jdbcType=VARCHAR},
+        pId = #{parentId,jdbcType=VARCHAR},
       </if>
       <if test="levels != null" >
         levels = #{levels,jdbcType=INTEGER},

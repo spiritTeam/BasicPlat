@@ -84,6 +84,8 @@ body {margin:0 auto; width:1000px;}
      </div>  
   </div>
 </div>
+<!--  <span id="test">aaa</span>-->
+<div id="addModuleDiv"></div>
 </center></body>
 <script>
 var currentUrl = null, currentId = null,sanList = null;
