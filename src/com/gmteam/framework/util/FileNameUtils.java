@@ -32,16 +32,31 @@ public abstract class FileNameUtils {
     
     /**
      * 根据当前日期 生成文件路径
-     * @param filePrefix 欲生成的路径的文件前缀
+     * @param filePath 生成路径的原路径
      * @return 日期路径
      */
-    public static String getDateRulePath(String filePrefix) {
+    public static String getDateRulePath(String filePath) {
         String strRulePath = "";
         strRulePath = DateUtils.getDateValue(new java.util.Date());
         String[] tmpArr = strRulePath.split("-");
         strRulePath = "";
         for (String tmp: tmpArr) strRulePath += tmp + File.separator;
-        return concatPath(filePrefix, strRulePath);
+        return concatPath(filePath, strRulePath);
+    }
+
+    /**
+     * 根据当前日期 生成文件名
+     * @param fileName 生成文件名的原文件名
+     * @return 日期文件名
+     */
+    public static String getDateRuleFileName(String fileName) {
+        String tempFileName = getPureFileName(fileName);
+        String strRulePath = "";
+        strRulePath = DateUtils.getDateValue(new java.util.Date());
+        String[] tmpArr = strRulePath.split("-");
+        strRulePath = "";
+        for (String tmp: tmpArr) tempFileName += "_"+tmp;
+        return tempFileName+getExt(fileName);
     }
 
     /**
