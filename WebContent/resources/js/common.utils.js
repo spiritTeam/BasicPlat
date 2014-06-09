@@ -124,7 +124,29 @@ function getUUID(len,radix) {
  * @returns javascript对象
  */
 function string2Object(jsonStr) {
-	eval("var result = " + decodeURI(string));
-	return result;
+  eval("var result = " + decodeURI(string));
+  return result;
 }
 
+//以下对form或界面元素的处理
+/**
+ * 将form表单元素的值转化为对象。
+ * 在ajax提交form时，可提交序列化后的对象。
+ * 注意，若其中有file字段，将不能正确处理。
+ * param form 需要序列化的form元素的id
+ */
+function formField2Object(formId) {
+  var o = {};
+  var _form = $("#"+formId).form();
+
+  if (_form) {
+    $.each(_form.serializeArray(),function(){
+      if(o[this['name']]){
+        o[this['name']]=o[this['name']]+","+this['value'];
+      }else{
+        o[this['name']]=this['value'];
+      }
+    });
+  }
+  return o;
+}
