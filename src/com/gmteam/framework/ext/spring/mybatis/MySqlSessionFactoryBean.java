@@ -7,6 +7,7 @@ import static org.springframework.util.StringUtils.tokenizeToStringArray;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -42,6 +43,8 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.core.NestedIOException;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
 
 import com.gmteam.framework.core.dao.DatabaseType;
@@ -57,8 +60,10 @@ import com.gmteam.framework.ext.mybatis.interceptor.PageInterceptor;
  * @version 0.1
  */
 public class MySqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, InitializingBean, ApplicationListener<ApplicationEvent> {
+  public static final String FIRST_CONFIG = "frameworkMybatis.xml";
+
   private static final Log logger = LogFactory.getLog(MySqlSessionFactoryBean.class);
-  private Resource[] configLocations;
+  private List<String> configLocations;
   private Resource[] mapperLocations;
   private DataSource dataSource;
   private TransactionFactory transactionFactory;
@@ -204,7 +209,7 @@ public class MySqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, 
    * Set the location of the MyBatis {@code SqlSessionFactory} config file. A typical value is
    * "WEB-INF/mybatis-configuration.xml".
    */
-  public void setConfigLocations(Resource[] configLocations) {
+  public void setConfigLocations(List<String> configLocations) {
     this.configLocations = configLocations;
   }
 
@@ -318,93 +323,95 @@ public class MySqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, 
     Configuration configuration;
 
     XMLConfigBuilder xmlConfigBuilder = null;
-    if (this.configLocations!=null&&this.configLocations.length>0) {
-      xmlConfigBuilder = new XMLConfigBuilder(this.configLocations[0].getInputStream(), null, this.configurationProperties);
+    ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
+    List<Resource> myConfigs=new ArrayList<Resource>();
+      for (String location: this.configLocations) {
+      Resource[] aConfigs=null;
+      aConfigs = resourcePatternResolver.getResources(location);
+      for (Resource r: aConfigs) {
+        myConfigs.add(r);
+      }
+    }
+    //调整顺序
+    if (myConfigs!=null&&myConfigs.size()>0) {
+      int i=0, flagIndex=-1;
+      for (; i<myConfigs.size(); i++) {
+        if ((""+myConfigs.get(i).getURI()).endsWith("/"+MySqlSessionFactoryBean.FIRST_CONFIG)) flagIndex=i;
+      }
+      if (flagIndex!=-1&&flagIndex!=0) {
+        Resource r = myConfigs.remove(flagIndex);
+        Resource _r = myConfigs.remove(0);
+        myConfigs.add(0, r);
+        myConfigs.add(flagIndex, _r);
+      }
+    }
+    //正真处理
+    if (myConfigs!=null&&myConfigs.size()>0) {
+      xmlConfigBuilder = new XMLConfigBuilder(myConfigs.get(0).getInputStream(), null, this.configurationProperties);
       configuration = xmlConfigBuilder.getConfiguration();
     } else {
-      if (logger.isDebugEnabled()) {
-        logger.debug("Property 'configLocation' not specified, using default MyBatis Configuration");
-      }
+      if (logger.isDebugEnabled()) logger.debug("Property 'configLocations' not specified, using default MyBatis Configuration");
       configuration = new Configuration();
       configuration.setVariables(this.configurationProperties);
     }
 
-    if (this.objectFactory != null) {
-      configuration.setObjectFactory(this.objectFactory);
-    }
+    if (this.objectFactory != null) configuration.setObjectFactory(this.objectFactory);
 
-    if (this.objectWrapperFactory != null) {
-      configuration.setObjectWrapperFactory(this.objectWrapperFactory);
-    }
+    if (this.objectWrapperFactory != null) configuration.setObjectWrapperFactory(this.objectWrapperFactory);
 
     if (hasLength(this.typeAliasesPackage)) {
-      String[] typeAliasPackageArray = tokenizeToStringArray(this.typeAliasesPackage,
-          ConfigurableApplicationContext.CONFIG_LOCATION_DELIMITERS);
+      String[] typeAliasPackageArray = tokenizeToStringArray(this.typeAliasesPackage, ConfigurableApplicationContext.CONFIG_LOCATION_DELIMITERS);
       for (String packageToScan : typeAliasPackageArray) {
-        configuration.getTypeAliasRegistry().registerAliases(packageToScan,
-                typeAliasesSuperType == null ? Object.class : typeAliasesSuperType);
-        if (logger.isDebugEnabled()) {
-          logger.debug("Scanned package: '" + packageToScan + "' for aliases");
-        }
+        configuration.getTypeAliasRegistry().registerAliases(packageToScan, typeAliasesSuperType == null ? Object.class : typeAliasesSuperType);
+        if (logger.isDebugEnabled()) logger.debug("Scanned package: '" + packageToScan + "' for aliases");
       }
     }
 
     if (!isEmpty(this.typeAliases)) {
       for (Class<?> typeAlias : this.typeAliases) {
         configuration.getTypeAliasRegistry().registerAlias(typeAlias);
-        if (logger.isDebugEnabled()) {
-          logger.debug("Registered type alias: '" + typeAlias + "'");
-        }
+        if (logger.isDebugEnabled()) logger.debug("Registered type alias: '" + typeAlias + "'");
       }
     }
 
     if (!isEmpty(this.plugins)) {
       for (Interceptor plugin : this.plugins) {
         configuration.addInterceptor(plugin);
-        if (logger.isDebugEnabled()) {
-          logger.debug("Registered plugin: '" + plugin + "'");
-        }
+        if (logger.isDebugEnabled()) logger.debug("Registered plugin: '" + plugin + "'");
       }
     }
 
     if (hasLength(this.typeHandlersPackage)) {
-      String[] typeHandlersPackageArray = tokenizeToStringArray(this.typeHandlersPackage,
-          ConfigurableApplicationContext.CONFIG_LOCATION_DELIMITERS);
+      String[] typeHandlersPackageArray = tokenizeToStringArray(this.typeHandlersPackage, ConfigurableApplicationContext.CONFIG_LOCATION_DELIMITERS);
       for (String packageToScan : typeHandlersPackageArray) {
         configuration.getTypeHandlerRegistry().register(packageToScan);
-        if (logger.isDebugEnabled()) {
-          logger.debug("Scanned package: '" + packageToScan + "' for type handlers");
-        }
+        if (logger.isDebugEnabled()) logger.debug("Scanned package: '" + packageToScan + "' for type handlers");
       }
     }
 
     if (!isEmpty(this.typeHandlers)) {
       for (TypeHandler<?> typeHandler : this.typeHandlers) {
         configuration.getTypeHandlerRegistry().register(typeHandler);
-        if (logger.isDebugEnabled()) {
-          logger.debug("Registered type handler: '" + typeHandler + "'");
-        }
+        if (logger.isDebugEnabled()) logger.debug("Registered type handler: '" + typeHandler + "'");
       }
     }
 
     if (xmlConfigBuilder != null) {
       try {
         xmlConfigBuilder.parse();
-        if (logger.isDebugEnabled()) {
-          logger.debug("Parsed configuration file: '" + this.configLocations[0] + "'");
-        }
+        if (logger.isDebugEnabled()) logger.debug("Parsed configuration file: '" + myConfigs.get(0) + "'");
       } catch (Exception ex) {
-        throw new NestedIOException("Failed to parse config resource: " + this.configLocations[0], ex);
+        throw new NestedIOException("Failed to parse config resource: " + myConfigs.get(0), ex);
       } finally {
         ErrorContext.instance().reset();
       }
       
       //扩展内容从多个配置文件中读取信息，但注意setting;environment不进行加载，只加在第一个配置文件中的内容
       Configuration tc=null;
-      for (int i=1; i<this.configLocations.length; i++) {
+      for (int i=1; i<myConfigs.size(); i++) {
         tc=null;
         XMLConfigBuilder xmlConfigBuilder1 = null;
-        xmlConfigBuilder1 = new XMLConfigBuilder(this.configLocations[i].getInputStream(), null, this.configurationProperties);
+        xmlConfigBuilder1 = new XMLConfigBuilder(myConfigs.get(i).getInputStream(), null, this.configurationProperties);
         tc = xmlConfigBuilder1.getConfiguration();
         if (xmlConfigBuilder1!=null) {
           try {
@@ -464,12 +471,9 @@ public class MySqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, 
                 }
               }
             }
-
-            if (logger.isDebugEnabled()) {
-              logger.debug("Parsed configuration file: '" + this.configLocations[i] + "'");
-            }
+            if (logger.isDebugEnabled()) logger.debug("Parsed configuration file: '" + myConfigs.get(i) + "'");
           } catch (Exception ex) {
-            throw new NestedIOException("Failed to parse config resource: " + this.configLocations[i], ex);
+            throw new NestedIOException("Failed to parse config resource: " + myConfigs.get(i), ex);
           } finally {
             ErrorContext.instance().reset();
           }
