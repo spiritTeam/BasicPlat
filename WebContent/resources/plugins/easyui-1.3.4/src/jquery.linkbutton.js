@@ -19,7 +19,7 @@
 		
 		t.addClass('l-btn').removeClass('l-btn-plain l-btn-selected l-btn-plain-selected');
 		t.removeClass('l-btn-small l-btn-medium l-btn-large').addClass('l-btn-'+opts.size);
-		if (opts.plain){t.addClass('l-btn-plain')}
+		if (opts.plain){t.addClass('l-btn-plain');}
 		if (opts.selected){
 			t.addClass(opts.plain ? 'l-btn-selected l-btn-plain-selected' : 'l-btn-selected');
 		}
@@ -66,7 +66,7 @@
 //			});
 //		}
 		
-		setSelected(target, opts.selected)
+		setSelected(target, opts.selected);
 		setDisabled(target, opts.disabled);
 	}
 	
