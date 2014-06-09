@@ -20,19 +20,21 @@ function getMainPage() {
 
 /**
  * 创建并打开easyUi的窗口
- * @param title 窗口标题
- * @param url 窗口内嵌的iframe的url
- * @param height 窗口高度
- * @param width 窗口宽度
- * @param icon 窗口图标
- * @param modal 是否是模态窗口
- * @param expandAttr 窗口的扩展属性，可定义iframe的id，是javaScript对象，如expandAttr={"frameID":"iframeID"}
+ * @param winOption是一个js对象，目前支持如下参数
+ * winOption.title 窗口标题
+ * winOption.url 窗口内嵌的iframe的url
+ * winOption.height 窗口高度
+ * winOption.width 窗口宽度
+ * winOption.icon_css 窗口图标，是css中的名称
+ * winOption.icon_url 窗口图标，图标的url，若设置了此参数，icon_css失效
+ * winOption.modal 是否是模态窗口，默认为模态窗口
+ * winOption.expandAttr 窗口的扩展属性，可定义iframe的id，是javaScript对象，如expandAttr={"frameID":"iframeID"}
  * @returns 返回生成窗口的UUID
  */
-function openWin(title, url, height, width, icon, modal, expandAttr) {
+function openWin(winOption) {
   var mainPage = getMainPage();
   if (mainPage) {
-    return mainPage.newWin(title, url, height, width, icon, modal, expandAttr);
+    return mainPage.newWin(winOption);
   }
 }
 

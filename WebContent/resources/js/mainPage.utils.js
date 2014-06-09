@@ -33,16 +33,27 @@ function getWinUUID() {
 
 /**
  * 创建并打开easyUi的窗口
- * @param title 窗口标题
- * @param url 窗口内嵌的iframe的url
- * @param height 窗口高度
- * @param width 窗口宽度
- * @param icon 窗口图标
- * @param modal 是否是模态窗口
- * @param expandAttr 窗口的扩展属性，可定义iframe的id，是javaScript对象，如expandAttr={"frameID":"iframeID"}
+ * @param winOption是一个js对象，目前支持如下参数
+ * winOption.title 窗口标题
+ * winOption.url 窗口内嵌的iframe的url
+ * winOption.height 窗口高度
+ * winOption.width 窗口宽度
+ * winOption.icon_css 窗口图标，是css中的名称
+ * winOption.icon_url 窗口图标，图标的url，若设置了此参数，icon_css失效
+ * winOption.modal 是否是模态窗口，默认为模态窗口
+ * winOption.expandAttr 窗口的扩展属性，可定义iframe的id，是javaScript对象，如expandAttr={"frameID":"iframeID"}
  * @returns 返回生成窗口的UUID
  */
-function newWin(title, url, height, width, icon, _modal, expandAttr) {
+function newWin(winOption) {
+  if (!winOption) {
+    $.messager.alert('新建窗口错误','请指定窗口参数!','error');
+    return ;
+  } else {
+    if (!winOption.url) {
+      $.messager.alert('新建窗口错误','窗口参数url必须指定!','error');
+      return ;
+    }
+  }
   //得到UUID
   var _uuid = getWinUUID();
   if (!_uuid) return ;
@@ -52,22 +63,21 @@ function newWin(title, url, height, width, icon, _modal, expandAttr) {
   $(newWin).attr("width", "100%").attr("height", "100%")
     .attr("scrolling", "no")
     .attr("frameborder", "no")
-    .attr("src", url.indexOf("?")==-1?url+"?_winID="+_uuid:url+"&_winID="+_uuid);
-  if (expandAttr) {
-    if (expandAttr.frameID) $(newWin).attr("id", expandAttr.frameID);
+    .attr("src", winOption.url.indexOf("?")==-1?winOption.url+"?_winID="+_uuid:winOption.url+"&_winID="+_uuid);
+  if (winOption.expandAttr) {
+    if (winOption.expandAttr.frameID) $(newWin).attr("id", winOption.expandAttr.frameID);
   }
   $(newWin).appendTo($(newWinDiv));
   //esayUi win处理
-  var top = ($(window).height() - parseInt(height))*0.5;
-  var left = ($(window).width() - parseInt(width))*0.5;
+  var top = ($(window).height() - parseInt(winOption.height?winOption.height:0))*0.5;
+  var left = ($(window).width() - parseInt(winOption.width?winOption.width:0))*0.5;
   $(newWinDiv).window({
-    title: title,
-    iconCls: (icon?icon:"icon-aWin"),
-    width: parseInt(width),
-    height: parseInt(height),
+    title: winOption.title?winOption.title:"",
+    width: parseInt(winOption.width?winOption.width:400),
+    height: parseInt(winOption.height?winOption.height:300),
     top: top,
     left: left,     
-    modal: _modal,
+    modal: winOption.modal?winOption.modal:true,
     collapsible: false,
     shadow: true,
     closed: true,
@@ -88,73 +98,21 @@ function newWin(title, url, height, width, icon, _modal, expandAttr) {
       if (_i!=-1) winArray.splice(_i,1);
     }
   });
-
+  //处理窗口图标icon_css
+  if (winOption.icon_css) {
+  	$(newWinDiv).window({iconCls: winOption.icon_css});
+  }
+  //处理窗口图标icon_url
+  if (winOption.icon_url) {
+  	$(newWinDiv).window({iconCls: "abc"});//设置图标区域 background
+    //设置效果
+    var winObj = $(newWinDiv).parent();
+    var tempObj = winObj.parent().find(".panel-icon");
+    $(tempObj).css("background", "url('"+winOption.icon_url+"') no-repeat center center");
+  }
   $(newWinDiv).attr("winID", _uuid);
-  //设置效果
-  /**
-  var winObj = $(newWinDiv).parent();
-  winObj.css("padding", "0");
-  winObj.css("border", "1px solid #999999");
-  var tempObj = winObj.parent().find(".window-shadow");
-  if (tempObj) {
-    tempObj.css("width", (parseInt(tempObj.css("width"))-14)+"px");
-    tempObj.css("height", (parseInt(tempObj.css("height"))-14)+"px");
-  }
-  tempObj = winObj.find(".panel-header");
-  if (tempObj) {
-    tempObj.css({
-      "height":"26px",
-      "background-image":"url('"+_PATH+"/resources/images/mainPage/bg_gery.png')",
-      "filter":"",
-      "border-bottom":"0px"
-    });
-  }
-  tempObj = tempObj.find(".panel-title");
-  if (tempObj) {
-    tempObj.css({
-      "height":"22px",
-      "padding-left":(parseInt(tempObj.css("padding-left"))+10)+"px",
-      "padding-top":"10px",
-      "color":"black",
-      "font-weight":"bold",
-      "font-size":"14px"
-    });
-  }
-  tempObj = tempObj.parent().find(".panel-icon");
-  if (tempObj) {
-    tempObj.css({
-      "top":"60%",
-      "left":"8px"
-    });
-  }
-  tempObj = tempObj.parent().find(".panel-tool");
-  if (tempObj) {
-    tempObj.css({
-      "top":"60%",
-      "right":"10px"
-    });
-    tempObj = tempObj.find(".panel-tool-close");
-    if (tempObj) {
-      tempObj.css({
-        "background":"url('"+_PATH+"/resources/images/mainPage/close_1.png')",
-        "height":"15px",
-        "width":"15px"
-      });
-    }
-  }
-  tempObj = winObj.find(".panel-body");
-  if (tempObj) {
-    tempObj.css({
-      "border":"0px",
-      "width":(parseInt(tempObj.css("width"))+2)+"px",
-      "border-top":"1px solid #274019"
-    });
-    var _bodyHeight=tempObj.css("height");
-    tempObj=tempObj.find("iframe");
-    tempObj.attr("height", (parseInt(_bodyHeight)-4)+"px");
-  }
-  */
   $(newWinDiv).window("open");
+  $(newWinDiv).expandAttr = expandAttr;
   //全局变量处理
   winArray.push({"winID": _uuid, "winOBJ": $(newWinDiv)});
   return _uuid;
