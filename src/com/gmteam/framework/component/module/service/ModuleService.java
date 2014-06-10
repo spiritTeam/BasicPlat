@@ -14,7 +14,12 @@ import com.gmteam.framework.core.cache.CacheEle;
 import com.gmteam.framework.core.cache.SystemCache;
 import com.gmteam.framework.core.dao.mybatis.MybatisDAO;
 import com.gmteam.framework.core.model.tree.TreeNode;
-
+/**
+ * moduleService：
+ * 对module的基本操作(insert,update,delete,select)，
+ * 以及对module缓存的一些方法(getModuleTreeById,getModuleById,getModuleListgetModuleRoot)
+ * @author mht
+ */
 @Service
 public class ModuleService {
     @Resource(name="defaultDAO")
