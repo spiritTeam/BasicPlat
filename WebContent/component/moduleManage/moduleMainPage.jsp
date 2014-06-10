@@ -53,11 +53,15 @@ function toAdd(){
 	if(node&&node.id!=null){
 		pId = node.id;
 		pLevels = node.levels;
-		addWid = openWin("新增模块", "<%=path%>/component/moduleManage/addModule.jsp?pId="+pId+"&pLevels="+pLevels,"300", "500", "", true, null);
-		alert(addWin);
-	}else{
-		addWid = openWin("新增模块", "<%=path%>/component/moduleManage/addModule.jsp?pId="+pId+"&pLevels="+pLevels,"300", "500", "", true, null);
 	}
+	var _url="<%=path%>/component/moduleManage/addModule.jsp?pId="+pId+"&pLevels="+pLevels;
+	var winOption={
+		url:_url,
+		title:"新增模块",
+		height:"300",
+		width:"500"
+	};
+  openWin(winOption);
 }
 function toUpdate(){
 	var node= $('#treegrid').treegrid('getSelected');
@@ -69,13 +73,17 @@ function toUpdate(){
 	  var moduleName = node.nodeName;
 	  var iconCls = node.iconCls;
 	  var style = node.style;
-	  var url = node.url;
+	  var _url = node.url;
 	  var descn = node.descn;
 	  var moduleType = node.moduleType;
 	  var pId = node.parentId;
-	  alert(pId);
-	  openWin("修改模块", 
-			  "<%=path%>/component/moduleManage/updateModule.jsp?id="+id+"&displayName="+displayName+"&moduleName="+moduleName+"&iconCls="+iconCls+"&style="+style+"&url="+url+"&descn="+descn+"&moduleType"+moduleType+"&pId="+pId,"300", "500", "", true, null);
+	  var winOption={
+      url:"<%=path%>/component/moduleManage/updateModule.jsp?id="+id+"&displayName="+displayName+"&moduleName="+moduleName+"&iconCls="+iconCls+"&style="+style+"&url="+_url+"&descn="+descn+"&moduleType"+moduleType+"&pId="+pId,
+      title:"修改模块",
+      height:"300",
+      width:"500"
+	  };
+	  openWin(winOption);
   }
 }
 function toDelete(){
