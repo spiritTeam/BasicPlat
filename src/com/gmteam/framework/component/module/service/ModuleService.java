@@ -23,6 +23,7 @@ public class ModuleService {
     public void initParam() {
         dao.setNamespace("Module");
     }
+
     /**
      * insert
      * @return

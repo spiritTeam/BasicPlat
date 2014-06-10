@@ -29,15 +29,11 @@ public class ModuleCacheService {
     }
 
     @SuppressWarnings("unchecked")
-    public Map<String, Object> makeCacheObject() throws Exception {
-        System.out.println("in   makeCacheObject");
+    public Map<String, Object> makeCacheModule() throws Exception {
         Map<String, Object> ret = new HashMap<String, Object>();
         List<Module> list = dao.queryForList();
-        System.out.println("end    queryForList()");
         ret.put("list", list);
-        System.out.println("before    convertFromList(list)");
         Map<String, Object> m = TreeUtils.convertFromList(list);
-        System.out.println("end    convertFromList(list)");
         List<TreeNode<Module>> mf = (List<TreeNode<Module>>)m.get("forest");
         if (mf!=null) {
             Module rootB = new Module();

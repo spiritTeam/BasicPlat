@@ -1,2 +1,16 @@
-1-loginfilter:
-.css/.js/.json�����ˣ�images/login�еĲ�����
+1-loginfilter: .css/.js/.json不过滤；images/login中的不过滤
+
+
+  <!-- 以下为文件上传的测试代码 -->
+  <bean name="/uploadtest.do" class="com.gmteam.framework.component.fileUploadDownload.SimpleFileUploadController">
+    <property name="savePath" value="abc"/> <!-- 保存的路径 -->
+    <property name="filePrefix" value="aabbcc"/> <!-- 保存文件的前缀名 -->
+    <property name="conflictType" value="1"/> <!-- 冲突规则：默认=0命名规则顺序加1，类似windows，这是默认方式，若进行10次仍然重名，则随机删除重名文件删除掉；=1，覆盖同名的文件 -->
+    <property name="breakOnOneFaild" value="true"/> <!-- 某一文件上传失败后的处理模式：默认=false,某一文件上传失败后，仍然处理后续文件；=true,某一文件上传失败后，上传终止，后续文件不进行处理了 -->
+    <property name="datePathModel" value="3"/> <!-- 是否按照日期模式生成保存文件名，默认=0,不做任何处理；=1按日期模式生成文件夹；=2按日期模式生成文件名；=3按日期模式生成文件夹和文件名 -->
+    <property name="storeFileNameFieldName" value="sFile"/> <!-- 保存上传文件存储文件名的界面字段名称，与前台页面中的内容相互匹配,若不设置，则按照默认的字段名称"storeFilename"从前台页面获取保存文件的名称。 -->
+  </bean>
+
+  <!-- 以下为文件上传的测试代码 -->
+  <bean name="/uploadtest1.do" class="com.gmteam.framework.component.fileUploadDownload.SimpleFileUploadController">
+  </bean>

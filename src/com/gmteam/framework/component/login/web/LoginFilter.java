@@ -1,16 +1,19 @@
 package com.gmteam.framework.component.login.web;
 
 import org.apache.log4j.Logger;
+
 import java.io.IOException;
 import java.util.Map;
+
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 import com.gmteam.framework.IConstants;
+import com.gmteam.framework.UGA.UgaUser;
 import com.gmteam.framework.core.cache.CacheEle;
 import com.gmteam.framework.core.cache.SystemCache;
-import com.gmteam.framework.component.login.pojo.User;
 import com.gmteam.framework.component.login.pojo.UserLogin;
 
 public class LoginFilter implements Filter {
@@ -37,10 +40,9 @@ public class LoginFilter implements Filter {
             else if (path.indexOf("resources/images/login")!=-1) chain.doFilter(req, res);
             else if (session.getAttribute(IConstants.SESSION_USER)!=null) {
                 //判断是否用其他Sesson登录了
-                CacheEle<Map<String, UserLogin>> userSessionMap =
-                    (CacheEle<Map<String, UserLogin>>)SystemCache.getCache(IConstants.USERSESSIONMAP);
-                User user = (User)session.getAttribute(IConstants.SESSION_USER);
-                UserLogin uli = userSessionMap.getContent().get(user.getId());
+                CacheEle<Map<String, UserLogin>> userSessionMap = (CacheEle<Map<String, UserLogin>>)SystemCache.getCache(IConstants.USERSESSIONMAP);
+                UgaUser user = (UgaUser)session.getAttribute(IConstants.SESSION_USER);
+                UserLogin uli = userSessionMap.getContent().get(user.getUserId());
                 if (uli!=null&&!uli.getSessionId().equals(session.getId())) {
                     String loginInfo = "";
                     loginInfo += "&clientIp="+uli.getClientIp();

@@ -72,11 +72,25 @@
     <property name="caches">
       <map>
         <entry key="0" value-ref="cacheFrameworkManager"/>
-        <!-- <entry key="0" value-ref="cacheGisSmManager"/> -->
+        <entry key="0" value-ref="cacheFrameworkUgaManager"/>
         <!-- <entry key="1" value-ref="cacheBjlqManager"/>  -->
       </map>
     </property>
   </bean>
 
   <context:annotation-config/>
+
+  <!-- 处理文件上传 MVC部分 -->
+  <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" >
+    <property name="defaultEncoding" value="utf-8"/> <!-- 默认编码 (ISO-8859-1) -->
+    <property name="maxInMemorySize" value="10240"/> <!-- 最大内存大小 (10240)-->
+    <property name="maxUploadSize" value="52428800"/> <!-- 5000kb最大文件大小，这个属性的限制不针对单个文件，而是所有文件的容量之和，-1为无限止(-1) -->
+    <property name="uploadTempDir" value="/tempUpload/"/> <!-- 此路径为临时路径上传后的目录名 (WebUtils#TEMP_DIR_CONTEXT_ATTRIBUTE) -->
+    <property name="resolveLazily" value="true"/> <!--resolveLazily属性启用是为了推迟文件解析，以便在UploadAction 中捕获文件大小异常-->
+  </bean>
+
+  <!-- 以下为UGP框架(用户/用户组/权限框架)所需配置 -->
+  <!-- 用户服务 -->
+  <bean id="userService" class="com.gmteam.framework.core.dao.mybatis.MybatisDAO"  scope="prototype" init-method="initialize">
+  </bean>
 </beans>

@@ -12,15 +12,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gmteam.framework.IConstants;
-import com.gmteam.framework.component.login.pojo.User;
+import com.gmteam.framework.UGA.UgaUser;
+import com.gmteam.framework.UGA.UgaUserService;
 import com.gmteam.framework.component.login.pojo.UserLogin;
-import com.gmteam.framework.component.login.service.UserService;
 import com.gmteam.framework.core.cache.CacheEle;
 import com.gmteam.framework.core.cache.SystemCache;
 @Controller
 public class LoginController {
     @Resource
-    private UserService userService;
+    private UgaUserService ugaUserService;
     /**
      * 用户登录
      * @param userLogin 用户登录信息
@@ -31,7 +31,7 @@ public class LoginController {
     public @ResponseBody Map<String,Object> Login(UserLogin userLogin,HttpServletRequest req) {
         Map<String,Object> retObj = new HashMap<String,Object>();
         try {
-            User user = (User) userService.getPlatUserByLoginName(userLogin.getLoginName());
+            UgaUser user = (UgaUser)ugaUserService.getUserByLoginName(userLogin.getLoginName());
             if(user==null){
                 retObj.put("type", "2");
                 retObj.put("data", "没有登录名为["+userLogin.getLoginName()+"]的用户！");
@@ -41,9 +41,9 @@ public class LoginController {
             }else{
                 //设置用户Session缓存
                 HttpSession session = req.getSession();
-                UserLogin oldUserLogin = ((CacheEle<Map<String, UserLogin>>) SystemCache.getCache(IConstants.USERSESSIONMAP)).getContent().remove(user.getId());
+                UserLogin oldUserLogin = ((CacheEle<Map<String, UserLogin>>) SystemCache.getCache(IConstants.USERSESSIONMAP)).getContent().remove(user.getUserId());
                 userLogin.setSessionId(session.getId());
-                ((CacheEle<Map<String, UserLogin>>) SystemCache.getCache(IConstants.USERSESSIONMAP)).getContent().put(user.getId(), userLogin);
+                ((CacheEle<Map<String, UserLogin>>) SystemCache.getCache(IConstants.USERSESSIONMAP)).getContent().put(user.getUserId(), userLogin);
                 //写用户信息
                 session.setAttribute(IConstants.SESSION_USER, user);
                 retObj.put("type", "1");
@@ -68,10 +68,10 @@ public class LoginController {
             //清除用户Session缓存
             Map<String, UserLogin> userSessionMap = ((CacheEle<Map<String, UserLogin>>)SystemCache.getCache(IConstants.USERSESSIONMAP)).getContent();
             HttpSession session = req.getSession();
-            User user = (User)session.getAttribute(IConstants.SESSION_USER);
-            UserLogin userLogin = userSessionMap.get(user.getId());
+            UgaUser user = (UgaUser)session.getAttribute(IConstants.SESSION_USER);
+            UserLogin userLogin = userSessionMap.get(user.getUserId());
             if (userLogin!=null&&userLogin.getSessionId().equals(session.getId())) {
-                userSessionMap.remove(user.getId());
+                userSessionMap.remove(user.getUserId());
             }
             //清除Session
             session.removeAttribute(IConstants.SESSION_USER);

@@ -39,8 +39,8 @@ public class SystemCache {
      * 删除cache中的内容
      * @param key
      */
-    public static void remove(String key) {
-        CacheContent.remove(key);
+    public static CacheEle<?> remove(String key) {
+        return CacheContent.remove(key);
     }
 
     /**

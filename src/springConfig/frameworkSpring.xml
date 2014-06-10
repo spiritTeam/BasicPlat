@@ -22,4 +22,10 @@
 
   <!--业务缓存-->
   <bean id="cacheFrameworkManager" class="com.gmteam.framework.component.cache.FrameworkCacheLifecycleUnit"/>
+
+  <!--框架中采用Uga框架部分的配置-->
+  <!--Uga缓存-->
+  <bean id="cacheFrameworkUgaManager" class="com.gmteam.framework.component.cache.UgaCacheLifecycleUnit"/>
+  <!--用户服务-->
+  <bean id="ugaUserService" class="com.gmteam.framework.component.UGA.service.UserService"/>
 </beans>

@@ -96,15 +96,18 @@ function newWin(winOption) {
         }
       });
       if (_i!=-1) winArray.splice(_i,1);
+    },
+    onClose: function() {
+      $(newWinDiv).window("destroy");
     }
   });
   //处理窗口图标icon_css
   if (winOption.icon_css) {
-  	$(newWinDiv).window({iconCls: winOption.icon_css});
+    $(newWinDiv).window({iconCls: winOption.icon_css});
   }
   //处理窗口图标icon_url
   if (winOption.icon_url) {
-  	$(newWinDiv).window({iconCls: "abc"});//设置图标区域 background
+    $(newWinDiv).window({iconCls: "abc"});//设置图标区域 background
     //设置效果
     var winObj = $(newWinDiv).parent();
     var tempObj = winObj.parent().find(".panel-icon");
