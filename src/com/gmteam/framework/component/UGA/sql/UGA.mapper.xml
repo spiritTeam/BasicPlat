@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="UGA">
+<resultMap id="UserMap" type="User">
+  <id     column="id"        property="userId"    jdbcType="VARCHAR" />
+  <result column="loginName" property="loginName" jdbcType="VARCHAR" />
+  <result column="userName"  property="userName"  jdbcType="INTEGER" />
+  <result column="password"  property="password"  jdbcType="INTEGER" />
+</resultMap>
+
+<select id="getAllUser" resultMap="UserMap">
+select * from plat_user
+</select>
+</mapper>

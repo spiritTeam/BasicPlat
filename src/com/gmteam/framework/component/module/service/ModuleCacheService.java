@@ -27,7 +27,11 @@ public class ModuleCacheService {
     public void initParam() {
         dao.setNamespace("Module");
     }
-
+    /**
+     * 把数据组成一棵树
+     * @return
+     * @throws Exception
+     */
     @SuppressWarnings("unchecked")
     public Map<String, Object> makeCacheModule() throws Exception {
         Map<String, Object> ret = new HashMap<String, Object>();

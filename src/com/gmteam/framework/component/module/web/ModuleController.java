@@ -1,8 +1,6 @@
 package com.gmteam.framework.component.module.web;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import javax.annotation.Resource;
@@ -18,7 +16,11 @@ import com.gmteam.framework.component.module.pojo.Module;
 import com.gmteam.framework.component.module.service.ModuleService;
 import com.gmteam.framework.core.model.tree.TreeNode;
 import com.gmteam.framework.ui.tree.easyUi.EasyUiTree;
-
+/**
+ * moduelController:
+ * 包含tree的显示方法，TreeGrid的显示方法
+ * @author mht，wh
+ */
 @Controller
 public class ModuleController {
     @Resource
@@ -26,8 +28,7 @@ public class ModuleController {
     @Resource
     private FrameworkCacheLifecycleUnit fCLU;
     /**
-     * tree
-     * @return
+     * tree的显示
      * @throws CloneNotSupportedException
      */
     @RequestMapping("showAllTree.do")
@@ -43,8 +44,7 @@ public class ModuleController {
         return map;
     }
     /**
-     * treegrid
-     * @return
+     * treegrid的显示
      * @throws CloneNotSupportedException
      */
     @RequestMapping("showAllTreeGrid.do")
@@ -59,23 +59,6 @@ public class ModuleController {
         setParentName(met);
         map = met.toTreeGridMap();
         return map;
-    }
-    @RequestMapping(value="getPNameMap.do",method = RequestMethod.POST)
-    public@ResponseBody List<String> getPNameMap(){
-        List<String> reqJson = new ArrayList<String>();
-        StringBuffer sb = new StringBuffer();
-        List<Module> mList = moduleService.getModuleList();
-        Module mm=null;
-        for(int i=0;i<mList.size();i++){
-            mm=mList.get(i);
-            if(i<mList.size()-1){
-                sb.append("{id:"+mm.getId()+","+"text:"+mm.getDisplayName()+"},");
-            }else{
-                sb.append("{id:"+mm.getId()+","+"text:"+mm.getDisplayName()+"}");
-            }
-        }
-        reqJson.add(sb.toString());
-        return reqJson;
     }
     /**
      * 刷新缓存
@@ -114,7 +97,7 @@ public class ModuleController {
         }
     }
     /**
-     * insert
+     * insert一个module
      * @param formTree
      * @return
      */
@@ -124,12 +107,6 @@ public class ModuleController {
         String mName = req.getParameter("moduleName");
         m.setNodeName(mName);
         UUID uuid = UUID.randomUUID();
-//        List<Module> lM = moduleService.getModuleList();
-//        for(Module mm :lM){
-//            if(m.getpName().equals(mm.getDisplayName())){
-//                m.setParentId(mm.getId());
-//            }
-//        }
         m.setId(uuid+"");
         int rsp = 0;
         try {
@@ -141,7 +118,7 @@ public class ModuleController {
         }
     }
     /**
-     * update
+     * update一个module
      * @param formModule
      * @param req
      * @return
@@ -160,7 +137,7 @@ public class ModuleController {
         }
     }
     /**
-     * delete
+     * delete一个module
      * @param req
      * @return
      */

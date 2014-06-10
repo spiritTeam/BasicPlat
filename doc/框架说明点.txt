@@ -14,3 +14,10 @@
   <!-- 以下为文件上传的测试代码 -->
   <bean name="/uploadtest1.do" class="com.gmteam.framework.component.fileUploadDownload.SimpleFileUploadController">
   </bean>
+
+  
+  [开发计划]
+  1-login需要配置在xml中，便于扩展
+  2-6月11日前，完成框架UGA部分的后台工作
+  3-6月13日前，完成框架前台部分，与UGA的配合
+  4-争取尽快用UGA完成与建军系统的对接

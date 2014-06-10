@@ -24,7 +24,6 @@
 <html>
 <head>
 <jsp:include page="/common/sysInclude.jsp" flush="true"/>
-<script  type="text/javascript"  src="form.js"></script>
 </head>
 <body>
 <div  style="width:500px;height:250px;">
@@ -36,13 +35,13 @@
         <td width="100px;" align="right"><label for="displayName">显示名称:</label></td>
         <td><input id="displayName" name="displayName" type="text" style="width:120px;" value="<%=displayName %>"/></td>
         <td width="100px;" align="right">模块类型:</td>
-        <td><input id="moduleType1" name="moduleType1" value="" style="width: 120px;"></td>
+        <td><input id="moduleType" name="moduleType" value="" style="width: 120px;"></td>
       </tr>
       <tr>
         <td width="100px;" align="right"><label for="iconCls">模块图标:</label></td>
         <td><input id="iconCls" name="iconCls" style="width:120px;" value="<%=iconCls %>"/></td>
         <td width="100px;" align="right">模块样式:</td>
-        <td><input id="style1" name="style1" value="" style="width: 120px;"></td>
+        <td><input id="style" name="style" value="" style="width: 120px;"></td>
       </tr>
       <tr>
         <td width="100px;" align="right"><label for="pName">上级模块:</label></td>
@@ -94,8 +93,8 @@ function init(){
   });
 }
 function update(){
-	console.info(serializeObject($('#update_module_form').form()));
-	var formData = serializeObject($('#update_module_form').form());
+	console.info(formField2Object('update_module_form'));
+	var formData = formField2Object('update_module_form');
 	$.ajax({type:"post", async:true,data:formData, url:'<%=path%>/updateModule.do', dataType:"json",
     success: function(data) {
    	  $.messager.alert('更新信息','操作成功!','info');

@@ -15,6 +15,10 @@ import com.gmteam.framework.component.module.service.ModuleCacheService;
 import com.gmteam.framework.core.cache.AbstractCacheLifecycleUnit;
 import com.gmteam.framework.core.cache.CacheEle;
 import com.gmteam.framework.core.cache.SystemCache;
+/**
+ * 缓存util类，
+ * 其中包含缓存的刷新，初始化，销毁等方法
+ */
 @Component
 public class FrameworkCacheLifecycleUnit extends AbstractCacheLifecycleUnit {
     /**

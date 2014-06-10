@@ -7,7 +7,6 @@
 <html>
 <head>
 <jsp:include page="/common/sysInclude.jsp" flush="true"/>
-<script  type="text/javascript"  src="form.js"></script>
 </head>
 <body>
 <!-- 新增模块dialog -->
@@ -82,8 +81,8 @@ function initcombox(){
   });
 }
 function save(){
-	console.info(serializeObject($('#add_module_form').form()));
-	var formData = serializeObject($('#add_module_form').form());
+	console.info(formField2Object('add_module_form'));
+	var formData = formField2Object('add_module_form');
 	$.ajax({type:"post", async:true,data:formData, url:'<%=path%>/insertModule.do', dataType:"json",
     success: function(data) {
    	  $.messager.alert('新增信息','操作成功!','info');
