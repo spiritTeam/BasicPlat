@@ -91,6 +91,7 @@ function save(){
     }
   });
 	wId = getUrlParam(window.location.href, "_winID");
+	
   closeWin(wId);
 }
 function reset(){
