@@ -4,7 +4,7 @@
 %>
 <html>
 <head>
-  <jsp:include page="/common/sysInclude.jsp" flush="true"/>
+  <jsp:include page="<%=path%>/common/sysInclude.jsp" flush="true"/>
 </head>
 <body>
   <div id="toolbar" align="left" style="height:35px;">

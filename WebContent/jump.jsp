@@ -23,14 +23,14 @@ if (isOpenWin) {
   if (screenH>winH) wTop =parseInt((screenH-winH)/2);
   if (screenW>winW) wLeft=parseInt((screenW-winW)/2);
   window.open(
-    "common/login.jsp",
+    "login/login.jsp",
     "<%=IConstants.PLATFORM_NAME%>",
     "alwaysRaised=yes,menubar=no,location=no,resizable=yes,scrollbars=yes,status=no,height="+winH+", width="+winW+", top="+wTop+", left="+wLeft
   );
   window.opener=null;
   self.close();
 } else {
-  window.location.href="common/login.jsp?openWindow="+isOpenWinIndex;
+  window.location.href="login/login.jsp?openWindow="+isOpenWinIndex;
 }
 </script>
 </html>

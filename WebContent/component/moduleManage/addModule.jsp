@@ -6,7 +6,7 @@
 %>
 <html>
 <head>
-<jsp:include page="/common/sysInclude.jsp" flush="true"/>
+<jsp:include page="<%=path%>/common/sysInclude.jsp" flush="true"/>
 </head>
 <body>
 <!-- 新增模块dialog -->

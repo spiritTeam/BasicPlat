@@ -23,7 +23,7 @@
 %>
 <html>
 <head>
-<jsp:include page="/common/sysInclude.jsp" flush="true"/>
+<jsp:include page="<%=path%>/common/sysInclude.jsp" flush="true"/>
 </head>
 <body>
 <div  style="width:500px;height:250px;">

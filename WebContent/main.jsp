@@ -8,8 +8,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<jsp:include page="/common/sysInclude.jsp" flush="true"/>
-<script type="text/javascript" src="<%=path %>/resources/js/mainPage.utils.js"></script>
+<jsp:include page="<%=path%>/common/sysInclude.jsp" flush="true"/>
+<script type="text/javascript" src="<%=path%>/resources/js/mainPage.utils.js"></script>
 <title><%=IConstants.PLATFORM_NAME%></title>
 </head>
 <style type="text/css">

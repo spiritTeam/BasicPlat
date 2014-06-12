@@ -4,16 +4,15 @@
 <%@page import="com.gmteam.framework.core.cache.SystemCache"%>
 <%@page import="com.gmteam.framework.component.login.pojo.UserLogin"%>
 <%@page import="com.gmteam.framework.core.cache.CacheEle"%>
+<%@page import="com.gmteam.framework.UGA.UgaUser"%>
 <%
   String path = request.getContextPath();
   CacheEle<Map<String, UserLogin>> mc = (CacheEle<Map<String, UserLogin>>)SystemCache.getCache(IConstants.USERSESSIONMAP);
   Map<String, UserLogin> userSessionMap = mc.getContent();
-//  u = (User)session.getAttribute(IConstants.SESSION_USER);
-//  UserLoginInfo uli = null;
-//  if (u!=null) uli=userSessionMap.get(u.getV_userid());
-//  boolean sessionIsMe=(u==null?false:(uli==null?false:(session.getId().equals(uli.getSessionId()))));
-boolean sessionIsMe = true;
-String u=null;
+  UgaUser u = (UgaUser)session.getAttribute(IConstants.SESSION_USER);
+  UserLogin uli = null;
+  if (u!=null) uli=userSessionMap.get(u.getUserId());
+  boolean sessionIsMe=(u==null?false:(uli==null?false:(session.getId().equals(uli.getSessionId()))));
 %>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -24,7 +23,7 @@ String u=null;
 <meta http-equiv="cache-control" content="no-cache"/>
 <meta http-equiv="expires" content="0"/>
 <meta content="MSHTML 6.00.2800.1106" name=GENERATOR/>
-<jsp:include page="/common/sysInclude.jsp" flush="true"/>
+<jsp:include page="<%=path%>/common/sysInclude.jsp" flush="true"/>
 
 <style type="text/css">
 html {background:#0F402B url(<%=path%>/resources/images/login/grass.jpg) no-repeat; overflow:hidden;background-position:top center;}
@@ -146,8 +145,8 @@ $(function() {
     });
   } else {
     if (<%=sessionIsMe%>&&("<%=u%>"!="null")) {
-      $.messager.alert("提示", "您[<%=(u==null?"":"")%>]已登录，请先注销！<br/>现返回主页。", "info", function(){
-        window.location.href="<%=path%>/index.jsp";
+      $.messager.alert("提示", "您[<%=(u==null?"":u.getUserName())%>]已登录，请先注销！<br/>现返回主页。", "info", function(){
+        window.location.href="<%=path%>/mainPage.jsp";
       });
     } else $("#loginDiv").show();
   }
@@ -213,7 +212,7 @@ function loginF(){
     success: function(json) {
       if (json.type==1) {
         var openWindow=getUrlParam(window.location.href, "openWindow");
-        url = "<%=path%>/main.jsp";
+        url = "<%=path%>/mainPage.jsp";
         if (openWindow==null||openWindow==""||openWindow!="yes") {
           window.location.href= url;
         } else {
