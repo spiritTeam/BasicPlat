@@ -6,6 +6,7 @@ import static org.springframework.util.StringUtils.hasLength;
 import static org.springframework.util.StringUtils.tokenizeToStringArray;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -16,14 +17,18 @@ import java.util.Properties;
 
 import javax.sql.DataSource;
 
+import org.apache.ibatis.builder.BuilderException;
 import org.apache.ibatis.builder.xml.XMLConfigBuilder;
 import org.apache.ibatis.builder.xml.XMLMapperBuilder;
+import org.apache.ibatis.builder.xml.XMLMapperEntityResolver;
 import org.apache.ibatis.executor.ErrorContext;
+import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.logging.Log;
 import org.apache.ibatis.logging.LogFactory;
 import org.apache.ibatis.mapping.DatabaseIdProvider;
 import org.apache.ibatis.mapping.Environment;
-import org.apache.ibatis.mapping.MappedStatement;
+import org.apache.ibatis.parsing.XNode;
+import org.apache.ibatis.parsing.XPathParser;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.reflection.factory.ObjectFactory;
 import org.apache.ibatis.reflection.wrapper.ObjectWrapperFactory;
@@ -345,7 +350,7 @@ public class MySqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, 
         myConfigs.add(flagIndex, _r);
       }
     }
-    //正真处理
+    //真正处理
     if (myConfigs!=null&&myConfigs.size()>0) {
       xmlConfigBuilder = new XMLConfigBuilder(myConfigs.get(0).getInputStream(), null, this.configurationProperties);
       configuration = xmlConfigBuilder.getConfiguration();
@@ -406,35 +411,23 @@ public class MySqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, 
         ErrorContext.instance().reset();
       }
       
-      //扩展内容从多个配置文件中读取信息，但注意setting;environment不进行加载，只加在第一个配置文件中的内容
+      //扩展内容从多个配置文件中读取信息，但注意setting;environment不进行加载，只从第一个配置文件中加载setting;environment等信息
       Configuration tc=null;
       for (int i=1; i<myConfigs.size(); i++) {
         tc=null;
         XMLConfigBuilder xmlConfigBuilder1 = null;
         xmlConfigBuilder1 = new XMLConfigBuilder(myConfigs.get(i).getInputStream(), null, this.configurationProperties);
-        tc = xmlConfigBuilder1.getConfiguration();
         if (xmlConfigBuilder1!=null) {
           try {
             tc=xmlConfigBuilder1.parse();
-            //propertiesElement(root.evalNode("properties"))
+
+            //1-propertiesElement(root.evalNode("properties"))
             Properties p = tc.getVariables();
             Properties p2 = configuration.getVariables();
             if (p!=null) p2.putAll(p);
             configuration.setVariables(p2);
-            //pluginElement(root.evalNode("plugins"))
-            List<Interceptor> l = tc.getInterceptors();
-            if (l!=null) {
-              for (Interceptor itc: l) configuration.addInterceptor(itc);
-            }
-            //objectFactoryElement(root.evalNode("objectFactory"))
-            if (tc.getObjectFactory()!=null) configuration.setObjectFactory(tc.getObjectFactory());
-            //objectWrapperFactoryElement(root.evalNode("objectWrapperFactory"))
-            if (tc.getObjectWrapperFactory()!=null) configuration.setObjectWrapperFactory(tc.getObjectWrapperFactory());
-            //setting NO
-            //environments NO
-            //databaseIdProviderElement(root.evalNode("databaseIdProvider"))
-            if (tc.getDatabaseId()!=null) configuration.setDatabaseId(tc.getDatabaseId());
-            //typeAliasesElement(root.evalNode("typeAliases"))
+
+            //2-typeAliasesElement(root.evalNode("typeAliases"));
             TypeAliasRegistry tar = tc.getTypeAliasRegistry();
             if (tar!=null) {
               Map<String, Class<?>> m = tar.getTypeAliases();
@@ -446,7 +439,26 @@ public class MySqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, 
                 }
               }
             }
-            //typeHandlerElement(root.evalNode("typeHandlers"))
+
+            //3-pluginElement(root.evalNode("plugins"))
+            List<Interceptor> l = tc.getInterceptors();
+            if (l!=null) {
+              for (Interceptor itc: l) configuration.addInterceptor(itc);
+            }
+
+            //4-objectFactoryElement(root.evalNode("objectFactory"))，注意，若之前有ObjectFactroy已经配置，则后续的配置都不起作用
+            if (tc.getObjectFactory()!=null) configuration.setObjectFactory(tc.getObjectFactory());
+
+            //5-objectWrapperFactoryElement(root.evalNode("objectWrapperFactory"))，注意，若之前有ObjectWrapperFactory已经配置，则后续的配置都不起作用
+            if (tc.getObjectWrapperFactory()!=null) configuration.setObjectWrapperFactory(tc.getObjectWrapperFactory());
+
+            //6-setting NO，基本设置，只在第一个文件中处理
+            //7-environments NO，环境设置(数据库等)只在第一个文件中处理
+
+            //8-databaseIdProviderElement(root.evalNode("databaseIdProvider"))
+            if (tc.getDatabaseId()!=null) configuration.setDatabaseId(tc.getDatabaseId());
+
+            //9-typeHandlerElement(root.evalNode("typeHandlers"))
             TypeHandlerRegistry thr = tc.getTypeHandlerRegistry();
             if (thr!=null) {
               Collection<TypeHandler<?>> thc = thr.getTypeHandlers();
@@ -454,22 +466,42 @@ public class MySqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, 
                 for(TypeHandler<?> th: thc) configuration.getTypeHandlerRegistry().register(th);
               }
             }
-            //mapper这是重点
-            Collection<Class<?>> mc = tc.getMapperRegistry().getMappers();
-            if (mc!=null) {
-              for(Class<?> c: mc) configuration.addMapper(c);
-            }
-            if (tc.getMappedStatementNames()!=null) {
-              for (String name:tc.getMappedStatementNames()) {
-                MappedStatement ms = tc.getMappedStatement(name);
-                try {
-                  configuration.addMappedStatement(ms);
-                } catch(IllegalArgumentException iae) {
-                  if (logger.isDebugEnabled()) {
-                    logger.debug(iae.getMessage());
+
+            //10-mapper这是重点
+            XPathParser mapperParser = new XPathParser(myConfigs.get(i).getInputStream(), true, this.configurationProperties, new XMLMapperEntityResolver());
+            XNode root = mapperParser.evalNode("/configuration");
+            try {
+              XNode parent = root.evalNode("mappers");
+              if (parent != null) {
+                for (XNode child : parent.getChildren()) {
+                  if ("package".equals(child.getName())) {
+                    String mapperPackage = child.getStringAttribute("name");
+                    configuration.addMappers(mapperPackage);
+                  } else {
+                    String resource = child.getStringAttribute("resource");
+                    String url = child.getStringAttribute("url");
+                    String mapperClass = child.getStringAttribute("class");
+                    if (resource != null && url == null && mapperClass == null) {
+                      ErrorContext.instance().resource(resource);
+                      InputStream inputStream = Resources.getResourceAsStream(resource);
+                      XMLMapperBuilder mapperContentParser = new XMLMapperBuilder(inputStream, configuration, resource, configuration.getSqlFragments());
+                      mapperContentParser.parse();
+                    } else if (resource == null && url != null && mapperClass == null) {
+                      ErrorContext.instance().resource(url);
+                      InputStream inputStream = Resources.getUrlAsStream(url);
+                      XMLMapperBuilder mapperContentParser = new XMLMapperBuilder(inputStream, configuration, url, configuration.getSqlFragments());
+                      mapperContentParser.parse();
+                    } else if (resource == null && url == null && mapperClass != null) {
+                      Class<?> mapperInterface = Resources.classForName(mapperClass);
+                      configuration.addMapper(mapperInterface);
+                    } else {
+                      throw new BuilderException("A mapper element may only specify a url, resource or class, but not more than one.");
+                    }
                   }
                 }
               }
+            } catch (Exception e) {
+              throw new BuilderException("Error parsing SQL Mapper Configuration. Cause: " + e, e);
             }
             if (logger.isDebugEnabled()) logger.debug("Parsed configuration file: '" + myConfigs.get(i) + "'");
           } catch (Exception ex) {
@@ -515,10 +547,7 @@ public class MySqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, 
     
     if (!isEmpty(this.mapperLocations)) {
       for (Resource mapperLocation : this.mapperLocations) {
-        if (mapperLocation == null) {
-          continue;
-        }
-
+        if (mapperLocation == null) continue;
         try {
           XMLMapperBuilder xmlMapperBuilder = new XMLMapperBuilder(mapperLocation.getInputStream(), configuration, mapperLocation.toString(), configuration.getSqlFragments());
           xmlMapperBuilder.parse();
@@ -527,7 +556,6 @@ public class MySqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, 
         } finally {
           ErrorContext.instance().reset();
         }
-
         if (logger.isDebugEnabled()) {
           logger.debug("Parsed mapper file: '" + mapperLocation + "'");
         }
@@ -545,9 +573,7 @@ public class MySqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, 
    * {@inheritDoc}
    */
   public SqlSessionFactory getObject() throws Exception {
-    if (this.sqlSessionFactory == null) {
-      afterPropertiesSet();
-    }
+    if (this.sqlSessionFactory == null) afterPropertiesSet();
     return this.sqlSessionFactory;
   }
 
@@ -570,7 +596,6 @@ public class MySqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, 
    */
   public void onApplicationEvent(ApplicationEvent event) {
     if (failFast && event instanceof ContextRefreshedEvent) {
-      // fail-fast -> check all statements are completed
       this.sqlSessionFactory.getConfiguration().getMappedStatementNames();
     }
   }

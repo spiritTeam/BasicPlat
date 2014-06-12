@@ -24,10 +24,10 @@ public class LoginController {
     /**
      * 用户登录
      * @param userLogin 用户登录信息
-     * @param req 
-     * @return
+     * @param req request对象
+     * @return 返回登录信息对象
      */
-    @RequestMapping("common/login.do")
+    @RequestMapping("login.do")
     public @ResponseBody Map<String,Object> Login(UserLogin userLogin,HttpServletRequest req) {
         Map<String,Object> retObj = new HashMap<String,Object>();
         try {

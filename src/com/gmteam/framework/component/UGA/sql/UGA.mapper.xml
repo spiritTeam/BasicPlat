@@ -8,7 +8,7 @@
   <result column="password"  property="password"  jdbcType="INTEGER" />
 </resultMap>
 
-<select id="getAllUser" resultMap="UserMap">
+<select id="getList" resultMap="UserMap">
 select * from plat_user
 </select>
 </mapper>

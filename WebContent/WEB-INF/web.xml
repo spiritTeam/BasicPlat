@@ -61,13 +61,13 @@
     <filter-name>CharacterEncodingFilter</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
-  <!-- 登录
+  <!-- 登录 -->
   <filter>
     <filter-name>loginFilter</filter-name>
     <filter-class>com.gmteam.framework.component.login.web.LoginFilter</filter-class>
     <init-param>
       <param-name>ingores</param-name>
-      <param-value>jump.jsp,login.jsp,login.do,hasNewLogin.jsp,noLogin.jsp</param-value>
+      <param-value>jump.jsp,login.jsp,login.do,hasNewLogin.jsp,noLogin.jsp,resources/images,resources/plugins/easyui</param-value>
     </init-param>
     <init-param>
       <param-name>noLogin</param-name>
@@ -81,7 +81,7 @@
   <filter-mapping>
     <filter-name>loginFilter</filter-name>
     <url-pattern>/*</url-pattern>
-  </filter-mapping> -->
+  </filter-mapping>
   <!-- end过滤器 -->
 
   <!-- begin Servlet设置 -->

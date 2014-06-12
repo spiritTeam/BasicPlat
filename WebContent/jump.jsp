@@ -14,7 +14,7 @@ var isOpenWin=true;//是否弹出窗口
 var isOpenWinIndex="yes";//主界面是否弹出窗口
 
 isOpenWin=false;
-isOpenWinIndex="yes";
+isOpenWinIndex="no";
 
 if (isOpenWin) {
   var screenH=screen.Height, screenW=screen.Width;

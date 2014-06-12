@@ -37,7 +37,6 @@ public class LoginFilter implements Filter {
             String ingoresArray[] = ingores.split(",");
             if (isIngore(path, ingoresArray)) chain.doFilter(req, res);
             else if (path.endsWith(".css")||path.endsWith(".js")||path.endsWith(".json")) chain.doFilter(req, res);
-            else if (path.indexOf("resources/images/login")!=-1) chain.doFilter(req, res);
             else if (session.getAttribute(IConstants.SESSION_USER)!=null) {
                 //判断是否用其他Sesson登录了
                 CacheEle<Map<String, UserLogin>> userSessionMap = (CacheEle<Map<String, UserLogin>>)SystemCache.getCache(IConstants.USERSESSIONMAP);

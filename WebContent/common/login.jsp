@@ -23,21 +23,8 @@ String u=null;
 <meta http-equiv="pragma" content="no-cache"/>
 <meta http-equiv="cache-control" content="no-cache"/>
 <meta http-equiv="expires" content="0"/>
+<meta content="MSHTML 6.00.2800.1106" name=GENERATOR/>
 <jsp:include page="/common/sysInclude.jsp" flush="true"/>
-
-<SCRIPT language=JScript event="OnCompleted(hResult,pErrorObject, pAsyncContext)" for=foo>
-document.forms[0].txtMACAddr.value=unescape(MACAddr);
-document.forms[0].txtIPAddr.value=unescape(IPAddr);
-document.forms[0].txtDNSName.value=unescape(sDNSName);
-</SCRIPT>
-<SCRIPT language=JScript event=OnObjectReady(objObject,objAsyncContext) for=foo>
-if(objObject.IPEnabled != null && objObject.IPEnabled != "undefined" && objObject.IPEnabled == true){
-  if(objObject.MACAddress != null && objObject.MACAddress != "undefined") MACAddr = objObject.MACAddress;
-  if(objObject.IPEnabled && objObject.IPAddress(0) != null && objObject.IPAddress(0) != "undefined") IPAddr = objObject.IPAddress(0);
-  if(objObject.DNSHostName != null && objObject.DNSHostName != "undefined") sDNSName = objObject.DNSHostName;
-}
-</SCRIPT>
-<META content="MSHTML 6.00.2800.1106" name=GENERATOR>
 
 <style type="text/css">
 html {background:#0F402B url(<%=path%>/resources/images/login/grass.jpg) no-repeat; overflow:hidden;background-position:top center;}
@@ -58,42 +45,52 @@ html {background:#0F402B url(<%=path%>/resources/images/login/grass.jpg) no-repe
 #commitButton {width:92px; height:57px;}
 #commitButton {border:1px;}
 
-#mask {border-radius:10px; -moz-border-radius:10px;}
+#mask {border-radius:10px; -moz-border-radius:10px; filter:alpha(opacity=70); opacity:0.7; background:#E7F1F5; z-index:1000;}
 </style>
 </head>
 <body>
-<OBJECT id=locator classid=CLSID:76A64158-CB41-11D1-8B02-00600806D9B6 VIEWASTEXT></OBJECT>
-<OBJECT id=foo classid=CLSID:75718C9A-F029-11d1-A1AC-00C04FB6C223></OBJECT>
-<SCRIPT language=JScript>
-  var service = locator.ConnectServer();
-  var MACAddr ;
-  var IPAddr ;
-  var DomainAddr;
-  var sDNSName;
-  service.Security_.ImpersonationLevel=3;
-  service.InstancesOfAsync(foo, 'Win32_NetworkAdapterConfiguration');
-</SCRIPT>
 
-<FORM id="formfoo" name="formbar" action="" method="post" style="display:none">
-  <INPUT value=00:05:5D:0E:C7:FA name=txtMACAddr>
-  <INPUT value=192.168.0.2 name=txtIPAddr>
-  <INPUT value=typ name=txtDNSName>
-</FORM>
+<object id="locator" classid="CLSID:76A64158-CB41-11D1-8B02-00600806D9B6" style="display:none;visibility:hidden"></object>
+<object id="foo" classid="CLSID:75718C9A-F029-11d1-A1AC-00C04FB6C223" style="display:none;visibility:hidden"></object>
+<form id="fooform" name="fooForm" style="display:none">
+  <input type="hidden" name="txtMACAddr"/>
+  <input type="hidden" name="txtIPAddr"/>
+  <input type="hidden" name="txtDNSName"/>
+</form>
+<script>
+var service = locator.ConnectServer();
+var MACAddr;
+var IPAddr;
+var DomainAddr;
+var sDNSName;
+service.Security_.ImpersonationLevel=3;
+service.InstancesOfAsync(foo, 'Win32_NetworkAdapterConfiguration');
+</script>
+
+<script language="JScript" event="OnCompleted(hResult,pErrorObject, pAsyncContext)" for="foo">
+fooForm.txtMACAddr.value=unescape(MACAddr);
+fooForm.txtIPAddr.value=unescape(IPAddr);
+fooForm.txtDNSName.value=unescape(sDNSName);
+</script>
+<script language="JScript" event="OnObjectReady(objObject,objAsyncContext)" for="foo">
+if(objObject.IPEnabled != null && objObject.IPEnabled != "undefined" && objObject.IPEnabled == true) {
+  if(objObject.MACAddress != null && objObject.MACAddress != "undefined") MACAddr = objObject.MACAddress;
+  if(objObject.IPEnabled && objObject.IPAddress(0) != null && objObject.IPAddress(0) != "undefined") IPAddr = objObject.IPAddress(0);
+  if(objObject.DNSHostName != null && objObject.DNSHostName != "undefined") sDNSName = objObject.DNSHostName;
+}
+</script>
 
 <!-- 遮罩层 -->
-<div id="mask" style="display:none">
-  <div id="maskContent" style="position:relative;">
-  <table><tr><td style="vertical-align:middle;align:center"><center>
-    <img align="middle" src="<%=path%>/resources/images/waiting_circle.gif"/><br/><br/>
-    <span style="font-weight:bold" id="maskTitle">请稍候，登录中...</span>
-  </center></td></tr></table>
-  </div>
+<div id="mask" style="display:none; position:absolute;vertical-align:middle;text-align:center; align:center;">
+  <img align="middle" src="<%=path%>/resources/images/waiting_circle.gif"/><br/><br/>
+  <span style="font-weight:bold;" id="maskTitle">请稍候，登录中...</span>
 </div>
+
 <div id="loginDiv">
   <table id="userTable">
     <tr>
-      <td style="padding-top:2px"><label for="loginname">登录名：</label></td>
-      <td style="padding-top:2px"><input type="text" id='loginname' tabindex="1"/></td><!-- 注意tabindex属性，不要漏掉了 -->
+      <td style="padding-top:2px"><label for="loginName">登录名：</label></td>
+      <td style="padding-top:2px"><input type="text" id='loginName' tabindex="1"/></td><!-- 注意tabindex属性，不要漏掉了 -->
       <td rowspan="2" style="width:160px;height:70px;align:center;padding-left:30px;"><div id="commitButton"></div></td>
     </tr>
     <tr>
@@ -112,13 +109,8 @@ html {background:#0F402B url(<%=path%>/resources/images/login/grass.jpg) no-repe
 
 <script>
 $(function() {
-  setLoginWinPosition();
+  setElementPosition();
   setBodyEnter(true);
-
-  $("#footDiv").css({
-    "left":(($("#loginDiv").width()-$("#footDiv").width())/2),
-    "top": 100
-  });
   $("#commitButton")
   .mouseover(function(){
     $("#commitButton").css({
@@ -159,26 +151,33 @@ $(function() {
       });
     } else $("#loginDiv").show();
   }
-  $(window).resize(setLoginWinPosition);
+  $(window).resize(setElementPosition);
 });
 
 //设置登录功能区域的位置，包括登录区域loginDiv/遮罩区域mask/提示区域footDiv
-function setLoginWinPosition() {
+function setElementPosition() {
+  //登陆区域位置及样式
   $("#loginDiv").css({
-    "top":"520px"
+    "top":"500px"
   });
   $("#loginDiv").css({
     "left":($(window).height()>600?((($(window).width()-$("#loginDiv").width())/2)+330)+"px":"620px")
   });
 
-  $("#mask").css({
-    "top": $("#loginDiv").css("top"),
-    "left": $("#loginDiv").css("left"),
-    "width": (parseInt($("#loginDiv").css("width"))-2)+"px",
-    "height": (parseInt($("#loginDiv").css("height"))-2)+"px"
+  //提示页脚位置及样式
+  $("#footDiv").css({
+    "left":(($("#loginDiv").width()-$("#footDiv").width())/2),
+    "top": 600,
+    "left": 830
   });
-  $("#maskContent").css({
-    "top": "100px"
+
+  //遮罩层位置及样式
+  $("#mask").css({
+  	"padding-top": 25,
+    "top": parseInt($("#loginDiv").css("top"))-10,
+    "left": parseInt($("#loginDiv").css("left"))-10,
+    "width": (parseInt($("#loginDiv").css("width"))+20)+"px",
+    "height": (parseInt($("#loginDiv").css("height"))+40)+"px"
   });
 }
 
@@ -186,11 +185,11 @@ function setLoginWinPosition() {
 function loginF(){
   setBodyEnter(false);
   var checkOk = false;
-  if ($("#loginname").val()=="") {
+  if ($("#loginName").val()=="") {
     var alertStr = "请输入登录名！";
     if ($("#password").val()=="") alertStr+="<br/>密码不能为空，请输入密码！";
     $.messager.alert("提示", alertStr, "warning", function(){
-      $("#loginname").focus();
+      $("#loginName").focus();
       setBodyEnter(true);
     });
   } else if ($("#password").val()=="") {
@@ -202,19 +201,19 @@ function loginF(){
   if (!checkOk) return;
 
   $("#mask").show();
-  var url="<%=path%>/component/loginAction!login.do";
+  var url="<%=path%>/login.do";
   var pData={
-    "loginname":$("#loginname").val(),
+    "loginName":$("#loginName").val(),
     "password":$("#password").val(),
-    "clientMacAddr":formfoo.txtMACAddr.value,
-    "clientIp":formfoo.txtIPAddr.value,
+    "clientMacAddr":fooForm.txtMACAddr.value,
+    "clientIp":fooForm.txtIPAddr.value,
     "browser":getBrowserVersion()
   };
   $.ajax({type:"post", async:false, url:url, data:pData, dataType:"json",
     success: function(json) {
       if (json.type==1) {
         var openWindow=getUrlParam(window.location.href, "openWindow");
-        url = "<%=path%>/index.jsp";
+        url = "<%=path%>/main.jsp";
         if (openWindow==null||openWindow==""||openWindow!="yes") {
           window.location.href= url;
         } else {
@@ -247,7 +246,7 @@ function loginF(){
     },
     error: function(errorData) {
       if (errorData) {
-        $.messager.alert("错误", "登录异常："+errorData.responseText, "error", function(){
+        $.messager.alert("错误", "登录异常：未知！", "error", function(){
           $("#loginname").focus();
           $("#mask").hide();
           setBodyEnter(true);

@@ -20,7 +20,6 @@ var browser = decodeURI(getUrlParam(url, "browser"));
 
 var mainPage = getMainPage();
 if (mainPage==null) {
-  alert("aaa");
   $.ajax({type:"post", async:true, url:"common/outlogin.do", data:null, dataType:"json",
     success: function(json) {
       if (json.type==1) {
