@@ -1,8 +1,8 @@
 <%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@page import="java.util.*"%>
-<%@page import="com.gmteam.framework.IConstants"%>
+<%@page import="com.gmteam.framework.FConstants"%>
 <%
-  String path = request.getContextPath();
+    String path = request.getContextPath();
   String username = (String)session.getAttribute("username");
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -10,7 +10,7 @@
 <head>
 <jsp:include page="<%=path%>/common/sysInclude.jsp" flush="true"/>
 <script type="text/javascript" src="<%=path%>/resources/js/mainPage.utils.js"></script>
-<title><%=IConstants.PLATFORM_NAME%></title>
+<title><%=FConstants.PLATFORM_NAME%></title>
 </head>
 <style type="text/css">
 .noborder{
@@ -110,7 +110,7 @@ $(function() {
           var authData=data;
           if (!authData) {
             $.messager.alert("提示", "您没有操作本系统的任何权限，请联系管理员！<br/>现返回登录页面。", "info", function(){
-              window.location.href="<%=path%>/common/login.jsp?noAuth";
+              window.location.href="<%=path%>/login/login.jsp?noAuth";
             });
             return;
           }
@@ -138,7 +138,7 @@ $(function() {
       },
       error: function(errorData) {
         $.messager.alert("错误", "获取用户权限异常："+(errorData?errorData.responseText:"")+"！<br/>返回登录页面。", "error", function(){
-          window.location.href="<%=path%>/common/login.jsp?noAuth";
+          window.location.href="<%=path%>/login/login.jsp?noAuth";
         });
       }
     });

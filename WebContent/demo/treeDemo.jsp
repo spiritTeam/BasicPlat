@@ -5,11 +5,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<meta http-equiv="pragma" content="no-cache"/>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="cache-control" content="no-cache"/>
+<meta http-equiv="pragma" content="no-cache"/>
 <meta http-equiv="expires" content="0"/>
-<jsp:include page="<%=path%>/common/sysInclude.jsp" flush="true"/>
+<jsp:include page="/common/sysInclude.jsp" flush="true"/>
 <title>测试树</title>
 </head>
 

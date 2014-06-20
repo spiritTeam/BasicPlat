@@ -1,5 +1,5 @@
 <%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@page import="com.gmteam.framework.IConstants"%>
+<%@page import="com.gmteam.framework.FConstants"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,7 +24,7 @@ if (isOpenWin) {
   if (screenW>winW) wLeft=parseInt((screenW-winW)/2);
   window.open(
     "login/login.jsp",
-    "<%=IConstants.PLATFORM_NAME%>",
+    "<%=FConstants.PLATFORM_NAME%>",
     "alwaysRaised=yes,menubar=no,location=no,resizable=yes,scrollbars=yes,status=no,height="+winH+", width="+winW+", top="+wTop+", left="+wLeft
   );
   window.opener=null;

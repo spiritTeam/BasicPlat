@@ -12,7 +12,7 @@ import com.gmteam.framework.core.cache.CacheEle;
 import com.gmteam.framework.core.cache.SystemCache;
 
 @Service
-public class UserService extends UgaUserService {
+public class UserService implements UgaUserService {
 
     @Override
     public UgaUser getUserByLoginName(String loginName) {

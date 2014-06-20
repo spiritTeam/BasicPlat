@@ -7,8 +7,8 @@
   <result column="sort"        property="order"       jdbcType="INTEGER" />
   <result column="isValidate"  property="isValidate"  jdbcType="INTEGER" />
   <result column="moduleType"  property="moduleType"  jdbcType="INTEGER" />
-  <result column="moduleName"  property="nodeName"    jdbcType="VARCHAR" />
-  <result column="displayname" property="displayName" jdbcType="VARCHAR" />
+  <result column="displayname" property="nodeName"    jdbcType="VARCHAR" />
+  <result column="moduleName"  property="moduleName"  jdbcType="VARCHAR" />
   <result column="url"         property="url"         jdbcType="VARCHAR" />
   <result column="levels"      property="levels"      jdbcType="INTEGER" />
   <result column="style"       property="style"       jdbcType="INTEGER" />
@@ -34,10 +34,10 @@
         moduleType = #{moduleType,jdbcType=INTEGER},
       </if>
       <if test="nodeName != null" >
-        moduleName = #{nodeName,jdbcType=VARCHAR},
-      </if>
-      <if test="displayName != null" >
         displayName = #{displayName,jdbcType=VARCHAR},
+      </if>
+      <if test="moduleName != null" >
+        moduleName = #{moduleName,jdbcType=VARCHAR},
       </if>
       <if test="url != null" >
         url = #{url,jdbcType=VARCHAR},
@@ -83,10 +83,10 @@ select * from plat_module
         moduleType,
       </if>
       <if test="nodeName != null" >
-        moduleName,
-      </if>
-      <if test="displayName != null" >
         displayname,
+      </if>
+      <if test="moduleName != null" >
+        moduleName,
       </if>
       <if test="url != null" >
         url,
@@ -121,10 +121,10 @@ select * from plat_module
         #{moduleType,jdbcType=INTEGER},
       </if>
       <if test="nodeName != null" >
-        #{nodeName,jdbcType=VARCHAR},
-      </if>
-      <if test="displayName != null" >
         #{displayName,jdbcType=VARCHAR},
+      </if>
+      <if test="moduleName != null" >
+        #{moduleName,jdbcType=VARCHAR},
       </if>
       <if test="url != null" >
         #{url,jdbcType=VARCHAR},

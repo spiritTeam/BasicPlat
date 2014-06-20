@@ -3,6 +3,7 @@ package com.gmteam.framework.component.login.web;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.*;
@@ -10,22 +11,26 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.gmteam.framework.IConstants;
+import com.gmteam.framework.FConstants;
 import com.gmteam.framework.UGA.UgaUser;
 import com.gmteam.framework.core.cache.CacheEle;
 import com.gmteam.framework.core.cache.SystemCache;
 import com.gmteam.framework.component.login.pojo.UserLogin;
+import com.gmteam.framework.ext.io.StringPrintWriter;
+import com.gmteam.framework.util.JsonUtils;
 
 public class LoginFilter implements Filter {
     private static Logger logger = Logger.getLogger(LoginFilter.class);
-    String ingores;
-    String noLogin;
-    String hasNewLogin;
+    private String ingores;
+    private String noLogin;
+    private String hasNewLogin;
+    private String errorPage;
 
     public void init(FilterConfig config) throws ServletException {
         this.ingores = config.getInitParameter("ingores");
         this.noLogin = config.getInitParameter("noLogin");
         this.hasNewLogin = config.getInitParameter("hasNewLogin");
+        this.errorPage = config.getInitParameter("errorPage");
     }
 
     public void doFilter(ServletRequest req, ServletResponse res,FilterChain  chain) throws IOException, ServletException {
@@ -37,10 +42,10 @@ public class LoginFilter implements Filter {
             String ingoresArray[] = ingores.split(",");
             if (isIngore(path, ingoresArray)) chain.doFilter(req, res);
             else if (path.endsWith(".css")||path.endsWith(".js")||path.endsWith(".json")) chain.doFilter(req, res);
-            else if (session.getAttribute(IConstants.SESSION_USER)!=null) {
+            else if (session.getAttribute(FConstants.SESSION_USER)!=null) {
                 //判断是否用其他Sesson登录了
-                CacheEle<Map<String, UserLogin>> userSessionMap = (CacheEle<Map<String, UserLogin>>)SystemCache.getCache(IConstants.USERSESSIONMAP);
-                UgaUser user = (UgaUser)session.getAttribute(IConstants.SESSION_USER);
+                CacheEle<Map<String, UserLogin>> userSessionMap = (CacheEle<Map<String, UserLogin>>)SystemCache.getCache(FConstants.USERSESSIONMAP);
+                UgaUser user = (UgaUser)session.getAttribute(FConstants.SESSION_USER);
                 UserLogin uli = userSessionMap.getContent().get(user.getUserId());
                 if (uli!=null&&!uli.getSessionId().equals(session.getId())) {
                     String loginInfo = "";
@@ -51,8 +56,17 @@ public class LoginFilter implements Filter {
                 } else chain.doFilter(req, res);
             } else response.sendRedirect(request.getContextPath()+noLogin);
         } catch (Exception e) {
-            logger.error("登陆验证过滤器产生异常：",e);
-            response.sendRedirect(request.getContextPath()+noLogin);
+            logger.error("登录验证过滤器产生异常：",e);
+            Map<String, String> errorInfo= new HashMap<String, String>();
+            errorInfo.put("type", "error");
+            errorInfo.put("title", "登录验证过滤器产生异常");
+            //StringPrintWriter strintPrintWriter = new StringPrintWriter();
+            //e.printStackTrace(strintPrintWriter);
+            //errorInfo.put("message", strintPrintWriter.toString().replaceAll("<%", "<％").replaceAll("%>", "％>").replaceAll("\r\n", "").replaceAll("\r", "").replaceAll("\n", ""));
+            errorInfo.put("message", e.getMessage());
+            errorInfo.put("nextPage", request.getContextPath()+noLogin);
+            request.setAttribute("errorJson", JsonUtils.beanToJson(errorInfo));
+            request.getRequestDispatcher(errorPage).forward(request,response);
         }
     }
 

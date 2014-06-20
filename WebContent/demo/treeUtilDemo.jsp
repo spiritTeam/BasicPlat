@@ -9,7 +9,7 @@
 <meta http-equiv="pragma" content="no-cache"/>
 <meta http-equiv="cache-control" content="no-cache"/>
 <meta http-equiv="expires" content="0"/>
-<jsp:include page="<%=path%>/common/sysInclude.jsp" flush="true"/>
+<jsp:include page="/common/sysInclude.jsp" flush="true"/>
 <title>测试树功能</title>
 </head>
 

@@ -8,11 +8,9 @@ import javax.annotation.Resource;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
-import com.gmteam.framework.IConstants;
 import com.gmteam.framework.UGA.UgaConstants;
 import com.gmteam.framework.component.UGA.service.UgaCacheService;
 import com.gmteam.framework.component.module.pojo.Module;
-import com.gmteam.framework.component.module.service.ModuleCacheService;
 import com.gmteam.framework.core.cache.AbstractCacheLifecycleUnit;
 import com.gmteam.framework.core.cache.CacheEle;
 import com.gmteam.framework.core.cache.SystemCache;
@@ -22,9 +20,6 @@ public class UgaCacheLifecycleUnit extends AbstractCacheLifecycleUnit {
      * 日志
      */
     private Logger logger = Logger.getLogger(UgaCacheLifecycleUnit.class);
-
-    @Resource
-    private ModuleCacheService moduleCacheService;
 
     @Resource
     private UgaCacheService ugaCacheService;
@@ -49,12 +44,12 @@ public class UgaCacheLifecycleUnit extends AbstractCacheLifecycleUnit {
     public void refresh(String key) {
         try {
             CacheEle<?> rce;
-            if (key.equals(IConstants.CATCH_MODULE)) {
-                rce = (CacheEle<?>)SystemCache.remove(IConstants.CATCH_MODULE);
+            if (key.equals(UgaConstants.CATCH_UGA_MODULE)) {
+                rce = (CacheEle<?>)SystemCache.remove(UgaConstants.CATCH_UGA_MODULE);
                 key = rce.getName();
                 loadModule();
             } else if (key.equals(UgaConstants.CATCH_UGA_USER)) {
-                rce = SystemCache.remove(IConstants.CATCH_MODULE);
+                rce = SystemCache.remove(UgaConstants.CATCH_UGA_USER);
                 key = rce.getName();
                 loadModule();
             }
@@ -70,14 +65,14 @@ public class UgaCacheLifecycleUnit extends AbstractCacheLifecycleUnit {
     @SuppressWarnings("unchecked")
     public void loadModule() throws Exception {
         try {
-            Map<String, Object> mo = moduleCacheService.makeCacheModule();
+            Map<String, Object> mo = ugaCacheService.makeCacheModule();
             if (mo==null) throw new Exception("没有[模块]数据。");
             List<Module> el = (List<Module>)mo.get("errors");
             for (Module m: el) {
                 logger.debug("结点没有对应的根结点：{id="+m.getId()+"; name="+m.getNodeName()+"; parentId="+m.getParentId()+"}");
             }
             mo.remove("errors");
-            SystemCache.setCache(new CacheEle<Map<String, Object>>(IConstants.CATCH_MODULE, "模块", mo));
+            SystemCache.setCache(new CacheEle<Map<String, Object>>(UgaConstants.CATCH_UGA_MODULE, "模块", mo));
         } catch(Exception e) {
             throw new Exception("加载缓存项{UGA[模块]}失败：", e);
         }

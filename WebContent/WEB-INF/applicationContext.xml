@@ -72,8 +72,7 @@
     <property name="caches">
       <map>
         <entry key="0" value-ref="cacheFrameworkManager"/>
-        <entry key="0" value-ref="cacheFrameworkUgaManager"/>
-        <!-- <entry key="1" value-ref="cacheBjlqManager"/>  -->
+        <entry key="1" value-ref="cacheFrameworkUgaManager"/>
       </map>
     </property>
   </bean>
@@ -90,7 +89,6 @@
   </bean>
 
   <!-- 以下为UGP框架(用户/用户组/权限框架)所需配置 -->
-  <!-- 用户服务 -->
-  <bean id="userService" class="com.gmteam.framework.core.dao.mybatis.MybatisDAO"  scope="prototype" init-method="initialize">
-  </bean>
+  <!--Uga用户服务-->
+  <bean id="ugaUserService" class="com.gmteam.framework.component.UGA.service.UserService"/>
 </beans>

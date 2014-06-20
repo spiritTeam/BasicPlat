@@ -7,8 +7,27 @@
   <result column="userName"  property="userName"  jdbcType="INTEGER" />
   <result column="password"  property="password"  jdbcType="INTEGER" />
 </resultMap>
+<resultMap id="ModuleMap" type="Module">
+  <id     column="id"          property="id"          jdbcType="VARCHAR" />
+  <result column="pId"         property="parentId"    jdbcType="VARCHAR" />
+  <result column="sort"        property="order"       jdbcType="INTEGER" />
+  <result column="isValidate"  property="isValidate"  jdbcType="INTEGER" />
+  <result column="moduleType"  property="moduleType"  jdbcType="INTEGER" />
+  <result column="displayname" property="nodeName"    jdbcType="VARCHAR" />
+  <result column="moduleName"  property="moduleName"  jdbcType="VARCHAR" />
+  <result column="url"         property="url"         jdbcType="VARCHAR" />
+  <result column="levels"      property="levels"      jdbcType="INTEGER" />
+  <result column="style"       property="style"       jdbcType="INTEGER" />
+  <result column="icon"        property="icon"        jdbcType="VARCHAR" />
+  <result column="descn"       property="descn"       jdbcType="VARCHAR" />
+</resultMap>
 
-<select id="getList" resultMap="UserMap">
+<select id="getUserList" resultMap="UserMap">
 select * from plat_user
 </select>
+
+<select id="getModuleList" resultMap="ModuleMap">
+select * from plat_module
+</select>
+
 </mapper>

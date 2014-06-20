@@ -1,7 +1,6 @@
 //框架通用方法集，处理与框架结构相关逻辑
-
 /**
- * 得到首页
+ * 得到框架首页
  */
 function getMainPage() {
   var mainPage = null, win = window, pWin = null;
@@ -58,4 +57,16 @@ function getWin(winId) {
   if (mainPage) {
     mainPage.getWin(winId);
   }
+}
+
+//对DOM对象的处理
+/**
+ * 找到顶层页面
+ */
+function getTopWin() {
+  var topWin = window.top;
+  while (topWin.openner) {
+    topWin=topWin.operner.top;
+  }
+  return topWin;
 }

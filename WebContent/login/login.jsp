@@ -1,15 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@page import="java.util.Map"%>
-<%@page import="com.gmteam.framework.IConstants"%>
+<%@page import="com.gmteam.framework.FConstants"%>
 <%@page import="com.gmteam.framework.core.cache.SystemCache"%>
 <%@page import="com.gmteam.framework.component.login.pojo.UserLogin"%>
 <%@page import="com.gmteam.framework.core.cache.CacheEle"%>
 <%@page import="com.gmteam.framework.UGA.UgaUser"%>
 <%
   String path = request.getContextPath();
-  CacheEle<Map<String, UserLogin>> mc = (CacheEle<Map<String, UserLogin>>)SystemCache.getCache(IConstants.USERSESSIONMAP);
+  CacheEle<Map<String, UserLogin>> mc = (CacheEle<Map<String, UserLogin>>)SystemCache.getCache(FConstants.USERSESSIONMAP);
   Map<String, UserLogin> userSessionMap = mc.getContent();
-  UgaUser u = (UgaUser)session.getAttribute(IConstants.SESSION_USER);
+  UgaUser u = (UgaUser)session.getAttribute(FConstants.SESSION_USER);
   UserLogin uli = null;
   if (u!=null) uli=userSessionMap.get(u.getUserId());
   boolean sessionIsMe=(u==null?false:(uli==null?false:(session.getId().equals(uli.getSessionId()))));
@@ -17,13 +17,13 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title><%=IConstants.PLATFORM_NAME%></title>
-<meta charset="UTF-8">
-<meta http-equiv="pragma" content="no-cache"/>
+<title><%=FConstants.PLATFORM_NAME%></title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="cache-control" content="no-cache"/>
+<meta http-equiv="pragma" content="no-cache"/>
 <meta http-equiv="expires" content="0"/>
 <meta content="MSHTML 6.00.2800.1106" name=GENERATOR/>
-<jsp:include page="<%=path%>/common/sysInclude.jsp" flush="true"/>
+<jsp:include page="/common/sysInclude.jsp" flush="true"/>
 
 <style type="text/css">
 html {background:#0F402B url(<%=path%>/resources/images/login/grass.jpg) no-repeat; overflow:hidden;background-position:top center;}
@@ -172,7 +172,7 @@ function setElementPosition() {
 
   //遮罩层位置及样式
   $("#mask").css({
-  	"padding-top": 25,
+    "padding-top": 25,
     "top": parseInt($("#loginDiv").css("top"))-10,
     "left": parseInt($("#loginDiv").css("left"))-10,
     "width": (parseInt($("#loginDiv").css("width"))+20)+"px",
@@ -204,10 +204,11 @@ function loginF(){
   var pData={
     "loginName":$("#loginName").val(),
     "password":$("#password").val(),
-    "clientMacAddr":fooForm.txtMACAddr.value,
-    "clientIp":fooForm.txtIPAddr.value,
+    "clientMacAddr":fooForm.txtMACAddr.value?(fooForm.txtMACAddr.value=="undefined"?"":fooForm.txtMACAddr.value):"",
+    "clientIp":fooForm.txtIPAddr.value?(fooForm.txtIPAddr.value=="undefined"?"":fooForm.txtIPAddr.value):"",
     "browser":getBrowserVersion()
   };
+
   $.ajax({type:"post", async:false, url:url, data:pData, dataType:"json",
     success: function(json) {
       if (json.type==1) {
@@ -221,9 +222,7 @@ function loginF(){
           var wTop=0, wLeft=0;
           if (screenH>winH) wTop =parseInt((screenH-winH)/2);
           if (screenW>winW) wLeft=parseInt((screenW-winW)/2);
-          window.open(
-            url,
-            "<%=IConstants.PLATFORM_NAME%>",
+          window.open(url, "<%=FConstants.PLATFORM_NAME%>",
             "alwaysRaised=yes,menubar=no,location=no,resizable=yes,scrollbars=yes,status=no,height="+winH+", width="+winW+", top="+wTop+", left="+wLeft
           );
           window.opener=null;

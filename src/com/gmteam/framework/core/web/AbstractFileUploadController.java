@@ -21,7 +21,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.gmteam.framework.IConstants;
+import com.gmteam.framework.FConstants;
 import com.gmteam.framework.core.cache.CacheEle;
 import com.gmteam.framework.core.cache.SystemCache;
 import com.gmteam.framework.ext.io.StringPrintWriter;
@@ -40,7 +40,7 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
  * @author mht, wh
  */
 public abstract class AbstractFileUploadController implements Controller, HandlerExceptionResolver {
-    private String appOSPath = ((CacheEle<String>)(SystemCache.getCache(IConstants.APPOSPATH))).getContent();
+    private String appOSPath = ((CacheEle<String>)(SystemCache.getCache(FConstants.APPOSPATH))).getContent();
 
     private final String defaultPath="\\uploadFiles";//默认路径，今后写到配置文件中，配置文件用Json方式
 

@@ -11,12 +11,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.gmteam.framework.IConstants;
+import com.gmteam.framework.FConstants;
 import com.gmteam.framework.UGA.UgaUser;
 import com.gmteam.framework.UGA.UgaUserService;
 import com.gmteam.framework.component.login.pojo.UserLogin;
 import com.gmteam.framework.core.cache.CacheEle;
 import com.gmteam.framework.core.cache.SystemCache;
+
 @Controller
 public class LoginController {
     @Resource
@@ -41,11 +42,11 @@ public class LoginController {
             }else{
                 //设置用户Session缓存
                 HttpSession session = req.getSession();
-                UserLogin oldUserLogin = ((CacheEle<Map<String, UserLogin>>) SystemCache.getCache(IConstants.USERSESSIONMAP)).getContent().remove(user.getUserId());
+                UserLogin oldUserLogin = ((CacheEle<Map<String, UserLogin>>) SystemCache.getCache(FConstants.USERSESSIONMAP)).getContent().remove(user.getUserId());
                 userLogin.setSessionId(session.getId());
-                ((CacheEle<Map<String, UserLogin>>) SystemCache.getCache(IConstants.USERSESSIONMAP)).getContent().put(user.getUserId(), userLogin);
+                ((CacheEle<Map<String, UserLogin>>) SystemCache.getCache(FConstants.USERSESSIONMAP)).getContent().put(user.getUserId(), userLogin);
                 //写用户信息
-                session.setAttribute(IConstants.SESSION_USER, user);
+                session.setAttribute(FConstants.SESSION_USER, user);
                 retObj.put("type", "1");
                 retObj.put("data", "登录成功");
             }
@@ -61,20 +62,18 @@ public class LoginController {
      * @param req
      * @return
      */
-    @RequestMapping("common/outlogin.do")
-    public @ResponseBody Map<String,Object> outlogin(HttpServletRequest req){
+    @RequestMapping("logout.do")
+    public @ResponseBody Map<String,Object> logout(HttpServletRequest req){
         Map<String, Object> retObj = new HashMap<String, Object>();
         try {
             //清除用户Session缓存
-            Map<String, UserLogin> userSessionMap = ((CacheEle<Map<String, UserLogin>>)SystemCache.getCache(IConstants.USERSESSIONMAP)).getContent();
+            Map<String, UserLogin> userSessionMap = ((CacheEle<Map<String, UserLogin>>)SystemCache.getCache(FConstants.USERSESSIONMAP)).getContent();
             HttpSession session = req.getSession();
-            UgaUser user = (UgaUser)session.getAttribute(IConstants.SESSION_USER);
+            UgaUser user = (UgaUser)session.getAttribute(FConstants.SESSION_USER);
             UserLogin userLogin = userSessionMap.get(user.getUserId());
-            if (userLogin!=null&&userLogin.getSessionId().equals(session.getId())) {
-                userSessionMap.remove(user.getUserId());
-            }
+            if (userLogin!=null&&userLogin.getSessionId().equals(session.getId())) userSessionMap.remove(user.getUserId());
             //清除Session
-            session.removeAttribute(IConstants.SESSION_USER);
+            session.removeAttribute(FConstants.SESSION_USER);
             //清除全局变量中的Session
             retObj.put("type", "1");
             retObj.put("data", null);

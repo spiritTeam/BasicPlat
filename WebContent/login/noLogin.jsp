@@ -5,16 +5,23 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title></title>
-<meta http-equiv="pragma" content="no-cache"/>
+<title>未登录</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="cache-control" content="no-cache"/>
+<meta http-equiv="pragma" content="no-cache"/>
 <meta http-equiv="expires" content="0"/>
-<script type="text/javascript" src="<%=path%>/resources/js/framework.utils.js"></script>
-<script>
-var url=window.location.href;
-var mainPage=getMainPage();
-var noLoginUrl="<%=path%>/common/login.jsp";
+<jsp:include page="/common/sysInclude.jsp" flush="true"/>
+</head>
+<body>
+<script type="text/javascript">
+var noLoginUrl="<%=path%>/login/login.jsp?nolog";
 
+var mainPage=getMainPage();
 if (mainPage) mainPage.location.href=noLoginUrl;
-else window.location.href=noLoginUrl;
+else {
+  var topWin = getTopWin();
+  topWin.location.href=noLoginUrl;
+}
 </script>
+</body>
+</html>

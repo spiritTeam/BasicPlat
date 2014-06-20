@@ -1,20 +1,10 @@
 package com.gmteam.framework.component.cache;
 
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
-import com.gmteam.framework.IConstants;
-import com.gmteam.framework.component.UGA.service.UgaCacheService;
-import com.gmteam.framework.component.module.pojo.Module;
-import com.gmteam.framework.component.module.service.ModuleCacheService;
 import com.gmteam.framework.core.cache.AbstractCacheLifecycleUnit;
-import com.gmteam.framework.core.cache.CacheEle;
-import com.gmteam.framework.core.cache.SystemCache;
+
 /**
  * 缓存util类，
  * 其中包含缓存的刷新，初始化，销毁等方法
@@ -26,12 +16,6 @@ public class FrameworkCacheLifecycleUnit extends AbstractCacheLifecycleUnit {
      */
     private Logger logger = Logger.getLogger(FrameworkCacheLifecycleUnit.class);
 
-    @Resource
-    private ModuleCacheService moduleCacheService;
-
-    @Resource
-    private UgaCacheService ugaCacheService;
-    
     @Override
     public void init() {
         try {

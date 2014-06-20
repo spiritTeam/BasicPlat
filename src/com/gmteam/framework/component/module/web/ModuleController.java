@@ -3,14 +3,17 @@ package com.gmteam.framework.component.module.web;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import com.gmteam.framework.IConstants;
+
+import com.gmteam.framework.UGA.UgaConstants;
 import com.gmteam.framework.component.cache.FrameworkCacheLifecycleUnit;
 import com.gmteam.framework.component.module.pojo.Module;
 import com.gmteam.framework.component.module.service.ModuleService;
@@ -66,7 +69,7 @@ public class ModuleController {
     @RequestMapping(value="refreshManager.do",method = RequestMethod.POST)
     public @ResponseBody Map<String,Object> refreshModule(){
         try{
-            fCLU.refresh(IConstants.CATCH_MODULE);
+            fCLU.refresh(UgaConstants.CATCH_UGA_MODULE);
             Map<String,Object> map = new HashMap<String, Object>();
             TreeNode<Module> root = moduleService.getModuleRoot();
             EasyUiTree<Module> met = new EasyUiTree<Module>(root);

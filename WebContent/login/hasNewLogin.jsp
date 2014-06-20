@@ -5,30 +5,41 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title></title>
-<meta http-equiv="pragma" content="no-cache"/>
+<title>相同用户已在其他客户端登录</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="cache-control" content="no-cache"/>
+<meta http-equiv="pragma" content="no-cache"/>
 <meta http-equiv="expires" content="0"/>
-<script type="text/javascript" src="../resources/js/mainPage.utils.js"></script>
-<script type="text/javascript" src="../resources/js/framework.utils.js"></script>
-<script type="text/javascript" src="../resources/js/common.utils.js"></script>
+<jsp:include page="/common/sysInclude.jsp" flush="true"/>
+</head>
+<body>
 <script>
-var url=window.location.href;
-var ip = getUrlParam(url, "clientIp");
-var mac = getUrlParam(url, "clientMacAddr");
-var browser = decodeURI(getUrlParam(url, "browser"));
-
-var mainPage = getMainPage();
-if (mainPage==null) {
-  $.ajax({type:"post", async:true, url:"common/outlogin.do", data:null, dataType:"json",
-    success: function(json) {
-      if (json.type==1) {
-        alert("提示", "您已经在["+ip+"("+mac+")]机器上用["+browser+"]浏览器重新登陆了，当前登录失效！", "info", function(){
-          window.location.href="/common/login.jsp";
+$(function(){
+  var topWin = getTopWin();
+  var url=window.location.href;
+  var ip = getUrlParam(url, "clientIp");
+  var mac = getUrlParam(url, "clientMacAddr");
+  var browser = decodeURI(getUrlParam(url, "browser"));
+  alert(ip+"\n"+mac+"\n"+browser);
+  var mainPage = getMainPage();
+  if (!mainPage) {
+    var url="<%=path%>/logout.do";
+    $.ajax({type:"post", async:false, url:url, data:null, dataType:"json",
+      success: function(json) {
+        var msg = "您已经在["+ip+"("+mac+")]客户端用["+browser+"]浏览器重新登录了，当前登录失效！";
+        if ((!ip&&!mac)||(ip+mac=="")) msg = "您已经在另一客户端用["+browser+"]浏览器重新登录了，当前登录失效！";
+        $.messager.alert("提示", msg, "info", function(){
+          topWin.location.href="<%=path%>/login/login.jsp";
+        });
+      },
+      error: function(errorData) {
+        $.messager.alert("错误", "注销失败：</br>"+(errorData?errorData.responseText:"")+"！<br/>返回登录页面。", "error", function(){
+      	  topWin.location.href="<%=path%>/login/login.jsp?noAuth";
         });
       }
-    },
-    error: function(errorData) {}
-  });
-} else mainPage.onlyLogout(ip, mac, browser);
+    });
+  } else mainPage.onlyLogout(ip, mac, browser);
+});
 </script>
+</body>
+</html>

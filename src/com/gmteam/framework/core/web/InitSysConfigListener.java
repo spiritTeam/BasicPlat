@@ -18,7 +18,7 @@ import com.gmteam.framework.core.cache.CachePool;
 import com.gmteam.framework.core.cache.CatchLifecycle;
 import com.gmteam.framework.core.cache.SystemCache;
 import com.gmteam.framework.component.login.pojo.UserLogin;
-import com.gmteam.framework.IConstants;
+import com.gmteam.framework.FConstants;
 
 /**
  * @author Roy zhu,WH
@@ -47,11 +47,11 @@ public class InitSysConfigListener implements ServletContextListener {
             ServletContext sc = event.getServletContext();
 
             //装载系统服务器路径到缓存中
-            SystemCache.setCache(new CacheEle<String>(IConstants.APPOSPATH, "系统服务器路径", sc.getRealPath("/")));
+            SystemCache.setCache(new CacheEle<String>(FConstants.APPOSPATH, "系统服务器路径", sc.getRealPath("/")));
 
             //用户Session缓存，用于处理不同用户的登录
             SystemCache.setCache(
-                new CacheEle<Map<String, UserLogin>>(IConstants.USERSESSIONMAP, "用户Session缓存", new HashMap<String, UserLogin>())
+                new CacheEle<Map<String, UserLogin>>(FConstants.USERSESSIONMAP, "用户Session缓存", new HashMap<String, UserLogin>())
             );
 
             //依赖注入，注入本类，为cacheManager做准备

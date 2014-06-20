@@ -87,7 +87,7 @@ function newWin(winOption) {
     minimizable: false,
     maximizable: false,
     onBeforeClose: function(){
-      winID=$(newWinDiv).attr("winID");
+      var winID=$(newWinDiv).attr("winID");
       var _i=-1;
       $(winArray).each(function(i){
         if (winID==this.winID) {

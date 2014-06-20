@@ -8,7 +8,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import com.gmteam.framework.IConstants;
+import com.gmteam.framework.UGA.UgaConstants;
 import com.gmteam.framework.component.module.pojo.Module;
 import com.gmteam.framework.core.cache.CacheEle;
 import com.gmteam.framework.core.cache.SystemCache;
@@ -65,9 +65,9 @@ public class ModuleService {
     public TreeNode<Module> getModuleTreeById(String id) {
         if (id==null||id.trim().length()==0) return null;
         TreeNode<Module> tnM = null;
-        CacheEle<?> mc = SystemCache.getCache(IConstants.CATCH_MODULE);
+        CacheEle<?> mc = SystemCache.getCache(UgaConstants.CATCH_UGA_MODULE);
         if (mc!=null&&mc.getContent()!=null) {
-            Map<String, TreeNode<Module>> im = (Map<String, TreeNode<Module>>)((Map<String, Object>)SystemCache.getCache(IConstants.CATCH_MODULE).getContent()).get("treeIndxMap");
+            Map<String, TreeNode<Module>> im = (Map<String, TreeNode<Module>>)((Map<String, Object>)SystemCache.getCache(UgaConstants.CATCH_UGA_MODULE).getContent()).get("treeIndxMap");
             if (im!=null) tnM = im.get(id);
         }
         return tnM;
@@ -91,9 +91,9 @@ public class ModuleService {
     @SuppressWarnings("unchecked")
     public List<Module> getModuleList() {
         List<Module> lM = null;
-        CacheEle<?> mc = SystemCache.getCache(IConstants.CATCH_MODULE);
+        CacheEle<?> mc = SystemCache.getCache(UgaConstants.CATCH_UGA_MODULE);
         if (mc!=null&&mc.getContent()!=null) {
-            lM = (List<Module>)((Map<String, Object>)SystemCache.getCache(IConstants.CATCH_MODULE).getContent()).get("list");
+            lM = (List<Module>)((Map<String, Object>)SystemCache.getCache(UgaConstants.CATCH_UGA_MODULE).getContent()).get("list");
         }
         return lM;
     }
@@ -105,9 +105,9 @@ public class ModuleService {
     @SuppressWarnings("unchecked")
     public TreeNode<Module> getModuleRoot() {
         TreeNode<Module> tnM = null;
-        CacheEle<?> mc = SystemCache.getCache(IConstants.CATCH_MODULE);
+        CacheEle<?> mc = SystemCache.getCache(UgaConstants.CATCH_UGA_MODULE);
         if (mc!=null&&mc.getContent()!=null) {
-            tnM = (TreeNode<Module>)((Map<String, Object>)SystemCache.getCache(IConstants.CATCH_MODULE).getContent()).get("tree");
+            tnM = (TreeNode<Module>)((Map<String, Object>)SystemCache.getCache(UgaConstants.CATCH_UGA_MODULE).getContent()).get("tree");
         }
         return tnM;
     }
