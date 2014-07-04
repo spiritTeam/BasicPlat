@@ -35,7 +35,6 @@
 
       oldData= $.extend({}, oldData, data);
       oldData.styleCss = newStyleCss;
-      f
     } else {//若不是本控件，则删除对象的所有数据，和内部的内容，为新建做准备
       oldData = $.extend(true, {}, $.fn.spiretTabs.defaults, options);
       //处理每一个tab

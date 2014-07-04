@@ -98,7 +98,7 @@ function getBrowserVersion() {
  */
 var CHARS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".split("");  
 function getUUID(len,radix) {
-  var chars = CHARS, uuid = [], i;
+  var chars = CHARS, uuid = [];
   radix = radix||chars.length;
   if (len) {
     for (var i=0; i<len; i++) uuid[i] = chars[0 | Math.random()*radix];  
@@ -151,9 +151,11 @@ function formField2Object(formId) {
 
 function jqueryColor2HexColor(jqueryColor) {
 	var rgb = jqueryColor.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+	if (!rgb) return "#FFFFFF";
+	if (rgb.length!=4) return "#FFFFFF";
+	rgb= "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
+	return rgb;
 	function hex(x) {
 	  return ("0" + parseInt(x).toString(16)).slice(-2);
 	};
-	rgb= "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
-	return rgb;
 }

@@ -5,9 +5,8 @@
 function getMainPage() {
   var mainPage = null, win = window, pWin = null;
   while (!mainPage) {
-    if (win.IS_MAINPAGE) {
-      mainPage = win;
-    } else {
+    if (win.IS_MAINPAGE) mainPage = win;
+    else {
       pWin = win.top;
       if (pWin==win||pWin==null) pWin = win.opener;
       if (pWin==win||pWin==null) break;
@@ -32,9 +31,7 @@ function getMainPage() {
  */
 function openWin(winOption) {
   var mainPage = getMainPage();
-  if (mainPage) {
-    return mainPage.newWin(winOption);
-  }
+  if (mainPage) return mainPage.newWin(winOption);
 }
 
 /**
@@ -43,9 +40,7 @@ function openWin(winOption) {
  */
 function closeWin(winId) {
   var mainPage = getMainPage();
-  if (mainPage) {
-    mainPage.closeWin(winId);
-  }
+  if (mainPage) mainPage.closeWin(winId);
 }
 
 /**
@@ -54,9 +49,7 @@ function closeWin(winId) {
  */
 function getWin(winId) {
   var mainPage = getMainPage();
-  if (mainPage) {
-    mainPage.getWin(winId);
-  }
+  if (mainPage) mainPage.getWin(winId);
 }
 
 //对DOM对象的处理
@@ -65,8 +58,6 @@ function getWin(winId) {
  */
 function getTopWin() {
   var topWin = window.top;
-  while (topWin.openner) {
-    topWin=topWin.operner.top;
-  }
+  while (topWin.openner) topWin=topWin.operner.top;
   return topWin;
 }

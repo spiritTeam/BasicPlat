@@ -46,12 +46,12 @@ var INIT_PARAM = {
     mainId: "mainSegment", //主体Id
     footId: "footSegment" //尾部Id
   },
-  page_width: 600,
+  top_shadow_color: "red",
+  page_width: 900,
   page_height: 4000
 };
 
 $(function() {
-  $("#mainSegment").css({"border":"0px solid red", "background-color":"yellow", "margin-top":"5px"});
   var initStr = $().spiretPageFrame(INIT_PARAM);
   if (initStr) {
     $.messager.alert("页面初始化失败", initStr, "error");

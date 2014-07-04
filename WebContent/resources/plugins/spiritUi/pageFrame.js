@@ -8,7 +8,7 @@
  * Licensed same as jquery - MIT License
  * http://www.opensource.org/licenses/mit-license.php
  */
- 
+
 (function($) {
 	//本控件内的全局变量
   var _hScrollbarWidth = 0; //纵向滚动条宽度
@@ -132,7 +132,7 @@
     if (_hasTop) $("#_top").css({"width":$("#_main").css("width")});
     if (_hasFoot) $("#_foot").css({"width":$("#_main").css("width")});
     var _view = $("#"+INIT_PARAM.pageObjs.mainId);
-    var _ch = parseFloat($("#_main").css("height"))-parseFloat(_topHeight)-parseFloat(_footHeight)
+    var _ch = parseFloat($("#_main").css("height"))-parseFloat($("#_top").css("height"))-parseFloat($("#_foot").css("height"))
       -(parseFloat(_view.css("margin-top"))+parseFloat(_view.css("margin-bottom"))+parseFloat(_view.css("padding-top"))+parseFloat(_view.css("padding-bottom"))+parseFloat(_view.css("border-top-width"))+parseFloat(_view.css("border-bottom-width")));
     $("#"+INIT_PARAM.pageObjs.mainId).css({"width":getViewWidth(INIT_PARAM.pageObjs.mainId, "main"), "height": _ch});
     //5-调整脚部top
@@ -162,6 +162,10 @@
         $("#"+INIT_PARAM.pageObjs.footId).css({"top": _newTop});
       }
     }
+    //6-调整晕左边距
+    if ($("body>div#_topunder").length==1) {
+      if (!$("body>div#_topunder").is(":hidden")) $("body>div#_topunder").css("left", $("#"+INIT_PARAM.pageObjs.topId).css("left"));
+    }
     if (INIT_PARAM.myResize) INIT_PARAM.myResize();
   }
 
@@ -174,33 +178,43 @@
     	//X轴方向
       $("#"+INIT_PARAM.pageObjs.topId).css({"left": parseFloat($("#_main").css("left"))+parseFloat($("#_main").css("margin-left"))-$(document).scrollLeft()});
       //设置晕效果
-      var topSegment = $("#"+INIT_PARAM.pageObjs.topId);
-      var topcolor = topSegment.css("background-color")+"";
-      alert(topcolor);
-      alert(jqueryColor2HexColor(topcolor));
       if (_top<0&&_hasTop&&!INIT_PARAM.top_peg) {//出现头部下边的晕区域，使得更好看
-      	/**
         if ($("body>div#_topunder").length==0) {
           $("body").append("<div id='_topunder'></div>");
           var topunder = $("body>div#_topunder");
-          topunder.css({"border":"0", "padding":"0", "margin":"0"});
-          topunder.css("margin-left", topSegment.css("margin-left"));
-          topunder.css("margin-right", topSegment.css("margin-right"));
-          topunder.css("padding-left", topSegment.css("padding-left"));
-          topunder.css("padding-right", topSegment.css("padding-right"));
-          topunder.css("border-left-color", topSegment.css("border-left-color"));
-          topunder.css("border-left-style", topSegment.css("border-left-style"));
-          topunder.css("border-left-width", topSegment.css("border-left-width"));
-          topunder.css("border-right-color", topSegment.css("border-right-color"));
-          topunder.css("border-right-style", topSegment.css("border-right-style"));
-          topunder.css("border-right-width", topSegment.css("border-right-width"));
-          topunder.css("left", topSegment.css("left"));
-          topunder.css("width", topSegment.css("width"));
-          topunder.css("position", "fixed");
-          topunder.css("height", "4px");
-          topunder.css("top", parseFloat(topSegment.css("top"))+parseFloat(topSegment.css("height"))+parseFloat(topSegment.css("padding-top"))+parseFloat(topSegment.css("padding-bottom"))+parseFloat(topSegment.css("margin-top"))+parseFloat(topSegment.css("margin-bottom"))+parseFloat(topSegment.css("border-top-width"))+parseFloat(topSegment.css("border-bottom-width")));
-          topunder.css("background-color", "red");
-        } else $("body>div#_topunder").show();*/
+          var topSegment = $("#"+INIT_PARAM.pageObjs.topId);
+          //取晕效果颜色；先看是否有设定，若没有设定取头部的下边框，若下边框为0，取底色
+          var _tapShadowColor="#95b8e7";
+          if (INIT_PARAM.top_shadow_color) _tapShadowColor=INIT_PARAM.top_shadow_color;
+          else {
+            //下边框
+          	if (parseFloat(topSegment.css("border-bottom-width"))>0) _tapShadowColor = jqueryColor2HexColor(topSegment.css("border-bottom-color"));
+          	else _tapShadowColor = jqueryColor2HexColor(topSegment.css("background-color"));
+          }
+
+          topunder.css({"border":"1px solid "+_tapShadowColor, "padding":"0", "margin":"0",
+            "margin-left": topSegment.css("margin-left"),
+            "margin-right": topSegment.css("margin-right"),
+            "padding-left": topSegment.css("padding-left"),
+            "padding-right": topSegment.css("padding-right"),
+            "border-left-color": topSegment.css("border-left-color"),
+            "border-left-style": topSegment.css("border-left-style"),
+            "border-left-width": topSegment.css("border-left-width"),
+            "border-right-color": topSegment.css("border-right-color"),
+            "border-right-style": topSegment.css("border-right-style"),
+            "border-right-width": topSegment.css("border-right-width"),
+            "left": parseFloat(topSegment.css("left")),
+            "width": parseFloat(topSegment.css("width")),
+            "z-index": topSegment.css("z-index")-1,
+            "position": "fixed", "height": "1px",
+            "top": parseFloat(topSegment.css("top"))+parseFloat(topSegment.css("height"))+parseFloat(topSegment.css("padding-top"))+parseFloat(topSegment.css("padding-bottom"))+parseFloat(topSegment.css("margin-top"))+parseFloat(topSegment.css("margin-bottom"))+parseFloat(topSegment.css("border-top-width"))+parseFloat(topSegment.css("border-bottom-width"))-2,
+            "box-shadow": "0px 0px 9px 0px "+ _tapShadowColor,
+            "-webkit-box-shadow": "0px 0px 9px 0px "+ _tapShadowColor,
+            "-moz-box-shadow": "0px 0px 9px 0px "+ _tapShadowColor
+          });
+        } else {
+        	$("body>div#_topunder").css("left", $("#"+INIT_PARAM.pageObjs.topId).css("left")).show();
+        }
       } else $("body>div#_topunder").hide();
     }
     //2-调整脚部
@@ -242,7 +256,6 @@
     //处理中间的部分
     $("body").append("<div id='_main'><div id='_top'></div><div id='_foot'></div></div>");
     $("body>div#_main>div#_top").after($("#"+_options.pageObjs.mainId));
-    $("#_main").css("margin-top","20px");
     //0-预处理
     _hScrollbarWidth=getHScrollbarWidth();//纵向滚动条
     _wScrollbarWidth=getWScrollbarWidth();//横向滚动条
@@ -257,14 +270,12 @@
     $(window).scroll(scrollPositioin);//滚动条
     return "";
   }
-  
+
   //页面框架主函数
   $.fn.spiretPageFrame = function(options, param) {
     //若参数一为字符串，则直接当作本插件的方法进行处理，这里的this是本插件对应的jquery选择器的选择结果
-    if (typeof options=='string') {
-      return $.fn.spiretPageFrame.methods[options](this, param);
-    }
-    options = options || {};
+    if (typeof options=='string') return $.fn.spiretPageFrame.methods[options](this, param);
+    options = options||{};
     return initPage(options);
   };
   //插件方法，参考eaqyUi的写法
@@ -288,12 +299,12 @@
 
     top_height: 120, //顶部高度
     top_peg: false, //是否钉住头部在顶端。false：顶部随垂直滚动条移动(浮动)；true：顶部钉在顶端
+    top_shadow_color: null, //头部阴影颜色
     foot_height: 40, //脚部高度
     foot_peg: false, //是否钉住脚部在底端。false：脚部随垂直滚动条移动(浮动)；true：脚部钉在底端
 
     iframe_height_flag: 1 //具体功能区域（可能是整个中部，也可能是带左侧导航的中部）的iframe高度标志。1：iframe高度与框架匹配；非1：框架高度适应iframe内部高度(反向适应)
   };
-
 
 //-以下函数为通用函数-----------------------------------------------------------------
   /**
