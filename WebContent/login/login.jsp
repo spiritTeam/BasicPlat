@@ -26,7 +26,7 @@
 <jsp:include page="/common/sysInclude.jsp" flush="true"/>
 
 <style type="text/css">
-html {background:#0F402B url(<%=path%>/resources/images/login/grass.jpg) no-repeat; overflow:hidden;background-position:top center;}
+html {background:#0F402B url(<%=path%>/resources/images/login/grass.jpg) no-repeat; overflow:auto; background-position:top center;}
 
 #loginDiv {position:absolute; width:450px; height:95px; left:100px; top:100px;}
 #loginDiv {display:none; background:#0F402B; border:1px solid red;}

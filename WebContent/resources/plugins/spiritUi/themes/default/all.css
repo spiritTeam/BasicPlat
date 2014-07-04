@@ -1,0 +1,33 @@
+@CHARSET "UTF-8";
+
+/*=页面框架=========*/
+/* 悬浮区域 */
+.hoverArea {
+  margin:0px;
+  padding:0px;
+  position:fixed;
+  z-index:1000;
+  overflow:hidden;
+  /* for IE6 */
+  _top: expression(documentElement.scrollTop + documentElement.clientHeight-this.offsetHeight);
+  _position:absolute;
+  /* for IE6 */
+}
+/* 头部 */
+.topSegment{
+  border:0px solid green;
+  background-color: #FF00CC;
+  box-shadow: 0px 0px 9px red;
+}
+/* 主体容器 */
+#_main{
+  position:absolute;
+}
+/* 脚部 */
+.footSegment{
+  border:1px solid green;
+  background-color: #00FFCC;
+  filter:alpha(opacity=70); -moz-opacity:0.7; opacity:0.7;
+}
+/* 头部占位及尾部占位 */
+#_top, #_foot{ border:0; padding:0; margin:0; }

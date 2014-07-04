@@ -24,6 +24,15 @@ function allFields(obj) {
 }
 
 /**
+ * 判断对象是否为空，为{}或null返回true
+ */
+function isEmpty(obj) {
+  if (!obj) return true;
+  for (var name in obj) return false;
+  return true;
+};
+
+/**
  * 扩展String属性：得到中英混排文字符串长度
  */
 String.prototype.cnLength = function () {
@@ -138,4 +147,13 @@ function formField2Object(formId) {
     });
   }
   return o;
+}
+
+function jqueryColor2HexColor(jqueryColor) {
+	var rgb = jqueryColor.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+	function hex(x) {
+	  return ("0" + parseInt(x).toString(16)).slice(-2);
+	};
+	rgb= "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
+	return rgb;
 }
