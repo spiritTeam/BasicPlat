@@ -1,5 +1,5 @@
 /**
- * jQuery spiritUi-pageFrame 精灵组件
+ * jQuery spiritui-pageFrame 精灵组件
  * 页面框架。
  * 包括头部，中部，和尾部的一个自适应，可调整的页面框架。
  *

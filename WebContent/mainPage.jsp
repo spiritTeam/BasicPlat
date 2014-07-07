@@ -14,9 +14,9 @@
 <meta http-equiv="expires" content="0"/>
 <jsp:include page="/common/sysInclude.jsp" flush="true"/>
 <script type="text/javascript" src="<%=path%>/resources/js/mainPage.utils.js"></script>
-<script type="text/javascript" src="<%=path%>/resources/plugins/spiritUi/pageFrame.js"></script>
+<script type="text/javascript" src="<%=path%>/resources/plugins/spiritui/pageFrame.js"></script>
 <link rel="stylesheet" type="text/css" href="<%=path%>/resources/css/mainPage.css"/>
-<link rel="stylesheet" type="text/css" href="<%=path%>/resources/plugins/spiritUi/themes/default/all.css"/>
+<link rel="stylesheet" type="text/css" href="<%=path%>/resources/plugins/spiritui/themes/default/all.css"/>
 </head>
 
 <body class="_body">
@@ -28,7 +28,28 @@
 
 <!-- 头部:悬浮 -->
 <div id="topSegment">
-  <div id="button">AABBCCDD</div>
+  <div id="logoImg"></div><!-- 头部1:logo区域 -->
+  <div id="titleImg"></div><!-- 头部2:系统名称 -->
+  <div id="commonFunc"><!-- 头部3:通用功能 -->
+    <div class="cfRight"></div>
+    <div id="commonFuncButton">
+      <div class="mainTabButton imgTabButton commButton logout" id="logoutU" onclick="logout()">注销</div>
+      <div class="mainTabButton imgTabButton commButton refreshCache" id="refreshCacheU" onclick="refreshCache()">刷新缓存</div>
+    </div>
+    <div class="cfLeft"></div>
+  </div>
+  <div id="welcom"><!-- 头部4:用户欢迎 -->
+    <span class="username">？？？</span>&nbsp;您好！欢迎您使用本系统
+  </div>
+  <div id="topBar"><!-- 头部5:功能条 -->
+    <div id="mainTab"></div><!-- 头部:界面功能页签 -->
+    <div id="quickFunc"><!-- 头部:快速功能 -->
+      <div class="mainTabButton imgTabButton fullscrenn" id="fullscreen">全屏</div>
+      <div class="mainTabButton imgTabButton logout" id="logoutD" onclick="logout()" style="display:none;">注销</div>
+      <div class="mainTabButton imgTabButton refreshCache" id="refreshCacheD" onclick="refreshCache()" style="display:none;">刷新缓存</div>
+      <div id="vline"></div>
+    </div>
+  </div>
 </div>
 <!-- 脚部:悬浮 -->
 <div id="footSegment"></div>
@@ -56,7 +77,7 @@ $(function() {
   if (initStr) {
     $.messager.alert("页面初始化失败", initStr, "error");
     return ;
-  }
+  };
 });
 
 //-logout begin:以下两函数负责注销-----------------------------------------------------------------

@@ -1,5 +1,5 @@
 /**
- * jQuery spiritUi-spiretTabs 精灵组件
+ * jQuery spiritui-spiretTabs 精灵组件
  * 页标签。
  * 标签只负责标签部分的展示，具体点击标签的功能(比如，刷新一个页面区域)，此插件不处理。
  * 通过每个标签的click事件来完成
