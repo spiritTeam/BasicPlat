@@ -63,7 +63,7 @@
     var _view = $("#"+INIT_PARAM.pageObjs.mainId);
     var _ch = parseFloat($("#_main").css("height"))-parseFloat(_topHeight)-parseFloat(_footHeight)
       -(parseFloat(_view.css("margin-top"))+parseFloat(_view.css("margin-bottom"))+parseFloat(_view.css("padding-top"))+parseFloat(_view.css("padding-bottom"))+parseFloat(_view.css("border-top-width"))+parseFloat(_view.css("border-bottom-width")));
-    $("#"+INIT_PARAM.pageObjs.mainId).css({"width":getViewWidth(INIT_PARAM.pageObjs.mainId, "main"), "height": _ch});
+    $("#"+INIT_PARAM.pageObjs.mainId).css({"width":getViewWidth(INIT_PARAM.pageObjs.mainId, "_main"), "height": _ch});
     //5-调整脚部top
     if (_hasFoot) {
       $("#"+INIT_PARAM.pageObjs.footId).css({"top":$("#_foot")[0].offsetTop+parseFloat($("body").css("margin-top"))+parseFloat($("body").css("padding-top"))+parseFloat($("#_main").css("margin-top"))+parseFloat($("#_main").css("border-top-width"))-parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("margin-top"))});
@@ -116,14 +116,14 @@
     //2-调整顶部
     if (_hasTop) {
       $("#"+INIT_PARAM.pageObjs.topId).css({
-        "width": getViewWidth(INIT_PARAM.pageObjs.topId, "main"),
+        "width": getViewWidth(INIT_PARAM.pageObjs.topId, "_main"),
         "left": parseFloat($("#_main").css("left"))+parseFloat($("#_main").css("margin-left"))-$(document).scrollLeft()
       });
     }
     //3-调整脚部
     if (_hasFoot) {
       $("#"+INIT_PARAM.pageObjs.footId).css({
-        "width": getViewWidth(INIT_PARAM.pageObjs.footId, "main"),
+        "width": getViewWidth(INIT_PARAM.pageObjs.footId, "_main"),
         "left": parseFloat($("#_main").css("left"))+parseFloat($("#_main").css("margin-left"))-$(document).scrollLeft()
       });
       if (INIT_PARAM.foot_peg) $("#"+INIT_PARAM.pageObjs.footId).css({"left": parseFloat($("#_main").css("left"))+parseFloat($("#_main").css("margin-left"))  }); //钉住脚部
@@ -134,7 +134,7 @@
     var _view = $("#"+INIT_PARAM.pageObjs.mainId);
     var _ch = parseFloat($("#_main").css("height"))-parseFloat($("#_top").css("height"))-parseFloat($("#_foot").css("height"))
       -(parseFloat(_view.css("margin-top"))+parseFloat(_view.css("margin-bottom"))+parseFloat(_view.css("padding-top"))+parseFloat(_view.css("padding-bottom"))+parseFloat(_view.css("border-top-width"))+parseFloat(_view.css("border-bottom-width")));
-    $("#"+INIT_PARAM.pageObjs.mainId).css({"width":getViewWidth(INIT_PARAM.pageObjs.mainId, "main"), "height": _ch});
+    $("#"+INIT_PARAM.pageObjs.mainId).css({"width":getViewWidth(INIT_PARAM.pageObjs.mainId, "_main"), "height": _ch});
     //5-调整脚部top
     if (_hasTop) {
       $("#"+INIT_PARAM.pageObjs.footId).css({"top":$("#_foot")[0].offsetTop+parseFloat($("body").css("margin-top"))+parseFloat($("body").css("padding-top"))+parseFloat($("#_main").css("margin-top"))+parseFloat($("#_main").css("border-top-width"))-parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("margin-top"))});
@@ -165,7 +165,7 @@
     //6-调整晕左边距
     if ($("body>div#_topunder").length==1) {
       if (!$("body>div#_topunder").is(":hidden")) $("body>div#_topunder").css("left", $("#"+INIT_PARAM.pageObjs.topId).css("left"));
-    }
+    };
     if (INIT_PARAM.myResize) INIT_PARAM.myResize();
   }
 
@@ -208,9 +208,9 @@
             "z-index": topSegment.css("z-index")-1,
             "position": "fixed", "height": "1px",
             "top": parseFloat(topSegment.css("top"))+parseFloat(topSegment.css("height"))+parseFloat(topSegment.css("padding-top"))+parseFloat(topSegment.css("padding-bottom"))+parseFloat(topSegment.css("margin-top"))+parseFloat(topSegment.css("margin-bottom"))+parseFloat(topSegment.css("border-top-width"))+parseFloat(topSegment.css("border-bottom-width"))-2,
-            "box-shadow": "0px 0px 9px 0px "+ _tapShadowColor,
-            "-webkit-box-shadow": "0px 0px 9px 0px "+ _tapShadowColor,
-            "-moz-box-shadow": "0px 0px 9px 0px "+ _tapShadowColor
+            "box-shadow": "0px 0px 5px 0px "+ _tapShadowColor,
+            "-webkit-box-shadow": "0px 0px 5px 0px "+ _tapShadowColor,
+            "-moz-box-shadow": "0px 0px 5px 0px "+ _tapShadowColor
           });
         } else {
         	$("body>div#_topunder").css("left", $("#"+INIT_PARAM.pageObjs.topId).css("left")).show();
@@ -249,7 +249,7 @@
 
   function initPage(options) {
     //参数合并，传入的参数和默认参数
-    var _options = $.extend(true, $.fn.spiretPageFrame.defaults, options);
+    var _options = $.extend(true, $.fn.spiritPageFrame.defaults, options);
     if ($.trim(_options.pageObjs.mainId)=="") return "未指定主体部分Id，无法初始化页面！";
     if ($("#"+_options.pageObjs.mainId).length==0) return "无id为\""+_options.pageObjs.mainId+"\"的元素，无法初始化页面！";
     INIT_PARAM = _options;//绑定参数
@@ -272,18 +272,18 @@
   }
 
   //页面框架主函数
-  $.fn.spiretPageFrame = function(options, param) {
+  $.fn.spiritPageFrame = function(options, param) {
     //若参数一为字符串，则直接当作本插件的方法进行处理，这里的this是本插件对应的jquery选择器的选择结果
-    if (typeof options=='string') return $.fn.spiretPageFrame.methods[options](this, param);
+    if (typeof options=='string') return $.fn.spiritPageFrame.methods[options](this, param);
     options = options||{};
     return initPage(options);
   };
   //插件方法，参考eaqyUi的写法
-  $.fn.spiretPageFrame.methods = {
+  $.fn.spiritPageFrame.methods = {
   };
 
   //默认属性
-  $.fn.spiretPageFrame.defaults = {
+  $.fn.spiritPageFrame.defaults = {
     //页面中所用到的元素的id，只用到三个Div，另，这三个div应在body层
     pageObjs: {
       topId: "topSegment", //头部Id

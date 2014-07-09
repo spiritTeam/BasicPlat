@@ -16,6 +16,7 @@
 /* 头部 */
 .topSegment{
   border: 1px solid #95b8e7;
+  border-bottom: 0;
   background-color: #E0ECFF;
   background: -webkit-linear-gradient(top,#EFF5FF 0,#E0ECFF 100%);
   background: -moz-linear-gradient(top,#EFF5FF 0,#E0ECFF 100%);
@@ -42,3 +43,39 @@
 }
 /* 头部占位及尾部占位 */
 #_top, #_foot{ border:0; padding:0; margin:0; }
+
+
+/*=页签=========*/
+/* 页签容器 */
+.tabsContainer {
+  border: 0;
+  border-top:1px solid #589C8D;
+  border-bottom: 1px solid #589C8D;
+  background-color: #FFFFFF;
+}
+
+.tab {
+  position: absolute;
+  text-align:center; align: center;
+  background-color: #FFFFFF;
+  font-size: 14px; font-family:Times, '宋体'; color: #2F4A1F;
+}
+.tab_normal {
+  border: 0;
+  border-top: 2px solid #2F4A1F;
+  border-right:1px solid #589C8D;
+}
+.tab_normal_f {
+  border: 0;
+  border-top: 2px solid #2F4A1F;
+  border-right:1px solid #589C8D;
+}
+.tab_normal_l {
+  border: 0;
+  border-top: 2px solid #2F4A1F;
+}
+.tab_mouseOver {
+  cursor: hand;
+  text-decoration: underline;
+  text-shadow: 0 0 2px 0 #2F4A1F;
+}

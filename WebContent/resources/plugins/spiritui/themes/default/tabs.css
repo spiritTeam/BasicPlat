@@ -1,0 +1,17 @@
+@CHARSET "UTF-8";
+
+/*=页签=========*/
+/* 页签容器 */
+.tabsContainer {
+  border:0;
+  border-top: 2px solid #2F4A1F;
+  border-left: 1px solid #589C8D;
+  border-right:1px solid #589C8D;
+}
+
+.tabsContainer {
+  border:0;
+  border-top: 2px solid #2F4A1F;
+  border-left: 1px solid #589C8D;
+  border-right:1px solid #589C8D;
+}
