@@ -14,7 +14,7 @@
 <meta http-equiv="expires" content="0"/>
 <jsp:include page="/common/sysInclude.jsp" flush="true"/>
 
-<script type="text/javascript" src="<%=path%>/resources/js/jq.spirit.utils.js"></script>
+<script type="text/javascript" src="<%=path%>/resources/plugins/spiritui/jq.spirit.utils.js"></script>
 <script type="text/javascript" src="<%=path%>/resources/plugins/spiritui/jq.spirit.pageFrame.js"></script>
 <script type="text/javascript" src="<%=path%>/resources/plugins/spiritui/jq.spirit.tabs.js"></script>
 
@@ -58,6 +58,7 @@
 </div>
 <!-- 脚部:悬浮 -->
 <div id="footSegment"></div>
+
 <!-- 实际功能区中部 -->
 <div id="mainSegment">12345678</div>
 
@@ -68,7 +69,11 @@ function abc() {
 
 var _topBarLeft=220;
 var _topQuickFuncWidth=100;
-var _topMiniHeight=30;//全屏后的头部高度，此高度也是非全屏时功能条的高度
+var _topMiniHeight=36;//全屏后的头部高度，此高度也是非全屏时功能条的高度
+
+function testClk(jqMy) {
+  //alert(jqMy.attr("id"));
+}
 
 var testBar = {
   id: "test", //标识
@@ -88,19 +93,37 @@ var testBar = {
     middleSelLImgUrl: "" //中间右选中交互区图片
   },
   defaultTab: { //默认的页签规则，若每个页标签不设定自己的规则，则所有页签的规则以此为准
-    maxTextLength: 30,//最大文字宽度:大于此值,遮罩主
+    maxTextLength: 100,//最大文字宽度:大于此值,遮罩主
     normalCss: "", //常态css样式(未选中，鼠标未悬停)，可包括边框/字体/背景，注意，要是json格式的
     mouseOverCss: "", //鼠标悬停样式，可包括边框/字体/背景，注意，要是json格式的
     selCss: "", //选中后样式，可包括边框/字体/背景，注意，要是json格式的
   },
   tabs:[//页标签数组
-    {title:"测试1", onclick:"", selected:"true"},
-    {title:"测试2", onclick:""},
-    {title:"测试3", onclick:""},
-    {title:"12345", onclick:""},
-    {title:"测试5", onclick:""}
+    {title:"测试1", onClick:testClk, selected:"true"},
+    {title:"测试2", onClick:"", maxTextLength:70},
+    {title:"测试3", onClick:""},
+    {title:"12345", onClick:""},
+    {title:"测试2测试2测试2", onClick:""},
+    {title:"测试3测试3测试3", onClick:""},
+    {title:"123456789", onClick:""},
+    {title:"测试24测试24测试24测试24", onClick:""},
+    {title:"测试8", onClick:""},
+    {title:"测试9测试9测试9", onClick:""},
+    {title:"12", onClick:""},
+    {title:"测试10", onClick:""},
+    {title:"测试5", onClick:""}
   ]
 };
+/**
+    {title:"测试2测试2测试2", onClick:""},
+    {title:"测试3测试3测试3", onClick:""},
+    {title:"123456789", onClick:""},
+    {title:"测试24测试24测试24测试24", onClick:""},
+    {title:"测试8", onClick:""},
+    {title:"测试9测试9测试9", onClick:""},
+    {title:"测试10", onClick:""},
+ * 
+ */
 
 /**
  * 初始化参数

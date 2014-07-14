@@ -159,5 +159,5 @@
       </plugin> -->
     </plugins>
   </build>
-  <packaging>war</packaging>
+  <groupId>com.basicplat</groupId>
 </project>

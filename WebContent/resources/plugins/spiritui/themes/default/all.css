@@ -49,7 +49,6 @@
 /* 页签容器 */
 .tabsContainer {
   border: 0;
-  border-top:1px solid #589C8D;
   border-bottom: 1px solid #589C8D;
   background-color: #FFFFFF;
 }
@@ -58,7 +57,7 @@
   position: absolute;
   text-align:center; align: center;
   background-color: #FFFFFF;
-  font-size: 14px; font-family:Times, '宋体'; color: #2F4A1F;
+  font-size: 16px; font-family:Times, '黑体'; color: #2F4A1F;
 }
 .tab_normal {
   border: 0;
@@ -75,7 +74,19 @@
   border-top: 2px solid #2F4A1F;
 }
 .tab_mouseOver {
-  cursor: hand;
+  cursor: pointer;
   text-decoration: underline;
-  text-shadow: 0 0 2px 0 #2F4A1F;
+  text-shadow: 0px 0px 1px #2F4A1F;
+  color: blue;
+}
+.tab_sel {
+  background-color: #589C8D;
+  font-weight: bold;
+  color: #FFFFFF;
+}
+.tab_title {
+  position: absolute;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
