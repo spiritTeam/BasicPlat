@@ -9,21 +9,21 @@
   z-index:1000;
   overflow:hidden;
   /* for IE6 */
-  _top: expression(documentElement.scrollTop + documentElement.clientHeight-this.offsetHeight);
+  _top:expression(documentElement.scrollTop + documentElement.clientHeight-this.offsetHeight);
   _position:absolute;
   /* for IE6 */
 }
 /* 头部 */
 .topSegment{
-  border: 1px solid #95b8e7;
-  border-bottom: 0;
-  background-color: #E0ECFF;
-  background: -webkit-linear-gradient(top,#EFF5FF 0,#E0ECFF 100%);
-  background: -moz-linear-gradient(top,#EFF5FF 0,#E0ECFF 100%);
-  background: -o-linear-gradient(top,#EFF5FF 0,#E0ECFF 100%);
-  background: linear-gradient(to bottom,#EFF5FF 0,#E0ECFF 100%);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#EFF5FF,endColorstr=#E0ECFF,GradientType=0);
+  border:1px solid #95b8e7;
+  border-bottom:0;
+  background-color:#E0ECFF;
+  background:-webkit-linear-gradient(top,#EFF5FF 0,#E0ECFF 100%);
+  background:-moz-linear-gradient(top,#EFF5FF 0,#E0ECFF 100%);
+  background:-o-linear-gradient(top,#EFF5FF 0,#E0ECFF 100%);
+  background:linear-gradient(to bottom,#EFF5FF 0,#E0ECFF 100%);
+  background-repeat:repeat-x;
+  filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#EFF5FF,endColorstr=#E0ECFF,GradientType=0);
 }
 /* 主体容器 */
 #_main{
@@ -31,15 +31,15 @@
 }
 /* 脚部 */
 .footSegment{
-  border: 1px solid #95b8e7;
-  background-color: #E0ECFF;
-  background: -webkit-linear-gradient(top,#EFF5FF 0,#E0ECFF 100%);
-  background: -moz-linear-gradient(top,#EFF5FF 0,#E0ECFF 100%);
-  background: -o-linear-gradient(top,#EFF5FF 0,#E0ECFF 100%);
-  background: linear-gradient(to bottom,#EFF5FF 0,#E0ECFF 100%);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#EFF5FF,endColorstr=#E0ECFF,GradientType=0);
-  filter: alpha(opacity=70); -moz-opacity:0.7; opacity:0.7;
+  border:1px solid #95b8e7;
+  background-color:#E0ECFF;
+  background:-webkit-linear-gradient(top,#EFF5FF 0,#E0ECFF 100%);
+  background:-moz-linear-gradient(top,#EFF5FF 0,#E0ECFF 100%);
+  background:-o-linear-gradient(top,#EFF5FF 0,#E0ECFF 100%);
+  background:linear-gradient(to bottom,#EFF5FF 0,#E0ECFF 100%);
+  background-repeat:repeat-x;
+  filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#EFF5FF,endColorstr=#E0ECFF,GradientType=0);
+  filter:alpha(opacity=70); -moz-opacity:0.7; opacity:0.7;
 }
 /* 头部占位及尾部占位 */
 #_top, #_foot{ border:0; padding:0; margin:0; }
@@ -48,45 +48,144 @@
 /*=页签=========*/
 /* 页签容器 */
 .tabsContainer {
-  border: 0;
-  border-bottom: 1px solid #589C8D;
-  background-color: #FFFFFF;
+  border:0;
+  border-bottom:1px solid #589C8D;
+  background-color:#fff;
+}
+/* 页签文字 */
+.tab_title {
+  position:absolute;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  text-decoration:inherit;
+  font-size:inherit;
+  font-family:inherit;
+}
+/* 页签主体 */
+.tab {
+  position:absolute;
+  text-align:center; align:center;
+  background-color:#fff;
+  font-size:16px; font-family:Times, '黑体'; color:#2F4A1F;
+}
+/* 一般页签未选中 */
+.tab_normal {
+  border:0;
+  border-top:2px solid #2F4A1F;
+  border-right:0px solid #589C8D;
+}
+/* 一般页签选中 */
+.tab_sel {
+  background-color:#589C8D;
+  font-weight:bold;
+  color:#fff;
+}
+/* 第一页签未选中 */
+.tab_normal_f {
+  border:0;
+  border-top:2px solid #2F4A1F;
+  border-left:0px solid #589C8D;
+}
+/* 第一页签选中 */
+.tab_sel_f {
+  background-color:#589C8D;
+  font-weight:bold;
+  color:#fff;
+}
+/* 最后页签未选中 */
+.tab_normal_l {
+  border:0;
+  border-top:2px solid #2F4A1F;
+  border-right:0px solid #589C8D;
+}
+/* 最后页签选中 */
+.tab_sel_l {
+  background-color:#589C8D;
+  font-weight:bold;
+  color:#fff;
+}
+/* 页签鼠标悬停 */
+.tab_mouseOver {
+  cursor:pointer;
+  text-decoration:underline;
+  text-shadow:0px 0px 1px #2F4A1F;
+  color:blue;
 }
 
-.tab {
-  position: absolute;
-  text-align:center; align: center;
-  background-color: #FFFFFF;
-  font-size: 16px; font-family:Times, '黑体'; color: #2F4A1F;
+/* 页签交互区 */
+.tab_m{
+  position:absolute;
 }
-.tab_normal {
-  border: 0;
-  border-top: 2px solid #2F4A1F;
-  border-right:1px solid #589C8D;
+/* 第一页签交互区未选中 */
+.tab_m_f_n {
+  border-top:2px solid #2F4A1F;
+  border-right:0px solid #2F4A1F;
+  border-left:2px solid #2F4A1F;
+  border-top-left-radius:10px;
+  border-top-right-radius:0px;
+  background-color:#fff;
 }
-.tab_normal_f {
-  border: 0;
-  border-top: 2px solid #2F4A1F;
-  border-right:1px solid #589C8D;
+/* 第一页签交互区选中 */
+.tab_m_f_s {
+  border-top:2px solid #2F4A1F;
+  border-right:0px solid #2F4A1F;
+  border-left:2px solid #2F4A1F;
+  border-top-left-radius:10px;
+  border-top-right-radius:0px;
+  background-color:#589C8D;
 }
-.tab_normal_l {
-  border: 0;
-  border-top: 2px solid #2F4A1F;
+/* 一般页签交互区未选中_左 */
+.tab_m_nl {
+  border-top:2px solid #2F4A1F;
+  border-right:0px solid #2F4A1F;
+  border-left:2px solid #2F4A1F;
+  border-top-left-radius:10px;
+  border-top-right-radius:0px;
+  background-color:#fff;
 }
-.tab_mouseOver {
-  cursor: pointer;
-  text-decoration: underline;
-  text-shadow: 0px 0px 1px #2F4A1F;
-  color: blue;
+/* 一般页签交互区未选中_右 */
+.tab_m_nr {
+  border-top:2px solid #2F4A1F;
+  border-right:2px solid #2F4A1F;
+  border-left:0px solid #2F4A1F;
+  border-top-left-radius:0px;
+  border-top-right-radius:10px;
+  background-color:#fff;
 }
-.tab_sel {
-  background-color: #589C8D;
-  font-weight: bold;
-  color: #FFFFFF;
+/* 一般页签交互区选中_左 */
+.tab_m_sl {
+  border-top:2px solid #2F4A1F;
+  border-right:0px solid #2F4A1F;
+  border-left:2px solid #2F4A1F;
+  border-top-left-radius:10px;
+  border-top-right-radius:0px;
+  background-color:#589C8D;
 }
-.tab_title {
-  position: absolute;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+/* 一般页签交互区选中_右 */
+.tab_m_sr {
+  border-top:2px solid #2F4A1F;
+  border-right:2px solid #2F4A1F;
+  border-left:0px solid #2F4A1F;
+  border-top-left-radius:0px;
+  border-top-right-radius:20px;
+  background-color:#589C8D;
+}
+/* 最后页签交互区未选中 */
+.tab_m_l_n {
+  border-top:2px solid #2F4A1F;
+  border-right:2px solid #2F4A1F;
+  border-left:0px solid #2F4A1F;
+  border-top-left-radius:0px;
+  border-top-right-radius:10px;
+  background-color:#fff;
+}
+/* 最后页签交互区选中 */
+.tab_m_l_s {
+  border-top:2px solid #2F4A1F;
+  border-right:2px solid #2F4A1F;
+  border-left:0px solid #2F4A1F;
+  border-top-left-radius:0px;
+  border-top-right-radius:20px;
+  background-color:#589C8D;
 }

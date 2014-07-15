@@ -49,6 +49,7 @@
     if (len>0) {
       for (; i<len; i++) {
         aTab=options.tabs[i];
+        aTab._index=i;
         var hasFound=false;
         if (olen>0) {
           for (j=0; j<olen; j++){
@@ -76,8 +77,8 @@
             }
             if (count>=5) uId=t+getUuid(3);
             aTab.id=uId;
-            aTab=$.extend(true, {}, $.fn.spiritTabs.defaults.defaultTab, aTab);
           }
+          aTab=$.extend(true, {}, $.fn.spiritTabs.defaults.defaultTab, _options?(_options.defaultTab?_options.defaultTab:null):null, options.defaultTab, aTab);
           newTabs[olen]=aTab;
           olen++;
         }
@@ -95,66 +96,184 @@
     if (_options.styleCss&&_options.styleCss!="") $(target).css(_options.styleCss);
     $(target).spiritUtils("setWidthByViewWidth", _width);
     $(target).spiritUtils("setHeightByViewHeight", _height);
+
     //处理数据
+    //处理交互区类型
+    if (_options.mutualType) {
+      if (!_options.mutualStyle) _options.mutualType=false;
+      else if (!_options.mutualStyle.width) _options.mutualType=false;
+    }
     //根据数据绘制控件
     i=0, len=(_options?(_options.tabs?_options.tabs.length:0):0);
     var _tabLeft=0;
     for (;i<len; i++) {
+      //画标签
+      //处理交互区
+      if (_options.mutualType) {
+        var _m=$(target).find("#tab_m_"+i);
+        if (_m.length==0) _m=$("<div id='tab_m_"+i+"'></div>");
+        _m.attr("class", "").addClass("tab_m");
+        if (i==0) {//画第一个交互区
+          _m.addClass("tab_m_f_n");
+          if (_options.mutualStyle&&_options.mutualStyle.firstCss&&_options.mutualStyle.firstCss!="") _m.css(_options.mutualStyle.firstCss);
+          if (aTab.mutualStyle&&aTab.mutualStyle.firstCss&&aTab.mutualStyle.firstCss!="") _m.css(aTab.mutualStyle.firstCss);
+        } else {//画周期交互区
+          _m.addClass("tab_m_nr");
+          if (_options.mutualStyle&&_options.mutualStyle.middleRCss&&_options.mutualStyle.middleRCss!="") _m.css(_options.mutualStyle.middleRCss);
+          if (aTab.mutualStyle&&aTab.mutualStyle.middleRCss&&aTab.mutualStyle.middleRCss!="") _m.css(aTab.mutualStyle.middleRCss);
+        }
+        _m.appendTo(target);
+        _m.spiritUtils("setWidthByViewWidth", _options.mutualStyle.width);
+        _m.spiritUtils("setHeightByViewHeight", $(target).height());
+        _m.css({"left":_tabLeft});
+        _tabLeft += parseFloat(_options.mutualStyle.width);
+      }
+
       var t_normal_cls = (i==0?"tab_normal_f":(i==(len-1)?"tab_normal_l":"tab_normal"));
       aTab = _options.tabs[i];
       var to=$(target).find("#"+aTab.id);
       //查找是否已经有了tab
       if (to.length==0) {//未找到
-        to=$("<div id='"+aTab.id+"'></div>");
+        to=$("<div id='"+aTab.id+"' _index='"+(i)+"'></div>");
         to.appendTo(target);
       }
-      to.html("");
-      //画标签
-      to.removeClass("tab_normal_f").removeClass("tab_normal_l");
-      to.addClass("tab").addClass(t_normal_cls);
+      to.html("").attr("class", "");
+
+      to.addClass("tab").addClass("tab_normal").addClass(t_normal_cls);
       if (aTab.normalCss&&aTab.normalCss!="") to.css(aTab.normalCss);
       var titleDiv=$("<div id='t_"+aTab.id+"'>"+aTab.title+"</div>").addClass("tab_title");
-      titleDiv.css({"height":to.css("font-size"), "line-height":to.css("font-size"), "font-size":to.css("font-size"), "font-family":to.css("font-family")});
+      titleDiv.css({"height":to.css("font-size"), "line-height":to.css("font-size")});
       titleDiv.appendTo(to);
-      titleDiv.css({"left":10});
+      titleDiv.css({"left":_options.mutualType?5:10});
       if (titleDiv.width()>aTab.maxTextLength) {
         titleDiv.css({"width":aTab.maxTextLength});
         to.attr("title", aTab.title);
-        titleDiv.css({"left":15});
+        titleDiv.css({"left":_options.mutualType?8:15});
       }
-      to.css({"left": _tabLeft, "width": titleDiv.width()+20});
+      to.css({"left": _tabLeft, "width": titleDiv.width()+(_options.mutualType?10:20)});
       to.spiritUtils("setHeightByViewHeight", $(target).height());
       to.css("line-height", to.css("height"));
       titleDiv.css({"top":(to.height()-titleDiv.height())/2});
       _tabLeft += to.spiritUtils("getViewWidth");
+      if (_options.mutualType) {
+        if (i==len-1) {//画最后一个互区
+          var _lastM=$(target).find("#tab_m_"+len);
+          if (_lastM.length==0) _lastM=$("<div id='tab_m_"+len+"'></div>");
+          _lastM.attr("class", "").addClass("tab_m").addClass("tab_m_l_n");
+          if (_options.mutualStyle&&_options.mutualStyle.lastCss&&_options.mutualStyle.lastCss!="") _lastM.css(_options.mutualStyle.lastCss);
+          if (aTab.mutualStyle&&aTab.mutualStyle.lastCss&&aTab.mutualStyle.lastCss!="") _lastM.css(aTab.mutualStyle.lastCss);
+          _lastM.appendTo(target);
+          _lastM.spiritUtils("setWidthByViewWidth", _options.mutualStyle.width);
+          _lastM.spiritUtils("setHeightByViewHeight", $(target).height());
+          _lastM.css({"left": _tabLeft});
+          _tabLeft += parseFloat(_options.mutualStyle.width);
+        }
+      }
       //绑定标签和数据
-      $.data(to, "tabData", aTab);
+      $("#"+aTab.id).data("tabData", aTab);
+
       //鼠标效果
       to.mouseover(function(){
         if ($(this).hasClass("tab_sel")) return;
         $(this).addClass("tab_mouseOver");
-        if (aTab.mouseOverCss&&aTab.mouseOverCss!="") to.css(aTab.mouseOverCss);
+        var tabData=$(this).data("tabData");
+        if (tabData.mouseOverCss&&tabData.mouseOverCss!="") $(this).css(tabData.mouseOverCss);
       }).mouseout(function(){
         if ($(this).hasClass("tab_sel")) return;
         $(this).removeClass("tab_mouseOver");
-        if (aTab.normalCss&&aTab.normalCss!="") to.css(aTab.normalCss);
+        var tabData=$(this).data("tabData");
+        if (tabData.normalCss&&tabData.normalCss!="") $(this).css(tabData.normalCss);
       });
+
       //点击
-      to.bind("click", function(){
-        if ($(this).hasClass("tab_sel")) return;
-        $(target).find(".tab").removeClass("tab_sel").removeClass("tab_mouseOver");
-        j=0, olen=len;
-        for(;j<olen;j++) {
-          aTab_o= _options.tabs[j];
-          if (aTab_o.normalCss&&aTab_o.normalCss!=""){
-            $(target).find("#"+aTab_o.id).css(aTab_o.normalCss);
+      to.bind("click", function() {
+        if ($(this).hasClass("tab_sel")) return;//若已被选中，则什么也不做
+        //任何标签都不显示
+        var _index=parseInt($(this).attr("_index"));
+        var tabData=null, aTab=null;
+        var j=0, len=$(target).find(".tab").length;
+        for(;j<len;j++) {
+          aTab=$(target).find(".tab")[j];
+          tabData=$(aTab).data("tabData");
+          var _lm=$(target).find("#tab_m_"+j);
+          $(_lm).attr("class", "").addClass("tab_m");
+          $(aTab).attr("class", "").addClass("tab");
+          if (j==0) {
+            $(aTab).addClass("tab_normal").addClass("tab_normal_f");
+            if ($(target).data("spiritTabs").mutualType) {
+              _lm.addClass("tab_m_f_n");
+              if ($(target).data("spiritTabs").mutualStyle&&$(target).data("spiritTabs").mutualStyle.firstCss&&$(target).data("spiritTabs").mutualStyle.firstCss!="") $(_lm).css($(target).data("spiritTabs").mutualStyle.firstCss);
+              if (tabData.mutualStyle&&tabData.mutualStyle.firstCss&&tabData.mutualStyle.firstCss!="") $(_lm).css(tabData.mutualStyle.firstCss);
+            }
+          } else if (j==(len-1)) {
+            $(aTab).addClass("tab_normal").addClass("tab_normal_l");
+            if ($(target).data("spiritTabs").mutualType) {
+              _lm.addClass("tab_m_nr");
+              if ($(target).data("spiritTabs").mutualStyle&&$(target).data("spiritTabs").mutualStyle.middleRCss&&$(target).data("spiritTabs").mutualStyle.middleRCss!="") $(_lm).css($(target).data("spiritTabs").mutualStyle.middleRCss);
+              if (tabData.mutualStyle&&tabData.mutualStyle.middleRCss&&tabData.mutualStyle.middleRCss!="") $(_lm).css(tabData.mutualStyle.middleRCss);
+              var _rm=$(target).find("#tab_m_"+(j+1));
+              $(_rm).attr("class", "").addClass("tab_m");
+              _rm.addClass("tab_m_l_n");
+              if ($(target).data("spiritTabs").mutualStyle&&$(target).data("spiritTabs").mutualStyle.lastCss&&$(target).data("spiritTabs").mutualStyle.lastCss!="") $(_rm).css($(target).data("spiritTabs").mutualStyle.lastCss);
+              if (tabData.mutualStyle&&tabData.mutualStyle.lastCss&&tabData.mutualStyle.lastCss!="") $(_rm).css(tabData.mutualStyle.lastCss);
+            }
+          } else {
+            $(aTab).addClass("tab_normal");
+            if ($(target).data("spiritTabs").mutualType) {
+              if (j<=_index) {
+                _lm.addClass("tab_m_nl");
+                if ($(target).data("spiritTabs").mutualStyle&&$(target).data("spiritTabs").mutualStyle.middleLCss&&$(target).data("spiritTabs").mutualStyle.middleLCss!="") $(_lm).css($(target).data("spiritTabs").mutualStyle.middleLCss);
+                if (tabData.mutualStyle&&tabData.mutualStyle.middleLCss&&tabData.mutualStyle.middleLCss!="") $(_lm).css(tabData.mutualStyle.middleLCss);
+              } else {
+                _lm.addClass("tab_m_nr");
+                if ($(target).data("spiritTabs").mutualStyle&&$(target).data("spiritTabs").mutualStyle.middleRCss&&$(target).data("spiritTabs").mutualStyle.middleRCss!="") $(_lm).css($(target).data("spiritTabs").mutualStyle.middleRCss);
+                if (tabData.mutualStyle&&tabData.mutualStyle.middleRCss&&tabData.mutualStyle.middleRCss!="") $(_lm).css(tabData.mutualStyle.middleRCss);
+              }
+            }
           }
-          if ($(this).attr("id")==aTab_o.id) aTab=aTab_o;
+          if (tabData.normalCss&&tabData.normalCss!="") $(aTab).css(tabData.normalCss);
         }
+
+        tabData = $(this).data("tabData");
+        //设置选中
         $(this).addClass("tab_sel");
-        if (aTab.selCss&&aTab.selCss!="") to.css(aTab.selCss);
+        if (_index==0) {
+          $(this).addClass("tab_sel_f");
+        } else if (_index==(len-1)) {
+          $(this).addClass("tab_sel_l");
+        }
+        if (tabData.selCss&&tabData.selCss!="") $(this).css(tabData.selCss);
+
+        if ($(target).data("spiritTabs").mutualType) {
+          var _lm=$(target).find("#tab_m_"+_index);
+          var _rm=$(target).find("#tab_m_"+(_index+1));
+          $(_lm).attr("class", "").addClass("tab_m");
+          $(_rm).attr("class", "").addClass("tab_m");
+          if (_index==0) {
+            $(_lm).addClass("tab_m_f_s");
+            if ($(target).data("spiritTabs").mutualStyle&&$(target).data("spiritTabs").mutualStyle.firstSelCss&&$(target).data("spiritTabs").mutualStyle.firstSelCss!="") $(_lm).css($(target).data("spiritTabs").mutualStyle.firstSelCss);
+            if (tabData.mutualStyle&&tabData.mutualStyle.firstCss&&tabData.mutualStyle.firstCss!="") $(_lm).css(tabData.mutualStyle.firstSelCss);
+            $(_rm).addClass("tab_m_sr");
+            if ($(target).data("spiritTabs").mutualStyle&&$(target).data("spiritTabs").mutualStyle.middleSelRCss&&$(target).data("spiritTabs").mutualStyle.middleSelRCss!="") $(_rm).css($(target).data("spiritTabs").mutualStyle.middleSelRCss);
+            if (tabData.mutualStyle&&tabData.mutualStyle.middleSelRCss&&tabData.mutualStyle.middleSelRCss!="") $(_rm).css(tabData.mutualStyle.middleSelRCss);
+          } else if (_index==(len-1)) {
+            $(_lm).addClass("tab_m_sl");
+            if ($(target).data("spiritTabs").mutualStyle&&$(target).data("spiritTabs").mutualStyle.middleSelLCss&&$(target).data("spiritTabs").mutualStyle.middleSelLCss!="") $(_lm).css($(target).data("spiritTabs").mutualStyle.middleSelLCss);
+            if (tabData.mutualStyle&&tabData.mutualStyle.middleSelLCss&&tabData.mutualStyle.middleSelLCss!="") $(_lm).css(tabData.mutualStyle.middleSelLCss);
+            $(_rm).addClass("tab_m_l_s");
+            if ($(target).data("spiritTabs").mutualStyle&&$(target).data("spiritTabs").mutualStyle.lastSelCss&&$(target).data("spiritTabs").mutualStyle.lastSelCss!="") $(_rm).css($(target).data("spiritTabs").mutualStyle.lastSelCss);
+            if (tabData.mutualStyle&&tabData.mutualStyle.lastSelCss&&tabData.mutualStyle.lastSelCss!="") $(_rm).css(tabData.mutualStyle.lastSelCss);
+          } else {
+            $(_lm).addClass("tab_m_sl");
+            if ($(target).data("spiritTabs").mutualStyle&&$(target).data("spiritTabs").mutualStyle.middleSelLCss&&$(target).data("spiritTabs").mutualStyle.middleSelLCss!="") $(_lm).css($(target).data("spiritTabs").mutualStyle.middleSelLCss);
+            if (tabData.mutualStyle&&tabData.mutualStyle.middleSelLCss&&tabData.mutualStyle.middleSelLCss!="") $(_lm).css(tabData.mutualStyle.middleSelLCss);
+            $(_rm).addClass("tab_m_sr");
+            if ($(target).data("spiritTabs").mutualStyle&&$(target).data("spiritTabs").mutualStyle.middleSelRCss&&$(target).data("spiritTabs").mutualStyle.middleSelRCss!="") $(_rm).css($(target).data("spiritTabs").mutualStyle.middleSelRCss);
+            if (tabData.mutualStyle&&tabData.mutualStyle.middleSelRCss&&tabData.mutualStyle.middleSelRCss!="") $(_rm).css(tabData.mutualStyle.middleSelRCss);
+          }
+        }
         //调用用户定义的点击
-        if (aTab.onClick) aTab.onClick($(this));
+        if (tabData.onClick) tabData.onClick($(this));
       });
     }
   }
@@ -178,13 +297,14 @@
     mutualType: false, //两页标签的交互区域的处理模式，若为false，则无交互区域，用css处理交互，若为true则有交互区域，交互用图片来处理
     mutualStyle: { //交互区样式，当mutualType=true生效
       width: "10px", //交互区宽度
-      firstImgUrl:"", //最左边未选中交互区图片
-      firstSelImgUrl: "", //最左边选中交互区图片
-      lastImgUrl:"", //最右边未选中交互区图片
-      lastSelImgUrl: "", //最右边选中交互区图片
-      middleImgUrl: "", //中间未选中交互区图片
-      middleSelRImgUrl: "", //中间左选中交互区图片
-      middleSelLImgUrl: "" //中间右选中交互区图片
+      firstCss:"",    //最左边未选中交互区样式，要是json格式的
+      firstSelCss:"", //最左边选中交互区样式，要是json格式的
+      lastCss:"",    //最右边未选中交互区样式，要是json格式的
+      lastSelCss:"", //最右边选中交互区样式，要是json格式的
+      middleLCss:"",    //中间未选中左交互区样式，要是json格式的
+      middleRCss:"",    //中间未选中右交互区样式，要是json格式的
+      middleSelLCss:"", //中间选中左交互区样式，要是json格式的
+      middleSelRCss:""  //中间未选中右交互区样式，要是json格式的
     },
     defaultTab: { //默认的页签规则，若每个页标签不设定自己的规则，则所有页签的规则以此为准
       maxTextLength: 100,//最大宽度:大于此值,遮罩主
@@ -205,13 +325,13 @@
     mutualType: false, //两页标签的交互区域的处理模式，若为false，则无交互区域，用css处理交互，若为true则有交互区域，交互用图片来处理
     mutualStyle: { //交互区样式，当mutualType=true生效
       width: "10px", //交互区宽度
-      firstImgUrl:"", //最左边未选中交互区图片
-      firstSelImgUrl: "", //最左边选中交互区图片
-      lastImgUrl:"", //最右边未选中交互区图片
-      lastSelImgUrl: "", //最右边选中交互区图片
-      middleImgUrl: "", //中间未选中交互区图片
-      middleSelRImgUrl: "", //中间左选中交互区图片
-      middleSelLImgUrl: "" //中间右选中交互区图片
+      firstSelCss:"", //最左边选中交互区样式，要是json格式的
+      lastCss:"",    //最右边未选中交互区样式，要是json格式的
+      lastSelCss:"", //最右边选中交互区样式，要是json格式的
+      middleLCss:"",    //中间未选中左交互区样式，要是json格式的
+      middleRCss:"",    //中间未选中右交互区样式，要是json格式的
+      middleSelLCss:"", //中间选中左交互区样式，要是json格式的
+      middleSelRCss:""  //中间未选中右交互区样式，要是json格式的
     },
     defaultTab: { //默认的页签规则，若每个页标签不设定自己的规则，则所有页签的规则以此为准
       maxTextLength: 30,//最大宽度:大于此值,遮罩主

@@ -11,15 +11,17 @@ function allFields(obj) {
   var i=0;
   var props = "";
   if (obj==null) props="[allPrposCount=0]\nnull";
-  for(var p in obj) {
-    i=i+1;
-    if (typeof(p)!="function") {
-      if ((obj[p]+"").indexOf("[")!==0) {
-        props += i+":"+p+"="+obj[p]+";\n";
+  else {
+    for(var p in obj) {
+      i=i+1;
+      if (typeof(p)!="function") {
+        if ((obj[p]+"").indexOf("[")!==0) {
+          props += i+":"+p+"="+obj[p]+";\n";
+        }
       }
     }
+    props = "[allPrposCount="+i+"]\n"+props;
   }
-  props = "[allPrposCount="+i+"]\n"+props;
   return props;
 }
 
