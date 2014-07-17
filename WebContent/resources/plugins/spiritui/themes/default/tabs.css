@@ -32,6 +32,8 @@
 }
 /* 一般页签选中 */
 .tab_sel {
+  border:0;
+  border-top:2px solid #2F4A1F;
   background-color:#589C8D;
   font-weight:bold;
   color:#fff;
@@ -44,6 +46,8 @@
 }
 /* 第一页签选中 */
 .tab_sel_f {
+  border:0;
+  border-top:2px solid #2F4A1F;
   background-color:#589C8D;
   font-weight:bold;
   color:#fff;
@@ -56,6 +60,8 @@
 }
 /* 最后页签选中 */
 .tab_sel_l {
+  border:0;
+  border-top:2px solid #2F4A1F;
   background-color:#589C8D;
   font-weight:bold;
   color:#fff;
@@ -83,8 +89,8 @@
 }
 /* 第一页签交互区选中 */
 .tab_m_f_s {
+  border:0;
   border-top:2px solid #2F4A1F;
-  border-right:0px solid #2F4A1F;
   border-left:2px solid #2F4A1F;
   border-top-left-radius:10px;
   border-top-right-radius:0px;
@@ -123,7 +129,7 @@
   border-right:2px solid #2F4A1F;
   border-left:0px solid #2F4A1F;
   border-top-left-radius:0px;
-  border-top-right-radius:20px;
+  border-top-right-radius:10px;
   background-color:#589C8D;
 }
 /* 最后页签交互区未选中 */
@@ -141,6 +147,6 @@
   border-right:2px solid #2F4A1F;
   border-left:0px solid #2F4A1F;
   border-top-left-radius:0px;
-  border-top-right-radius:20px;
+  border-top-right-radius:10px;
   background-color:#589C8D;
 }

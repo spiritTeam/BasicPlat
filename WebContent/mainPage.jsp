@@ -22,6 +22,7 @@
 
 <link rel="stylesheet" type="text/css" href="<%=path%>/resources/css/mainPage.css"/>
 <link rel="stylesheet" type="text/css" href="<%=path%>/resources/plugins/spiritui/themes/default/all.css"/>
+<link rel="stylesheet" type="text/css" href="<%=path%>/resources/plugins/spiritui/themes/default/tabs.css"/>
 </head>
 
 <body class="_body">
@@ -69,7 +70,7 @@ function abc() {
 
 var _topBarLeft=220;
 var _topQuickFuncWidth=100;
-var _topMiniHeight=36;//全屏后的头部高度，此高度也是非全屏时功能条的高度
+var _topMiniHeight=26;//全屏后的头部高度，此高度也是非全屏时功能条的高度
 
 function testClk(jqMy) {
   //alert(jqMy.attr("id"));
@@ -79,42 +80,7 @@ var testBar = {
   id: "test", //标识
   mutualType: true, //两页标签的交互区域的处理模式，若为false，则无交互区域，用css处理交互，若为true则有交互区域，交互用图片来处理
   mutualStyle: { //交互区样式，当mutualType=true生效
-    width: "10px", //交互区宽度
-    firstCss:     {"border-top":"2px solid #2F4A1F","border-right":"0px solid #2F4A1F","border-left":"2px solid #2F4A1F","border-top-left-radius":"10px","border-top-right-radius":"0px","background-color":"#fff"},    //最左边未选中交互区样式，要是json格式的
-    firstSelCss:  {"border-top":"2px solid #2F4A1F","border-right":"0px solid #2F4A1F","border-left":"2px solid #2F4A1F","border-top-left-radius":"10px","border-top-right-radius":"0px","background-color":"#589C8D"}, //最左边选中交互区样式，要是json格式的
-    lastCss:      {"border-top":"2px solid #2F4A1F","border-right":"2px solid #2F4A1F","border-left":"0px solid #2F4A1F","border-top-left-radius":"0px","border-top-right-radius":"10px","background-color":"#fff"},    //最右边未选中交互区样式，要是json格式的
-    lastSelCss:   {"border-top":"2px solid #2F4A1F","border-right":"2px solid #2F4A1F","border-left":"0px solid #2F4A1F","border-top-left-radius":"0px","border-top-right-radius":"10px","background-color":"#589C8D"}, //最右边选中交互区样式，要是json格式的
-    middleLCss:   {"border-top":"2px solid #2F4A1F","border-right":"0px solid #2F4A1F","border-left":"2px solid #2F4A1F","border-top-left-radius":"10px","border-top-right-radius":"0px","background-color":"#fff"},    //中间未选中左交互区样式，要是json格式的
-    middleRCss:   {"border-top":"2px solid #2F4A1F","border-right":"2px solid #2F4A1F","border-left":"0px solid #2F4A1F","border-top-left-radius":"0px","border-top-right-radius":"10px","background-color":"#fff"},    //中间未选中右交互区样式，要是json格式的
-    middleSelLCss:{"border-top":"2px solid #2F4A1F","border-right":"0px solid #2F4A1F","border-left":"2px solid #2F4A1F","border-top-left-radius":"10px","border-top-right-radius":"0px","background-color":"#589C8D"}, //中间选中左交互区样式，要是json格式的
-    middleSelRCss:{"border-top":"2px solid #2F4A1F","border-right":"2px solid #2F4A1F","border-left":"0px solid #2F4A1F","border-top-left-radius":"0px","border-top-right-radius":"10px","background-color":"#589C8D"}  //中间未选中右交互区样式，要是json格式的
-  },
-  defaultTab: { //默认的页签规则，若每个页标签不设定自己的规则，则所有页签的规则以此为准
-    maxTextLength: 100,//最大文字宽度:大于此值,遮罩主
-    normalCss: "", //常态css样式(未选中，鼠标未悬停)，可包括边框/字体/背景，注意，要是json格式的
-    mouseOverCss: "", //鼠标悬停样式，可包括边框/字体/背景，注意，要是json格式的
-    selCss: "", //选中后样式，可包括边框/字体/背景，注意，要是json格式的
-  },
-  tabs:[//页标签数组
-    {title:"测试1", onClick:"", selected:"true"},
-    {title:"测试2测试", onClick:testClk, maxTextLength:70},
-    {title:"测试3", onClick:""/*, normalCss:{"background-color":"yellow"}, selCss:{"background-color":"#589C8D"}*/},
-    {title:"12345", onClick:""},
-    {title:"测试5", onClick:""}
-  ]
-};
-
-var testBar2 = {
-  id: "test", //标识
-  mutualType: true, //两页标签的交互区域的处理模式，若为false，则无交互区域，用css处理交互，若为true则有交互区域，交互用图片来处理
-  mutualStyle: { //交互区样式，当mutualType=true生效
     width: "10px" //交互区宽度
-  },
-  defaultTab: { //默认的页签规则，若每个页标签不设定自己的规则，则所有页签的规则以此为准
-    maxTextLength:70,//最大文字宽度:大于此值,遮罩主
-    normalCss:"", //常态css样式(未选中，鼠标未悬停)，可包括边框/字体/背景，注意，要是json格式的
-    mouseOverCss:"", //鼠标悬停样式，可包括边框/字体/背景，注意，要是json格式的
-    selCss:"", //选中后样式，可包括边框/字体/背景，注意，要是json格式的
   },
   tabs:[//页标签数组
     {title:"测试1", onClick:"", selected:"true"},
@@ -162,7 +128,7 @@ $(function() {
     return ;
   };
   //设置界面主功能页签
-  $("#mainTab_top").spiritTabs(testBar2);
+  $("#mainTab_top").spiritTabs(testBar);
 });
 
 //-界面位置调整begin-----------------------------------------------------------------

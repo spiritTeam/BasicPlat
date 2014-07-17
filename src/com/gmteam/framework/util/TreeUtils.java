@@ -28,8 +28,7 @@ public abstract class TreeUtils {
             for (TreeNodeBean tnb: l) {
                 TreeNode<TreeNodeBean> oneNode = new TreeNode<TreeNodeBean>(tnb);
                 if (forest.size() == 0) forest.add(oneNode);
-                else {
-                    // 判断forest中有没有oneNode的子结点或结结点
+                else {// 判断forest中有没有oneNode的子结点或父结点
                     mergeFlag=0;
                     for (int i=0; i<forest.size(); i++) {
                         TreeNode<TreeNodeBean> node = forest.get(i);
@@ -39,7 +38,7 @@ public abstract class TreeUtils {
                         } else if (node.findNode(oneNode.getParentId())!=null) {//判断oneNode是不是某个结点的子结点
                             node.findNode(oneNode.getParentId()).addChild(oneNode);
                             mergeFlag=1;
-                        } else if (node.getParentId().equals(oneNode.getId())) {//判断oneNode是不是某个结点的父结点
+                        } else if (node.getParentId()!=null&&node.getParentId().equals(oneNode.getId())) {//判断oneNode是不是某个结点的父结点
                             oneNode.addChild(node);
                             forest.set(i, oneNode);
                             mergeFlag=2;
@@ -71,7 +70,7 @@ public abstract class TreeUtils {
                                 _node.findNode(node.getParentId()).addChild(node);
                                 mergeFlag=1;
                                 eatNode=true;
-                            } else if (_node.getParentId().equals(node.getId())) {//循环结点是标记结点的直接子结点
+                            } else if (_node.getParentId()!=null&&_node.getParentId().equals(node.getId())) {//循环结点是标记结点的直接子结点
                                 node.addChild(_node);
                                 forest.remove(_index);
                                 mergeFlag=2;

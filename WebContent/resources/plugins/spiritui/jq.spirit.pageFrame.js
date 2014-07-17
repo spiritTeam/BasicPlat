@@ -41,7 +41,7 @@
         "left": parseFloat($("#_main").css("left"))+parseFloat($("#_main").css("margin-left")), //X轴，宽
         "width": getViewWidth(INIT_PARAM.pageObjs.topId, "_main"),
         "top": parseFloat($("body").css("margin-top"))+parseFloat($("#_main").css("margin-top")), //Y轴，高
-        "height":parseFloat(INIT_PARAM.top_height)
+        "height":parseInt(INIT_PARAM.top_height)+"px"
       });
     };
     //3-调整脚部
@@ -184,14 +184,12 @@
           var topunder = $("body>div#_topunder");
           var topSegment = $("#"+INIT_PARAM.pageObjs.topId);
           //取晕效果颜色；先看是否有设定，若没有设定取头部的下边框，若下边框为0，取底色
-          var _tapShadowColor="#95b8e7";
+          var _tapShadowColor = null;
           if (INIT_PARAM.top_shadow_color) _tapShadowColor=INIT_PARAM.top_shadow_color;
-          else {
-            //下边框
+          else {//下边框
           	if (parseFloat(topSegment.css("border-bottom-width"))>0) _tapShadowColor = jqueryColor2HexColor(topSegment.css("border-bottom-color"));
           	else _tapShadowColor = jqueryColor2HexColor(topSegment.css("background-color"));
           }
-
           topunder.css({"border":"1px solid "+_tapShadowColor, "padding":"0", "margin":"0",
             "margin-left": topSegment.css("margin-left"),
             "margin-right": topSegment.css("margin-right"),

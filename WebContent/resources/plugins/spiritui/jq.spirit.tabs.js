@@ -142,7 +142,9 @@
       to.addClass("tab").addClass("tab_normal").addClass(t_normal_cls);
       if (aTab.normalCss&&aTab.normalCss!="") to.css(aTab.normalCss);
       var titleDiv=$("<div id='t_"+aTab.id+"'>"+aTab.title+"</div>").addClass("tab_title");
-      titleDiv.css({"height":to.css("font-size"), "line-height":to.css("font-size")});
+      titleDiv.css({"height":(parseFloat(to.css("font-size"))+2), "vertical-align":"bottom", "valign":"bottom"});
+      titleDiv.css("line-height",titleDiv.css("height"));
+      if (getBrowserVersion().indexOf("msie")>0) titleDiv.css("margin-top","2px");
       titleDiv.appendTo(to);
       titleDiv.css({"left":_options.mutualType?5:10});
       if (titleDiv.width()>aTab.maxTextLength) {
@@ -271,6 +273,10 @@
             if ($(target).data("spiritTabs").mutualStyle&&$(target).data("spiritTabs").mutualStyle.middleSelRCss&&$(target).data("spiritTabs").mutualStyle.middleSelRCss!="") $(_rm).css($(target).data("spiritTabs").mutualStyle.middleSelRCss);
             if (tabData.mutualStyle&&tabData.mutualStyle.middleSelRCss&&tabData.mutualStyle.middleSelRCss!="") $(_rm).css(tabData.mutualStyle.middleSelRCss);
           }
+          _lm.spiritUtils("setWidthByViewWidth", _options.mutualStyle.width);
+          _lm.spiritUtils("setHeightByViewHeight", $(target).height());
+          _rm.spiritUtils("setWidthByViewWidth", _options.mutualStyle.width);
+          _rm.spiritUtils("setHeightByViewHeight", $(target).height());
         }
         //调用用户定义的点击
         if (tabData.onClick) tabData.onClick($(this));
@@ -310,7 +316,7 @@
       maxTextLength: 100,//最大宽度:大于此值,遮罩主
       normalCss: "", //常态css样式(未选中，鼠标未悬停)，可包括边框/字体/背景，注意，要是json格式的
       mouseOverCss: "", //鼠标悬停样式，可包括边框/字体/背景，注意，要是json格式的
-      selCss: "", //选中后样式，可包括边框/字体/背景，注意，要是json格式的
+      selCss: "" //选中后样式，可包括边框/字体/背景，注意，要是json格式的
     },
     tabs:[] //页标签数组
   };
