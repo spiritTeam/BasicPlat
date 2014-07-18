@@ -14,6 +14,7 @@ import com.gmteam.framework.component.module.pojo.Module;
 import com.gmteam.framework.core.cache.AbstractCacheLifecycleUnit;
 import com.gmteam.framework.core.cache.CacheEle;
 import com.gmteam.framework.core.cache.SystemCache;
+import com.gmteam.framework.core.model.tree.TreeNode;
 @Component
 public class UgaCacheLifecycleUnit extends AbstractCacheLifecycleUnit {
     /**
@@ -31,6 +32,8 @@ public class UgaCacheLifecycleUnit extends AbstractCacheLifecycleUnit {
             loadModule();
             //装载用户信息
             loadUser();
+            //装载用户模块信息
+            loadUserModule();
         } catch (Exception e) {
             logger.info("启动时加载{UGA}缓存出错", e);
         }
@@ -42,19 +45,18 @@ public class UgaCacheLifecycleUnit extends AbstractCacheLifecycleUnit {
      */
     @Override
     public void refresh(String key) {
+        String keyName=null;
         try {
-            CacheEle<?> rce;
-            if (key.equals(UgaConstants.CATCH_UGA_MODULE)) {
-                rce = (CacheEle<?>)SystemCache.remove(UgaConstants.CATCH_UGA_MODULE);
-                key = rce.getName();
-                loadModule();
-            } else if (key.equals(UgaConstants.CATCH_UGA_USER)) {
-                rce = SystemCache.remove(UgaConstants.CATCH_UGA_USER);
-                key = rce.getName();
-                loadModule();
-            }
+            CacheEle<?> rce = (CacheEle<?>)SystemCache.remove(key);
+            if (rce!=null) keyName = rce.getName();
+            else throw new Exception("没有值为<"+key+">的缓存");
+
+            if (key.equals(UgaConstants.CATCH_UGA_MODULE)) loadModule();
+            else if (key.equals(UgaConstants.CATCH_UGA_USER)) loadModule();
+            else if (key.equals(UgaConstants.CATCH_UGA_USERMODULE)) loadUserModule();
+
         } catch (Exception e) {
-            logger.info("加载缓存项{UGA["+key+"]}失败：", e);
+            logger.info("重新加载缓存项{UGA["+keyName+"]}失败：", e);
         }
     }
 
@@ -89,6 +91,20 @@ public class UgaCacheLifecycleUnit extends AbstractCacheLifecycleUnit {
             SystemCache.setCache(new CacheEle<Map<String, Object>>(UgaConstants.CATCH_UGA_USER, "uga用户", uo));
         } catch(Exception e) {
             throw new Exception("加载缓存项{UGA[uga用户]}失败：", e);
+        }
+    }
+
+    /**
+     * 装载uga用户模块关联缓存
+     * @throws Exception
+     */
+    public void loadUserModule() throws Exception {
+        try {
+            Map<String, TreeNode<Module>> umo = ugaCacheService.makeCacheUserModule();
+            if (umo==null) throw new Exception("没有[用户模块关联]数据。");
+            SystemCache.setCache(new CacheEle<Map<String, TreeNode<Module>>>(UgaConstants.CATCH_UGA_USERMODULE, "用户模块关联", umo));
+        } catch(Exception e) {
+            throw new Exception("加载缓存项{UGA[用户模块关联]}失败：", e);
         }
     }
 }

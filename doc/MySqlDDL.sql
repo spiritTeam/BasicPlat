@@ -16,7 +16,6 @@ insert into plat_user(id, loginName , userName, password) values('1004', 'test00
 
 #创建Module表
 drop table plat_module;
-
 CREATE TABLE plat_module (
   id          varchar(36) NOT NULL             COMMENT 'ID主键,可支持UUID' ,
   pId         varchar(36) NOT NULL DEFAULT '0' COMMENT '父ID:本表中的ID(外键)，若是第一级模块，此值为0' ,
@@ -65,3 +64,15 @@ insert into plat_module(id,pId,sort,isValidate,moduleType,moduleName,displayName
 values('1011', '1010', 1, 1, 2, 'ModuleManager', '模块管理', '/moduleManage/moduleMainPage.jsp', 2, null, null, '窗口功能演示');
 insert into plat_module(id,pId,sort,isValidate,moduleType,moduleName,displayName,url,levels,style,icon,descn)
 values('1012', '1011', 1, 1, 2, 'ModuleManager', '模块管理', '/moduleManage/moduleMainPage.jsp', 3, null, null, '模块管理');
+
+#创建ModuleORG表,模块权限
+drop table plat_module_org;
+CREATE TABLE plat_module_org (
+  id        varchar(36) NOT NULL             COMMENT 'ID主键,可支持UUID' ,
+  moduleId varchar(36) NOT NULL DEFAULT '0' COMMENT '系统模块表中的ID' ,
+  types     int(2)      NOT NULL DEFAULT 1   COMMENT '类型：1-用户组;2-用户;3-角色' ,
+  objId    varchar(36) NOT NULL DEFAULT '0' COMMENT '授权对象Id：\r\ntypes=1、ID=用户组ID；\r\ntypes=2、ID=用户ID；\r\ntypes=3、ID=角色ID；' ,
+  PRIMARY KEY (id)
+);
+ALTER TABLE plat_module_org ADD CONSTRAINT fk_Mid FOREIGN KEY (moduleId) REFERENCES plat_module(id);
+

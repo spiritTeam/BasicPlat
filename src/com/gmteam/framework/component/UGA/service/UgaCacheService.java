@@ -76,4 +76,21 @@ public class UgaCacheService {
         ret.put("errors", m.get("errors"));
         return ret;
     }
+
+    /**
+     * 构造用户模块权限缓存，返回值是Map
+     * @return 用户模块权限缓存
+     * @throws Exception
+     */
+    public Map<String, TreeNode<Module>> makeCacheUserModule() throws Exception {
+        Map<String, TreeNode<Module>> ret = new HashMap<String, TreeNode<Module>>();
+        List<Map<String, String>> urm = userDao.queryForListAutoTranform("getUserModuleList", null);
+        String userId=null;
+        if (urm!=null&&urm.size()>0) {
+            for (int i=0; i<urm.size(); i++) {
+                //if (urm.get)
+            }
+        }
+        return ret;
+    }
 }
