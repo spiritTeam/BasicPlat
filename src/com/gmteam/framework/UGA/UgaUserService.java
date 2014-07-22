@@ -12,12 +12,12 @@ public interface UgaUserService {
      * @param loginName 用户登录名
      * @return 用户信息
      */
-    public UgaUser getUserByLoginName(String loginName);
+    public <V extends UgaUser> V getUserByLoginName(String loginName);
 
     /**
      * 根据用户Id，得到用户信息
      * @param userId 用户Id
      * @return 用户信息
      */
-    public UgaUser getUserById(String userId);
+    public <V extends UgaUser> V getUserById(String userId);
 }

@@ -12,16 +12,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gmteam.framework.FConstants;
+import com.gmteam.framework.UGA.UgaAuthorityService;
+import com.gmteam.framework.UGA.UgaModule;
 import com.gmteam.framework.UGA.UgaUser;
 import com.gmteam.framework.UGA.UgaUserService;
 import com.gmteam.framework.component.login.pojo.UserLogin;
 import com.gmteam.framework.core.cache.CacheEle;
 import com.gmteam.framework.core.cache.SystemCache;
+import com.gmteam.framework.core.model.tree.TreeNode;
 
 @Controller
 public class LoginController {
     @Resource
     private UgaUserService ugaUserService;
+
+    @Resource
+    private UgaAuthorityService ugaAuthorityService;
     /**
      * 用户登录
      * @param userLogin 用户登录信息
@@ -47,6 +53,9 @@ public class LoginController {
                 ((CacheEle<Map<String, UserLogin>>) SystemCache.getCache(FConstants.USERSESSIONMAP)).getContent().put(user.getUserId(), userLogin);
                 //写用户信息
                 session.setAttribute(FConstants.SESSION_USER, user);
+                //写用户权限信息
+                TreeNode<UgaModule> um = ugaAuthorityService.getUserModuleAuthByUserId(user.getUserId());
+                session.setAttribute(FConstants.SESSION_USERAUTHORITY, um);
                 retObj.put("type", "1");
                 retObj.put("data", "登录成功");
             }

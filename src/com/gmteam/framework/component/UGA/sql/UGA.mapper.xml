@@ -29,9 +29,9 @@ select * from plat_user
 <select id="getModuleList" resultMap="ModuleMap">
 select * from plat_module
 </select>
-
-<select id="getUserModuleList" resultMap="ModuleMap">
-select a.objId userId, a.moduleId from plat_module_org a, plat_user b where a.types='2' and a.objId=b.id 
+<!-- 
+ -->
+<select id="getUserModuleList" resultType="hashmap">
+select a.objId userId, a.moduleId from plat_module_org a, plat_user b where a.types='2' and a.objId=b.id order by userId
 </select>
-
 </mapper>

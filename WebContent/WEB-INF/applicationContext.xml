@@ -91,4 +91,6 @@
   <!-- 以下为UGP框架(用户/用户组/权限框架)所需配置 -->
   <!--Uga用户服务-->
   <bean id="ugaUserService" class="com.gmteam.framework.component.UGA.service.UserService"/>
+  <!--Uga用户模块服务-->
+  <bean id="ugaAuthorityService" class="com.gmteam.framework.component.UGA.service.AuthorityService"/>
 </beans>

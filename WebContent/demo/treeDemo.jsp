@@ -48,11 +48,11 @@ $(function(){
   });
   $("#moduleTreeGrid").treegrid({
     idField: 'id',
-    treeField: 'displayName',
+    treeField: 'nodeName',
     columns:[[
       {title:'模块id',field:'id',width:60}, 
-      {title:'模块显示名',field:'displayName',width:110},
-      {title:'模块名称',field:'nodeName',width:110}
+      {title:'模块显示名',field:'nodeName',width:110},
+      {title:'模块名称',field:'moduleName',width:110}
     ]] 
   });
   $.ajax({type:"post", async:true, url:url, data:null, dataType:"json",

@@ -20,8 +20,8 @@ import com.gmteam.framework.core.model.tree.TreeNodeBean;
 public abstract class UiTree<T extends TreeNodeBean> extends TreeNode<T> {
 
     /**
-     * 构造函数，需要其继承的
-     * @param tn
+     * 构造函数，需要其继承的类实现具体的构造方法
+     * @param tn 需要转换的树
      * @throws CloneNotSupportedException 
      */
     public UiTree(TreeNode<? extends TreeNodeBean> tn) throws CloneNotSupportedException {

@@ -1,5 +1,7 @@
 package com.gmteam.framework.UGA;
 
+import com.gmteam.framework.core.model.tree.TreeNode;
+
 /**
  * UGA框架。
  * 权限服务基础类，权限服务需继承此类。
@@ -7,9 +9,9 @@ package com.gmteam.framework.UGA;
  */
 public interface UgaAuthorityService {
     /**
-     * 根据登录名，得到用户信息
-     * @param loginName 用户登录名
-     * @return 用户信息
+     * 根据用户Id，得到用户模块权限
+     * @param userId 用户id
+     * @return 用户模块权限
      */
-    public UgaUser getUserModuleAuthByUserId(String loginName);
+    public <V extends UgaModule> TreeNode<V> getUserModuleAuthByUserId(String userId);
 }

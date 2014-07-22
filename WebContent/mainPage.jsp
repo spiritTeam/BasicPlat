@@ -1,8 +1,25 @@
 <%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@page import="java.util.*"%>
 <%@page import="com.gmteam.framework.FConstants"%>
+<%@page import="com.gmteam.framework.core.model.tree.TreeNode"%>
+<%@page import="com.gmteam.framework.component.module.pojo.Module"%>
+<%@page import="com.gmteam.framework.FConstants"%>
+<%@page import="com.gmteam.framework.ui.tree.easyUi.EasyUiTree"%>
+<%@page import="com.gmteam.framework.util.JsonUtils"%>
+
 <%
   String path = request.getContextPath();
+  //得到权限
+  String AuthObjJson = "[]";
+  TreeNode<Module> userModuleTree = (TreeNode<Module>)session.getAttribute(FConstants.SESSION_USERAUTHORITY);
+  if (userModuleTree!=null) {
+      EasyUiTree<Module> met = new EasyUiTree<Module>(userModuleTree);
+      for (TreeNode<Module> eut: met.getChildren()) {
+          ((EasyUiTree<Module>)eut).setState("open");
+      }
+      AuthObjJson = JsonUtils.beanToJson(met.toTreeMap());
+  }
+  System.out.println("=======::"+AuthObjJson);
 %>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -64,45 +81,24 @@
 <div id="mainSegment">12345678</div>
 
 <script>
-function abc() {
-  $("#mainTab_top").spiritTabs({id:"1235", tabs:[{title:"测试8", onclick:""},{title:"测试9", onclick:""}]});
-}
+//主函数
+$(function() {
+  var initStr = $().spiritPageFrame(INIT_PARAM);
+  if (initStr) {
+    $.messager.alert("页面初始化失败", initStr, "error");
+    return ;
+  };
+  //设置界面主功能页签
+  $("#mainTab_top").spiritTabs(testBar);
+});
 
+//-主界面处理界面位置调整begin-----------------------------------------------------------------
 var _topBarLeft=220;
 var _topQuickFuncWidth=100;
 var _topMiniHeight=26;//全屏后的头部高度，此高度也是非全屏时功能条的高度
 
-function testClk(jqMy) {
-  //alert(jqMy.attr("id"));
-}
-
-var testBar = {
-  id: "test", //标识
-  mutualType: true, //两页标签的交互区域的处理模式，若为false，则无交互区域，用css处理交互，若为true则有交互区域，交互用图片来处理
-  mutualStyle: { //交互区样式，当mutualType=true生效
-    width: "10px" //交互区宽度
-  },
-  tabs:[//页标签数组
-    {title:"测试1", onClick:"", selected:"true"},
-    {title:"测试2测试123"},
-    {title:"测试3", onClick:""/*, normalCss:{"background-color":"yellow"}, selCss:{"background-color":"#589C8D"}*/},
-    {title:"12345", onClick:""},
-    {title:"测试5", onClick:""}
-  ]
-};
 /**
-    {title:"测试2测试2测试2", onClick:""},
-    {title:"测试3测试3测试3", onClick:""},
-    {title:"123456789", onClick:""},
-    {title:"测试24测试24测试24测试24", onClick:""},
-    {title:"测试8", onClick:""},
-    {title:"测试9测试9测试9", onClick:""},
-    {title:"12", onClick:""},
-    {title:"测试10", onClick:""},
-*/
-
-/**
- * 初始化参数
+ * 主界面初始化参数
  */
 var INIT_PARAM = {
   //页面中所用到的元素的id，只用到三个Div，另，这三个div应在body层
@@ -121,17 +117,6 @@ var INIT_PARAM = {
   myScroll: myScroll
 };
 
-$(function() {
-  var initStr = $().spiritPageFrame(INIT_PARAM);
-  if (initStr) {
-    $.messager.alert("页面初始化失败", initStr, "error");
-    return ;
-  };
-  //设置界面主功能页签
-  $("#mainTab_top").spiritTabs(testBar);
-});
-
-//-界面位置调整begin-----------------------------------------------------------------
 function initPosition() {//注意，不要在此设置topSegment/mainSegment/footSegment等框架元素的宽高等，否则，页面不会自动进行调整
   //3-通用功能部分
   var absW = $("#commonFunc_top").spiritUtils("getAbsWidth");
@@ -174,7 +159,7 @@ function myResize() {
 function myScroll() {
 
 };
-//-界面位置调整 end -----------------------------------------------------------------
+//-主界面处理界面位置调整end-----------------------------------------------------------------
 
 //-logout begin:以下两函数负责注销---------------------------------------------------
 /**
@@ -208,6 +193,51 @@ function logout() {
   });
 };
 //-logout end:以上两函数负责注销-----------------------------------------------------------------
+
+//-权限数据处理 begin-----------------------------------------------------------------
+authTabs=[];
+var authJson=<%=AuthObjJson%>;
+alert(authJson.children.length);
+if (authJson&&authJson.children&&authJson.children.length>0) {
+  var i=0, len=authJson.children.length;
+  for (; i<len; i++) {
+    authTabs.push({title:authJson.children[i].text});
+  }
+}
+var testBar = {
+  id: "test", //标识
+  mutualType: true, //两页标签的交互区域的处理模式，若为false，则无交互区域，用css处理交互，若为true则有交互区域，交互用图片来处理
+  mutualStyle: { //交互区样式，当mutualType=true生效
+    width: "10px" //交互区宽度
+  },
+  tabs:[//页标签数组
+    {title:"测试134", onClick:"", selected:"true"},
+    {title:"测试2测试123"},
+    {title:"测试3", onClick:""/*, normalCss:{"background-color":"yellow"}, selCss:{"background-color":"#589C8D"}*/},
+    {title:"12345", onClick:""},
+    {title:"测试5", onClick:""}
+  ]
+};
+testBar.tabs=authTabs;
+/**
+    {title:"测试2测试2测试2", onClick:""},
+    {title:"测试3测试3测试3", onClick:""},
+    {title:"123456789", onClick:""},
+    {title:"测试24测试24测试24测试24", onClick:""},
+    {title:"测试8", onClick:""},
+    {title:"测试9测试9测试9", onClick:""},
+    {title:"12", onClick:""},
+    {title:"测试10", onClick:""},
+*/
+//-权限数据处理 end-----------------------------------------------------------------
+
+//以下测试函数
+function testClk(jqMy) {
+  //alert(jqMy.attr("id"));
+}
+function abc() {
+  $("#mainTab_top").spiritTabs({id:"1235", tabs:[{title:"测试8", onclick:""},{title:"测试9", onclick:""}]});
+}
 </script>
 </body>
 </html>

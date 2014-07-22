@@ -28,10 +28,10 @@ public class UgaCacheLifecycleUnit extends AbstractCacheLifecycleUnit {
     @Override
     public void init() {
         try {
-            //装载模块信息
-            loadModule();
             //装载用户信息
             loadUser();
+            //装载模块信息
+            loadModule();
             //装载用户模块信息
             loadUserModule();
         } catch (Exception e) {
@@ -51,7 +51,7 @@ public class UgaCacheLifecycleUnit extends AbstractCacheLifecycleUnit {
             if (rce!=null) keyName = rce.getName();
             else throw new Exception("没有值为<"+key+">的缓存");
 
-            if (key.equals(UgaConstants.CATCH_UGA_MODULE)) loadModule();
+            if (key.equals(UgaConstants.CATCH_UGA_USER)) loadUser();
             else if (key.equals(UgaConstants.CATCH_UGA_USER)) loadModule();
             else if (key.equals(UgaConstants.CATCH_UGA_USERMODULE)) loadUserModule();
 

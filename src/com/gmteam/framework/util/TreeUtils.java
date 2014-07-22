@@ -130,6 +130,7 @@ public abstract class TreeUtils {
      */
     public static <V extends TreeNodeBean> List<TreeNode<V>> restructureTree(List<TreeNode<V>> forest, Collection<String> idc) throws CloneNotSupportedException {
         if (forest==null||forest.size()==0) return null;
+        if (idc==null||idc.size()==0) return null;
         List<TreeNode<V>> restructureForest = new ArrayList<TreeNode<V>>();
         idc = TreeUtils.distinctList(idc);
         for (String id: idc) {

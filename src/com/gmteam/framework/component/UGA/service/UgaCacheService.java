@@ -1,5 +1,7 @@
 package com.gmteam.framework.component.UGA.service;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,10 +11,15 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import com.gmteam.framework.UGA.UgaConstants;
 import com.gmteam.framework.component.UGA.pojo.User;
 import com.gmteam.framework.component.module.pojo.Module;
+import com.gmteam.framework.core.cache.CacheEle;
+import com.gmteam.framework.core.cache.SystemCache;
 import com.gmteam.framework.core.dao.mybatis.MybatisDAO;
 import com.gmteam.framework.core.model.tree.TreeNode;
+import com.gmteam.framework.ui.tree.easyUi.EasyUiTree;
+import com.gmteam.framework.util.JsonUtils;
 import com.gmteam.framework.util.TreeUtils;
 
 @Service
@@ -84,12 +91,32 @@ public class UgaCacheService {
      */
     public Map<String, TreeNode<Module>> makeCacheUserModule() throws Exception {
         Map<String, TreeNode<Module>> ret = new HashMap<String, TreeNode<Module>>();
+        //获取module信息
+        CacheEle<?> mc = SystemCache.getCache(UgaConstants.CATCH_UGA_MODULE);
+        TreeNode<Module> tnM = null;
+        if (mc!=null&&mc.getContent()!=null) tnM = (TreeNode<Module>)((Map<String, Object>)SystemCache.getCache(UgaConstants.CATCH_UGA_MODULE).getContent()).get("tree");
+        if (tnM==null||tnM.getAllCount()==0) return ret;
+        List<TreeNode<Module>> forest = new ArrayList<TreeNode<Module>>();
+        forest.add(tnM);
+
         List<Map<String, String>> urm = userDao.queryForListAutoTranform("getUserModuleList", null);
         String userId=null;
+        Collection<String> moduleIds = null;
+        List<TreeNode<Module>> userModuleTree = null;
         if (urm!=null&&urm.size()>0) {
             for (int i=0; i<urm.size(); i++) {
-                //if (urm.get)
+                if (urm.get(i).get("userId").equals(userId)) {
+                    moduleIds.add(urm.get(i).get("moduleId"));
+                } else {
+                    userModuleTree = TreeUtils.restructureTree(forest, moduleIds);
+                    if (userModuleTree!=null&&userModuleTree.size()>0) ret.put(userId, userModuleTree.get(0));
+                    userId=urm.get(i).get("userId");
+                    moduleIds = new ArrayList<String>();
+                    moduleIds.add(urm.get(i).get("moduleId"));
+                }
             }
+            userModuleTree = TreeUtils.restructureTree(forest, moduleIds);
+            if (userModuleTree!=null&&userModuleTree.size()>0) ret.put(userId, userModuleTree.get(0));
         }
         return ret;
     }

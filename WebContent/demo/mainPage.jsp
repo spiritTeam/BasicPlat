@@ -86,8 +86,8 @@ var INIT_PARAM = {
   },
   top_height: 78, //顶部高度
 //  top_shadow_color: "#3e45a0",
-  page_width: 0,
-  page_height: 4000,
+  page_width: 1024,
+  page_height: 0,
   top_peg: false,
   myInit: initPosition,
   myResize: myResize,
