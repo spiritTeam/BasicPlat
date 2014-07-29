@@ -1,12 +1,12 @@
-package com.gmteam.framework.component.UGA.service;
+package com.gmteam.plugin.UGA.gisSm.service;
 
 import java.util.Map;
 
 import com.gmteam.framework.UGA.UgaConstants;
 import com.gmteam.framework.UGA.UgaUserService;
-import com.gmteam.framework.component.UGA.pojo.User;
 import com.gmteam.framework.core.cache.CacheEle;
 import com.gmteam.framework.core.cache.SystemCache;
+import com.gmteam.plugin.UGA.gisSm.pojo.User;
 
 public class UserService implements UgaUserService {
     @Override

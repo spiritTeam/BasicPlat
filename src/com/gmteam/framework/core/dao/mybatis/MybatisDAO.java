@@ -1,8 +1,10 @@
 package com.gmteam.framework.core.dao.mybatis;
 
 import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
+
 import com.gmteam.framework.ext.mybatis.PageBounds;
 import com.gmteam.framework.ext.mybatis.PageList;
 import com.gmteam.framework.core.model.BaseObject;
@@ -25,6 +27,7 @@ public class MybatisDAO <T extends BaseObject> extends SqlSessionDaoSupport impl
     private String infokey="getInfo";
     private String listkey="getList";
     private String countkey="getCount";
+    private String excutekey="excute";
 
     /**
      * 初始化
@@ -214,5 +217,17 @@ public class MybatisDAO <T extends BaseObject> extends SqlSessionDaoSupport impl
         if (this.sqlSession!=null) {
             this.sqlSession.rollback();
         }
+    }
+
+    @Override
+    public void excute(Object parameterObject) throws Exception {
+        excute(excutekey, parameterObject);
+    }
+
+    @Override
+    public void excute(String excuteSqlId, Object parameterObject) throws Exception {
+        String key=namespace+"."+excuteSqlId;
+        if (sqlSession ==null) this.sqlSession = this.getSqlSession();
+        this.sqlSession.update(key, parameterObject);
     }
 }

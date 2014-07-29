@@ -1,6 +1,7 @@
 package com.gmteam.framework.core.dao.mybatis;
 
 import java.util.List;
+
 import com.gmteam.framework.core.dao.GeneralDao;
 import com.gmteam.framework.core.model.Page;
 
@@ -161,4 +162,17 @@ public interface GeneralMybatisDAO<T> extends GeneralDao<T> {
      * @throws Exception
      */
     public void endTransaction() throws Exception;
+
+    /**
+     * 执行Sql
+     * @param parameter SQL条件对象
+     */
+    public void excute(Object parameter) throws Exception;
+
+    /**
+     * 执行Sql
+     * @param excuteSqlId 需执行的sql语句标识
+     * @param parameter SQL条件对象
+     */
+    public void excute(String excuteSqlId, Object parameter) throws Exception;
 }

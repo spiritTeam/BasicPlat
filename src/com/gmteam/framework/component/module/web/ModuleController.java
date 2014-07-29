@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gmteam.framework.UGA.UgaConstants;
-import com.gmteam.framework.component.cache.FrameworkCacheLifecycleUnit;
+import com.gmteam.framework.component.cache.FrameworkCLU;
 import com.gmteam.framework.component.module.pojo.Module;
 import com.gmteam.framework.component.module.service.ModuleService;
 import com.gmteam.framework.core.model.tree.TreeNode;
@@ -29,7 +29,7 @@ public class ModuleController {
     @Resource
     private ModuleService moduleService;
     @Resource
-    private FrameworkCacheLifecycleUnit fCLU;
+    private FrameworkCLU fCLU;
     /**
      * tree的显示
      * @throws CloneNotSupportedException

@@ -4,6 +4,10 @@ import java.io.Serializable;
 import java.util.Date;
 import com.gmteam.framework.core.model.BaseObject;
 
+/**
+ * 此类是用户登录时提交信息的对象，与系统本身的用户体系没有必然的关系
+ * @author wh
+ */
 public class UserLogin extends BaseObject {
     private static final long serialVersionUID = 796788171985762931L;
 

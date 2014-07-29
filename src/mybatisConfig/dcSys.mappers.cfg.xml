@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+  <!-- 类名设置 -->
+  <typeAliases>
+    <typeAlias alias="GisSmModule" type="com.gmteam.plugin.UGA.gisSm.pojo.Function"/>
+    <typeAlias alias="GisSmUser" type="com.gmteam.plugin.UGA.gisSm.pojo.User"/>
+  </typeAliases>
+  <!-- 映射关系配置文件 -->
+  <mappers>
+    <mapper resource="com/gmteam/plugin/UGA/gisSm/sql/GisDmUGA.mapper.xml"/>
+  </mappers>
+</configuration>

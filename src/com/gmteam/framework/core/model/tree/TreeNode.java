@@ -30,13 +30,15 @@ public class TreeNode<T extends TreeNodeBean> extends BaseObject implements Clon
      */
     public void setTnEntity(T tnEntity) {
         this.tnEntity = tnEntity;
-        this.id = tnEntity.getId();
-        this.parentId = tnEntity.getParentId();
-        this.nodeName = tnEntity.getNodeName();
-        this.order = tnEntity.getOrder();
-        this.orderType = tnEntity.orderType;
-        this.allowChildren = true;
-        this.attributes = tnEntity.toHashMapAsBean();
+        if (this.tnEntity!=null) {
+            this.id = tnEntity.getId();
+            this.parentId = tnEntity.getParentId();
+            this.nodeName = tnEntity.getNodeName();
+            this.order = tnEntity.getOrder();
+            this.orderType = tnEntity.orderType;
+            this.allowChildren = true;
+            this.attributes = tnEntity.toHashMapAsBean();
+        }
     }
 
     /**
@@ -79,7 +81,7 @@ public class TreeNode<T extends TreeNodeBean> extends BaseObject implements Clon
      */
     public void setId(String id) {
         this.id=id;
-        tnEntity.setId(id);
+        if (tnEntity!=null) tnEntity.setId(id);
         if (!this.isLeaf()) {
             for (TreeNode<T> c: this.getChildren()) {
                 c.setParentId(id);
@@ -113,7 +115,7 @@ public class TreeNode<T extends TreeNodeBean> extends BaseObject implements Clon
             }
         }
         this.parentId=parentId;
-        tnEntity.setParentId(parentId);
+        if (tnEntity!=null) tnEntity.setParentId(parentId);
     }
 
     //父结点
@@ -136,10 +138,10 @@ public class TreeNode<T extends TreeNodeBean> extends BaseObject implements Clon
         this.parent = parent;
         if (parent!=null) {
             this.parentId=parent.getId();
-            tnEntity.setParentId(parent.getId());
+            if (tnEntity!=null) tnEntity.setParentId(parent.getId());
         } else {
             this.parentId=null;
-            tnEntity.setParentId(null);
+            if (tnEntity!=null) tnEntity.setParentId(null);
         }
     }
 
@@ -152,7 +154,7 @@ public class TreeNode<T extends TreeNodeBean> extends BaseObject implements Clon
      */
     public void setNodeName(String nodeName) {
         this.nodeName = nodeName;
-        tnEntity.setNodeName(nodeName);
+        if (tnEntity!=null) tnEntity.setNodeName(nodeName);
     }
 
     /**
@@ -611,7 +613,8 @@ public class TreeNode<T extends TreeNodeBean> extends BaseObject implements Clon
      * 深度克隆树，但不包括parent属性。克隆后的结点为根
      */
     public TreeNode<T> clone() throws CloneNotSupportedException {
-        T cloneEntity = this.tnEntity.clone();
+        T cloneEntity = null;
+        if (tnEntity!=null) cloneEntity = this.tnEntity.clone();
         TreeNode<T> cloneTn = new TreeNode<T>(cloneEntity);
         cloneTn.setAttributes((HashMap<String, Object>)((HashMap<String, Object>)this.getAttributes()).clone());
         cloneTn.setParent(null);

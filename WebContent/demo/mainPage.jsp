@@ -211,7 +211,7 @@ var testBar2 = {
 
 var BJLQ = {
   id: "bjlq", //标识
-  mutualType:true, //两页标签的交互区域的处理模式，若为false，则无交互区域，用css处理交互，若为true则有交互区域，交互用图片来处理
+  mutualType:false, //两页标签的交互区域的处理模式，若为false，则无交互区域，用css处理交互，若为true则有交互区域，交互用图片来处理
   mutualStyle: { //交互区样式，当mutualType=true生效
     firstCss:{"background-image":"url('images/mainPage/mtabSf.jpg')"},
     firstSelCss:{"background-image":"url('images/mainPage/mtabSfSelected.jpg')"},
@@ -239,7 +239,7 @@ var BJLQ = {
 };
 var BJLQ_2 = {
   id: "bjlq2", //标识
-  mutualType:true, //两页标签的交互区域的处理模式，若为false，则无交互区域，用css处理交互，若为true则有交互区域，交互用图片来处理
+  mutualType:false, //两页标签的交互区域的处理模式，若为false，则无交互区域，用css处理交互，若为true则有交互区域，交互用图片来处理
   mutualStyle: { //交互区样式，当mutualType=true生效
     width:"11px" //交互区宽度
   },

@@ -107,8 +107,9 @@ var INIT_PARAM = {
     mainId: "mainSegment", //主体Id
     footId: "footSegment" //尾部Id
   },
-  top_height: 130, //顶部高度
+  top_height: 140, //顶部高度
   top_shadow_color: "#95b8e7",
+  foot_peg: false, //是否钉住脚部在底端。false：脚部随垂直滚动条移动(浮动)；true：脚部钉在底端
   page_width: 0,
   page_height: 4000,
   top_peg: false,

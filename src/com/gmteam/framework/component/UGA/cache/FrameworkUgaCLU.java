@@ -1,4 +1,4 @@
-package com.gmteam.framework.component.cache;
+package com.gmteam.framework.component.UGA.cache;
 
 import java.util.List;
 import java.util.Map;
@@ -16,11 +16,11 @@ import com.gmteam.framework.core.cache.CacheEle;
 import com.gmteam.framework.core.cache.SystemCache;
 import com.gmteam.framework.core.model.tree.TreeNode;
 @Component
-public class UgaCacheLifecycleUnit extends AbstractCacheLifecycleUnit {
+public class FrameworkUgaCLU extends AbstractCacheLifecycleUnit {
     /**
      * 日志
      */
-    private Logger logger = Logger.getLogger(UgaCacheLifecycleUnit.class);
+    private Logger logger = Logger.getLogger(FrameworkUgaCLU.class);
 
     @Resource
     private UgaCacheService ugaCacheService;
@@ -52,7 +52,7 @@ public class UgaCacheLifecycleUnit extends AbstractCacheLifecycleUnit {
             else throw new Exception("没有值为<"+key+">的缓存");
 
             if (key.equals(UgaConstants.CATCH_UGA_USER)) loadUser();
-            else if (key.equals(UgaConstants.CATCH_UGA_USER)) loadModule();
+            else if (key.equals(UgaConstants.CATCH_UGA_MODULE)) loadModule();
             else if (key.equals(UgaConstants.CATCH_UGA_USERMODULE)) loadUserModule();
 
         } catch (Exception e) {

@@ -330,7 +330,8 @@ public class MySqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, 
     XMLConfigBuilder xmlConfigBuilder = null;
     ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
     List<Resource> myConfigs=new ArrayList<Resource>();
-      for (String location: this.configLocations) {
+
+    for (String location: this.configLocations) {
       Resource[] aConfigs=null;
       aConfigs = resourcePatternResolver.getResources(location);
       for (Resource r: aConfigs) {

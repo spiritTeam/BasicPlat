@@ -1,4 +1,4 @@
-package com.gmteam.framework.component.UGA.service;
+package com.gmteam.plugin.UGA.gisSm.service;
 
 import java.util.Map;
 
