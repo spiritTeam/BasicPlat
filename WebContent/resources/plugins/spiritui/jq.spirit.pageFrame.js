@@ -24,6 +24,7 @@
       "left": getLeft(), "width": getWidth(), //X轴，宽
       "top": $("body").css("margin-top"), "height": getHeight() //Y轴，高
     });
+    
     //1.1-若出现滚动条，进行处理
     var rh=parseFloat($("#_main").css("height")), rw=parseFloat($("#_main").css("width"));
     if (INIT_PARAM.page_width==0)  {//若为自适应宽
@@ -54,36 +55,36 @@
       });
     };
     //4-中间分体部分
-    var _topHeight = _hasTop?(getViewHeight("_top", INIT_PARAM.pageObjs.topId)-parseFloat($("#_main").css("padding-top"))-parseFloat($("#_main").css("border-top-width"))):0;
-    var _footHeight = _hasFoot?(getViewHeight("_foot", INIT_PARAM.pageObjs.footId)-parseFloat($("#_main").css("padding-bottom"))-parseFloat($("#_main").css("border-bottom-width"))):0;
+    var _topHeight = _hasTop?(getViewHeight("_top", INIT_PARAM.pageObjs.topId)-parseFloat($("#_main").css("padding-top"))-($("#_main").css("border-top-width")=="medium"?0:parseFloat($("#_main").css("border-top-width")))):0;
+    var _footHeight = _hasFoot?(getViewHeight("_foot", INIT_PARAM.pageObjs.footId)-parseFloat($("#_main").css("padding-bottom"))-($("#_main").css("border-bottom-width")=="medium"?0:parseFloat($("#_main").css("border-bottom-width")))):0;
     $("#_top").css({"width":$("#_main").css("width"), "height": _topHeight});
     if (!_hasTop) $("#_top").hide();
     $("#_foot").css({"width":$("#_main").css("width"), "height": _footHeight});
     if (!_hasFoot) $("#_foot").hide();
     var _view = $("#"+INIT_PARAM.pageObjs.mainId);
     var _ch = parseFloat($("#_main").css("height"))-parseFloat(_topHeight)-parseFloat(_footHeight)
-      -(parseFloat(_view.css("margin-top"))+parseFloat(_view.css("margin-bottom"))+parseFloat(_view.css("padding-top"))+parseFloat(_view.css("padding-bottom"))+parseFloat(_view.css("border-top-width"))+parseFloat(_view.css("border-bottom-width")));
+      -(parseFloat(_view.css("margin-top"))+parseFloat(_view.css("margin-bottom"))+parseFloat(_view.css("padding-top"))+parseFloat(_view.css("padding-bottom"))+(_view.css("border-top-width")=="medium"?0:parseFloat(_view.css("border-top-width")))+(_view.css("border-bottom-width")=="medium"?0:parseFloat(_view.css("border-bottom-width"))));
     $("#"+INIT_PARAM.pageObjs.mainId).css({"width":getViewWidth(INIT_PARAM.pageObjs.mainId, "_main"), "height": _ch});
     //5-调整脚部top
     if (_hasFoot) {
-      $("#"+INIT_PARAM.pageObjs.footId).css({"top":$("#_foot")[0].offsetTop+parseFloat($("body").css("margin-top"))+parseFloat($("body").css("padding-top"))+parseFloat($("#_main").css("margin-top"))+parseFloat($("#_main").css("border-top-width"))-parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("margin-top"))});
+      $("#"+INIT_PARAM.pageObjs.footId).css({"top":$("#_foot")[0].offsetTop+parseFloat($("body").css("margin-top"))+parseFloat($("body").css("padding-top"))+parseFloat($("#_main").css("margin-top"))+($("#_main").css("border-top-width")=="medium"?0:parseFloat($("#_main").css("border-top-width")))-parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("margin-top"))});
       if (!INIT_PARAM.foot_peg) {//浮动脚部
         var _offsetHeight = $(document).scrollTop()+$(window).height();//窗口绝对高度
         if (INIT_PARAM.page_height>0) {
-          if ((parseFloat($("body").css("margin-top"))+parseFloat($("#_main").css("margin-top"))+parseFloat($("#_main").css("border-top-width"))+parseFloat($("#_main").css("padding-top"))
-              +parseFloat($("#_main").css("height"))+parseFloat($("#_main").css("padding-bottom"))+parseFloat($("#_main").css("border-bottom-width")))<_offsetHeight) return;
+          if ((parseFloat($("body").css("margin-top"))+parseFloat($("#_main").css("margin-top"))+($("#_main").css("border-top-width")=="medium"?0:parseFloat($("#_main").css("border-top-width")))+parseFloat($("#_main").css("padding-top"))
+              +parseFloat($("#_main").css("height"))+parseFloat($("#_main").css("padding-bottom"))+($("#_main").css("border-bottom-width")=="medium"?0:parseFloat($("#_main").css("border-bottom-width"))))<_offsetHeight) return;
         }
         if (_topFlag4foot==-1) _topFlag4foot = parseFloat($("body").css("margin-top"))+parseFloat(INIT_PARAM.win_min_height)
-          +parseFloat($("#_main").css("margin-top"))+parseFloat($("#_main").css("border-top-width"))+parseFloat($("#_main").css("padding-top"))
-          +parseFloat($("#_main").css("border-bottom-width"))+parseFloat($("#_main").css("padding-bottom"))
-          -parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("height"))-parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("border-bottom-width"))-parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("padding-bottom"))
-          -parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("margin-top"))-parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("padding-top"))-parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("border-top-width"));
+          +parseFloat($("#_main").css("margin-top"))+($("#_main").css("border-top-width")=="medium"?0:parseFloat($("#_main").css("border-top-width")))+parseFloat($("#_main").css("padding-top"))
+          +($("#_main").css("border-bottom-width")=="medium"?0:parseFloat($("#_main").css("border-bottom-width")))+parseFloat($("#_main").css("padding-bottom"))
+          -parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("height"))-($("#"+INIT_PARAM.pageObjs.footId).css("border-bottom-width")=="medium"?0:parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("border-bottom-width")))-parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("padding-bottom"))
+          -parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("margin-top"))-parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("padding-top"))-($("#"+INIT_PARAM.pageObjs.footId).css("border-top-width")=="medium"?0:parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("border-top-width")));
         if (_bottomFlag4foot==-1) _bottomFlag4foot = _topFlag4foot
-          +parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("margin-top"))+parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("border-top-width"))+parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("padding-top"))
-          +parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("height"))+parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("padding-bottom"))+parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("border-bottom-width"));
+          +parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("margin-top"))+($("#"+INIT_PARAM.pageObjs.footId).css("border-top-width")=="medium"?0:parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("border-top-width")))+parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("padding-top"))
+          +parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("height"))+parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("padding-bottom"))+($("#"+INIT_PARAM.pageObjs.footId).css("border-bottom-width")=="medium"?0:parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("border-bottom-width")));
         var _staticTop4foot=$(window).height()-parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("height"))
-          -parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("margin-top"))-parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("padding-top"))-parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("border-top-width"))
-          -parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("padding-bottom"))-parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("border-bottom-width"));
+          -parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("margin-top"))-parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("padding-top"))-($("#"+INIT_PARAM.pageObjs.footId).css("border-top-width")=="medium"?0:parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("border-top-width")))
+          -parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("padding-bottom"))-($("#"+INIT_PARAM.pageObjs.footId).css("border-bottom-width")=="medium"?0:parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("border-bottom-width")));
         var _newTop=0;
         if (_offsetHeight<=_bottomFlag4foot) _newTop = _topFlag4foot; //小于尺度+//高度内
         else _newTop = _staticTop4foot;//大于尺度
@@ -133,28 +134,28 @@
     if (_hasFoot) $("#_foot").css({"width":$("#_main").css("width")});
     var _view = $("#"+INIT_PARAM.pageObjs.mainId);
     var _ch = parseFloat($("#_main").css("height"))-parseFloat($("#_top").css("height"))-parseFloat($("#_foot").css("height"))
-      -(parseFloat(_view.css("margin-top"))+parseFloat(_view.css("margin-bottom"))+parseFloat(_view.css("padding-top"))+parseFloat(_view.css("padding-bottom"))+parseFloat(_view.css("border-top-width"))+parseFloat(_view.css("border-bottom-width")));
+      -(parseFloat(_view.css("margin-top"))+parseFloat(_view.css("margin-bottom"))+parseFloat(_view.css("padding-top"))+parseFloat(_view.css("padding-bottom"))+(_view.css("border-top-width")=="medium"?0:parseFloat(_view.css("border-top-width")))+(_view.css("border-bottom-width")=="medium"?0:parseFloat(_view.css("border-bottom-width"))));
     $("#"+INIT_PARAM.pageObjs.mainId).css({"width":getViewWidth(INIT_PARAM.pageObjs.mainId, "_main"), "height": _ch});
     //5-调整脚部top
     if (_hasTop) {
-      $("#"+INIT_PARAM.pageObjs.footId).css({"top":$("#_foot")[0].offsetTop+parseFloat($("body").css("margin-top"))+parseFloat($("body").css("padding-top"))+parseFloat($("#_main").css("margin-top"))+parseFloat($("#_main").css("border-top-width"))-parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("margin-top"))});
+      $("#"+INIT_PARAM.pageObjs.footId).css({"top":$("#_foot")[0].offsetTop+parseFloat($("body").css("margin-top"))+parseFloat($("body").css("padding-top"))+parseFloat($("#_main").css("margin-top"))+($("#_main").css("border-top-width")=="medium"?0:parseFloat($("#_main").css("border-top-width")))-parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("margin-top"))});
       if (!INIT_PARAM.foot_peg) {//浮动脚部
         var _offsetHeight = $(document).scrollTop()+$(window).height();//窗口绝对高度
         if (INIT_PARAM.page_height>0) {
-          if ((parseFloat($("body").css("margin-top"))+parseFloat($("#_main").css("margin-top"))+parseFloat($("#_main").css("border-top-width"))+parseFloat($("#_main").css("padding-top"))
-              +parseFloat($("#_main").css("height"))+parseFloat($("#_main").css("padding-bottom"))+parseFloat($("#_main").css("border-bottom-width")))<_offsetHeight) return;
+          if ((parseFloat($("body").css("margin-top"))+parseFloat($("#_main").css("margin-top"))+($("#_main").css("border-top-width")=="medium"?0:parseFloat($("#_main").css("border-top-width")))+parseFloat($("#_main").css("padding-top"))
+              +parseFloat($("#_main").css("height"))+parseFloat($("#_main").css("padding-bottom"))+($("#_main").css("border-bottom-width")=="medium"?0:parseFloat($("#_main").css("border-bottom-width"))))<_offsetHeight) return;
         }
         if (_topFlag4foot==-1) _topFlag4foot = parseFloat($("body").css("margin-top"))+parseFloat(INIT_PARAM.win_min_height)
-          +parseFloat($("#_main").css("margin-top"))+parseFloat($("#_main").css("border-top-width"))+parseFloat($("#_main").css("padding-top"))
-          +parseFloat($("#_main").css("border-bottom-width"))+parseFloat($("#_main").css("padding-bottom"))
-          -parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("height"))-parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("border-bottom-width"))-parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("padding-bottom"))
-          -parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("margin-top"))-parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("padding-top"))-parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("border-top-width"));
+          +parseFloat($("#_main").css("margin-top"))+($("#_main").css("border-top-width")=="medium"?0:parseFloat($("#_main").css("border-top-width")))+parseFloat($("#_main").css("padding-top"))
+          +($("#_main").css("border-bottom-width")=="medium"?0:parseFloat($("#_main").css("border-bottom-width")))+parseFloat($("#_main").css("padding-bottom"))
+          -parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("height"))-($("#"+INIT_PARAM.pageObjs.footId).css("border-bottom-width")=="medium"?0:parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("border-bottom-width")))-parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("padding-bottom"))
+          -parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("margin-top"))-parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("padding-top"))-($("#"+INIT_PARAM.pageObjs.footId).css("border-top-width")=="medium"?0:parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("border-top-width")));
         if (_bottomFlag4foot==-1) _bottomFlag4foot = _topFlag4foot
-          +parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("margin-top"))+parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("border-top-width"))+parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("padding-top"))
-          +parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("height"))+parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("padding-bottom"))+parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("border-bottom-width"));
+          +parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("margin-top"))+($("#"+INIT_PARAM.pageObjs.footId).css("border-top-width")=="medium"?0:parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("border-top-width")))+parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("padding-top"))
+          +parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("height"))+parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("padding-bottom"))+($("#"+INIT_PARAM.pageObjs.footId).css("border-bottom-width")=="medium"?0:parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("border-bottom-width")));
         var _staticTop4foot=$(window).height()-parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("height"))
-          -parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("margin-top"))-parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("padding-top"))-parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("border-top-width"))
-          -parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("padding-bottom"))-parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("border-bottom-width"));
+          -parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("margin-top"))-parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("padding-top"))-($("#"+INIT_PARAM.pageObjs.footId).css("border-top-width")=="medium"?0:parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("border-top-width")))
+          -parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("padding-bottom"))-($("#"+INIT_PARAM.pageObjs.footId).css("border-bottom-width")=="medium"?0:parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("border-bottom-width")));
         var _newTop=0;
         if (_offsetHeight<=_topFlag4foot) _newTop = _topFlag4foot; //小于尺度
         else if (_offsetHeight>_topFlag4foot&&_offsetHeight<=_bottomFlag4foot) _newTop = _topFlag4foot-$(document).scrollTop(); //高度内
@@ -187,7 +188,7 @@
           var _tapShadowColor = null;
           if (INIT_PARAM.top_shadow_color) _tapShadowColor=INIT_PARAM.top_shadow_color;
           else {//下边框
-          	if (parseFloat(topSegment.css("border-bottom-width"))>0) _tapShadowColor = jqueryColor2HexColor(topSegment.css("border-bottom-color"));
+          	if ((topSegment.css("border-bottom-width")=="medium"?0:parseFloat(topSegment.css("border-bottom-width")))>0) _tapShadowColor = jqueryColor2HexColor(topSegment.css("border-bottom-color"));
           	else _tapShadowColor = jqueryColor2HexColor(topSegment.css("background-color"));
           }
           topunder.css({"border":"1px solid "+_tapShadowColor, "padding":"0", "margin":"0",
@@ -205,7 +206,7 @@
             "width": parseFloat(topSegment.css("width")),
             "z-index": topSegment.css("z-index")-1,
             "position": "fixed", "height": "1px",
-            "top": parseFloat(topSegment.css("top"))+parseFloat(topSegment.css("height"))+parseFloat(topSegment.css("padding-top"))+parseFloat(topSegment.css("padding-bottom"))+parseFloat(topSegment.css("margin-top"))+parseFloat(topSegment.css("margin-bottom"))+parseFloat(topSegment.css("border-top-width"))+parseFloat(topSegment.css("border-bottom-width"))-2,
+            "top": parseFloat(topSegment.css("top"))+parseFloat(topSegment.css("height"))+parseFloat(topSegment.css("padding-top"))+parseFloat(topSegment.css("padding-bottom"))+parseFloat(topSegment.css("margin-top"))+parseFloat(topSegment.css("margin-bottom"))+parseFloat(topSegment.css("border-top-width"))+(topSegment.css("border-bottom-width")=="medium"?0:parseFloat(topSegment.css("border-bottom-width")))-2,
             "box-shadow": "0px 0px 5px 0px "+ _tapShadowColor,
             "-webkit-box-shadow": "0px 0px 5px 0px "+ _tapShadowColor,
             "-moz-box-shadow": "0px 0px 5px 0px "+ _tapShadowColor
@@ -222,20 +223,20 @@
       //Y轴方向
       var _offsetHeight = $(document).scrollTop()+$(window).height();//窗口绝对高度
       if (INIT_PARAM.page_height>0) {
-        if ((parseFloat($("body").css("margin-top"))+parseFloat($("#_main").css("margin-top"))+parseFloat($("#_main").css("border-top-width"))+parseFloat($("#_main").css("padding-top"))
-            +parseFloat($("#_main").css("height"))+parseFloat($("#_main").css("padding-bottom"))+parseFloat($("#_main").css("border-bottom-width")))<_offsetHeight) return;
+        if ((parseFloat($("body").css("margin-top"))+parseFloat($("#_main").css("margin-top"))+($("#_main").css("border-top-width")=="medium"?0:parseFloat($("#_main").css("border-top-width")))+parseFloat($("#_main").css("padding-top"))
+            +parseFloat($("#_main").css("height"))+parseFloat($("#_main").css("padding-bottom"))+($("#_main").css("border-bottom-width")=="medium"?0:parseFloat($("#_main").css("border-bottom-width"))))<_offsetHeight) return;
       }
       if (_topFlag4foot==-1) _topFlag4foot = parseFloat($("body").css("margin-top"))+parseFloat(INIT_PARAM.win_min_height)
-        +parseFloat($("#_main").css("margin-top"))+parseFloat($("#_main").css("border-top-width"))+parseFloat($("#_main").css("padding-top"))
-        +parseFloat($("#_main").css("border-bottom-width"))+parseFloat($("#_main").css("padding-bottom"))
-        -parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("height"))-parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("border-bottom-width"))-parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("padding-bottom"))
-        -parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("margin-top"))-parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("padding-top"))-parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("border-top-width"));
+        +parseFloat($("#_main").css("margin-top"))+($("#_main").css("border-top-width")=="medium"?0:parseFloat($("#_main").css("border-top-width")))+parseFloat($("#_main").css("padding-top"))
+        +($("#_main").css("border-bottom-width")=="medium"?0:parseFloat($("#_main").css("border-bottom-width")))+parseFloat($("#_main").css("padding-bottom"))
+        -parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("height"))-($("#"+INIT_PARAM.pageObjs.footId).css("border-bottom-width")=="medium"?0:parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("border-bottom-width")))-parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("padding-bottom"))
+        -parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("margin-top"))-parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("padding-top"))-($("#"+INIT_PARAM.pageObjs.footId).css("border-top-width")=="medium"?0:parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("border-top-width")));
       if (_bottomFlag4foot==-1) _bottomFlag4foot = _topFlag4foot
-        +parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("margin-top"))+parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("border-top-width"))+parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("padding-top"))
-        +parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("height"))+parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("padding-bottom"))+parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("border-bottom-width"));
+        +parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("margin-top"))+($("#"+INIT_PARAM.pageObjs.footId).css("border-top-width")=="medium"?0:parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("border-top-width")))+parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("padding-top"))
+        +parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("height"))+parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("padding-bottom"))+($("#"+INIT_PARAM.pageObjs.footId).css("border-bottom-width")=="medium"?0:parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("border-bottom-width")));
       var _staticTop4foot=$(window).height()-parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("height"))
-        -parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("margin-top"))-parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("padding-top"))-parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("border-top-width"))
-        -parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("padding-bottom"))-parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("border-bottom-width"));
+        -parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("margin-top"))-parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("padding-top"))-($("#"+INIT_PARAM.pageObjs.footId).css("border-top-width")=="medium"?0:parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("border-top-width")))
+        -parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("padding-bottom"))-($("#"+INIT_PARAM.pageObjs.footId).css("border-bottom-width")=="medium"?0:parseFloat($("#"+INIT_PARAM.pageObjs.footId).css("border-bottom-width")));
       var _newTop=0;
       if (_offsetHeight<=_topFlag4foot) _newTop = _topFlag4foot; //小于尺度
       else if (_offsetHeight>_topFlag4foot&&_offsetHeight<=_bottomFlag4foot) _newTop = _topFlag4foot-$(document).scrollTop(); //高度内
@@ -264,8 +265,8 @@
     if (_hasFoot) $("#"+_options.pageObjs.footId).addClass("hoverArea").addClass("footSegment");
 
     initPosition();//初始化
-    $(window).resize(_resizeTimeout);//页面调整
-    $(window).scroll(scrollPositioin);//滚动条
+//    $(window).resize(_resizeTimeout);//页面调整
+//    $(window).scroll(scrollPositioin);//滚动条
     return "";
   }
 
@@ -333,19 +334,25 @@
    * 计算宽度偏移量
    */
   function caculateWidthOffSet() {
-    return parseFloat($("body").css("margin-left"))
-      +parseFloat($("#_main").css("margin-left"))//+parseFloat($("#_main").css("margin-right"))
-      +parseFloat($("#_main").css("padding-left"))+parseFloat($("#_main").css("padding-right"))
-      +parseFloat($("#_main").css("border-left-width"))+parseFloat($("#_main").css("border-right-width"));
+  	var ret = parseFloat($("body").css("margin-left"))
+    +parseFloat($("#_main").css("margin-left"))//+parseFloat($("#_main").css("margin-right"))
+    +parseFloat($("#_main").css("padding-left"))+parseFloat($("#_main").css("padding-right"));
+  	//hock IE8兼容
+  	if (!$("#_main").css("border-left-width")=="medium") ret += parseFloat($("#_main").css("border-left-width"));
+  	if (!$("#_main").css("border-right-width")=="medium") ret += parseFloat($("#_main").css("border-right-width"));
+  	return ret;
   }
   /**
    * 计算高度偏移量
    */
   function caculateHeightOffSet() {
-    return parseFloat($("body").css("margin-top"))
-      +parseFloat($("#_main").css("margin-top"))//+parseFloat($("#_main").css("margin-bottom"))
-      +parseFloat($("#_main").css("padding-top"))+parseFloat($("#_main").css("padding-bottom"))
-      +parseFloat($("#_main").css("border-top-width"))+parseFloat($("#_main").css("border-bottom-width"));
+  	var ret = parseFloat($("body").css("margin-top"))
+    +parseFloat($("#_main").css("margin-top"))//+parseFloat($("#_main").css("margin-bottom"))
+    +parseFloat($("#_main").css("padding-top"))+parseFloat($("#_main").css("padding-bottom"));
+  	//hock IE8兼容
+  	if (!$("#_main").css("border-top-width")=="medium") ret += parseFloat($("#_main").css("border-top-width"));
+  	if (!$("#_main").css("border-bottom-width")=="medium") ret += parseFloat($("#_main").css("border-bottom-width"));
+  	return ret;
   }
   /**
    * 得到窗口的绝对高度和宽度，包括滚动条
@@ -403,8 +410,8 @@
   function getViewWidth(viewObjId, targetObjId) {
     var _view = $("#"+viewObjId);
     var _target = $("#"+targetObjId);
-    return (parseFloat(_target.css("width"))+parseFloat(_target.css("padding-left"))+parseFloat(_target.css("padding-right"))+parseFloat(_target.css("border-left-width"))+parseFloat(_target.css("border-right-width")))
-      -(parseFloat(_view.css("padding-left"))+parseFloat(_view.css("padding-right"))+parseFloat(_view.css("border-left-width"))+parseFloat(_view.css("border-right-width")));
+    return (parseFloat(_target.css("width"))+parseFloat(_target.css("padding-left"))+parseFloat(_target.css("padding-right"))+(_target.css("border-left-width")=="medium"?0:parseFloat(_target.css("border-left-width")))+(_target.css("border-right-width")=="medium"?0:parseFloat(_target.css("border-right-width"))))
+      -(parseFloat(_view.css("padding-left"))+parseFloat(_view.css("padding-right"))+(_view.css("border-left-width")=="medium"?0:parseFloat(_view.css("border-left-width")))+(_view.css("border-right-width")=="medium"?0:parseFloat(_view.css("border-right-width"))));
   }
   /**
    * 使两个对象的可见高度相同。
@@ -415,7 +422,7 @@
   function getViewHeight(viewObjId, targetObjId) {
     var _view = $("#"+viewObjId);
     var _target = $("#"+targetObjId);
-    return (parseFloat(_target.css("height"))+parseFloat(_target.css("padding-top"))+parseFloat(_target.css("padding-bottom"))+parseFloat(_target.css("border-top-width"))+parseFloat(_target.css("border-bottom-width")))
-      -(parseFloat(_view.css("padding-top"))+parseFloat(_view.css("padding-bottom"))+parseFloat(_view.css("border-top-width"))+parseFloat(_view.css("border-bottom-width")));
+    return (parseFloat(_target.css("height"))+parseFloat(_target.css("padding-top"))+parseFloat(_target.css("padding-bottom"))+(_target.css("border-top-width")=="medium"?0:parseFloat(_target.css("border-top-width")))+(_target.css("border-bottom-width")=="medium"?0:parseFloat(_target.css("border-bottom-width"))))
+      -(parseFloat(_view.css("padding-top"))+parseFloat(_view.css("padding-bottom"))+(_view.css("border-top-width")=="medium"?0:parseFloat(_view.css("border-top-width")))+(_view.css("border-bottom-width")=="medium"?0:parseFloat(_view.css("border-bottom-width"))));
   }
 })(jQuery);

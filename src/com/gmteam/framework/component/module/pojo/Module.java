@@ -9,7 +9,6 @@ public class Module extends UgaModule{
     private static final long serialVersionUID = -5024436009679818215L;
     private int levels;
     private int moduleType;
-    private String descn;
 
     public int getLevels() {
         return levels;
@@ -23,12 +22,5 @@ public class Module extends UgaModule{
     }
     public void setModuleType(int moduleType) {
         this.moduleType = moduleType;
-    }
-
-    public String getDescn() {
-        return descn;
-    }
-    public void setDescn(String descn) {
-        this.descn = descn;
     }
 }

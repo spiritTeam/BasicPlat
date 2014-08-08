@@ -8,6 +8,6 @@
   </typeAliases>
   <!-- 映射关系配置文件 -->
   <mappers>
-    <mapper resource="com/gmteam/plugin/UGA/gisSm/sql/GisDmUGA.mapper.xml"/>
+    <mapper resource="com/gmteam/plugin/UGA/gisSm/sql/GisSmUGA.mapper.xml"/>
   </mappers>
 </configuration>

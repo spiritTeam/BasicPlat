@@ -4,19 +4,19 @@ import java.util.Map;
 
 import com.gmteam.framework.UGA.UgaAuthorityService;
 import com.gmteam.framework.UGA.UgaConstants;
-import com.gmteam.framework.component.module.pojo.Module;
 import com.gmteam.framework.core.cache.CacheEle;
 import com.gmteam.framework.core.cache.SystemCache;
 import com.gmteam.framework.core.model.tree.TreeNode;
+import com.gmteam.plugin.UGA.gisSm.pojo.Function;
 
 public class AuthorityService implements UgaAuthorityService {
     @Override
-    public TreeNode<Module> getUserModuleAuthByUserId(String userId) {
+    public TreeNode<Function> getUserModuleAuthByUserId(String userId) {
         CacheEle<?> mc = SystemCache.getCache(UgaConstants.CATCH_UGA_USERMODULE);
-        TreeNode<Module> userModuleTreee = null;
+        TreeNode<Function> userModuleTree = null;
         if (mc!=null&&mc.getContent()!=null) {
-            userModuleTreee = ((Map<String, TreeNode<Module>>)mc.getContent()).get(userId);
+            userModuleTree = ((Map<String, TreeNode<Function>>)mc.getContent()).get(userId);
         }
-        return userModuleTreee;
+        return userModuleTree;
     }
 }

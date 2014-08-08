@@ -169,7 +169,7 @@ public abstract class AbstractFileUploadController implements Controller, Handle
                     /*
                      *调用虚方法，处理每个文件的后续部分
                      */
-                    Map<String, Object> myDealRetMap = beforeUploadOneFileOnSuccess(oneFileDealRetMap);
+                    Map<String, Object> myDealRetMap = afterUploadOneFileOnSuccess(oneFileDealRetMap);
                     if (myDealRetMap!=null) {
                         boolean mySuccess = true;
                         try {
@@ -194,7 +194,7 @@ public abstract class AbstractFileUploadController implements Controller, Handle
                 if (isBreak) break;
                 fIndex++;
             }
-            beforeUploadAllFiles(retl);
+            afterUploadAllFiles(retl);
         } else {
             Map<String, Object> nullM = new HashMap<String, Object>();
             nullM.put("success", "null");
@@ -372,7 +372,7 @@ public abstract class AbstractFileUploadController implements Controller, Handle
      * 如果返回值为空，或没有这些信息，本方法将按照sucess=true进行处理<br/>
      * 若要把自己的处理结果传递到本方法的外面，可以直接修改参数m，在m中加入自己的信息
      */
-    public abstract Map<String, Object> beforeUploadOneFileOnSuccess(Map<String, Object> m);
+    public abstract Map<String, Object> afterUploadOneFileOnSuccess(Map<String, Object> m);
 
     /**
      * 当上传所有文件后，调用此方法
@@ -381,5 +381,5 @@ public abstract class AbstractFileUploadController implements Controller, Handle
      * 若上传失败，还会有error信息;<br/>
      * 警告信息会存储在warn信息中。
      */
-    public abstract void beforeUploadAllFiles(List<Map<String, Object>> fl);
+    public abstract void afterUploadAllFiles(List<Map<String, Object>> fl);
 }

@@ -10,7 +10,8 @@
   <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
     <property name="locations">
       <list merge="default">
-        <value>/WEB-INF/database.properties</value> 
+        <value>/WEB-INF/database.properties</value>
+        <value>/WEB-INF/gisSmConfig.properties</value><!-- gis用户管理的对接参数 -->
       </list>
     </property>
   </bean>
@@ -95,7 +96,7 @@
         <entry key="2" value-ref="cacheGisSmUgaManager"/>
         -->
         <entry key="0" value-ref="cacheFrameworkManager"/>
-        <entry key="1" value-ref="cacheFrameworkUgaManager"/>
+        <entry key="2" value-ref="cacheGisSmUgaManager"/>
       </map>
     </property>
   </bean>
@@ -121,7 +122,10 @@
 
   <!-- 以下为UGA框架(用户/用户组/权限框架)所需配置 -->
   <!--gisUga缓存：平台 -->
-  <bean id="cacheGisSmUgaManager" class="com.gmteam.plugin.UGA.gisSm.cache.GisSmUgaCLU"/>
+  <bean id="cacheGisSmUgaManager" class="com.gmteam.plugin.UGA.gisSm.cache.GisSmUgaCLU">
+    <property name="functionRootId" value="${dcsys.function.rootId}"/>
+    <property name="functionRefreshCacheId" value="${dcsys.function.refreshCacheId}"/>
+  </bean>
   <!--gisUga用户服务：平台 -->
   <bean id="ugaUserService"       class="com.gmteam.plugin.UGA.gisSm.service.UserService"/>
   <!--Uga用户模块服务：平台 -->

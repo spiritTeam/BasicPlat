@@ -1,5 +1,7 @@
 package com.gmteam.plugin.UGA.gisSm.service;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +11,9 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import com.gmteam.framework.UGA.UgaConstants;
+import com.gmteam.framework.core.cache.CacheEle;
+import com.gmteam.framework.core.cache.SystemCache;
 import com.gmteam.framework.core.dao.mybatis.MybatisDAO;
 import com.gmteam.framework.core.model.tree.TreeNode;
 import com.gmteam.framework.util.TreeUtils;
@@ -24,6 +29,7 @@ public class GisSmCacheService {
     @PostConstruct
     public void initParam() {
         userDao.setNamespace("SM");
+        functionDao.setNamespace("SM");
     }
 
     /**
@@ -71,6 +77,51 @@ public class GisSmCacheService {
             ret.put("treeIndexMap", treeIndexMap);
         }
         ret.put("errors", m.get("errors"));
+        return ret;
+    }
+
+    /**
+     * 构造用户模块权限缓存，返回值是Map
+     * @return 用户模块权限缓存
+     * @throws Exception
+     */
+    public Map<String, TreeNode<Function>> makeCacheUserModule() throws Exception {
+        Map<String, TreeNode<Function>> ret = new HashMap<String, TreeNode<Function>>();
+        //获取module信息
+        CacheEle<?> mc = SystemCache.getCache(UgaConstants.CATCH_UGA_MODULE);
+        TreeNode<Function> tnM = null;
+        if (mc!=null&&mc.getContent()!=null) tnM = (TreeNode<Function>)((Map<String, Object>)SystemCache.getCache(UgaConstants.CATCH_UGA_MODULE).getContent()).get("tree");
+        if (tnM==null||tnM.getAllCount()==0) return ret;
+        List<TreeNode<Function>> forest = new ArrayList<TreeNode<Function>>();
+        forest.add(tnM);
+
+        List<Map<String, String>> urm;
+        try {
+            urm = userDao.queryForListAutoTranform("getUserFunctionList", null);
+        } catch(Exception e) {
+            e.printStackTrace();
+            urm = userDao.queryForListAutoTranform("getUserFunctionList", null);
+        }
+        urm = userDao.queryForListAutoTranform("getUserFunctionList", null);
+
+        String userId=null;
+        Collection<String> moduleIds = null;
+        List<TreeNode<Function>> userModuleTree = null;
+        if (urm!=null&&urm.size()>0) {
+            for (int i=0; i<urm.size(); i++) {
+                if (urm.get(i).get("USERID").equals(userId)) {
+                    moduleIds.add(urm.get(i).get("FID"));
+                } else {
+                    userModuleTree = TreeUtils.restructureTree(forest, moduleIds);
+                    if (userModuleTree!=null&&userModuleTree.size()>0) ret.put(userId, userModuleTree.get(0));
+                    userId=urm.get(i).get("USERID");
+                    moduleIds = new ArrayList<String>();
+                    moduleIds.add(urm.get(i).get("FID"));
+                }
+            }
+            userModuleTree = TreeUtils.restructureTree(forest, moduleIds);
+            if (userModuleTree!=null&&userModuleTree.size()>0) ret.put(userId, userModuleTree.get(0));
+        }
         return ret;
     }
 }

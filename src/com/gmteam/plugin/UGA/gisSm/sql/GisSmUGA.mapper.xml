@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="SM">
+<resultMap id="userMap" type="GisSmUser">
+  <id     column="V_USERID"      property="userId"          jdbcType="VARCHAR"/>
+  <result column="V_USER_CARDID" property="loginName"       jdbcType="VARCHAR"/>
+  <result column="V_XM"          property="userName"        jdbcType="VARCHAR"/>
+  <result column="V_PASSWORD"    property="password"        jdbcType="VARCHAR"/>
+  <result column="V_ZZJGID"      property="v_user_zzjgid"   jdbcType="VARCHAR"/>
+  <result column="V_ZZJGDM"      property="v_user_zzjgdm"   jdbcType="VARCHAR"/>
+  <result column="V_SSZZJGMC"    property="v_user_sszzjgmc" jdbcType="VARCHAR"/>
+  <result column="V_SJZZJGDM"    property="v_user_sjzzjgdm" jdbcType="VARCHAR"/>
+  <result column="V_SJZZJGMC"    property="v_user_sjzzjgmc" jdbcType="VARCHAR"/>
+</resultMap>
+<resultMap id="moduleMap" type="GisSmModule">
+  <id     column="V_FUNCTIONID"        property="id"         jdbcType="VARCHAR"/>
+  <result column="V_PARENT_FUNCTIONID" property="parentId"   jdbcType="VARCHAR"/>
+  <result column="N_SORT"              property="order"      jdbcType="INTEGER"/>
+  <result column="V_SFYX"              property="v_sfyx"     jdbcType="VARCHAR"/>
+  <result column="V_URLTYPE"           property="v_urltype"  jdbcType="VARCHAR"/>
+  <result column="V_FUNCTION_CNNAME"   property="nodeName"   jdbcType="VARCHAR"/>
+  <result column="V_FUNCTION_NAME"     property="moduleName" jdbcType="VARCHAR"/>
+  <result column="V_JUMPURL"           property="url"        jdbcType="VARCHAR"/>
+  <result column="V_SYSTYPE"           property="v_systype"  jdbcType="VARCHAR"/>
+  <result column="V_DESCRIPATION"      property="descn"      jdbcType="VARCHAR"/>
+</resultMap>
+
+<!-- 获取用户信息 -->
+<select id="getUserList" resultMap="userMap">
+select * from MG_USER
+</select>
+
+<!-- 获取功能结构 -->
+<select id="getFunctionList" resultMap="moduleMap">
+select * from MG_FUNCTION where v_functionid is not null and v_sfyx='Y'
+start with v_parent_functionid='0'connect by v_parent_functionid=prior v_functionid
+order siblings by n_sort
+</select>
+
+<!-- 获取用户功能对应关系 -->
+<select id="getUserFunctionList" resultType="java.util.HashMap">
+select distinct a.v_userid userId, b.v_functionid fId
+from MG_USER_ROLE a, MG_ROLE_FUNCTION b, MG_ROLE c, MG_FUNCTION d
+where a.v_roleoid=b.v_roleoid
+  and a.v_roleoid=c.v_roleoid and c.n_status=1
+  and b.v_functionid=d.v_functionid and d.v_sfyx='Y'
+order by a.v_userid
+</select>
+
+</mapper>

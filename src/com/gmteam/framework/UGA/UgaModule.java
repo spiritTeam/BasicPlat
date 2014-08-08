@@ -12,10 +12,11 @@ import com.gmteam.framework.core.model.tree.TreeNodeBean;
 @SuppressWarnings("serial")
 public abstract class UgaModule extends TreeNodeBean{
     private String moduleName;
-    private int isValidate;
+    private int validate;
     private int style;
     private String icon;
     private String url;
+    private String descn;
 
     /**
      * 得到模块名称
@@ -36,15 +37,22 @@ public abstract class UgaModule extends TreeNodeBean{
      * 得到是否生效，生效的模块才参与处理，并加以显示
      * @return 是否生效
      */
-    public int getIsValidate() {
-        return isValidate;
+    public int getValidate() {
+        return this.validate;
     }
     /**
      * 设置是否生效
-     * @param isValidate 是否生小
+     * @param isValidate 是否生效
      */
-    public void setIsValidate(int isValidate) {
-        this.isValidate = isValidate;
+    public void setValidate(int validate) {
+        this.validate = validate;
+    }
+    /**
+     * 是否生效
+     * @return 生效返回true，否则返回false
+     */
+    public boolean isValid() {
+        return this.validate==1;
     }
 
     /**
@@ -90,5 +98,20 @@ public abstract class UgaModule extends TreeNodeBean{
      */
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    /**
+     * 得到模块描述信息
+     * @return 模块描述信息
+     */
+    public String getDescn() {
+        return descn;
+    }
+    /**
+     * 设置模块描述信息
+     * @param displayName 模块描述信息
+     */
+    public void setDescn(String descn) {
+        this.descn = descn;
     }
 }

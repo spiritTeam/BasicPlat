@@ -16,7 +16,6 @@ import com.gmteam.framework.UGA.UgaUser;
 import com.gmteam.framework.core.cache.CacheEle;
 import com.gmteam.framework.core.cache.SystemCache;
 import com.gmteam.framework.component.login.pojo.UserLogin;
-import com.gmteam.framework.ext.io.StringPrintWriter;
 import com.gmteam.framework.util.JsonUtils;
 
 public class LoginFilter implements Filter {

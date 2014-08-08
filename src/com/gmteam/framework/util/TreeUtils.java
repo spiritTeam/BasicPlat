@@ -96,7 +96,7 @@ public abstract class TreeUtils {
             //处理完森林，下面从森林中，去除那些错误的结点，这里有一个默认的逻辑，pid=0的是正常的结点，这个在下一个版本修改吧
             for (int i=forest.size()-1; i>=0; i--) {
                 TreeNode<TreeNodeBean> tn = forest.get(i);
-                if (tn.getParentId()!=null&&!tn.getParentId().equals("0")) {
+                if (tn.getParentId()!=null&&!tn.getParentId().trim().equals("0")) {
                     if (errors==null) errors = new ArrayList<TreeNodeBean>();
                     errors.addAll(forest.remove(i).getAllBeansList());
                 }
@@ -114,7 +114,6 @@ public abstract class TreeUtils {
      */
     public static <V extends TreeNodeBean> void setTreeIndexMap(List<TreeNode<V>> forest, Map<String, TreeNode<V>> treeIndexMap) {
         if (forest==null||forest.size()==0) return;
-        if (treeIndexMap==null||treeIndexMap.size()==0) return;
         for (TreeNode<V> tn: forest) {
             treeIndexMap.put(tn.getId(), tn);
             if (!tn.isLeaf()) TreeUtils.setTreeIndexMap(tn.getChildren(), treeIndexMap);

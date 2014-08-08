@@ -13,10 +13,10 @@ public class AuthorityService implements UgaAuthorityService {
     @Override
     public TreeNode<Module> getUserModuleAuthByUserId(String userId) {
         CacheEle<?> mc = SystemCache.getCache(UgaConstants.CATCH_UGA_USERMODULE);
-        TreeNode<Module> userModuleTreee = null;
+        TreeNode<Module> userModuleTree = null;
         if (mc!=null&&mc.getContent()!=null) {
-            userModuleTreee = ((Map<String, TreeNode<Module>>)mc.getContent()).get(userId);
+            userModuleTree = ((Map<String, TreeNode<Module>>)mc.getContent()).get(userId);
         }
-        return userModuleTreee;
+        return userModuleTree;
     }
 }

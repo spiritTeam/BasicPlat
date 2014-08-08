@@ -36,6 +36,11 @@ import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.ibatis.transaction.TransactionFactory;
+import org.apache.ibatis.type.ArrayTypeHandler;
+import org.apache.ibatis.type.BlobByteObjectArrayTypeHandler;
+import org.apache.ibatis.type.BlobTypeHandler;
+import org.apache.ibatis.type.ByteArrayTypeHandler;
+import org.apache.ibatis.type.ByteObjectArrayTypeHandler;
 import org.apache.ibatis.type.TypeAliasRegistry;
 import org.apache.ibatis.type.TypeHandler;
 import org.apache.ibatis.type.TypeHandlerRegistry;
@@ -313,6 +318,29 @@ public class MySqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, 
     notNull(sqlSessionFactoryBuilder, "Property 'sqlSessionFactoryBuilder' is required");
 
     this.sqlSessionFactory = buildSqlSessionFactory();
+    //test
+//    Configuration c = this.sqlSessionFactory.getConfiguration();
+//    TypeHandlerRegistry thr = c.getTypeHandlerRegistry();
+//    Map<Type, Map<JdbcType, TypeHandler<?>>> mm = thr.getMp();
+//    System.out.println("THR=="+c.hashCode()+":"+thr.hashCode()+":"+mm.hashCode());
+//    Iterator<Type> iter1 = mm.keySet().iterator();
+//    int j=0;
+//    while(iter1.hasNext()) {
+//        Type t = iter1.next();
+//        System.out.println((j++)+":"+t+"=="+mm.get(t).hashCode());
+//    }
+//
+//    Map<JdbcType, TypeHandler<?>> mt = (thr.getMp()).get(Object.class);
+//    Iterator<JdbcType> iter = mt.keySet().iterator();
+//    int i=0;
+//    System.out.println("TYPE_HANDLER_MAP===begin:"+mt.hashCode());
+//    while(iter.hasNext()){
+//        JdbcType jt= iter.next();
+//        TypeHandler<?> th = mt.get(jt);
+//        System.out.println((i++)+":"+(jt==null?"null":jt)+"=="+th.getClass());
+//    }
+//    System.out.println("TYPE_HANDLER_MAP===  end");
+    //test
   }
 
   /**
@@ -461,10 +489,34 @@ public class MySqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, 
 
             //9-typeHandlerElement(root.evalNode("typeHandlers"))
             TypeHandlerRegistry thr = tc.getTypeHandlerRegistry();
+
+//            TypeHandlerRegistry thrc = configuration.getTypeHandlerRegistry();
+//            List<Type> lm = new ArrayList<Type>();
+//            Iterator<Type> iter1 = mm.keySet().iterator();
+//          while(iter1.hasNext()) {
+//              lm.add(iter1.next());
+//          }
+//          Type tttt=lm.get(0);
+//          Collections.sort(lm, new Comparator<Type>(){
+//              @Override
+//              public int compare(Type o1, Type o2) {
+//                  return (o1+"").compareTo(o2+"");
+//              }
+//          });
+//          for (int a=0; a<lm.size(); a++) {
+//              System.out.println("h<"+a+":==:"+lm.get(a)+":==:"+lm.get(a).getClass().getName());
+//          }
+//===========================
             if (thr!=null) {
               Collection<TypeHandler<?>> thc = thr.getTypeHandlers();
-              if (thc!=null) {
-                for(TypeHandler<?> th: thc) configuration.getTypeHandlerRegistry().register(th);
+              for (TypeHandler<?> th: thc) {
+                  System.out.println(th+":"+th.getClass());
+                  if (th instanceof ArrayTypeHandler) continue;
+                  if (th instanceof BlobByteObjectArrayTypeHandler) continue;
+                  if (th instanceof BlobTypeHandler) continue;
+                  if (th instanceof ByteArrayTypeHandler) continue;
+                  if (th instanceof ByteObjectArrayTypeHandler) continue;
+                  configuration.getTypeHandlerRegistry().register(th);
               }
             }
 
@@ -566,7 +618,6 @@ public class MySqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, 
         logger.debug("Property 'mapperLocations' was not specified or no matching resources found");
       }
     }
-
     return this.sqlSessionFactoryBuilder.build(configuration);
   }
 

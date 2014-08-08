@@ -8,18 +8,18 @@
   <result column="password"  property="password"  jdbcType="INTEGER" />
 </resultMap>
 <resultMap id="moduleMap" type="Module">
-  <id     column="id"          property="id"          jdbcType="VARCHAR" />
-  <result column="pId"         property="parentId"    jdbcType="VARCHAR" />
-  <result column="sort"        property="order"       jdbcType="INTEGER" />
-  <result column="isValidate"  property="isValidate"  jdbcType="INTEGER" />
-  <result column="moduleType"  property="moduleType"  jdbcType="INTEGER" />
-  <result column="displayname" property="nodeName"    jdbcType="VARCHAR" />
-  <result column="moduleName"  property="moduleName"  jdbcType="VARCHAR" />
-  <result column="url"         property="url"         jdbcType="VARCHAR" />
-  <result column="levels"      property="levels"      jdbcType="INTEGER" />
-  <result column="style"       property="style"       jdbcType="INTEGER" />
-  <result column="icon"        property="icon"        jdbcType="VARCHAR" />
-  <result column="descn"       property="descn"       jdbcType="VARCHAR" />
+  <id     column="id"          property="id"         jdbcType="VARCHAR" />
+  <result column="pId"         property="parentId"   jdbcType="VARCHAR" />
+  <result column="sort"        property="order"      jdbcType="INTEGER" />
+  <result column="isValidate"  property="validate"   jdbcType="INTEGER" />
+  <result column="moduleType"  property="moduleType" jdbcType="INTEGER" />
+  <result column="displayname" property="nodeName"   jdbcType="VARCHAR" />
+  <result column="moduleName"  property="moduleName" jdbcType="VARCHAR" />
+  <result column="url"         property="url"        jdbcType="VARCHAR" />
+  <result column="levels"      property="levels"     jdbcType="INTEGER" />
+  <result column="style"       property="style"      jdbcType="INTEGER" />
+  <result column="icon"        property="icon"       jdbcType="VARCHAR" />
+  <result column="descn"       property="descn"      jdbcType="VARCHAR" />
 </resultMap>
 
 <select id="getUserList" resultMap="userMap">
@@ -29,9 +29,8 @@ select * from plat_user
 <select id="getModuleList" resultMap="moduleMap">
 select * from plat_module
 </select>
-<!-- 
- -->
-<select id="getUserModuleList" resultType="hashmap">
+
+<select id="getUserModuleList" resultType="java.util.HashMap">
 select a.objId userId, a.moduleId from plat_module_org a, plat_user b where a.types='2' and a.objId=b.id order by userId
 </select>
 </mapper>
