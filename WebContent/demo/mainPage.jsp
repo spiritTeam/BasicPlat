@@ -17,12 +17,11 @@
 <script type="text/javascript" src="<%=path%>/resources/plugins/spiritui/jq.spirit.utils.js"></script>
 <script type="text/javascript" src="<%=path%>/resources/plugins/spiritui/jq.spirit.pageFrame.js"></script>
 <script type="text/javascript" src="<%=path%>/resources/plugins/spiritui/jq.spirit.tabs.js"></script>
-
 <script type="text/javascript" src="<%=path%>/resources/js/mainPage.utils.js"></script>
 
-<link rel="stylesheet" type="text/css" href="<%=path%>/resources/plugins/spiritui/themes/default/all.css"/>
 <link rel="stylesheet" type="text/css" href="<%=path%>/demo/css/mainPage.css"/>
 <!--
+<link rel="stylesheet" type="text/css" href="<%=path%>/resources/plugins/spiritui/themes/default/all.css"/>
 -->
 <link rel="stylesheet" type="text/css" href="<%=path%>/demo/css/tabs.css"/>
 </head>
@@ -35,7 +34,7 @@
 </div>
 
 <!-- 头部:悬浮 -->
-<div id="topSegment">
+<div id="topSegment" style="">
   <div id="logoImg_top"></div><!-- 头部1:logo区域 -->
   <div id="titleImg_top"></div><!-- 头部2:系统名称 -->
   <div id="commonFunc_top"><!-- 头部3:通用功能 -->
@@ -86,13 +85,16 @@ var INIT_PARAM = {
   },
   top_height: 78, //顶部高度
 //  top_shadow_color: "#3e45a0",
-  page_width: 1024,
+  page_width: 0,
   page_height: 0,
   top_peg: false,
   myInit: initPosition,
   myResize: myResize,
   myScroll: myScroll
 };
+//  myInit: null,//initPosition,
+//  myResize: null,//myResize,
+//  myScroll: null//myScroll
 
 $(function() {
   var initStr = $().spiritPageFrame(INIT_PARAM);
@@ -211,7 +213,7 @@ var testBar2 = {
 
 var BJLQ = {
   id: "bjlq", //标识
-  mutualType:false, //两页标签的交互区域的处理模式，若为false，则无交互区域，用css处理交互，若为true则有交互区域，交互用图片来处理
+  mutualType:true, //两页标签的交互区域的处理模式，若为false，则无交互区域，用css处理交互，若为true则有交互区域，交互用图片来处理
   mutualStyle: { //交互区样式，当mutualType=true生效
     firstCss:{"background-image":"url('images/mainPage/mtabSf.jpg')"},
     firstSelCss:{"background-image":"url('images/mainPage/mtabSfSelected.jpg')"},
@@ -239,7 +241,7 @@ var BJLQ = {
 };
 var BJLQ_2 = {
   id: "bjlq2", //标识
-  mutualType:false, //两页标签的交互区域的处理模式，若为false，则无交互区域，用css处理交互，若为true则有交互区域，交互用图片来处理
+  mutualType:true, //两页标签的交互区域的处理模式，若为false，则无交互区域，用css处理交互，若为true则有交互区域，交互用图片来处理
   mutualStyle: { //交互区样式，当mutualType=true生效
     width:"11px" //交互区宽度
   },

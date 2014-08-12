@@ -13,13 +13,13 @@ import com.gmteam.framework.core.web.AbstractFileUploadController;
 public class SimpleFileUploadController extends AbstractFileUploadController{
 
     @Override
-    public Map<String, Object> afterUploadOneFileOnSuccess(Map<String, Object> m) {
+    public Map<String, Object> afterUploadOneFileOnSuccess(Map<String, Object> m, Map<String, Object> a, Map<String, Object> p) {
         System.out.println(m.toString());
         return null;
     }
 
     @Override
-    public void afterUploadAllFiles(List<Map<String, Object>> fl) {
+    public void afterUploadAllFiles(List<Map<String, Object>> fl, Map<String, Object> a, Map<String, Object> p) {
         System.out.println(fl.toString());
     }
 }

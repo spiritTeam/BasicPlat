@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -124,6 +125,13 @@ public abstract class AbstractFileUploadController implements Controller, Handle
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest)request;
         Map<String, MultipartFile> files = multipartRequest.getFileMap();
+        //得到其他的属性
+        Map<String, Object> rqtParams = new HashMap<String, Object>();
+        List<String> paramNameL = (List<String>)Collections.list(request.getParameterNames());
+        for (String n: paramNameL) rqtParams.put(n, request.getParameter(n));
+        Map<String, Object> rqtAttrs = new HashMap<String, Object>();
+        List<String> attrNameL = (List<String>)Collections.list(request.getAttributeNames());
+        for (String n: attrNameL) rqtAttrs.put(n, request.getAttribute(n));
 
         List<Map<String, Object>> retl = new ArrayList<Map<String, Object>>();
         if (files!=null&&files.size()>0) {//返回空
@@ -169,7 +177,7 @@ public abstract class AbstractFileUploadController implements Controller, Handle
                     /*
                      *调用虚方法，处理每个文件的后续部分
                      */
-                    Map<String, Object> myDealRetMap = afterUploadOneFileOnSuccess(oneFileDealRetMap);
+                    Map<String, Object> myDealRetMap = afterUploadOneFileOnSuccess(oneFileDealRetMap, rqtAttrs, rqtParams);
                     if (myDealRetMap!=null) {
                         boolean mySuccess = true;
                         try {
@@ -194,7 +202,7 @@ public abstract class AbstractFileUploadController implements Controller, Handle
                 if (isBreak) break;
                 fIndex++;
             }
-            afterUploadAllFiles(retl);
+            afterUploadAllFiles(retl, rqtAttrs, rqtParams);
         } else {
             Map<String, Object> nullM = new HashMap<String, Object>();
             nullM.put("success", "null");
@@ -366,20 +374,24 @@ public abstract class AbstractFileUploadController implements Controller, Handle
      * @param m 成功上传的文件的信息，包括：success——是否上传成功;storeFilename——保存在服务器端的文件名;fileInfo——上传文件的信息，类型为MultipartFile
      * 若上传失败，还会有error信息;<br/>
      * 警告信息会存储在warn信息中。<br/>
+     * @param rqtAttrs request的属性
+     * @param rqtParams request的参数
      * @return  此方法的返回值是Map，此Map需要有如下两个key:<br/>
      * 1-success:String类型,处理是否成功<br/>
      * 2-onFaildBreak:String类型("true" or "false"),若失败是否退出后需的处理<br/>
      * 如果返回值为空，或没有这些信息，本方法将按照sucess=true进行处理<br/>
      * 若要把自己的处理结果传递到本方法的外面，可以直接修改参数m，在m中加入自己的信息
      */
-    public abstract Map<String, Object> afterUploadOneFileOnSuccess(Map<String, Object> m);
+    public abstract Map<String, Object> afterUploadOneFileOnSuccess(Map<String, Object> m, Map<String, Object> rqtAttrs, Map<String, Object> rqtParams);
 
     /**
      * 当上传所有文件后，调用此方法
      * @param fl 上传文件处理结果的说明列表，每个上传文件一个处理结果。（如果只上传一个文件，此列表中只有一个元素）。<br/>
+     * @param rqtAttrs request的属性
+     * @param rqtParams request的参数
      * 列表中的元素为Map对象，其中的信息如下包括：success——是否上传成功;storeFilename——保存在服务器端的文件名;fileInfo——上传文件的信息，类型为MultipartFile;<br/>
      * 若上传失败，还会有error信息;<br/>
      * 警告信息会存储在warn信息中。
      */
-    public abstract void afterUploadAllFiles(List<Map<String, Object>> fl);
+    public abstract void afterUploadAllFiles(List<Map<String, Object>> fl, Map<String, Object> rqtAttrs, Map<String, Object> rqtParams);
 }

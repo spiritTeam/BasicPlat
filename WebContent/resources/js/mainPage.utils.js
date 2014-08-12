@@ -42,6 +42,8 @@ function getWinUUID() {
  * winOption.icon_url 窗口图标，图标的url，若设置了此参数，icon_css失效
  * winOption.modal 是否是模态窗口，默认为模态窗口
  * winOption.expandAttr 窗口的扩展属性，可定义iframe的id，是javaScript对象，如expandAttr={"frameID":"iframeID"}
+ * winOption.top 窗口top
+ * winOption.left 窗口left
  * @returns 返回生成窗口的UUID
  */
 function newWin(winOption) {
@@ -70,7 +72,9 @@ function newWin(winOption) {
   $(newWin).appendTo($(newWinDiv));
   //esayUi win处理
   var top = ($(window).height() - parseInt(winOption.height?winOption.height:0))*0.5;
+  if (winOption.top&&winOption.top!=""&&((parseInt(winOption.top)+"")!="NaN")) top=parseInt(winOption.top);
   var left = ($(window).width() - parseInt(winOption.width?winOption.width:0))*0.5;
+  if (winOption.left&&winOption.left!=""&&((parseInt(winOption.left)+"")!="NaN")) left=parseInt(winOption.left);
   $(newWinDiv).window({
     title: winOption.title?winOption.title:"",
     width: parseInt(winOption.width?winOption.width:400),

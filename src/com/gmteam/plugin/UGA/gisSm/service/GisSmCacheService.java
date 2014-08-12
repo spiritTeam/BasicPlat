@@ -95,14 +95,7 @@ public class GisSmCacheService {
         List<TreeNode<Function>> forest = new ArrayList<TreeNode<Function>>();
         forest.add(tnM);
 
-        List<Map<String, String>> urm;
-        try {
-            urm = userDao.queryForListAutoTranform("getUserFunctionList", null);
-        } catch(Exception e) {
-            e.printStackTrace();
-            urm = userDao.queryForListAutoTranform("getUserFunctionList", null);
-        }
-        urm = userDao.queryForListAutoTranform("getUserFunctionList", null);
+        List<Map<String, String>> urm = userDao.queryForListAutoTranform("getUserFunctionList", null);
 
         String userId=null;
         Collection<String> moduleIds = null;

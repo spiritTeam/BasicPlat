@@ -17,6 +17,7 @@
   var _bottomFlag4foot = -1; //脚部，下标志
   var _hasTop=false, _hasFoot=false;
   var INIT_PARAM={};//初始化参数
+	var _bv = getBrowserVersion();
 
   function initPosition() {
     //1-调整中间主体
@@ -24,15 +25,25 @@
       "left": getLeft(), "width": getWidth(), //X轴，宽
       "top": $("body").css("margin-top"), "height": getHeight() //Y轴，高
     });
-    
     //1.1-若出现滚动条，进行处理
     var rh=parseFloat($("#_main").css("height")), rw=parseFloat($("#_main").css("width"));
     if (INIT_PARAM.page_width==0)  {//若为自适应宽
       if ((rh+caculateHeightOffSet())>wHeight()) rw -= _hScrollbarWidth;//若出现纵向滚动条，则宽度为页面宽度减去滚动条宽度
+    	//ie兼容
+    	if (_bv.indexOf("msie")==0) {
+    		var _v = parseFloat(_bv.substring(5));
+    		if (_v==8) {
+    			if (INIT_PARAM.page_height!=0) rw -= _hScrollbarWidth;
+    		}
+    	}
       if (rw>INIT_PARAM.win_min_width) $("#_main").css({"width": rw});
     }
     if (INIT_PARAM.page_height==0) {//若为自适应高
       if ((rw+caculateWidthOffSet())>wWidth()) rh -= _wScrollbarWidth;//若出现横向滚动条，则宽度为页面宽度减去滚动条宽度
+    	if (_bv.indexOf("msie")==0) {
+    		var _v = parseFloat(_bv.substring(5));
+    		if (_v==8) rh -= _wScrollbarWidth;
+    	}
       if (rh>INIT_PARAM.win_min_height) $("#_main").css({"height": rh});
     }
     //2-调整顶部
@@ -112,6 +123,11 @@
     }
     if (INIT_PARAM.page_height==0) {//若为自适应高
       if ((rw+caculateWidthOffSet())>wWidth()) rh -= _wScrollbarWidth;//若出现横向滚动条，则宽度为页面宽度减去滚动条宽度
+      //ie8兼容
+    	if (_bv.indexOf("msie")==0) {
+    		var _v = parseFloat(_bv.substring(5));
+    		if (_v==8) rh -= _wScrollbarWidth;
+    	}
       if (rh>INIT_PARAM.win_min_height) $("#_main").css({"height": rh});
     }
     //2-调整顶部
@@ -165,7 +181,10 @@
     }
     //6-调整晕左边距
     if ($("body>div#_topunder").length==1) {
-      if (!$("body>div#_topunder").is(":hidden")) $("body>div#_topunder").css("left", $("#"+INIT_PARAM.pageObjs.topId).css("left"));
+      if (!$("body>div#_topunder").is(":hidden")) $("body>div#_topunder").css({
+        "left": $("#"+INIT_PARAM.pageObjs.topId).css("left"),
+        "width": getViewWidth(INIT_PARAM.pageObjs.footId, "_main")
+      });
     };
     if (INIT_PARAM.myResize) INIT_PARAM.myResize();
   }
@@ -185,13 +204,13 @@
           var topunder = $("body>div#_topunder");
           var topSegment = $("#"+INIT_PARAM.pageObjs.topId);
           //取晕效果颜色；先看是否有设定，若没有设定取头部的下边框，若下边框为0，取底色
-          var _tapShadowColor = null;
-          if (INIT_PARAM.top_shadow_color) _tapShadowColor=INIT_PARAM.top_shadow_color;
+          var _topShadowColor = null;
+          if (INIT_PARAM.top_shadow_color) _topShadowColor=INIT_PARAM.top_shadow_color;
           else {//下边框
-          	if ((topSegment.css("border-bottom-width")=="medium"?0:parseFloat(topSegment.css("border-bottom-width")))>0) _tapShadowColor = jqueryColor2HexColor(topSegment.css("border-bottom-color"));
-          	else _tapShadowColor = jqueryColor2HexColor(topSegment.css("background-color"));
+          	if ((topSegment.css("border-bottom-width")=="medium"?0:parseFloat(topSegment.css("border-bottom-width")))>0) _topShadowColor = jqueryColor2HexColor(topSegment.css("border-bottom-color"));
+          	else _topShadowColor = jqueryColor2HexColor(topSegment.css("background-color"));
           }
-          topunder.css({"border":"1px solid "+_tapShadowColor, "padding":"0", "margin":"0",
+          topunder.css({"border":"1px solid "+_topShadowColor, "padding":"0", "margin":"0",
             "margin-left": topSegment.css("margin-left"),
             "margin-right": topSegment.css("margin-right"),
             "padding-left": topSegment.css("padding-left"),
@@ -207,9 +226,9 @@
             "z-index": topSegment.css("z-index")-1,
             "position": "fixed", "height": "1px",
             "top": parseFloat(topSegment.css("top"))+parseFloat(topSegment.css("height"))+parseFloat(topSegment.css("padding-top"))+parseFloat(topSegment.css("padding-bottom"))+parseFloat(topSegment.css("margin-top"))+parseFloat(topSegment.css("margin-bottom"))+parseFloat(topSegment.css("border-top-width"))+(topSegment.css("border-bottom-width")=="medium"?0:parseFloat(topSegment.css("border-bottom-width")))-2,
-            "box-shadow": "0px 0px 5px 0px "+ _tapShadowColor,
-            "-webkit-box-shadow": "0px 0px 5px 0px "+ _tapShadowColor,
-            "-moz-box-shadow": "0px 0px 5px 0px "+ _tapShadowColor
+            "box-shadow": "0px 0px 5px 0px "+ _topShadowColor,
+            "-webkit-box-shadow": "0px 0px 5px 0px "+ _topShadowColor,
+            "-moz-box-shadow": "0px 0px 5px 0px "+ _topShadowColor
           });
         } else {
         	$("body>div#_topunder").css("left", $("#"+INIT_PARAM.pageObjs.topId).css("left")).show();
@@ -265,8 +284,8 @@
     if (_hasFoot) $("#"+_options.pageObjs.footId).addClass("hoverArea").addClass("footSegment");
 
     initPosition();//初始化
-//    $(window).resize(_resizeTimeout);//页面调整
-//    $(window).scroll(scrollPositioin);//滚动条
+    $(window).resize(_resizeTimeout);//页面调整
+    $(window).scroll(scrollPositioin);//滚动条
     return "";
   }
 
@@ -274,7 +293,7 @@
   $.fn.spiritPageFrame = function(options, param) {
     //若参数一为字符串，则直接当作本插件的方法进行处理，这里的this是本插件对应的jquery选择器的选择结果
     if (typeof options=='string') return $.fn.spiritPageFrame.methods[options](this, param);
-    options = options||{};
+
     return initPage(options);
   };
   //插件方法，参考eaqyUi的写法
@@ -297,9 +316,10 @@
     win_min_height: 480, //页面最小的高度。当窗口高度小于这个值，不对界面位置及尺寸进行调整。主体部分高度也照此设置
 
     top_height: 120, //顶部高度
-    top_peg: false, //是否钉住头部在顶端。false：顶部随垂直滚动条移动(浮动)；true：顶部钉在顶端
     top_shadow_color: null, //头部阴影颜色
     foot_height: 40, //脚部高度
+
+    top_peg: false, //是否钉住头部在顶端。false：顶部随垂直滚动条移动(浮动)；true：顶部钉在顶端
     foot_peg: false, //是否钉住脚部在底端。false：脚部随垂直滚动条移动(浮动)；true：脚部钉在底端
 
     iframe_height_flag: 1 //具体功能区域（可能是整个中部，也可能是带左侧导航的中部）的iframe高度标志。1：iframe高度与框架匹配；非1：框架高度适应iframe内部高度(反向适应)
@@ -337,7 +357,7 @@
   	var ret = parseFloat($("body").css("margin-left"))
     +parseFloat($("#_main").css("margin-left"))//+parseFloat($("#_main").css("margin-right"))
     +parseFloat($("#_main").css("padding-left"))+parseFloat($("#_main").css("padding-right"));
-  	//hock IE8兼容
+  	//IE8兼容
   	if (!$("#_main").css("border-left-width")=="medium") ret += parseFloat($("#_main").css("border-left-width"));
   	if (!$("#_main").css("border-right-width")=="medium") ret += parseFloat($("#_main").css("border-right-width"));
   	return ret;
@@ -349,7 +369,7 @@
   	var ret = parseFloat($("body").css("margin-top"))
     +parseFloat($("#_main").css("margin-top"))//+parseFloat($("#_main").css("margin-bottom"))
     +parseFloat($("#_main").css("padding-top"))+parseFloat($("#_main").css("padding-bottom"));
-  	//hock IE8兼容
+  	//IE8兼容
   	if (!$("#_main").css("border-top-width")=="medium") ret += parseFloat($("#_main").css("border-top-width"));
   	if (!$("#_main").css("border-bottom-width")=="medium") ret += parseFloat($("#_main").css("border-bottom-width"));
   	return ret;
