@@ -10,7 +10,6 @@ import javax.annotation.Resource;
 import org.apache.log4j.Logger;
 
 import com.gmteam.framework.UGA.UgaConstants;
-import com.gmteam.framework.component.module.pojo.Module;
 import com.gmteam.framework.core.cache.AbstractCacheLifecycleUnit;
 import com.gmteam.framework.core.cache.CacheEle;
 import com.gmteam.framework.core.cache.SystemCache;

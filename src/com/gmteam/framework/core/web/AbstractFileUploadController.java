@@ -146,11 +146,9 @@ public abstract class AbstractFileUploadController implements Controller, Handle
             if (this.datePathModel==1||this.datePathModel==3) _path=FileNameUtils.getDateRulePath(_path);
             //处理文件名称字段
             String[] storeFileNames = null;
-            if (this.storeFileNameFieldName!=null) {
-                storeFileNames = multipartRequest.getParameterValues(this.storeFileNameFieldName);
-            } else {
-                storeFileNames = multipartRequest.getParameterValues("storeFilename");
-            }
+            if (this.storeFileNameFieldName!=null) storeFileNames = multipartRequest.getParameterValues(this.storeFileNameFieldName);
+            else storeFileNames = multipartRequest.getParameterValues("storeFilename");
+
             if (storeFileNames!=null) if (storeFileNames.length==0) storeFileNames=null;
             //处理每个文件
             Iterator<String> iterator=files.keySet().iterator();
@@ -202,6 +200,7 @@ public abstract class AbstractFileUploadController implements Controller, Handle
                 if (isBreak) break;
                 fIndex++;
             }
+            if (retl.size()==0) retl=null;
             afterUploadAllFiles(retl, rqtAttrs, rqtParams);
         } else {
             Map<String, Object> nullM = new HashMap<String, Object>();
@@ -385,8 +384,8 @@ public abstract class AbstractFileUploadController implements Controller, Handle
     public abstract Map<String, Object> afterUploadOneFileOnSuccess(Map<String, Object> m, Map<String, Object> rqtAttrs, Map<String, Object> rqtParams);
 
     /**
-     * 当上传所有文件后，调用此方法
-     * @param fl 上传文件处理结果的说明列表，每个上传文件一个处理结果。（如果只上传一个文件，此列表中只有一个元素）。<br/>
+     * 当上传所有文件后，调用此方法。注意，如果没有任何上传文件，也可以调用此方法，处理后续逻辑，此时fl为空。
+     * @param fl 上传文件处理结果的说明列表，每个上传文件一个处理结果。（如果只上传一个文件，此列表中只有一个元素，如果没有任何上传文件此值为null）。<br/>
      * @param rqtAttrs request的属性
      * @param rqtParams request的参数
      * 列表中的元素为Map对象，其中的信息如下包括：success——是否上传成功;storeFilename——保存在服务器端的文件名;fileInfo——上传文件的信息，类型为MultipartFile;<br/>

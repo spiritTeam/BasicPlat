@@ -510,7 +510,6 @@ public class MySqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, 
             if (thr!=null) {
               Collection<TypeHandler<?>> thc = thr.getTypeHandlers();
               for (TypeHandler<?> th: thc) {
-                  System.out.println(th+":"+th.getClass());
                   if (th instanceof ArrayTypeHandler) continue;
                   if (th instanceof BlobByteObjectArrayTypeHandler) continue;
                   if (th instanceof BlobTypeHandler) continue;

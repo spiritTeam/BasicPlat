@@ -38,13 +38,7 @@
         <value>classpath*:mybatisConfig/framework.mappers.cfg.xml</value>
       </list>
     </property>
-    <!--备选方案
-    <property name="mapperLocations">
-      <list merge="default">
-        <value>classpath*:my\*\sql\*_mapper.xml</value>
-      </list>
-    </property> -->
-    <property name="databaseType" value="mysql"/>
+    <property name="databaseType" value="oracle"/>
     <property name="dataSource" ref="dataSource"/>
     <property name="transactionFactory">
       <bean class="org.apache.ibatis.transaction.managed.ManagedTransactionFactory" />
@@ -72,7 +66,7 @@
         <value>classpath*:mybatisConfig/dcSys.mappers.cfg.xml</value>
       </list>
     </property>
-    <property name="databaseType" value="mysql"/>
+    <property name="databaseType" value="oracle"/>
     <property name="dataSource" ref="dcSysDS"/>
     <property name="transactionFactory">
       <bean class="org.apache.ibatis.transaction.managed.ManagedTransactionFactory" />
@@ -88,7 +82,7 @@
   </bean>
 
   <!-- 平台缓存池-->
-  <bean id="cachePool" class=" com.gmteam.framework.core.cache.CachePool">
+  <bean id="cachePool" class="com.gmteam.framework.core.cache.CachePool">
     <property name="caches">
       <map>
         <!--
@@ -96,7 +90,7 @@
         <entry key="2" value-ref="cacheGisSmUgaManager"/>
         -->
         <entry key="0" value-ref="cacheFrameworkManager"/>
-        <entry key="2" value-ref="cacheGisSmUgaManager"/>
+        <entry key="1" value-ref="cacheFrameworkUgaManager"/>
       </map>
     </property>
   </bean>
@@ -113,12 +107,12 @@
   </bean>
 
   <!-- 以下为UGA框架(用户/用户组/权限框架)所需配置 -->
-  <!--Uga缓存：平台
-  <bean id="cacheFrameworkUgaManager" class="com.gmteam.framework.component.UGA.cache.FrameworkUgaCLU"/> -->
-  <!--Uga用户服务：平台
-  <bean id="ugaUserService"           class="com.gmteam.framework.component.UGA.service.UserService"/> -->
-  <!--Uga用户模块服务：平台
-  <bean id="ugaAuthorityService"      class="com.gmteam.framework.component.UGA.service.AuthorityService"/> -->
+  <!--Uga缓存：平台 -->
+  <bean id="cacheFrameworkUgaManager" class="com.gmteam.framework.component.UGA.cache.FrameworkUgaCLU"/>
+  <!--Uga用户服务：平台 -->
+  <bean id="ugaUserService"           class="com.gmteam.framework.component.UGA.service.UserService"/>
+  <!--Uga用户模块服务：平台 -->
+  <bean id="ugaAuthorityService"      class="com.gmteam.framework.component.UGA.service.AuthorityService"/>
 
   <!-- 以下为UGA框架(用户/用户组/权限框架)所需配置 -->
   <!--gisUga缓存：平台 -->
@@ -126,8 +120,8 @@
     <property name="functionRootId" value="${dcsys.function.rootId}"/>
     <property name="functionRefreshCacheId" value="${dcsys.function.refreshCacheId}"/>
   </bean>
-  <!--gisUga用户服务：平台 -->
-  <bean id="ugaUserService"       class="com.gmteam.plugin.UGA.gisSm.service.UserService"/>
-  <!--Uga用户模块服务：平台 -->
-  <bean id="ugaAuthorityService"  class="com.gmteam.plugin.UGA.gisSm.service.AuthorityService"/>
+  <!--gisUga用户服务：平台
+  <bean id="ugaUserService"       class="com.gmteam.plugin.UGA.gisSm.service.UserService"/> -->
+  <!--Uga用户模块服务：平台
+  <bean id="ugaAuthorityService"  class="com.gmteam.plugin.UGA.gisSm.service.AuthorityService"/> -->
 </beans>

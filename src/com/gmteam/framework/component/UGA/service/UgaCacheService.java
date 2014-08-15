@@ -41,7 +41,15 @@ public class UgaCacheService {
      */
     public Map<String, Object> makeCacheUser() throws Exception {
         Map<String, Object> ret = new HashMap<String, Object>();
-        List<User> list = userDao.queryForList("getUserList");
+//        List<User> list = userDao.queryForList("getUserList");
+        List<User> list=null;
+        try {
+            list = userDao.queryForList("getUserList");
+        } catch(Exception e) {
+            e.printStackTrace();
+            list = userDao.queryForList("getUserList");
+        }
+        list = userDao.queryForList("getUserList");
         ret.put("list", list);
         Map<String, User> idMap = new HashMap<String, User>();
         Map<String, User> loginMap = new HashMap<String, User>();

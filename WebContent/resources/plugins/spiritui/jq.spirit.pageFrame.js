@@ -10,14 +10,15 @@
  */
 
 (function($) {
-	//本控件内的全局变量
+    //本控件内的全局变量
   var _hScrollbarWidth = 0; //纵向滚动条宽度
   var _wScrollbarWidth = 0; //横向滚动条宽度
   var _topFlag4foot = -1; //脚部，上标志
   var _bottomFlag4foot = -1; //脚部，下标志
   var _hasTop=false, _hasFoot=false;
   var INIT_PARAM={};//初始化参数
-	var _bv = getBrowserVersion();
+  var _bv = getBrowserVersion();
+  var _ie8H1=1, _ie8H2=2, _ie8W1=1, _ie8W2=2;
 
   function initPosition() {
     //1-调整中间主体
@@ -29,21 +30,21 @@
     var rh=parseFloat($("#_main").css("height")), rw=parseFloat($("#_main").css("width"));
     if (INIT_PARAM.page_width==0)  {//若为自适应宽
       if ((rh+caculateHeightOffSet())>wHeight()) rw -= _hScrollbarWidth;//若出现纵向滚动条，则宽度为页面宽度减去滚动条宽度
-    	//ie兼容
-    	if (_bv.indexOf("msie")==0) {
-    		var _v = parseFloat(_bv.substring(5));
-    		if (_v==8) {
-    			if (INIT_PARAM.page_height!=0) rw -= _hScrollbarWidth;
-    		}
-    	}
+      //ie兼容
+      if (_bv.indexOf("msie")==0) {
+        var _v = parseFloat(_bv.substring(5));
+        if (_v==8) {
+          if (INIT_PARAM.page_height!=0) rw -= _hScrollbarWidth;
+        }
+      }
       if (rw>INIT_PARAM.win_min_width) $("#_main").css({"width": rw});
     }
     if (INIT_PARAM.page_height==0) {//若为自适应高
       if ((rw+caculateWidthOffSet())>wWidth()) rh -= _wScrollbarWidth;//若出现横向滚动条，则宽度为页面宽度减去滚动条宽度
-    	if (_bv.indexOf("msie")==0) {
-    		var _v = parseFloat(_bv.substring(5));
-    		if (_v==8) rh -= _wScrollbarWidth;
-    	}
+      if (_bv.indexOf("msie")==0) {
+        var _v = parseFloat(_bv.substring(5));
+        if (_v==8) rh -= _wScrollbarWidth;
+      }
       if (rh>INIT_PARAM.win_min_height) $("#_main").css({"height": rh});
     }
     //2-调整顶部
@@ -110,6 +111,20 @@
     setTimeout(resizePosition ,100);
   }
   function resizePosition() {
+    //ie兼容
+    if (_bv.indexOf("msie")==0) {
+      var _v = parseFloat(_bv.substring(5));
+      if (_v==8) {
+      	window.console.log(_v);
+        _ie8H1=$("#_main").css("height"), _ie8W1=$("#_main").css("width");
+        if (_ie8H1==_ie8H2&&_ie8W1==_ie8W2) {
+          setTimeout(function(){
+            _ie8H1=0,_ie8H2=-1,_ie8W1=0,_ie8W2=-1;
+          }, 100);
+          return;
+        }
+      }
+    }
     //1-调整中间主体
     $("#_main").css({
       "left": getLeft(), "width": getWidth(), //X轴，宽
@@ -124,10 +139,10 @@
     if (INIT_PARAM.page_height==0) {//若为自适应高
       if ((rw+caculateWidthOffSet())>wWidth()) rh -= _wScrollbarWidth;//若出现横向滚动条，则宽度为页面宽度减去滚动条宽度
       //ie8兼容
-    	if (_bv.indexOf("msie")==0) {
-    		var _v = parseFloat(_bv.substring(5));
-    		if (_v==8) rh -= _wScrollbarWidth;
-    	}
+      if (_bv.indexOf("msie")==0) {
+        var _v = parseFloat(_bv.substring(5));
+        if (_v==8) rh -= _wScrollbarWidth;
+      }
       if (rh>INIT_PARAM.win_min_height) $("#_main").css({"height": rh});
     }
     //2-调整顶部
@@ -187,6 +202,11 @@
       });
     };
     if (INIT_PARAM.myResize) INIT_PARAM.myResize();
+    //ie兼容
+    if (_bv.indexOf("msie")==0) {
+      var _v = parseFloat(_bv.substring(5));
+      if (_v==8) _ie8H2=$("#_main").css("height"), _ie8W2=$("#_main").css("width");
+    }
   }
 
   function scrollPositioin() {
@@ -195,7 +215,7 @@
       //Y轴方向
       var _top = parseFloat($("body").css("margin-top"))+parseFloat($("#_main").css("margin-top"))-$(document).scrollTop();
       $("#"+INIT_PARAM.pageObjs.topId).css({"top": _top>parseFloat($("body").css("margin-top"))?_top:parseFloat($("body").css("margin-top"))});
-    	//X轴方向
+        //X轴方向
       $("#"+INIT_PARAM.pageObjs.topId).css({"left": parseFloat($("#_main").css("left"))+parseFloat($("#_main").css("margin-left"))-$(document).scrollLeft()});
       //设置晕效果
       if (_top<0&&_hasTop&&!INIT_PARAM.top_peg) {//出现头部下边的晕区域，使得更好看
@@ -207,8 +227,8 @@
           var _topShadowColor = null;
           if (INIT_PARAM.top_shadow_color) _topShadowColor=INIT_PARAM.top_shadow_color;
           else {//下边框
-          	if ((topSegment.css("border-bottom-width")=="medium"?0:parseFloat(topSegment.css("border-bottom-width")))>0) _topShadowColor = jqueryColor2HexColor(topSegment.css("border-bottom-color"));
-          	else _topShadowColor = jqueryColor2HexColor(topSegment.css("background-color"));
+            if ((topSegment.css("border-bottom-width")=="medium"?0:parseFloat(topSegment.css("border-bottom-width")))>0) _topShadowColor = jqueryColor2HexColor(topSegment.css("border-bottom-color"));
+            else _topShadowColor = jqueryColor2HexColor(topSegment.css("background-color"));
           }
           topunder.css({"border":"1px solid "+_topShadowColor, "padding":"0", "margin":"0",
             "margin-left": topSegment.css("margin-left"),
@@ -231,7 +251,7 @@
             "-moz-box-shadow": "0px 0px 5px 0px "+ _topShadowColor
           });
         } else {
-        	$("body>div#_topunder").css("left", $("#"+INIT_PARAM.pageObjs.topId).css("left")).show();
+          $("body>div#_topunder").css("left", $("#"+INIT_PARAM.pageObjs.topId).css("left")).show();
         }
       } else $("body>div#_topunder").hide();
     }
@@ -354,25 +374,25 @@
    * 计算宽度偏移量
    */
   function caculateWidthOffSet() {
-  	var ret = parseFloat($("body").css("margin-left"))
-    +parseFloat($("#_main").css("margin-left"))//+parseFloat($("#_main").css("margin-right"))
-    +parseFloat($("#_main").css("padding-left"))+parseFloat($("#_main").css("padding-right"));
-  	//IE8兼容
-  	if (!$("#_main").css("border-left-width")=="medium") ret += parseFloat($("#_main").css("border-left-width"));
-  	if (!$("#_main").css("border-right-width")=="medium") ret += parseFloat($("#_main").css("border-right-width"));
-  	return ret;
+    var ret = parseFloat($("body").css("margin-left"))
+      +parseFloat($("#_main").css("margin-left"))//+parseFloat($("#_main").css("margin-right"))
+      +parseFloat($("#_main").css("padding-left"))+parseFloat($("#_main").css("padding-right"));
+    //IE8兼容
+    if (!$("#_main").css("border-left-width")=="medium") ret += parseFloat($("#_main").css("border-left-width"));
+    if (!$("#_main").css("border-right-width")=="medium") ret += parseFloat($("#_main").css("border-right-width"));
+    return ret;
   }
   /**
    * 计算高度偏移量
    */
   function caculateHeightOffSet() {
-  	var ret = parseFloat($("body").css("margin-top"))
-    +parseFloat($("#_main").css("margin-top"))//+parseFloat($("#_main").css("margin-bottom"))
-    +parseFloat($("#_main").css("padding-top"))+parseFloat($("#_main").css("padding-bottom"));
-  	//IE8兼容
-  	if (!$("#_main").css("border-top-width")=="medium") ret += parseFloat($("#_main").css("border-top-width"));
-  	if (!$("#_main").css("border-bottom-width")=="medium") ret += parseFloat($("#_main").css("border-bottom-width"));
-  	return ret;
+    var ret = parseFloat($("body").css("margin-top"))
+      +parseFloat($("#_main").css("margin-top"))//+parseFloat($("#_main").css("margin-bottom"))
+      +parseFloat($("#_main").css("padding-top"))+parseFloat($("#_main").css("padding-bottom"));
+    //IE8兼容
+    if (!$("#_main").css("border-top-width")=="medium") ret += parseFloat($("#_main").css("border-top-width"));
+    if (!$("#_main").css("border-bottom-width")=="medium") ret += parseFloat($("#_main").css("border-bottom-width"));
+    return ret;
   }
   /**
    * 得到窗口的绝对高度和宽度，包括滚动条
