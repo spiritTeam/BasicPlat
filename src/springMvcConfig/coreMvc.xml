@@ -40,4 +40,7 @@
       </list>
     </property>
   </bean>
+
+  <!-- 以下为文件上传的测试代码 -->
+  <bean name="/cacheRefresh.do" class="com.gmteam.framework.core.web.CacheFreshAllControllor"></bean>
 </beans>

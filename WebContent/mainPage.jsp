@@ -237,6 +237,31 @@ function testClk(jqMy) {
 }
 function abc() {
   $("#mainTab_top").spiritTabs({id:"1235", tabs:[{title:"测试8", onclick:""},{title:"测试9", onclick:""}]});
+  refreshCache();
+}
+
+//刷新系统缓存
+function refreshCache() {
+  $.messager.progress({
+    title: "提示",
+    msg: "正在刷新后台数据，请稍候...",
+    interval: 60
+  });
+  var url="<%=path%>/cacheRefresh.do";
+  $.ajax({type:"post", async:true, url:url, data:null, dataType:"json",
+    success: function(json) {
+      $.messager.progress("close");
+      if (json.jsonType==1) {
+        $.messager.alert("提示", "缓存刷新成功！<br/>将重载页面。", "info", function(){
+          window.location.href=window.location.href;
+        });
+      } else $.messager.alert("错误", "刷新缓存失败："+json.data+"！", "error");
+    },
+    error: function(errorData) {
+      $.messager.progress("close");
+      $.messager.alert("错误", "刷新缓存失败：</br>"+(errorData?errorData.responseText:"")+"！", "error");
+    }
+  });
 }
 </script>
 </body>
