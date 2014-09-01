@@ -204,7 +204,6 @@ public abstract class AbstractFileUploadController implements Controller, Handle
             afterUploadAllFiles(retl, rqtAttrs, rqtParams);
         } else {
             Map<String, Object> nullM = new HashMap<String, Object>();
-            nullM.put("success", "null");
             nullM.put("warn", "没有文件可以处理。");
             retl.add(nullM);
         }
@@ -212,12 +211,6 @@ public abstract class AbstractFileUploadController implements Controller, Handle
         MappingJackson2JsonView mjjv = new MappingJackson2JsonView();
         response.setHeader("Cache-Control", "no-cache");
         mjjv.setContentType("text/html; charset=UTF-8");
-        for (Map<String, Object> m: retl) {
-            Object o= m.get("fileInfo");
-            Class<?> clazz = o.getClass();
-            Map<String, String> _m = ReflectUtils.Object2Map(clazz, o);
-            m.put("fileInfo", _m);
-        }
         mjjv.setAttributesMap(JsonUtils.Obj2AjaxMap(retl, 0));
         ModelAndView mav = new ModelAndView();
         mav.setView(mjjv);
@@ -236,7 +229,7 @@ public abstract class AbstractFileUploadController implements Controller, Handle
         FileChannel fcOut=null;
         Map<String, String> em = new HashMap<String, String>();
         Map<String, Object> m = new HashMap<String, Object>();
-        m.put("fileInfo", file);
+
         m.put("uploadTime", (new Date()).getTime());
         m.put("size", file.getSize());
         //处理文件名
@@ -318,6 +311,13 @@ public abstract class AbstractFileUploadController implements Controller, Handle
             m.put("success", false);
             return m;
         }
+        //填充返回信息
+        Class<?> clazz = file.getClass();
+        Map<String, String> _m = ReflectUtils.Object2Map(clazz, file);
+        StringBuffer _fileItem = new StringBuffer(_m.get("fileItem"));
+        m.put("orglFilename", _fileItem.substring(5, _fileItem.indexOf("StoreLocation")-2));
+        m.put("FieldName", _fileItem.substring(_fileItem.indexOf("FieldName=")+10));
+        
         try {
             File outputFile = new File(fileName);
             if (!outputFile.isFile()) {
