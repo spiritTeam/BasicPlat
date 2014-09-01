@@ -137,6 +137,7 @@ function initPosition() {//注意，不要在此设置topSegment/mainSegment/foo
   $("#mainTab_top").spiritUtils("setWidthByViewWidth", $("#bar_top").width()-$("#quickFunc_top").spiritUtils("getAbsWidth"));
   absH = $("#mainTab_top").spiritUtils("getSetHeight", $("#bar_top").height()-parseFloat($("#bar_top").css("padding-top"))-parseFloat($("#bar_top").css("padding-bottom"))-parseFloat($("#mainTab_top").css("margin-top"))-parseFloat($("#mainTab_top").css("margin-bottom")));
   $("#mainTab_top").css("height", absH);
+  alert($("#mainTab_top").css("width"));
 };
 function myResize() {
   if (INIT_PARAM.page_width==0) {
@@ -251,7 +252,9 @@ var BJLQ_2 = {
     {title:"测试3", onClick:""/*, normalCss:{"background-color":"yellow"}, selCss:{"background-color":"#589C8D"}*/},
     {title:"12345", onClick:""},
     {title:"测试5", onClick:""}
-  ]
+  ],
+  onClick: function(title, d, c) {
+  }
 };
 /**
     {title:"测试2测试2测试2", onClick:""},

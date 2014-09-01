@@ -26,9 +26,7 @@
   filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#EFF5FF,endColorstr=#E0ECFF,GradientType=0);
   overflow:hidden;
   border:0;
-  border-bottom:2px solid #284318;
-
-  background:url('../../../../images/mainPage/topBanner.jpg');
+  border-bottom:1px solid #284318;
 }
 /* 主体容器 */
 #_main{

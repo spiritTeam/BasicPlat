@@ -29,7 +29,6 @@
   <div><input type=button value="上传ajax" onclick="upload()"/></div>
 </div>
 </div>
-
 <iframe id="tframe" name="tframe" bordercolor=red frameborder="yes" border=1 width="800" height="400" style="width:800px;heigth:400px; boder:1px solid red;"></iframe>
 
 <form method="post" action="/abc/uploadtest.do?attrU=attrU" enctype="multipart/form-data" id="multipleUpload" target="wframe">

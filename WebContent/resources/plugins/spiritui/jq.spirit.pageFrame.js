@@ -10,7 +10,7 @@
  */
 
 (function($) {
-    //本控件内的全局变量
+  //本控件内的全局变量
   var _hScrollbarWidth = 0; //纵向滚动条宽度
   var _wScrollbarWidth = 0; //横向滚动条宽度
   var _topFlag4foot = -1; //脚部，上标志
@@ -115,7 +115,7 @@
     if (_bv.indexOf("msie")==0) {
       var _v = parseFloat(_bv.substring(5));
       if (_v==8) {
-      	window.console.log(_v);
+        window.console.log(_v);
         _ie8H1=$("#_main").css("height"), _ie8W1=$("#_main").css("width");
         if (_ie8H1==_ie8H2&&_ie8W1==_ie8W2) {
           setTimeout(function(){
@@ -202,6 +202,8 @@
       });
     };
     if (INIT_PARAM.myResize) INIT_PARAM.myResize();
+
+    scrollPositioin();    
     //ie兼容
     if (_bv.indexOf("msie")==0) {
       var _v = parseFloat(_bv.substring(5));
@@ -331,9 +333,6 @@
 
     page_width: 0, //主页面的宽度。<0：宽度不控制；0：宽度自适应；>0：宽度值，页面定宽
     page_height: 0, //主页面的高度。<0：高度不控制；0：高度自适应；>0：高度值，页面定高
-
-    win_min_width: 640, //页面最小的高度。当窗口高度小于这个值，不对界面位置及尺寸进行调整。主体部分宽度也照此设置
-    win_min_height: 480, //页面最小的高度。当窗口高度小于这个值，不对界面位置及尺寸进行调整。主体部分高度也照此设置
 
     top_height: 120, //顶部高度
     top_shadow_color: null, //头部阴影颜色
@@ -466,3 +465,29 @@
       -(parseFloat(_view.css("padding-top"))+parseFloat(_view.css("padding-bottom"))+(_view.css("border-top-width")=="medium"?0:parseFloat(_view.css("border-top-width")))+(_view.css("border-bottom-width")=="medium"?0:parseFloat(_view.css("border-bottom-width"))));
   }
 })(jQuery);
+/*
+  //默认属性
+  $.fn.spiritPageFrame.defaults = {
+    //页面中所用到的元素的id，只用到三个Div，另，这三个div应在body层
+    pageObjs: {
+      topId: "topSegment", //头部Id
+      mainId: "mainSegment", //主体Id
+      footId: "footSegment" //尾部Id
+    },
+
+    page_width: 0, //主页面的宽度。<0：宽度不控制；0：宽度自适应；>0：宽度值，页面定宽
+    page_height: 0, //主页面的高度。<0：高度不控制；0：高度自适应；>0：高度值，页面定高
+
+    win_min_width: 640, //页面最小的高度。当窗口高度小于这个值，不对界面位置及尺寸进行调整。主体部分宽度也照此设置
+    win_min_height: 480, //页面最小的高度。当窗口高度小于这个值，不对界面位置及尺寸进行调整。主体部分高度也照此设置
+
+    top_height: 120, //顶部高度
+    top_shadow_color: null, //头部阴影颜色
+    top_peg: false, //是否钉住头部在顶端。false：顶部随垂直滚动条移动(浮动)；true：顶部钉在顶端
+
+    foot_height: 40, //脚部高度
+    foot_peg: false, //是否钉住脚部在底端。false：脚部随垂直滚动条移动(浮动)；true：脚部钉在底端
+
+    iframe_height_flag: 1 //具体功能区域（可能是整个中部，也可能是带左侧导航的中部）的iframe高度标志。1：iframe高度与框架匹配；非1：框架高度适应iframe内部高度(反向适应)
+  };
+*/

@@ -86,16 +86,17 @@
     }
     _options = _options?$.extend(true, {}, _options, options):$.extend(true, {}, $.fn.spiritTabs.defaults, options);
     _options.tabs=newTabs;
+    _options.container=_options.container?$.extend(true, {}, _options.container, options.container):options.container;
     //绑定变量
     $.data(target, 'spiritTabs', _options);
 
-    //对宽高进行处理
-    var _width = _options.width?_options.width:(_options.styleCss?(_options.styleCss.width?_options.styleCss.width:$(target).spiritUtils("getViewWidth")):$(target).spiritUtils("getViewWidth"));
-    var _height = _options.height?_options.height:(_options.styleCss?(_options.styleCss.height?_options.styleCss.height:$(target).spiritUtils("getViewHeight")):$(target).spiritUtils("getViewHeight"));
-    $(target).addClass("tabsContainer").css("overflow", "hidden");
-    if (_options.styleCss&&_options.styleCss!="") $(target).css(_options.styleCss);
-    $(target).spiritUtils("setWidthByViewWidth", _width);
-    $(target).spiritUtils("setHeightByViewHeight", _height);
+    //对容器宽高进行处理
+    if (_options.container) {
+      $(target).addClass("tabsContainer").css("overflow", "hidden");
+      if (_options.container.styleCss&&_options.container.styleCss!="") $(target).css(_options.container.styleCss);
+      if (_options.container.width&&_options.container.width!="") $(target).spiritUtils("setWidthByViewWidth", parseFloat(_options.container.width));
+      if (_options.container.height&&_options.container.height!="") $(target).spiritUtils("setHeightByViewHeight", parseFloat(_options.container.height));
+    }
 
     //处理数据
     //处理交互区类型
@@ -131,15 +132,15 @@
 
       var t_normal_cls = (i==0?"tab_normal_f":(i==(len-1)?"tab_normal_l":"tab_normal"));
       aTab = _options.tabs[i];
-      var to=$(target).find("#"+aTab.id);
       //查找是否已经有了tab
+      var to=$(target).find("#"+aTab.id);
       if (to.length==0) {//未找到
         to=$("<div id='"+aTab.id+"' _index='"+(i)+"'></div>");
         to.appendTo(target);
       }
       to.html("").attr("class", "");
 
-      to.addClass("tab").addClass("tab_normal").addClass(t_normal_cls);
+      to.addClass("tab").addClass(t_normal_cls);
       if (aTab.normalCss&&aTab.normalCss!="") to.css(aTab.normalCss);
       var titleDiv=$("<div id='t_"+aTab.id+"'>"+aTab.title+"</div>").addClass("tab_title");
       titleDiv.css({"height":(parseFloat(to.css("font-size"))+2), "vertical-align":"bottom", "valign":"bottom"});
@@ -235,7 +236,6 @@
           }
           if (tabData.normalCss&&tabData.normalCss!="") $(aTab).css(tabData.normalCss);
         }
-
         tabData = $(this).data("tabData");
         //设置选中
         $(this).addClass("tab_sel");
@@ -278,8 +278,11 @@
           _rm.spiritUtils("setWidthByViewWidth", _options.mutualStyle.width);
           _rm.spiritUtils("setHeightByViewHeight", $(target).height());
         }
-        //调用用户定义的点击
-        if (tabData.onClick) tabData.onClick($(this));
+        //调用用户定义点击事件
+        if (tabData.onClick) tabData.onClick($(this)); //该页签的点击事件
+        else { //调用总的点击事件
+        	if (_options.onClick) _options.onClick(tabData.title, tabData, this);
+        }
       });
     }
   }
@@ -295,56 +298,64 @@
   };
   //插件方法，参考eaqyUi的写法
   $.fn.spiritTabs.methods = {
+      	
   };
 
   //默认属性
   $.fn.spiritTabs.defaults = {
-    id: null, //标识
-    mutualType: false, //两页标签的交互区域的处理模式，若为false，则无交互区域，用css处理交互，若为true则有交互区域，交互用图片来处理
-    mutualStyle: { //交互区样式，当mutualType=true生效
-      width: "10px", //交互区宽度
-      firstCss:"",    //最左边未选中交互区样式，要是json格式的
-      firstSelCss:"", //最左边选中交互区样式，要是json格式的
-      lastCss:"",    //最右边未选中交互区样式，要是json格式的
-      lastSelCss:"", //最右边选中交互区样式，要是json格式的
-      middleLCss:"",    //中间未选中左交互区样式，要是json格式的
-      middleRCss:"",    //中间未选中右交互区样式，要是json格式的
-      middleSelLCss:"", //中间选中左交互区样式，要是json格式的
-      middleSelRCss:""  //中间未选中右交互区样式，要是json格式的
+    id: null,           //标识
+    mutualType: false,  //两页标签的交互区域的处理模式，若为false，则无交互区域，用css处理交互，若为true则有交互区域，交互用图片来处理
+    mutualStyle: {       //交互区样式，当mutualType=true生效
+      width: "10px",     //交互区宽度
+      firstCss:"",       //最左边未选中交互区样式，要是json格式的
+      firstSelCss:"",    //最左边选中交互区样式，要是json格式的
+      lastCss:"",        //最右边未选中交互区样式，要是json格式的
+      lastSelCss:"",     //最右边选中交互区样式，要是json格式的
+      middleLCss:"",     //中间未选中左交互区样式，要是json格式的
+      middleRCss:"",     //中间未选中右交互区样式，要是json格式的
+      middleSelLCss:"",  //中间选中左交互区样式，要是json格式的
+      middleSelRCss:""   //中间未选中右交互区样式，要是json格式的
     },
-    defaultTab: { //默认的页签规则，若每个页标签不设定自己的规则，则所有页签的规则以此为准
+    defaultTab: {        //默认的页签规则，若每个页标签不设定自己的规则，则所有页签的规则以此为准
       maxTextLength: 100,//最大宽度:大于此值,遮罩主
-      normalCss: "", //常态css样式(未选中，鼠标未悬停)，可包括边框/字体/背景，注意，要是json格式的
-      mouseOverCss: "", //鼠标悬停样式，可包括边框/字体/背景，注意，要是json格式的
-      selCss: "" //选中后样式，可包括边框/字体/背景，注意，要是json格式的
+      normalCss: "",     //常态css样式(未选中，鼠标未悬停)，可包括边框/字体/背景，注意，要是json格式的
+      mouseOverCss: "",  //鼠标悬停样式，可包括边框/字体/背景，注意，要是json格式的
+      selCss: ""         //选中后样式，可包括边框/字体/背景，注意，要是json格式的
     },
-    tabs:[] //页标签数组
+    tabs:[], //页标签数组
+    onClick:function(title, tabOpts, tabDomObj){}
   };
 })(jQuery);
 /**
   $.fn.spiritTabs.defaults = {
-    id: null, //标识
-    //div容器的css，通过其定义容器的位置，边框等信息，注意，要是json格式的
-    styleCss: {"border": "0", "border-top":"2px solid #2F4A1F", "border-left":"1px solid #589C8D", "border-right":"1px solid #589C8D"},
-    width: "400px", //div容器的宽度，若无此信息，div容器宽度以styleCss为准，否则以此信息为div容器宽度
-    height: "30px", //div容器的高度，若无此信息，div容器宽度以styleCss为准，否则以此信息为div容器高度
-    mutualType: false, //两页标签的交互区域的处理模式，若为false，则无交互区域，用css处理交互，若为true则有交互区域，交互用图片来处理
-    mutualStyle: { //交互区样式，当mutualType=true生效
-      width: "10px", //交互区宽度
-      firstSelCss:"", //最左边选中交互区样式，要是json格式的
-      lastCss:"",    //最右边未选中交互区样式，要是json格式的
-      lastSelCss:"", //最右边选中交互区样式，要是json格式的
+    id: null,           //标识
+    container: {        //容器
+      styleCss: {},     //容器样式，要是json格式的
+      width: "400px",   //容器的宽度，若无此信息，容器宽度以styleCss为准，否则以此信息为准
+      height: "30px",   //容器的高度，若无此信息，容器宽高以styleCss为准，否则以此信息为准
+    },
+    mutualType: false,  //两页标签的交互区域的处理模式，若为false，则无交互区域，用css处理交互，若为true则有交互区域，交互用图片来处理
+    mutualStyle: {      //交互区样式，当mutualType=true生效
+      width: "10px",    //交互区宽度
+      firstSelCss:"",   //最左边选中交互区样式，要是json格式的
+      lastCss:"",       //最右边未选中交互区样式，要是json格式的
+      lastSelCss:"",    //最右边选中交互区样式，要是json格式的
       middleLCss:"",    //中间未选中左交互区样式，要是json格式的
       middleRCss:"",    //中间未选中右交互区样式，要是json格式的
       middleSelLCss:"", //中间选中左交互区样式，要是json格式的
       middleSelRCss:""  //中间未选中右交互区样式，要是json格式的
     },
-    defaultTab: { //默认的页签规则，若每个页标签不设定自己的规则，则所有页签的规则以此为准
+    defaultTab: {       //默认的页签规则，若每个页标签不设定自己的规则，则所有页签的规则以此为准
       maxTextLength: 30,//最大宽度:大于此值,遮罩主
-      normalCss: "", //常态css样式(未选中，鼠标未悬停)，可包括边框/字体/背景，注意，要是json格式的
+      normalCss: "",    //常态css样式(未选中，鼠标未悬停)，可包括边框/字体/背景，注意，要是json格式的
       mouseOverCss: "", //鼠标悬停样式，可包括边框/字体/背景，注意，要是json格式的
-      selCss: "", //选中后样式，可包括边框/字体/背景，注意，要是json格式的
+      selCss: ""        //选中后样式，可包括边框/字体/背景，注意，要是json格式的
     },
-    tabs:[] //页标签数组
+    tabs:[{ //页标签数组
+      title:"",         //页签标题
+      onClick:          //单击事件，若再此设置了单击事件，则总单击事件失效
+    }],
+
+    onClick:function(title, tabOpts){} //总单击事件
   };
  */

@@ -71,6 +71,8 @@ body {
 
 #mainTab_top {
   position:absolute; top:0; left:0;
+  background: url('../images/mainPage/mainTabBanner.jpg') repeat-x;
+  background-color:transparent;
 }
 
 #quickFunc_top {
