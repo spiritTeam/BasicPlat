@@ -15,6 +15,10 @@ public class SimpleFileUploadController extends AbstractFileUploadController{
     @Override
     public Map<String, Object> afterUploadOneFileOnSuccess(Map<String, Object> m, Map<String, Object> a, Map<String, Object> p) {
         //System.out.println(m.toString());
+        //判断类型
+        if (doc) importDoc()
+        if (excel) importExcel();
+        if (db) ？？
         return null;
     }
 
