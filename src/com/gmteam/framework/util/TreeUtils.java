@@ -92,7 +92,7 @@ public abstract class TreeUtils {
                 }
                 _fSize = forest.size();
             }
-            //System.out.println("=================="+n);
+
             //处理完森林，下面从森林中，去除那些错误的结点，这里有一个默认的逻辑，pid=0的是正常的结点，这个在下一个版本修改吧
             for (int i=forest.size()-1; i>=0; i--) {
                 TreeNode<TreeNodeBean> tn = forest.get(i);

@@ -20,11 +20,15 @@ import com.gmteam.framework.component.login.pojo.UserLogin;
 import com.gmteam.framework.core.cache.CacheEle;
 import com.gmteam.framework.core.cache.SystemCache;
 import com.gmteam.framework.core.model.tree.TreeNode;
+import com.gmteam.framework.core.web.SessionLoader;
 
 @Controller
 public class LoginController {
     @Resource
     private UgaUserService ugaUserService;
+
+    @Resource
+    private SessionLoader sessionLoader;
 
     @Resource
     private UgaAuthorityService ugaAuthorityService;
@@ -38,6 +42,8 @@ public class LoginController {
     public @ResponseBody Map<String,Object> Login(UserLogin userLogin,HttpServletRequest req) {
         Map<String,Object> retObj = new HashMap<String,Object>();
         try {
+            HttpSession session = req.getSession();
+            //用户处理
             UgaUser user = (UgaUser)ugaUserService.getUserByLoginName(userLogin.getLoginName());
             if(user==null){
                 retObj.put("type", "2");
@@ -47,7 +53,6 @@ public class LoginController {
                 retObj.put("data", "密码不匹配！");
             }else{
                 //设置用户Session缓存
-                HttpSession session = req.getSession();
                 UserLogin oldUserLogin = ((CacheEle<Map<String, UserLogin>>) SystemCache.getCache(FConstants.USERSESSIONMAP)).getContent().remove(user.getUserId());
                 userLogin.setSessionId(session.getId());
                 ((CacheEle<Map<String, UserLogin>>) SystemCache.getCache(FConstants.USERSESSIONMAP)).getContent().put(user.getUserId(), userLogin);
@@ -59,6 +64,9 @@ public class LoginController {
                 retObj.put("type", "1");
                 retObj.put("data", "登录成功");
             }
+            //SessionLoader处理
+            sessionLoader.setSession(session);
+            sessionLoader.loader();
         } catch (Exception e) {
             e.printStackTrace();
             retObj.put("type", "-1");

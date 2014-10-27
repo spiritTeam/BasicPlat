@@ -1,5 +1,6 @@
 eclipse.preferences.version=1
 encoding//WebContent/WEB-INF/database.properties=UTF-8
+encoding//WebContent/WEB-INF/gisSmConfig.properties=UTF-8
 encoding//WebContent/component/moduleManage/moduleMainPage.jsp=UTF-8
 encoding//WebContent/error.jsp=UTF-8
 encoding//doc/MySqlDDL.sql=UTF-8

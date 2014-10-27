@@ -47,7 +47,14 @@ public class InitSysConfigListener implements ServletContextListener {
             ServletContext sc = event.getServletContext();
 
             //装载系统服务器路径到缓存中
-            SystemCache.setCache(new CacheEle<String>(FConstants.APPOSPATH, "系统服务器路径", sc.getRealPath("/")));
+//            SystemCache.setCache(
+//                new CacheEle<ServletContext>(FConstants.SERVLET_CONTEXT, "服务上下文环境", sc)
+//            );
+
+            //装载系统服务器路径到缓存中
+            SystemCache.setCache(
+                new CacheEle<String>(FConstants.APPOSPATH, "系统服务器路径", sc.getRealPath("/"))
+            );
 
             //用户Session缓存，用于处理不同用户的登录
             SystemCache.setCache(

@@ -111,7 +111,7 @@ var INIT_PARAM = {
   foot_peg: false, //是否钉住脚部在底端。false：脚部随垂直滚动条移动(浮动)；true：脚部钉在底端
   page_width: 0,
   page_height: 4000,
-  top_peg: false,
+  top_peg: true,
   myInit: initPosition,
   myResize: myResize,
   myScroll: myScroll

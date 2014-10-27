@@ -167,7 +167,7 @@ function turnSubApp(id, url,children) {
           title:this.title
         });
         thisAccordion = $("#navigate").accordion("getPanel", $("#navigate").accordion("panels").length-1);
-       //用于绑定导航栏的图标
+        //用于绑定导航栏的图标
         //$(thisAccordion).parent().find(".panel-icon").css("background-image", "url('<%=path%>/"+this.icon+"')");
         newTree = window.document.createElement("div");
         $(newTree).attr("class", "easyui-tree tree").attr("id", "mTree"+idx);
@@ -177,7 +177,7 @@ function turnSubApp(id, url,children) {
         idx++;
         //建立分支
         $("#mTree"+(idx-1)).tree({data:children});
-      //加载数据后，处理图标、处理onclick事件
+        //加载数据后，处理图标、处理onclick事件
         $("#left").find(".easyui-tree").each(function(i) {
           $(this).tree({
             onSelect: function(node) {

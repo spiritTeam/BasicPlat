@@ -108,7 +108,6 @@ public abstract class FileUtils {
                 try {fileOutputStream.close();}catch(IOException e) {e.printStackTrace();}
             }
         }
-    
     }
 
     /**

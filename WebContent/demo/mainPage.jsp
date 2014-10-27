@@ -103,7 +103,7 @@ $(function() {
     return ;
   };
   //设置界面主功能页签
-  $("#mainTab_top").spiritTabs(BJLQ_2);
+  $("#mainTab_top").spiritTabs(testBar2);
 });
 
 //-界面位置调整begin-----------------------------------------------------------------

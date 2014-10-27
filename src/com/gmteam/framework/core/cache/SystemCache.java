@@ -1,10 +1,10 @@
 package com.gmteam.framework.core.cache;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.gmteam.framework.util.JsonUtils;
 
@@ -14,7 +14,7 @@ import com.gmteam.framework.util.JsonUtils;
  */
 public class SystemCache {
     /** cache的主体，一个线程安全的key-value */
-    public static Map<String, CacheEle<?>> CacheContent = Collections.synchronizedMap(new HashMap<String, CacheEle<?>>());
+    public static Map<String, CacheEle<?>> CacheContent = new ConcurrentHashMap<String, CacheEle<?>>();
 
     private SystemCache(){};
 

@@ -2,8 +2,8 @@ package com.gmteam.framework;
 
 public class FConstants {
     //-平台参数常量--------------------------------------------------------------------
-    public final static String PLATFORM_NAME ="基础平台";//系统名称
-    public final static String APPOSPATH="AppOSPath";//服务器中，本系统根路径
+    public final static String PLATFORM_NAME ="基础平台"; //系统名称
+    public final static String APPOSPATH="AppOSPath"; //服务器中，本系统根路径
 
     //-用户及用户管理相关常量-----------------------------------------------------------
     //用户Session缓存，用于处理不同用户的登录
