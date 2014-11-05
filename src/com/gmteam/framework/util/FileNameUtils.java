@@ -99,6 +99,7 @@ public abstract class FileNameUtils {
      * @return 文件扩展名
      */
     public static String getExt(String localFullPath){
+        if (localFullPath==null) return "";
         int lastDirPos = localFullPath.lastIndexOf(".");
         if (lastDirPos!=-1) return localFullPath.substring(lastDirPos);
         else return "";

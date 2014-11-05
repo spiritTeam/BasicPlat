@@ -17,6 +17,7 @@ import com.gmteam.framework.UGA.UgaModule;
 import com.gmteam.framework.UGA.UgaUser;
 import com.gmteam.framework.UGA.UgaUserService;
 import com.gmteam.framework.component.login.pojo.UserLogin;
+import com.gmteam.framework.component.login.service.LoginService;
 import com.gmteam.framework.core.cache.CacheEle;
 import com.gmteam.framework.core.cache.SystemCache;
 import com.gmteam.framework.core.model.tree.TreeNode;
@@ -26,12 +27,13 @@ import com.gmteam.framework.core.web.SessionLoader;
 public class LoginController {
     @Resource
     private UgaUserService ugaUserService;
-
     @Resource
-    private SessionLoader sessionLoader;
-
+    private SessionLoader sessionLoader1;
     @Resource
     private UgaAuthorityService ugaAuthorityService;
+    @Resource
+    private LoginService loginService;
+
     /**
      * 用户登录
      * @param userLogin 用户登录信息
@@ -39,34 +41,46 @@ public class LoginController {
      * @return 返回登录信息对象
      */
     @RequestMapping("login.do")
-    public @ResponseBody Map<String,Object> Login(UserLogin userLogin,HttpServletRequest req) {
+    public @ResponseBody Map<String,Object> Login(UserLogin userLogin, HttpServletRequest req) {
         Map<String,Object> retObj = new HashMap<String,Object>();
         try {
             HttpSession session = req.getSession();
-            //用户处理
-            UgaUser user = (UgaUser)ugaUserService.getUserByLoginName(userLogin.getLoginName());
-            if(user==null){
-                retObj.put("type", "2");
-                retObj.put("data", "没有登录名为["+userLogin.getLoginName()+"]的用户！");
-            }else if(!userLogin.getPassword().equals(user.getPassword())){
-                retObj.put("type", "2");
-                retObj.put("data", "密码不匹配！");
-            }else{
-                //设置用户Session缓存
-                UserLogin oldUserLogin = ((CacheEle<Map<String, UserLogin>>) SystemCache.getCache(FConstants.USERSESSIONMAP)).getContent().remove(user.getUserId());
-                userLogin.setSessionId(session.getId());
-                ((CacheEle<Map<String, UserLogin>>) SystemCache.getCache(FConstants.USERSESSIONMAP)).getContent().put(user.getUserId(), userLogin);
-                //写用户信息
-                session.setAttribute(FConstants.SESSION_USER, user);
-                //写用户权限信息
-                TreeNode<UgaModule> um = ugaAuthorityService.getUserModuleAuthByUserId(user.getUserId());
-                session.setAttribute(FConstants.SESSION_USERAUTHORITY, um);
-                retObj.put("type", "1");
-                retObj.put("data", "登录成功");
+            Map<String, Object> beforeM = loginService.beforeUserLogin(req);
+            if (beforeM!=null&&beforeM.get("success")!=null) {
+                //用户处理
+                UgaUser user = (UgaUser)ugaUserService.getUserByLoginName(userLogin.getLoginName());
+                if(user==null){
+                    retObj.put("type", "2");
+                    retObj.put("data", "没有登录名为["+userLogin.getLoginName()+"]的用户！");
+                }else if(!userLogin.getPassword().equals(user.getPassword())){
+                    retObj.put("type", "2");
+                    retObj.put("data", "密码不匹配！");
+                }else{
+                    Map<String, Object> afterM = loginService.afterUserLoginOk(user, req);
+                    if (afterM!=null&&afterM.get("success")!=null) {
+                        //设置用户Session缓存
+                        UserLogin oldUserLogin = ((CacheEle<Map<String, UserLogin>>) SystemCache.getCache(FConstants.USERSESSIONMAP)).getContent().remove(user.getUserId());
+                        userLogin.setSessionId(session.getId());
+                        ((CacheEle<Map<String, UserLogin>>) SystemCache.getCache(FConstants.USERSESSIONMAP)).getContent().put(user.getUserId(), userLogin);
+                        //写用户信息
+                        session.setAttribute(FConstants.SESSION_USER, user);
+                        //写用户权限信息
+                        TreeNode<UgaModule> um = ugaAuthorityService.getUserModuleAuthByUserId(user.getUserId());
+                        session.setAttribute(FConstants.SESSION_USERAUTHORITY, um);
+                        retObj.put("type", "1");
+                        retObj.put("data", "登录成功");
+                    } else {
+                        retObj.put("type", "-1");
+                        retObj.put("data", afterM);
+                    }
+                }
+                //SessionLoader处理
+                sessionLoader1.setSession(session);
+                sessionLoader1.loader();
+            } else {
+                retObj.put("type", "-1");
+                retObj.put("data", beforeM);
             }
-            //SessionLoader处理
-            sessionLoader.setSession(session);
-            sessionLoader.loader();
         } catch (Exception e) {
             e.printStackTrace();
             retObj.put("type", "-1");

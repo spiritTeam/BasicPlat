@@ -175,6 +175,7 @@ public abstract class AbstractFileUploadController implements Controller, Handle
                     /*
                      *调用虚方法，处理每个文件的后续部分
                      */
+                    oneFileDealRetMap.remove("success");
                     Map<String, Object> myDealRetMap = afterUploadOneFileOnSuccess(oneFileDealRetMap, rqtAttrs, rqtParams);
                     if (myDealRetMap!=null) {
                         boolean mySuccess = true;
@@ -183,6 +184,7 @@ public abstract class AbstractFileUploadController implements Controller, Handle
                         } catch(Exception e) {
                             mySuccess = true;
                         }
+                        oneFileDealRetMap.put("success", "TRUE");
                         if (!mySuccess) {
                             boolean myOnFaildBreak=false;
                             try {
@@ -386,11 +388,12 @@ public abstract class AbstractFileUploadController implements Controller, Handle
     /**
      * 当上传所有文件后，调用此方法。注意，如果没有任何上传文件，也可以调用此方法，处理后续逻辑，此时fl为空。
      * @param fl 上传文件处理结果的说明列表，每个上传文件一个处理结果。（如果只上传一个文件，此列表中只有一个元素，如果没有任何上传文件此值为null）。<br/>
-     * @param rqtAttrs request的属性
-     * @param rqtParams request的参数
      * 列表中的元素为Map对象，其中的信息如下包括：success——是否上传成功;storeFilename——保存在服务器端的文件名;fileInfo——上传文件的信息，类型为MultipartFile;<br/>
      * 若上传失败，还会有error信息;<br/>
      * 警告信息会存储在warn信息中。
+     * 此列表会被以json形式返回到页面中。
+     * @param rqtAttrs request的属性
+     * @param rqtParams request的参数
      */
     public abstract void afterUploadAllFiles(List<Map<String, Object>> fl, Map<String, Object> rqtAttrs, Map<String, Object> rqtParams);
 }
