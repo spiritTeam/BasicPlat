@@ -33,7 +33,7 @@ public class LoginController {
     private UgaAuthorityService ugaAuthorityService;
     @Resource
     private LoginService loginService;
-
+    
     /**
      * 用户登录
      * @param userLogin 用户登录信息
@@ -48,7 +48,7 @@ public class LoginController {
             Map<String, Object> beforeM = loginService.beforeUserLogin(req);
             if (beforeM!=null&&beforeM.get("success")!=null) {
                 //用户处理
-                UgaUser user = (UgaUser)ugaUserService.getUserByLoginName(userLogin.getLoginName());
+                UgaUser user = ugaUserService.getUserByLoginName(userLogin.getLoginName());
                 if(user==null){
                     retObj.put("type", "2");
                     retObj.put("data", "没有登录名为["+userLogin.getLoginName()+"]的用户！");
@@ -68,11 +68,10 @@ public class LoginController {
                         TreeNode<UgaModule> um = ugaAuthorityService.getUserModuleAuthByUserId(user.getUserId());
                         session.setAttribute(FConstants.SESSION_USERAUTHORITY, um);
                         retObj.put("type", "1");
-                        retObj.put("data", "登录成功");
                     } else {
                         retObj.put("type", "-1");
-                        retObj.put("data", afterM);
                     }
+                    retObj.put("data", afterM);
                 }
                 //SessionLoader处理
                 sessionLoader1.setSession(session);

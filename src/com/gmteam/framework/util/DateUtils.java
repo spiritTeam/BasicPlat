@@ -204,6 +204,7 @@ public abstract class DateUtils {
                 Date date = (Date) formatter.parse(strDateTime);
                 return date;
             } catch (ParseException e) {
+                e.printStackTrace();
             }
         }
         return null;
