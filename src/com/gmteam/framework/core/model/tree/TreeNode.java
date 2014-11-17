@@ -614,7 +614,7 @@ public class TreeNode<T extends TreeNodeBean> extends BaseObject implements Clon
      */
     public TreeNode<T> clone() throws CloneNotSupportedException {
         T cloneEntity = null;
-        if (tnEntity!=null) cloneEntity = this.tnEntity.clone();
+        if (tnEntity!=null) cloneEntity = (T)this.tnEntity.clone();
         TreeNode<T> cloneTn = new TreeNode<T>(cloneEntity);
         cloneTn.setAttributes((HashMap<String, Object>)((HashMap<String, Object>)this.getAttributes()).clone());
         cloneTn.setParent(null);

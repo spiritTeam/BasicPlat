@@ -25,7 +25,7 @@ public abstract class UiTree<T extends TreeNodeBean> extends TreeNode<T> {
      * @throws CloneNotSupportedException 
      */
     public UiTree(TreeNode<? extends TreeNodeBean> tn) throws CloneNotSupportedException {
-        T tnb = tn.getTnEntity().clone();
+        T tnb = (T)tn.getTnEntity().clone();
         this.setTnEntity(tnb);
     }
 

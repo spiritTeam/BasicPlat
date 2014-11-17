@@ -28,7 +28,7 @@ public class LoginController {
     @Resource
     private UgaUserService ugaUserService;
     @Resource
-    private SessionLoader sessionLoader1;
+    private SessionLoader sessionLoader;
     @Resource
     private UgaAuthorityService ugaAuthorityService;
     @Resource
@@ -49,17 +49,17 @@ public class LoginController {
             if (beforeM!=null&&beforeM.get("success")!=null) {
                 //用户处理
                 UgaUser user = ugaUserService.getUserByLoginName(userLogin.getLoginName());
-                if(user==null){
+                if (user==null) {
                     retObj.put("type", "2");
                     retObj.put("data", "没有登录名为["+userLogin.getLoginName()+"]的用户！");
-                }else if(!userLogin.getPassword().equals(user.getPassword())){
+                } else if(!userLogin.getPassword().equals(user.getPassword())) {
                     retObj.put("type", "2");
                     retObj.put("data", "密码不匹配！");
-                }else{
+                } else {
                     Map<String, Object> afterM = loginService.afterUserLoginOk(user, req);
                     if (afterM!=null&&afterM.get("success")!=null) {
                         //设置用户Session缓存
-                        UserLogin oldUserLogin = ((CacheEle<Map<String, UserLogin>>) SystemCache.getCache(FConstants.USERSESSIONMAP)).getContent().remove(user.getUserId());
+                        UserLogin oldUserLogin = ((CacheEle<Map<String, UserLogin>>)SystemCache.getCache(FConstants.USERSESSIONMAP)).getContent().remove(user.getUserId());
                         userLogin.setSessionId(session.getId());
                         ((CacheEle<Map<String, UserLogin>>) SystemCache.getCache(FConstants.USERSESSIONMAP)).getContent().put(user.getUserId(), userLogin);
                         //写用户信息
@@ -74,8 +74,8 @@ public class LoginController {
                     retObj.put("data", afterM);
                 }
                 //SessionLoader处理
-                sessionLoader1.setSession(session);
-                sessionLoader1.loader();
+                sessionLoader.setSession(session);
+                sessionLoader.loader();
             } else {
                 retObj.put("type", "-1");
                 retObj.put("data", beforeM);
@@ -96,7 +96,7 @@ public class LoginController {
     public @ResponseBody Map<String,Object> logout(HttpServletRequest req){
         Map<String, Object> retObj = new HashMap<String, Object>();
         try {
-            //清除用户Session缓存
+            //清除全局变量中的Session
             Map<String, UserLogin> userSessionMap = ((CacheEle<Map<String, UserLogin>>)SystemCache.getCache(FConstants.USERSESSIONMAP)).getContent();
             HttpSession session = req.getSession();
             UgaUser user = (UgaUser)session.getAttribute(FConstants.SESSION_USER);
@@ -104,7 +104,8 @@ public class LoginController {
             if (userLogin!=null&&userLogin.getSessionId().equals(session.getId())) userSessionMap.remove(user.getUserId());
             //清除Session
             session.removeAttribute(FConstants.SESSION_USER);
-            //清除全局变量中的Session
+            //清除权限
+            session.removeAttribute(FConstants.SESSION_USERAUTHORITY);
             retObj.put("type", "1");
             retObj.put("data", null);
         } catch(Exception e) {

@@ -1,6 +1,6 @@
 package com.gmteam.framework;
 
-public class FConstants {
+public abstract class FConstants {
     //-平台参数常量--------------------------------------------------------------------
     public final static String PLATFORM_NAME ="基础平台"; //系统名称
     public final static String APPOSPATH="AppOSPath"; //服务器中，本系统根路径

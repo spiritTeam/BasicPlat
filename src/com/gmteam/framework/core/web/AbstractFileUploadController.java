@@ -17,8 +17,10 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.fileupload.FileItem;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -29,6 +31,7 @@ import com.gmteam.framework.ext.io.StringPrintWriter;
 import com.gmteam.framework.util.FileNameUtils;
 import com.gmteam.framework.util.JsonUtils;
 import com.gmteam.framework.util.ReflectUtils;
+import com.gmteam.framework.util.StringUtils;
 
 import org.springframework.web.servlet.mvc.Controller;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
@@ -154,7 +157,7 @@ public abstract class AbstractFileUploadController implements Controller, Handle
             Iterator<String> iterator=files.keySet().iterator();
             int fIndex=0;
             while (iterator.hasNext()) {
-                MultipartFile file = files.get(iterator.next());
+                CommonsMultipartFile file = (CommonsMultipartFile)files.get(iterator.next());
                 if (file.getOriginalFilename()==null||file.getOriginalFilename().trim().equals("")) continue;
                 //处理文件名
                 String storeFilename = null;
@@ -172,6 +175,8 @@ public abstract class AbstractFileUploadController implements Controller, Handle
                 Map<String, Object> oneFileDealRetMap = saveMultipartFile2File(file, storeFilename);
                 boolean isBreak=false;
                 if ((""+oneFileDealRetMap.get("success")).equalsIgnoreCase("TRUE")) {//处理成功
+                    //删除临时文件
+                    delTempFile(file.getFileItem());
                     /*
                      *调用虚方法，处理每个文件的后续部分
                      */
@@ -367,9 +372,30 @@ public abstract class AbstractFileUploadController implements Controller, Handle
             if (in!=null) {
                 try{in.close();}catch(IOException e){e.printStackTrace();}
             }
+            //删除临时文件
+            file.getOriginalFilename();
         }
     }
 
+    private boolean delTempFile(FileItem fi) {
+        String fiStr = fi.toString();
+        String[] ss = StringUtils.splitString(fiStr, ",");
+        fiStr = null;
+        for (int i=0; i<ss.length; i++) {
+            if (ss[i].startsWith(" StoreLocation=")) {
+                fiStr = ss[i];
+                break;
+            }
+        }
+        if (fiStr!=null) {
+            ss = StringUtils.splitString(fiStr, "=");
+            fiStr = ss[1];
+            File f = new File(fiStr);
+            return f.delete();
+        }
+        return false;
+    }
+    
     /**
      * 当成功上传一个文件后，调用此方法。
      * @param m 成功上传的文件的信息，包括：success——是否上传成功;storeFilename——保存在服务器端的文件名;fileInfo——上传文件的信息，类型为MultipartFile
