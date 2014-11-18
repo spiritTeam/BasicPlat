@@ -197,15 +197,11 @@ public abstract class DateUtils {
      * @return 成功则返回一个Date句柄，否则返回null
      *   注：调用GregorianCalendar的setTime(Datedate)函数可将Date对象转化为 GregorianCalendar对象
      */
-    public final static Date getDateTime(String patten, String strDateTime) {
+    public final static Date getDateTime(String patten, String strDateTime) throws ParseException {
         if (null!=strDateTime) {
             SimpleDateFormat formatter = new SimpleDateFormat(patten);
-            try {
-                Date date = (Date) formatter.parse(strDateTime);
-                return date;
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+            Date date = (Date) formatter.parse(strDateTime);
+            return date;
         }
         return null;
     }
