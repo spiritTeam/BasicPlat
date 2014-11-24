@@ -41,25 +41,27 @@ public class UgaCacheService {
      */
     public Map<String, Object> makeCacheUser() throws Exception {
         Map<String, Object> ret = new HashMap<String, Object>();
-//        List<User> list = userDao.queryForList("getUserList");
-        List<User> list=null;
-        try {
-            list = userDao.queryForList("getUserList");
-        } catch(Exception e) {
-            e.printStackTrace();
-            list = userDao.queryForList("getUserList");
-        }
-        list = userDao.queryForList("getUserList");
-        ret.put("list", list);
-        Map<String, User> idMap = new HashMap<String, User>();
-        Map<String, User> loginMap = new HashMap<String, User>();
-        for (User user : list) {
-            idMap.put(user.getUserId(), user);
-            loginMap.put(user.getLoginName(), user);
-        }
-        ret.put("idMap", idMap);
-        ret.put("loginMap", loginMap);
-        return ret;
+        List<User> list = userDao.queryForList("getUserList");
+//        List<User> list=null;
+//        try {
+//            list = userDao.queryForList("getUserList");
+//        } catch(Exception e) {
+//            e.printStackTrace();
+//            list = userDao.queryForList("getUserList");
+//        }
+//        list = userDao.queryForList("getUserList");
+        if (list!=null&&list.size()>0) {
+            ret.put("list", list);
+            Map<String, User> idMap = new HashMap<String, User>();
+            Map<String, User> loginMap = new HashMap<String, User>();
+            for (User user : list) {
+                idMap.put(user.getUserId(), user);
+                loginMap.put(user.getLoginName(), user);
+            }
+            ret.put("idMap", idMap);
+            ret.put("loginMap", loginMap);
+            return ret;
+        } else return null;
     }
 
     /**
@@ -71,23 +73,30 @@ public class UgaCacheService {
     public Map<String, Object> makeCacheModule() throws Exception {
         Map<String, Object> ret = new HashMap<String, Object>();
         List<Module> list = moduleDao.queryForList("getModuleList");
-        ret.put("list", list);
-        Map<String, Object> m = TreeUtils.convertFromList(list);
-        List<TreeNode<Module>> mf = (List<TreeNode<Module>>)m.get("forest");
-        if (mf!=null) {
-            Module rootB = new Module();
-            rootB.setId("-1");
-            rootB.setParentId("0");
-            rootB.setNodeName("模块");
-            TreeNode<Module> root = new TreeNode<Module>(rootB);
-            root.setChildren(mf);
-            ret.put("tree", root);
-            Map<String, TreeNode<Module>> treeIndexMap = new HashMap<String, TreeNode<Module>>();
-            TreeUtils.setTreeIndexMap(mf, treeIndexMap);
-            ret.put("treeIndexMap", treeIndexMap);
-        }
-        ret.put("errors", m.get("errors"));
-        return ret;
+        if (list!=null&&list.size()>0) {
+            ret.put("list", list);
+            Map<String, Object> m = TreeUtils.convertFromList(list);
+            if (m!=null&&m.size()>0) {
+                List<TreeNode<Module>> mf = (List<TreeNode<Module>>)m.get("forest");
+                if (mf!=null) {
+                    Module rootB = new Module();
+                    rootB.setId("-1");
+                    rootB.setParentId("0");
+                    rootB.setNodeName("模块");
+                    TreeNode<Module> root = new TreeNode<Module>(rootB);
+                    root.setChildren(mf);
+                    ret.put("tree", root);
+                    Map<String, TreeNode<Module>> treeIndexMap = new HashMap<String, TreeNode<Module>>();
+                    TreeUtils.setTreeIndexMap(mf, treeIndexMap);
+                    ret.put("treeIndexMap", treeIndexMap);
+                }
+                ret.put("errors", m.get("errors"));
+                return ret;
+            } else {
+                ret.put("errors", "无法将模块信息转化为模块树！");
+                return ret;
+            }
+        } else return null;
     }
 
     /**
@@ -101,7 +110,7 @@ public class UgaCacheService {
         CacheEle<?> mc = SystemCache.getCache(UgaConstants.CATCH_UGA_MODULE);
         TreeNode<Module> tnM = null;
         if (mc!=null&&mc.getContent()!=null) tnM = (TreeNode<Module>)((Map<String, Object>)SystemCache.getCache(UgaConstants.CATCH_UGA_MODULE).getContent()).get("tree");
-        if (tnM==null||tnM.getAllCount()==0) return ret;
+        if (tnM==null||tnM.getAllCount()==0) return null;
         List<TreeNode<Module>> forest = new ArrayList<TreeNode<Module>>();
         forest.add(tnM);
 

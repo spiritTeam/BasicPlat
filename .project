@@ -45,4 +45,11 @@
 		<nature>org.eclipse.wst.common.project.facet.core.nature</nature>
 		<nature>org.eclipse.wst.jsdt.core.jsNature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>Color.class</name>
+			<type>1</type>
+			<locationURI>PROJECT_LOC/target/test-classes/test/Color.class</locationURI>
+		</link>
+	</linkedResources>
 </projectDescription>

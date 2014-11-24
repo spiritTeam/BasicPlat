@@ -65,12 +65,7 @@ public class InitSysConfigListener implements ServletContextListener {
             dependencyInject(sc);
             //缓存框架存储
             if (cachePool!=null) {
-                Map<String,CatchLifecycle> catchMap = new TreeMap<String,CatchLifecycle>();
-                catchMap.putAll(cachePool.getCaches());
-                for (String key : catchMap.keySet()) {
-                    CatchLifecycle ic = catchMap.get(key);
-                    ic.init();
-                }
+                cachePool.initAll();
             }
         } catch (Exception e) {
             logger.error("运行环境初始化失败：",e);

@@ -21,14 +21,14 @@ import com.gmteam.framework.component.login.service.LoginService;
 import com.gmteam.framework.core.cache.CacheEle;
 import com.gmteam.framework.core.cache.SystemCache;
 import com.gmteam.framework.core.model.tree.TreeNode;
-import com.gmteam.framework.core.web.SessionLoader;
+import com.gmteam.framework.core.web.SessionLoaderShell;
 
 @Controller
 public class LoginController {
     @Resource
     private UgaUserService ugaUserService;
     @Resource
-    private SessionLoader sessionLoader;
+    private SessionLoaderShell sessionLoaderShell;
     @Resource
     private UgaAuthorityService ugaAuthorityService;
     @Resource
@@ -46,7 +46,7 @@ public class LoginController {
         try {
             HttpSession session = req.getSession();
             Map<String, Object> beforeM = loginService.beforeUserLogin(req);
-            if (beforeM!=null&&beforeM.get("success")!=null) {
+            if (beforeM==null||beforeM.get("success")!=null) {
                 //用户处理
                 UgaUser user = ugaUserService.getUserByLoginName(userLogin.getLoginName());
                 if (user==null) {
@@ -57,7 +57,7 @@ public class LoginController {
                     retObj.put("data", "密码不匹配！");
                 } else {
                     Map<String, Object> afterM = loginService.afterUserLoginOk(user, req);
-                    if (afterM!=null&&afterM.get("success")!=null) {
+                    if (afterM==null||afterM.get("success")!=null) {
                         //设置用户Session缓存
                         UserLogin oldUserLogin = ((CacheEle<Map<String, UserLogin>>)SystemCache.getCache(FConstants.USERSESSIONMAP)).getContent().remove(user.getUserId());
                         userLogin.setSessionId(session.getId());
@@ -74,8 +74,7 @@ public class LoginController {
                     retObj.put("data", afterM);
                 }
                 //SessionLoader处理
-                sessionLoader.setSession(session);
-                sessionLoader.loader();
+                sessionLoaderShell.loader(session);
             } else {
                 retObj.put("type", "-1");
                 retObj.put("data", beforeM);

@@ -8,12 +8,7 @@ import javax.servlet.http.HttpSession;
  */
 public interface SessionLoader {
     /**
-     * 设置Session
-     * @param session
+     * 向Session中加载
      */
-    public void setSession(HttpSession session);
-    /**
-     * Session的加载过程
-     */
-    public void loader();
+    public void loader(HttpSession session) throws Exception;
 }

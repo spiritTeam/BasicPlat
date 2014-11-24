@@ -21,6 +21,9 @@
     <context:exclude-filter type="assignable" expression="com.gmteam.framework.component.UGA.service.UserService"/>
     <context:exclude-filter type="assignable" expression="com.gmteam.framework.component.UGA.service.AuthorityService"/>
   </context:component-scan>
+  <!-- 扫描类包，将标注Spring注解的类自动转化Bean，同时完成Bean的注入 -->
+  <context:component-scan base-package="com.gmteam.test">
+  </context:component-scan>
 
   <!--业务缓存-->
   <bean id="cacheFrameworkManager" class="com.gmteam.framework.component.cache.FrameworkCLU"/>

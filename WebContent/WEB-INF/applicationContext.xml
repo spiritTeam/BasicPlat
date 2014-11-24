@@ -124,4 +124,13 @@
   <bean id="ugaUserService"       class="com.gmteam.plugin.UGA.gisSm.service.UserService"/> -->
   <!--Uga用户模块服务：平台
   <bean id="ugaAuthorityService"  class="com.gmteam.plugin.UGA.gisSm.service.AuthorityService"/> -->
+
+  <!-- session加载器外壳 -->
+  <bean id="sessionLoaderShell" class="com.gmteam.framework.core.web.SessionLoaderShell">
+    <property name="sessionLoaderList">
+      <list>
+        <ref bean="testLoader"/>
+      </list>
+    </property>
+  </bean>
 </beans>
