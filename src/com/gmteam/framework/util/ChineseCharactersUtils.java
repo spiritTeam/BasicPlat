@@ -5,15 +5,15 @@ import java.util.LinkedHashMap;
 import java.util.Set;
 
 /**
- * @author zhuhua
  * 汉字拼写工具集
- * 1-汉字转全拼  朱桦 ==> zhuhua
+ * 1-汉字转全拼
  * 2-半角转全角
  * 3-全角转半角
+ * @author zhuhua
  */
 public abstract class ChineseCharactersUtils {
-
     private static LinkedHashMap<String, Integer> spellMap = null;
+
     static {
         if (spellMap == null) spellMap = new LinkedHashMap<String, Integer>(400);
         initialize();
