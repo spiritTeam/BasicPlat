@@ -1,21 +1,23 @@
 package com.gmteam.framework.util;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.channels.FileChannel;
 import java.util.List;
+import java.util.StringTokenizer;
 
 /**
- * @author zhuhua
  * 封装了文件操作
+ * @author wh,zhuhua
  */
 public abstract class FileUtils {
     /**
      * 删除文件或文件夹下的文件，包括子目录中的文件，但不删除文件夹
-     * 
      * @param file 欲删除的文件或文件夹
      * @return 若删除成功返回true
      */
@@ -32,7 +34,6 @@ public abstract class FileUtils {
 
     /**
      * 将一个目录copy到指定目录，包括其下的所有子目录和文件
-     * 
      * @param sourcePath 源目录
      * @param desPath 目标目录
      * @return 若成功返回true
@@ -62,7 +63,6 @@ public abstract class FileUtils {
 
     /**
      * 将单个文件复制到指定位置，采用NIO方式
-     * 
      * @param sourceFile 源文件
      * @param desFile 目标文件
      * @return 若拷贝成功返回true，若拷贝失败返回false
@@ -125,7 +125,6 @@ public abstract class FileUtils {
 
     /**
      * 根据列表，删除多个文件
-     * 
      * @param fileList 文件路径列表
      * @return
      */
@@ -142,7 +141,6 @@ public abstract class FileUtils {
 
     /**
      * 删除多个文件
-     * 
      * @param fileList 文件路径数组
      * @return
      */
@@ -155,5 +153,29 @@ public abstract class FileUtils {
                 break;
         }
         return ret;
+    }
+
+    /**
+     * 获取文件创建时间，目前只支持windows操作系统
+     * @param f
+     * @return 创建时间的串，若出现异常，返回null
+     */
+    public static String getFileCreateTime4Win(File f) {
+        try {
+            Process ls_proc = Runtime.getRuntime().exec("cmd.exe /c dir " + f.getAbsolutePath() + " /tc");
+            BufferedReader br = new BufferedReader(new InputStreamReader(ls_proc.getInputStream()));
+            for (int i=0; i<5; i++) {
+                br.readLine();
+            }
+            String stuff = br.readLine();
+            StringTokenizer st = new StringTokenizer(stuff);
+            String dateC = (st.nextToken()+" ").replace("/", "-");
+            String time = st.nextToken()+":00";
+            br.close();
+
+            return dateC.concat(time);
+        } catch (Exception e) {
+            return null;
+        }
     }
 }
