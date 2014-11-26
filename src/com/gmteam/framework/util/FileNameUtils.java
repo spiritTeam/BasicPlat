@@ -37,7 +37,7 @@ public abstract class FileNameUtils {
      */
     public static String getDateRulePath(String filePath) {
         String strRulePath = "";
-        strRulePath = DateUtils.getDateValue(new java.util.Date());
+        strRulePath = DateUtils.convert2DateStr(new java.util.Date());
         String[] tmpArr = strRulePath.split("-");
         strRulePath = "";
         for (String tmp: tmpArr) strRulePath += tmp + File.separator;
@@ -52,7 +52,7 @@ public abstract class FileNameUtils {
     public static String getDateRuleFileName(String fileName) {
         String tempFileName = getPureFileName(fileName);
         String strRulePath = "";
-        strRulePath = DateUtils.getDateValue(new java.util.Date());
+        strRulePath = DateUtils.convert2DateStr(new java.util.Date());
         String[] tmpArr = strRulePath.split("-");
         strRulePath = "";
         for (String tmp: tmpArr) tempFileName += "_"+tmp;

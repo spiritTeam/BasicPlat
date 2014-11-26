@@ -13,54 +13,53 @@ import java.util.Locale;
  * @author zhuhua
  */
 public abstract class DateUtils {
-
     //获取时间的字符串，把时间转换为字符串
     /**
-     * 获取本地当前时间：长格式
-     * @return 长格式时间,精确到秒
-     */
-    public static String getLocalDateTimeStr() {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
-        return formatter.format(new java.util.Date());
-    }
-
-    /**
-     * 获取本地当前时间：长格式时间（14位）
-     * @return 长格式时间,精确到秒
-     */
-    public static String getLocalDateTimeStr14() {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss", Locale.CHINESE);
-        return formatter.format(new java.util.Date());
-    }
-
-    /**
-     * 获取本地当前时间：短格式
-     * @return 本地短格式时间,只包括年月日
-     */
-    public static String getLocalShortDateStr() {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd",Locale.CHINA);
-        return formatter.format(new java.util.Date());
-    }
-
-    /**
-     * 获取当前日期，只有年月日
-     * @param date
-     * @return 年月日;
-     */
-    public static String getDateValue(Date date){
-        if (date==null) return "";
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        return formatter.format(date);
-    }
-
-    /**
-     * 获取本地当前自定义格式时间
+     * 获取本地自定义格式的时间字符串
      * @param format 自定义格式,如"yyyy-MM-dd HH:mm:ss"等
-     * @return 本地自定义格式时间
+     * @param d 欲转换的时间
+     * @return 本地自定义格式的时间字符串
      */
-    public static String getLocalDefineDate(String format) {
-        SimpleDateFormat formatter = new SimpleDateFormat(format, Locale.CHINA);
-        return formatter.format(new java.util.Date());
+    public static String convert2LocalStr(String format, Date d) {
+        if (d==null) return null;
+        SimpleDateFormat formatter = new SimpleDateFormat(format, Locale.CHINESE);
+        return formatter.format(d);
+    }
+
+    /**
+     * 获取本地时间字符串：长格式, "yyyy-MM-dd HH:mm:ss"
+     * @param d 欲转换的时间
+     * @return 长格式字符串,精确到秒
+     */
+    public static String convert2LongLocalStr(Date d) {
+        return convert2LocalStr("yyyy-MM-dd HH:mm:ss", d);
+    }
+
+    /**
+     * 获取本地时间字符串：长格式压缩（14位）"yyyyMMddHHmmss"
+     * @param d 欲转换的时间
+     * @return 长格式压缩字符串,精确到秒
+     */
+    public static String convert2LongCompresstStr(Date d) {
+        return convert2LocalStr("yyyyMMddHHmmss", d);
+    }
+
+    /**
+     * 获取本地时间字符串：只包括年月日"
+     * @param d 欲转换的时间
+     * @return 本地日期字符串,只包括年月日
+     */
+    public static String convert2DateStr(Date d) {
+        return convert2LocalStr("yyyy-MM-dd", d);
+    }
+
+    /**
+     * 获取本地时间字符串：只日期
+     * @param d 欲转换的时间
+     * @return 本地时间
+     */
+    public static String convert2TimeStr(Date d) {
+        return convert2LocalStr("HH:mm:ss", d);
     }
 
     /**
@@ -69,7 +68,7 @@ public abstract class DateUtils {
      * @param calendar 欲转换的时间
      * @return 包括日期各字段的字符串值得字符串数组：times[0]=年/time[1]=月/time[2]=日/time[3]=时/time[4]=分/time[5]=秒/time[6]=毫秒
      */
-    public static String[] splitDatetime(GregorianCalendar calendar) {
+    public static String[] splitDateTime(GregorianCalendar calendar) {
         if (null != calendar) {
             String[] times = new String[7];
             times[0] = String.valueOf(calendar.get(Calendar.YEAR));
@@ -89,102 +88,31 @@ public abstract class DateUtils {
      * @param date 欲转换的时间
      * @return 包括日期各字段的字符串值得字符串数组：times[0]=年/time[1]=月/time[2]=日/time[3]=时/time[4]=分/time[5]=秒/time[6]=毫秒
      */
-    public static String[] splitDatetime(Date date) {
+    public static String[] splitDateTime(Date date) {
         GregorianCalendar calendar = new GregorianCalendar();
         calendar.setTime(date);
-        return DateUtils.splitDatetime(calendar);
-    }
-
-    /**
-     * 把时间转换为YYYY-MM-DD HH24:MI:SS格式的日期字符串。
-     *
-     * @param calendar 欲转换的时间
-     * @return 生成的日期，格式为YYYY-MM-DD HH24:MI:SS
-     */
-    public static String getDateTimeStr(GregorianCalendar calendar) {
-        String timeStr[] = DateUtils.splitDatetime(calendar);
-        return timeStr[0]+"-"+timeStr[1]+"-"+timeStr[2]+" "+timeStr[3]+":"+timeStr[4]+":"+timeStr[5];
+        return DateUtils.splitDateTime(calendar);
     }
 
     /**
      * 把时间转换为中文格式(YYYY年MM月DD日 HH24时MI分SS秒)的日期字符串。
-     *
      * @param calendar 欲转换的时间
      * @return 生成的日期，格式为YYYY年MM月DD日 HH24时MI分SS秒
      */
-    public static String getDateTimeChineseStr(GregorianCalendar calendar) {
-        String timeStr[] = DateUtils.splitDatetime(calendar);
+    public static String convert2TimeChineseStr(GregorianCalendar calendar) {
+        String timeStr[] = DateUtils.splitDateTime(calendar);
         return timeStr[0]+"年"+timeStr[1]+"月"+timeStr[2]+"日 "+timeStr[3]+"时"+timeStr[4]+"分"+timeStr[5]+"秒";
     }
 
     /**
-     * 把时间转换为YYYY-MM-DD HH24:MI:SS格式的日期字符串。
-     *
-     * @param date 欲转换的时间
-     * @return 生成的日期，格式为YYYY-MM-DD HH24:MI:SS
-     */
-    public static String getDateTimeStr(Date date) {
-        GregorianCalendar calendar = new GregorianCalendar();
-        calendar.setTime(date);
-        return DateUtils.getDateTimeStr(calendar);
-    }
-
-    /**
      * 把时间转换为中文格式(YYYY年MM月DD日 HH24时MI分SS秒)的日期字符串。
-     *
      * @param date 欲转换的时间
      * @return 生成的日期，格式为YYYY年MM月DD日 HH24时MI分SS秒
      */
-    public static String getDateTimeChineseStr(Date date) {
+    public static String convert2TimeChineseStr(Date d) {
         GregorianCalendar calendar = new GregorianCalendar();
-        calendar.setTime(date);
-        return DateUtils.getDateTimeChineseStr(calendar);
-    }
-
-    /**
-     * 把时间转换为HH24:MI:SS格式的时间字符串
-     *
-     * @param calendar 欲转换的时间
-     * @return 生成的时间字符串，格式为HH24:MI:SS
-     */
-    public static String getTimeStr(GregorianCalendar calendar) {
-        String timeStr[] = DateUtils.splitDatetime(calendar);
-        return timeStr[3]+":"+timeStr[4]+":"+timeStr[5]+"."+timeStr[6];
-    }
-
-    /**
-     * 把时间转换为中文格式(HH24时MI分SS秒)的时间字符串
-     *
-     * @param calendar 欲转换的时间
-     * @return 生成的时间字符串，格式为HH24时MI分SS秒
-     */
-    public static String getTimeChineseStr(GregorianCalendar calendar) {
-        String timeStr[] = DateUtils.splitDatetime(calendar);
-        return timeStr[3]+":"+timeStr[4]+":"+timeStr[5]+"."+timeStr[6];
-    }
-
-    /**
-     * 把时间转换为HH24:MI:SS格式的时间字符串
-     *
-     * @param date 欲转换的时间
-     * @return 生成的时间字符串，格式为HH24:MI:SS
-     */
-    public static String getTimeStr(Date date) {
-        GregorianCalendar calendar = new GregorianCalendar();
-        calendar.setTime(date);
-        return DateUtils.getTimeStr(calendar);
-    }
-
-    /**
-     * 把时间转换为中文格式(HH24时MI分SS秒)的时间字符串
-     *
-     * @param date 欲转换的时间
-     * @return 生成的时间字符串，格式为HH24时MI分SS秒
-     */
-    public static String getTimeChineseStr(Date date) {
-        GregorianCalendar calendar = new GregorianCalendar();
-        calendar.setTime(date);
-        return DateUtils.getTimeChineseStr(calendar);
+        calendar.setTime(d);
+        return DateUtils.convert2TimeChineseStr(calendar);
     }
 
     //时间计算方法
@@ -200,7 +128,7 @@ public abstract class DateUtils {
     public final static Date getDateTime(String patten, String strDateTime) throws ParseException {
         if (null!=strDateTime) {
             SimpleDateFormat formatter = new SimpleDateFormat(patten);
-            Date date = (Date) formatter.parse(strDateTime);
+            Date date = (Date)formatter.parse(strDateTime);
             return date;
         }
         return null;

@@ -160,7 +160,7 @@ public abstract class FileUtils {
      * @param f
      * @return 创建时间的串，若出现异常，返回null
      */
-    public static String getFileCreateTime4Win(File f) {
+    public static long getFileCreateTime4Win(File f) {
         try {
             Process ls_proc = Runtime.getRuntime().exec("cmd.exe /c dir " + f.getAbsolutePath() + " /tc");
             BufferedReader br = new BufferedReader(new InputStreamReader(ls_proc.getInputStream()));
@@ -168,14 +168,15 @@ public abstract class FileUtils {
                 br.readLine();
             }
             String stuff = br.readLine();
-            StringTokenizer st = new StringTokenizer(stuff);
-            String dateC = (st.nextToken()+" ").replace("/", "-");
-            String time = st.nextToken()+":00";
             br.close();
 
-            return dateC.concat(time);
+            StringTokenizer st = new StringTokenizer(stuff);
+            String dateC = (st.nextToken()+" ");
+            String time = st.nextToken()+":00";
+            dateC = dateC.concat(time);
+            return (DateUtils.getDateTime("yyyy-MM-dd HH:mm:ss", dateC)).getTime();
         } catch (Exception e) {
-            return null;
+            return -1;
         }
     }
 }

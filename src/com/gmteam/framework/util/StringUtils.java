@@ -83,12 +83,4 @@ public class StringUtils {
 		List<String> list = strArrConvertList(strArr);
 		return list;
 	}
-
-	/**
-	 * 
-	 * @param str
-	 */
-	public static String convertLogStr(String str) {
-	    return DateUtils.getLocalDefineDate("yyyy-MM-dd HH:mm:ss SSSS")+"|| "+str;
-	}
 }

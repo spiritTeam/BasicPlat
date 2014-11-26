@@ -189,7 +189,7 @@ public abstract class ReflectUtils {
             if (object!=null) {
                 if (typeName.equals("java.util.Date")) {
                     Date date = (Date) object;
-                    value = DateUtils.getDateTimeStr(date);
+                    value = DateUtils.convert2LongLocalStr(date);
                 } else value = object.toString(); //复杂类型暂时不处理，调用默认toString方法。
             }
         } catch (Exception e) {
