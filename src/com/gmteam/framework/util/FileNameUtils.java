@@ -71,9 +71,9 @@ public abstract class FileNameUtils {
     }
 
     /**
-     * 得到文件的路径，默认认为，文件的最后一个分割符前是文件路径
+     * 得到不包括路径的文件名称，默认认为，文件的最后一个分割符前是文件路径
      * @param localFullPath 文件名称
-     * @return 文件路径
+     * @return 文件名称(包括扩展名)
      */
     public static String getFileName(String localFullPath){
         int lastDirPos = localFullPath.lastIndexOf(File.separator);
@@ -82,9 +82,9 @@ public abstract class FileNameUtils {
     }
 
     /**
-     * 得到文件的路径，默认认为，文件的最后一个分割符前是文件路径
+     * 得到纯文件名，不包括路径和扩展名
      * @param localFullPath 文件名称
-     * @return 文件路径
+     * @return 纯文件名
      */
     public static String getPureFileName(String localFullPath){
         String fileName = FileNameUtils.getFileName(localFullPath);
