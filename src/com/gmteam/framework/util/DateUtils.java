@@ -63,6 +63,27 @@ public abstract class DateUtils {
     }
 
     /**
+     * 把时间转换为中文格式(YYYY年MM月DD日 HH24时MI分SS秒)的日期字符串。
+     * @param calendar 欲转换的时间
+     * @return 生成的日期，格式为YYYY年MM月DD日 HH24时MI分SS秒
+     */
+    public static String convert2TimeChineseStr(GregorianCalendar calendar) {
+        String timeStr[] = DateUtils.splitDateTime(calendar);
+        return timeStr[0]+"年"+timeStr[1]+"月"+timeStr[2]+"日 "+timeStr[3]+"时"+timeStr[4]+"分"+timeStr[5]+"秒";
+    }
+
+    /**
+     * 把时间转换为中文格式(YYYY年MM月DD日 HH24时MI分SS秒)的日期字符串。
+     * @param date 欲转换的时间
+     * @return 生成的日期，格式为YYYY年MM月DD日 HH24时MI分SS秒
+     */
+    public static String convert2TimeChineseStr(Date d) {
+        GregorianCalendar calendar = new GregorianCalendar();
+        calendar.setTime(d);
+        return DateUtils.convert2TimeChineseStr(calendar);
+    }
+
+    /**
      * 以字符串数组的形式返回日期的各字段(年/月/日/时/分/秒/毫秒)的值
      *
      * @param calendar 欲转换的时间
@@ -92,27 +113,6 @@ public abstract class DateUtils {
         GregorianCalendar calendar = new GregorianCalendar();
         calendar.setTime(date);
         return DateUtils.splitDateTime(calendar);
-    }
-
-    /**
-     * 把时间转换为中文格式(YYYY年MM月DD日 HH24时MI分SS秒)的日期字符串。
-     * @param calendar 欲转换的时间
-     * @return 生成的日期，格式为YYYY年MM月DD日 HH24时MI分SS秒
-     */
-    public static String convert2TimeChineseStr(GregorianCalendar calendar) {
-        String timeStr[] = DateUtils.splitDateTime(calendar);
-        return timeStr[0]+"年"+timeStr[1]+"月"+timeStr[2]+"日 "+timeStr[3]+"时"+timeStr[4]+"分"+timeStr[5]+"秒";
-    }
-
-    /**
-     * 把时间转换为中文格式(YYYY年MM月DD日 HH24时MI分SS秒)的日期字符串。
-     * @param date 欲转换的时间
-     * @return 生成的日期，格式为YYYY年MM月DD日 HH24时MI分SS秒
-     */
-    public static String convert2TimeChineseStr(Date d) {
-        GregorianCalendar calendar = new GregorianCalendar();
-        calendar.setTime(d);
-        return DateUtils.convert2TimeChineseStr(calendar);
     }
 
     //时间计算方法
