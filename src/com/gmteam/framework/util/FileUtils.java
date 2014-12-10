@@ -174,7 +174,7 @@ public abstract class FileUtils {
             String dateC = (st.nextToken()+" ");
             String time = st.nextToken()+":00";
             dateC = dateC.concat(time);
-            return (DateUtils.getDateTime("yyyy-MM-dd HH:mm:ss", dateC)).getTime();
+            return (DateUtils.getDateTime("yyyy/MM/dd HH:mm:ss", dateC)).getTime();
         } catch (Exception e) {
             return -1;
         }
