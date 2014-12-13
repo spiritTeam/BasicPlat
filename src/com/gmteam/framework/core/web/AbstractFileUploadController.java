@@ -27,6 +27,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.gmteam.framework.FConstants;
 import com.gmteam.framework.core.cache.CacheEle;
 import com.gmteam.framework.core.cache.SystemCache;
+import com.gmteam.framework.exceptionC.Plat0201CException;
 import com.gmteam.framework.ext.io.StringPrintWriter;
 import com.gmteam.framework.util.FileNameUtils;
 import com.gmteam.framework.util.JsonUtils;
@@ -125,103 +126,107 @@ public abstract class AbstractFileUploadController implements Controller, Handle
      * 文件上传，并以Json的形式返回内容
      */
     @Override
-    public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest)request;
-        Map<String, MultipartFile> files = multipartRequest.getFileMap();
-        //得到其他的属性
-        Map<String, Object> rqtParams = new HashMap<String, Object>();
-        List<String> paramNameL = (List<String>)Collections.list(request.getParameterNames());
-        for (String n: paramNameL) rqtParams.put(n, request.getParameter(n));
-        Map<String, Object> rqtAttrs = new HashMap<String, Object>();
-        List<String> attrNameL = (List<String>)Collections.list(request.getAttributeNames());
-        for (String n: attrNameL) rqtAttrs.put(n, request.getAttribute(n));
+    public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest)request;
+            Map<String, MultipartFile> files = multipartRequest.getFileMap();
+            //得到其他的属性
+            Map<String, Object> rqtParams = new HashMap<String, Object>();
+            List<String> paramNameL = (List<String>)Collections.list(request.getParameterNames());
+            for (String n: paramNameL) rqtParams.put(n, request.getParameter(n));
+            Map<String, Object> rqtAttrs = new HashMap<String, Object>();
+            List<String> attrNameL = (List<String>)Collections.list(request.getAttributeNames());
+            for (String n: attrNameL) rqtAttrs.put(n, request.getAttribute(n));
 
-        List<Map<String, Object>> retl = new ArrayList<Map<String, Object>>();
-        if (files!=null&&files.size()>0) {//返回空
-            //处理路径
-            String _path = FileNameUtils.concatPath(this.appOSPath, this.defaultPath);
-            File f;
-            if (this.savePath!=null&&this.savePath.trim().length()>0) {//有路径
-                f = new File(this.savePath);
-                if (f.isAbsolute()) _path=this.savePath;
-                else _path = FileNameUtils.concatPath(_path, this.savePath);
-            }
-            if (this.datePathModel==1||this.datePathModel==3) _path=FileNameUtils.getDateRulePath(_path);
-            //处理文件名称字段
-            String[] storeFileNames = null;
-            if (this.storeFileNameFieldName!=null) storeFileNames = multipartRequest.getParameterValues(this.storeFileNameFieldName);
-            else storeFileNames = multipartRequest.getParameterValues("storeFilename");
-
-            if (storeFileNames!=null) if (storeFileNames.length==0) storeFileNames=null;
-            //处理每个文件
-            Iterator<String> iterator=files.keySet().iterator();
-            int fIndex=0;
-            while (iterator.hasNext()) {
-                CommonsMultipartFile file = (CommonsMultipartFile)files.get(iterator.next());
-                if (file.getOriginalFilename()==null||file.getOriginalFilename().trim().equals("")) continue;
-                //处理文件名
-                String storeFilename = null;
-                if (storeFileNames==null) storeFilename = file.getOriginalFilename();
-                else {
-                    storeFilename = storeFileNames[fIndex];
-                    if (storeFilename==null||storeFilename.trim().equals("")) storeFilename = file.getOriginalFilename();
-                    else storeFilename += FileNameUtils.getExt(file.getOriginalFilename());
+            List<Map<String, Object>> retl = new ArrayList<Map<String, Object>>();
+            if (files!=null&&files.size()>0) {//返回空
+                //处理路径
+                String _path = FileNameUtils.concatPath(this.appOSPath, this.defaultPath);
+                File f;
+                if (this.savePath!=null&&this.savePath.trim().length()>0) {//有路径
+                    f = new File(this.savePath);
+                    if (f.isAbsolute()) _path=this.savePath;
+                    else _path = FileNameUtils.concatPath(_path, this.savePath);
                 }
+                if (this.datePathModel==1||this.datePathModel==3) _path=FileNameUtils.getDateRulePath(_path);
+                //处理文件名称字段
+                String[] storeFileNames = null;
+                if (this.storeFileNameFieldName!=null) storeFileNames = multipartRequest.getParameterValues(this.storeFileNameFieldName);
+                else storeFileNames = multipartRequest.getParameterValues("storeFilename");
 
-                if (this.filePrefix!=null&&this.filePrefix.trim().length()>0) storeFilename = this.filePrefix+"_"+storeFilename;
-                if (this.datePathModel==2||this.datePathModel==3) storeFilename = FileNameUtils.getDateRuleFileName(storeFilename);
-                storeFilename = FileNameUtils.concatPath(_path, storeFilename);
-                //拷贝文件
-                Map<String, Object> oneFileDealRetMap = saveMultipartFile2File(file, storeFilename);
-                boolean isBreak=false;
-                if ((""+oneFileDealRetMap.get("success")).equalsIgnoreCase("TRUE")) {//处理成功
-                    //删除临时文件
-                    delTempFile(file.getFileItem());
-                    /*
-                     *调用虚方法，处理每个文件的后续部分
-                     */
-                    oneFileDealRetMap.remove("success");
-                    Map<String, Object> myDealRetMap = afterUploadOneFileOnSuccess(oneFileDealRetMap, rqtAttrs, rqtParams);
-                    if (myDealRetMap!=null) {
-                        boolean mySuccess = true;
-                        try {
-                            mySuccess = Boolean.parseBoolean((String)myDealRetMap.get("success"));
-                        } catch(Exception e) {
-                            mySuccess = true;
-                        }
-                        oneFileDealRetMap.put("success", "TRUE");
-                        if (!mySuccess) {
-                            boolean myOnFaildBreak=false;
-                            try {
-                                myOnFaildBreak = Boolean.parseBoolean((String)myDealRetMap.get("onFaildBreak"));
-                            } catch(Exception e) {
-                                myOnFaildBreak=false;
-                            }
-                            isBreak = myOnFaildBreak;
-                        }
+                if (storeFileNames!=null) if (storeFileNames.length==0) storeFileNames=null;
+                //处理每个文件
+                Iterator<String> iterator=files.keySet().iterator();
+                int fIndex=0;
+                while (iterator.hasNext()) {
+                    CommonsMultipartFile file = (CommonsMultipartFile)files.get(iterator.next());
+                    if (file.getOriginalFilename()==null||file.getOriginalFilename().trim().equals("")) continue;
+                    //处理文件名
+                    String storeFilename = null;
+                    if (storeFileNames==null) storeFilename = file.getOriginalFilename();
+                    else {
+                        storeFilename = storeFileNames[fIndex];
+                        if (storeFilename==null||storeFilename.trim().equals("")) storeFilename = file.getOriginalFilename();
+                        else storeFilename += FileNameUtils.getExt(file.getOriginalFilename());
                     }
-                } else {//处理失败
-                    isBreak = this.breakOnOneFaild;
+
+                    if (this.filePrefix!=null&&this.filePrefix.trim().length()>0) storeFilename = this.filePrefix+"_"+storeFilename;
+                    if (this.datePathModel==2||this.datePathModel==3) storeFilename = FileNameUtils.getDateRuleFileName(storeFilename);
+                    storeFilename = FileNameUtils.concatPath(_path, storeFilename);
+                    //拷贝文件
+                    Map<String, Object> oneFileDealRetMap = saveMultipartFile2File(file, storeFilename);
+                    boolean isBreak=false;
+                    if ((""+oneFileDealRetMap.get("success")).equalsIgnoreCase("TRUE")) {//处理成功
+                        //删除临时文件
+                        delTempFile(file.getFileItem());
+                        /*
+                         *调用虚方法，处理每个文件的后续部分
+                         */
+                        oneFileDealRetMap.remove("success");
+                        Map<String, Object> myDealRetMap = afterUploadOneFileOnSuccess(oneFileDealRetMap, rqtAttrs, rqtParams);
+                        if (myDealRetMap!=null) {
+                            boolean mySuccess = true;
+                            try {
+                                mySuccess = Boolean.parseBoolean((String)myDealRetMap.get("success"));
+                            } catch(Exception e) {
+                                mySuccess = true;
+                            }
+                            oneFileDealRetMap.put("success", "TRUE");
+                            if (!mySuccess) {
+                                boolean myOnFaildBreak=false;
+                                try {
+                                    myOnFaildBreak = Boolean.parseBoolean((String)myDealRetMap.get("onFaildBreak"));
+                                } catch(Exception e) {
+                                    myOnFaildBreak=false;
+                                }
+                                isBreak = myOnFaildBreak;
+                            }
+                        }
+                    } else {//处理失败
+                        isBreak = this.breakOnOneFaild;
+                    }
+                    retl.add(oneFileDealRetMap);
+                    if (isBreak) break;
+                    fIndex++;
                 }
-                retl.add(oneFileDealRetMap);
-                if (isBreak) break;
-                fIndex++;
+                if (retl.size()==0) retl=null;
+                afterUploadAllFiles(retl, rqtAttrs, rqtParams);
+            } else {
+                Map<String, Object> nullM = new HashMap<String, Object>();
+                nullM.put("warn", "没有文件可以处理。");
+                retl.add(nullM);
             }
-            if (retl.size()==0) retl=null;
-            afterUploadAllFiles(retl, rqtAttrs, rqtParams);
-        } else {
-            Map<String, Object> nullM = new HashMap<String, Object>();
-            nullM.put("warn", "没有文件可以处理。");
-            retl.add(nullM);
+            //json处理
+            MappingJackson2JsonView mjjv = new MappingJackson2JsonView();
+            response.setHeader("Cache-Control", "no-cache");
+            mjjv.setContentType("text/html; charset=UTF-8");
+            mjjv.setAttributesMap(JsonUtils.Obj2AjaxMap(retl, 0));
+            ModelAndView mav = new ModelAndView();
+            mav.setView(mjjv);
+            return mav;
+        } catch(Exception e) {
+            throw new Plat0201CException(e);
         }
-        //json处理
-        MappingJackson2JsonView mjjv = new MappingJackson2JsonView();
-        response.setHeader("Cache-Control", "no-cache");
-        mjjv.setContentType("text/html; charset=UTF-8");
-        mjjv.setAttributesMap(JsonUtils.Obj2AjaxMap(retl, 0));
-        ModelAndView mav = new ModelAndView();
-        mav.setView(mjjv);
-        return mav;
     }
 
     /*

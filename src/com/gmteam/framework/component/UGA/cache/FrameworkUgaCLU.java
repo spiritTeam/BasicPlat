@@ -15,6 +15,7 @@ import com.gmteam.framework.core.cache.AbstractCacheLifecycleUnit;
 import com.gmteam.framework.core.cache.CacheEle;
 import com.gmteam.framework.core.cache.SystemCache;
 import com.gmteam.framework.core.model.tree.TreeNode;
+import com.gmteam.framework.exceptionC.Plat0301CException;
 @Component
 public class FrameworkUgaCLU extends AbstractCacheLifecycleUnit {
     /**
@@ -76,7 +77,7 @@ public class FrameworkUgaCLU extends AbstractCacheLifecycleUnit {
             mo.remove("errors");
             SystemCache.setCache(new CacheEle<Map<String, Object>>(UgaConstants.CATCH_UGA_MODULE, "模块", mo));
         } catch(Exception e) {
-            throw new Exception("加载缓存项{UGA[模块]}失败：", e);
+            throw new Plat0301CException("[模块]失败", e);
         }
     }
 
@@ -90,7 +91,7 @@ public class FrameworkUgaCLU extends AbstractCacheLifecycleUnit {
             if (uo==null) throw new Exception("没有[uga用户]数据。");
             SystemCache.setCache(new CacheEle<Map<String, Object>>(UgaConstants.CATCH_UGA_USER, "uga用户", uo));
         } catch(Exception e) {
-            throw new Exception("加载缓存项{UGA[uga用户]}失败：", e);
+            throw new Plat0301CException("[用户]失败", e);
         }
     }
 
@@ -104,7 +105,7 @@ public class FrameworkUgaCLU extends AbstractCacheLifecycleUnit {
             if (umo==null) throw new Exception("没有[用户模块关联]数据。");
             SystemCache.setCache(new CacheEle<Map<String, TreeNode<Module>>>(UgaConstants.CATCH_UGA_USERMODULE, "用户模块关联", umo));
         } catch(Exception e) {
-            throw new Exception("加载缓存项{UGA[用户模块关联]}失败：", e);
+            throw new Plat0301CException("[用户模块权限]失败", e);
         }
     }
 }

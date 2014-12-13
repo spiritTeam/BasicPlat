@@ -15,9 +15,11 @@ public enum DatabaseType {
     private DatabaseType(String name) {  
         this.name = name;
     }
+
     public String getName() {
         return this.name;
     }
+
     public static DatabaseType getDatabaseType(String name) {
         if (name==null) name="Oracle";
         if (name.equalsIgnoreCase("Oracle")) {

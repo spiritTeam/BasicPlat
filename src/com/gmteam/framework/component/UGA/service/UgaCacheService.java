@@ -39,7 +39,7 @@ public class UgaCacheService {
      * @return 用户缓存
      * @throws Exception
      */
-    public Map<String, Object> makeCacheUser() throws Exception {
+    public Map<String, Object> makeCacheUser() {
         Map<String, Object> ret = new HashMap<String, Object>();
         List<User> list = userDao.queryForList("getUserList");
 //        List<User> list=null;
@@ -70,7 +70,7 @@ public class UgaCacheService {
      * @throws Exception
      */
     @SuppressWarnings("unchecked")
-    public Map<String, Object> makeCacheModule() throws Exception {
+    public Map<String, Object> makeCacheModule() {
         Map<String, Object> ret = new HashMap<String, Object>();
         List<Module> list = moduleDao.queryForList("getModuleList");
         if (list!=null&&list.size()>0) {

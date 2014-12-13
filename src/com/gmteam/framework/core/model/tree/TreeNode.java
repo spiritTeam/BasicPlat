@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.gmteam.framework.core.model.BaseObject;
+import com.gmteam.framework.exceptionC.Plat0003CException;
 
 /**
  * 树结点结构。所有树结构都应以此类为基类。<br/>
@@ -111,7 +112,7 @@ public class TreeNode<T extends TreeNodeBean> extends BaseObject implements Clon
     public void setParentId(String parentId) {
         if (this.getParent()!=null) {
             if (!this.getParent().getId().equals(parentId)) {
-                throw new IllegalStateException("预设值的父结点ID与已设置的父结点对象的ID不相符合！");
+                throw new Plat0003CException("预设值的父结点ID与已设置的父结点对象ID不相符合！");
             }
         }
         this.parentId=parentId;
@@ -318,7 +319,7 @@ public class TreeNode<T extends TreeNodeBean> extends BaseObject implements Clon
      * @exception IllegalStateException 如果结点不允许有子结点
      */
     public void setChildren(List<TreeNode<T>> children) {
-        if (!allowChildren) throw new IllegalStateException("本结点[id="+this.id+";text="+this.nodeName+"]不允许有子结点！");
+        if (!allowChildren) throw new Plat0003CException("本结点[id="+this.id+";nodeName="+this.nodeName+"]不允许有子结点！");
         if (children!=null) {
             for (TreeNode<T> tn: children) {
                 tn.setParent(this);
@@ -335,7 +336,7 @@ public class TreeNode<T extends TreeNodeBean> extends BaseObject implements Clon
      * @exception IllegalStateException 如果结点不允许有子结点
      */
     public void addChild(TreeNode<T> child) {
-        if (!allowChildren) throw new IllegalStateException("本结点[id="+this.id+";text="+this.nodeName+"]不允许有子结点！");
+        if (!allowChildren) throw new Plat0003CException("本结点[id="+this.id+";nodeName="+this.nodeName+"]不允许有子结点！");
         if (this.children==null) this.children = new ArrayList<TreeNode<T>>();
         this.removeChild(child.getId());
         child.setParent(this);
@@ -350,7 +351,7 @@ public class TreeNode<T extends TreeNodeBean> extends BaseObject implements Clon
      * @exception IllegalStateException 如果结点不允许有子结点
      */
     public void appendChildren(List<TreeNode<T>> children) {
-        if (!allowChildren) throw new IllegalStateException("结点不允许有子结点！");
+        if (!allowChildren) throw new Plat0003CException("本结点[id="+this.id+";nodeName="+this.nodeName+"]不允许有子结点！");
         if (this.children==null) this.children = new ArrayList<TreeNode<T>>();
         for (TreeNode<T> tn: children) {
             this.removeChild(tn.getId());
@@ -436,15 +437,15 @@ public class TreeNode<T extends TreeNodeBean> extends BaseObject implements Clon
     public void setAttribute(String key, Object value) {
         if (key.equalsIgnoreCase("ID")) {
             if (value instanceof String) this.setId((String)value);
-            else throw new IllegalArgumentException("当key为["+key+"]时,值的类型应为String类型");
+            else throw new Plat0003CException("当key为["+key+"]时,值的类型应为String类型");
         }
         if (key.equalsIgnoreCase("NODENAME")) {
             if (value instanceof String) this.setNodeName((String)value);
-            else throw new IllegalArgumentException("当key为["+key+"]时,值的类型应为String类型");
+            else throw new Plat0003CException("当key为["+key+"]时,值的类型应为String类型");
         }
         if (key.equalsIgnoreCase("PARENTID")) {
             if (value instanceof String) this.setParentId((String)value);
-            else throw new IllegalArgumentException("当key为["+key+"]时,值的类型应为String类型");
+            else throw new Plat0003CException("当key为["+key+"]时,值的类型应为String类型");
         }
         if (this.attributes==null) this.attributes = new HashMap<String, Object>();
         this.attributes.put(key, value);
@@ -460,13 +461,13 @@ public class TreeNode<T extends TreeNodeBean> extends BaseObject implements Clon
             String key = it.next();
             if (key.equalsIgnoreCase("ID")) {
                 Object value = attributes.get(key);
-                if (!(value instanceof String)) throw new IllegalArgumentException("当key为["+key+"]时,值的类型应为String类型");
+                if (!(value instanceof String)) throw new Plat0003CException("当key为["+key+"]时,值的类型应为String类型");
             } else if (key.equalsIgnoreCase("NODENAME")) {
                 Object value = attributes.get(key);
-                if (!(value instanceof String)) throw new IllegalArgumentException("当key为["+key+"]时,值的类型应为String类型");
+                if (!(value instanceof String)) throw new Plat0003CException("当key为["+key+"]时,值的类型应为String类型");
             } else if (key.equalsIgnoreCase("PARENTID")) {
                 Object value = attributes.get(key);
-                if (!(value instanceof String)) throw new IllegalArgumentException("当key为["+key+"]时,值的类型应为String类型");
+                if (!(value instanceof String)) throw new Plat0003CException("当key为["+key+"]时,值的类型应为String类型");
             }
         }
         this.attributes = attributes;
@@ -482,13 +483,13 @@ public class TreeNode<T extends TreeNodeBean> extends BaseObject implements Clon
             String key = it.next();
             if (key.equalsIgnoreCase("ID")) {
                 Object value = attributes.get(key);
-                if (!(value instanceof String)) throw new IllegalArgumentException("当key为["+key+"]时,值的类型应为String类型");
+                if (!(value instanceof String)) throw new Plat0003CException("当key为["+key+"]时,值的类型应为String类型");
             } else if (key.equalsIgnoreCase("NODENAME")) {
                 Object value = attributes.get(key);
-                if (!(value instanceof String)) throw new IllegalArgumentException("当key为["+key+"]时,值的类型应为String类型");
+                if (!(value instanceof String)) throw new Plat0003CException("当key为["+key+"]时,值的类型应为String类型");
             } else if (key.equalsIgnoreCase("PARENTID")) {
                 Object value = attributes.get(key);
-                if (!(value instanceof String)) throw new IllegalArgumentException("当key为["+key+"]时,值的类型应为String类型");
+                if (!(value instanceof String)) throw new Plat0003CException("当key为["+key+"]时,值的类型应为String类型");
             }
         }
         if (this.attributes==null) this.attributes = new HashMap<String, Object>();

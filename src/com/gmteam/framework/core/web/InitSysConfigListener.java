@@ -2,7 +2,6 @@ package com.gmteam.framework.core.web;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -15,7 +14,6 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.gmteam.framework.core.cache.CacheEle;
 import com.gmteam.framework.core.cache.CachePool;
-import com.gmteam.framework.core.cache.CatchLifecycle;
 import com.gmteam.framework.core.cache.SystemCache;
 import com.gmteam.framework.component.login.pojo.UserLogin;
 import com.gmteam.framework.FConstants;
