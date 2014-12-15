@@ -90,7 +90,7 @@ function save(){
       $.messager.alert('新增信息','操作失败!','info');
     }
   });
-	wId = getUrlParam(window.location.href, "_winID");
+  wId = getUrlParam(window.location.href, "_winID");
   closeWin(wId);
 }
 function reset(){

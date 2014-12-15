@@ -22,7 +22,7 @@ public class SystemCache {
      * 设置cache
      * @param cacheEle 缓存项目对象 
      */
-    public static void  setCache(CacheEle<?> cacheEle) {
+    public static void setCache(CacheEle<?> cacheEle) {
         CacheContent.put(cacheEle.getKey(), cacheEle);
     }
 
