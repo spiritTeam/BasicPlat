@@ -115,7 +115,8 @@ public abstract class JsonUtils {
     public static Map<String, Object> Obj2AjaxMap(Object obj, int type) {
         Map<String, Object> m = new HashMap<String, Object>();
         m.put("jsonType", type);
-        m.put("data", obj);
+        if (type==1) m.put("data", obj);
+        else m.put("message", obj);
         return m;
     }
 
