@@ -3,12 +3,12 @@
 <configuration>
   <!-- 类名设置 -->
   <typeAliases>
-    <typeAlias alias="Module" type="com.gmteam.framework.component.module.pojo.Module"/>
-    <typeAlias alias="User" type="com.gmteam.framework.component.UGA.pojo.User"/>
+    <typeAlias alias="Module" type="com.spiritdata.framework.component.module.pojo.Module"/>
+    <typeAlias alias="User" type="com.spiritdata.framework.component.UGA.pojo.User"/>
   </typeAliases>
   <!-- 映射关系配置文件 -->
   <mappers>
-    <mapper resource="com/gmteam/framework/component/module/sql/Module.mapper.xml"/>
-    <mapper resource="com/gmteam/framework/component/UGA/sql/UGA.mapper.xml"/>
+    <mapper resource="com/spiritdata/framework/component/module/sql/Module.mapper.xml"/>
+    <mapper resource="com/spiritdata/framework/component/UGA/sql/UGA.mapper.xml"/>
   </mappers>
 </configuration>

@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <artifactId>BasicPlat</artifactId>
-  <version>0.0.2.3</version>
+  <version>0.1.0.0</version>
   <name>BasicPlat</name>
   <url>http://maven.apache.org</url>
 
@@ -11,7 +11,7 @@
   </properties>
 
   <parent>
-    <groupId>team.gm</groupId>
+    <groupId>spiritdata.com</groupId>
     <artifactId>framework</artifactId>
     <version>0.1.0.1</version>
     <relativePath>pom.framework.xml</relativePath>
@@ -43,7 +43,7 @@
     </dependency> -->
     <!-- 本地Jar包
     <dependency>
-      <groupId>com.gmteam</groupId>  
+      <groupId>spiritdata.com</groupId>  
       <artifactId>a</artifactId>  
       <version>2.0</version>  
       <scope>system</scope>  
@@ -122,7 +122,7 @@
               <addClasspath>false</addClasspath>
             </manifest>
             <manifestEntries>
-              <Built-By>gmteam</Built-By>
+              <Built-By>spiritdata</Built-By>
               <mode>release</mode>
             </manifestEntries>
           </archive>

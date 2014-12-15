@@ -31,7 +31,7 @@
   <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
     <property name="dataSource" ref="dataSource"/>
   </bean>
-  <bean id="sqlSessionFactory" class="com.gmteam.framework.ext.spring.mybatis.MySqlSessionFactoryBean">
+  <bean id="sqlSessionFactory" class="com.spiritdata.framework.ext.spring.mybatis.MySqlSessionFactoryBean">
     <property name="configLocations">
       <list merge="default">
         <value>classpath*:mybatisConfig/frameworkMybatis.xml</value>
@@ -59,7 +59,7 @@
   <bean id="transactionManager_gisDcSys" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
     <property name="dataSource" ref="dcSysDS"/>
   </bean>
-  <bean id="sqlSessionFactory_DcSys" class="com.gmteam.framework.ext.spring.mybatis.MySqlSessionFactoryBean">
+  <bean id="sqlSessionFactory_DcSys" class="com.gspiritdata.framework.ext.spring.mybatis.MySqlSessionFactoryBean">
     <property name="configLocations">
       <list merge="default">
         <value>classpath*:mybatisConfig/frameworkMybatis.xml</value>
@@ -73,16 +73,16 @@
     </property>
   </bean>
  
-  <bean id="defaultDAO" class="com.gmteam.framework.core.dao.mybatis.MybatisDAO"  scope="prototype" init-method="initialize">
+  <bean id="defaultDAO" class="com.spiritdata.framework.core.dao.mybatis.MybatisDAO"  scope="prototype" init-method="initialize">
     <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
   </bean>
 
-  <bean id="defaultDAO_dcSys" class="com.gmteam.framework.core.dao.mybatis.MybatisDAO"  scope="prototype" init-method="initialize">
+  <bean id="defaultDAO_dcSys" class="com.spiritdata.framework.core.dao.mybatis.MybatisDAO"  scope="prototype" init-method="initialize">
     <property name="sqlSessionFactory" ref="sqlSessionFactory_DcSys"/>
   </bean>
 
   <!-- 平台缓存池-->
-  <bean id="cachePool" class="com.gmteam.framework.core.cache.CachePool">
+  <bean id="cachePool" class="com.spiritdata.framework.core.cache.CachePool">
     <property name="caches">
       <map>
         <!--
@@ -108,25 +108,25 @@
 
   <!-- 以下为UGA框架(用户/用户组/权限框架)所需配置 -->
   <!--Uga缓存：平台 -->
-  <bean id="cacheFrameworkUgaManager" class="com.gmteam.framework.component.UGA.cache.FrameworkUgaCLU"/>
+  <bean id="cacheFrameworkUgaManager" class="com.spiritdata.framework.component.UGA.cache.FrameworkUgaCLU"/>
   <!--Uga用户服务：平台 -->
-  <bean id="ugaUserService"           class="com.gmteam.framework.component.UGA.service.UserService"/>
+  <bean id="ugaUserService"           class="com.spiritdata.framework.component.UGA.service.UserService"/>
   <!--Uga用户模块服务：平台 -->
-  <bean id="ugaAuthorityService"      class="com.gmteam.framework.component.UGA.service.AuthorityService"/>
+  <bean id="ugaAuthorityService"      class="com.spiritdata.framework.component.UGA.service.AuthorityService"/>
 
   <!-- 以下为UGA框架(用户/用户组/权限框架)所需配置 -->
   <!--gisUga缓存：平台 -->
-  <bean id="cacheGisSmUgaManager" class="com.gmteam.plugin.UGA.gisSm.cache.GisSmUgaCLU">
+  <bean id="cacheGisSmUgaManager" class="com.spiritdata.plugin.UGA.gisSm.cache.GisSmUgaCLU">
     <property name="functionRootId" value="${dcsys.function.rootId}"/>
     <property name="functionRefreshCacheId" value="${dcsys.function.refreshCacheId}"/>
   </bean>
   <!--gisUga用户服务：平台
-  <bean id="ugaUserService"       class="com.gmteam.plugin.UGA.gisSm.service.UserService"/> -->
+  <bean id="ugaUserService"       class="com.spiritdata.plugin.UGA.gisSm.service.UserService"/> -->
   <!--Uga用户模块服务：平台
-  <bean id="ugaAuthorityService"  class="com.gmteam.plugin.UGA.gisSm.service.AuthorityService"/> -->
+  <bean id="ugaAuthorityService"  class="com.spiritdata.plugin.UGA.gisSm.service.AuthorityService"/> -->
 
   <!-- session加载器外壳 -->
-  <bean id="sessionLoaderShell" class="com.gmteam.framework.core.web.SessionLoaderShell">
+  <bean id="sessionLoaderShell" class="com.spiritdata.framework.core.web.SessionLoaderShell">
     <property name="sessionLoaderList">
       <list>
         <ref bean="testLoader"/>

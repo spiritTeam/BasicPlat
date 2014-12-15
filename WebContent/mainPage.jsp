@@ -1,11 +1,11 @@
 <%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@page import="java.util.*"%>
-<%@page import="com.gmteam.framework.FConstants"%>
-<%@page import="com.gmteam.framework.core.model.tree.TreeNode"%>
-<%@page import="com.gmteam.framework.component.module.pojo.Module"%>
-<%@page import="com.gmteam.framework.FConstants"%>
-<%@page import="com.gmteam.framework.ui.tree.easyUi.EasyUiTree"%>
-<%@page import="com.gmteam.framework.util.JsonUtils"%>
+<%@page import="com.spiritdata.framework.FConstants"%>
+<%@page import="com.spiritdata.framework.core.model.tree.TreeNode"%>
+<%@page import="com.spiritdata.framework.component.module.pojo.Module"%>
+<%@page import="com.spiritdata.framework.FConstants"%>
+<%@page import="com.spiritdata.framework.ui.tree.easyUi.EasyUiTree"%>
+<%@page import="com.spiritdata.framework.util.JsonUtils"%>
 
 <%
   String path = request.getContextPath();

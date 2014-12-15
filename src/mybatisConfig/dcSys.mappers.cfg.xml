@@ -3,11 +3,11 @@
 <configuration>
   <!-- 类名设置 -->
   <typeAliases>
-    <typeAlias alias="GisSmModule" type="com.gmteam.plugin.UGA.gisSm.pojo.Function"/>
-    <typeAlias alias="GisSmUser" type="com.gmteam.plugin.UGA.gisSm.pojo.User"/>
+    <typeAlias alias="GisSmModule" type="com.spiritdata.plugin.UGA.gisSm.pojo.Function"/>
+    <typeAlias alias="GisSmUser" type="com.spiritdata.plugin.UGA.gisSm.pojo.User"/>
   </typeAliases>
   <!-- 映射关系配置文件 -->
   <mappers>
-    <mapper resource="com/gmteam/plugin/UGA/gisSm/sql/GisSmUGA.mapper.xml"/>
+    <mapper resource="com/spiritdata/plugin/UGA/gisSm/sql/GisSmUGA.mapper.xml"/>
   </mappers>
 </configuration>

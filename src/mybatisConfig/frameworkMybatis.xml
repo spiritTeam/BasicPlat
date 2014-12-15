@@ -17,6 +17,6 @@
     <setting name="lazyLoadTriggerMethods" value="equals,clone,hashCode,toString"/>
   </settings>
   <plugins>
-    <plugin interceptor="com.gmteam.framework.ext.mybatis.interceptor.PageInterceptor"/>
+    <plugin interceptor="com.spiritdata.framework.ext.mybatis.interceptor.PageInterceptor"/>
   </plugins>
 </configuration>
