@@ -35,7 +35,7 @@ public abstract class CodeException extends RuntimeException {
      * @param s 分类码
      * @throws Plat0000CException若设置的分类码不符合规范
      */
-    public void setCategory(String s) throws Plat0000CException {
+    public void setCategory(String s) {
         if (s==null||s.length()!=4) throw new Plat0000CException("分类码为4个字符，且不能为空，而所设置的分类码为：'"+s+"'！");
         this.category = s.toUpperCase().toCharArray();
     }
@@ -45,7 +45,7 @@ public abstract class CodeException extends RuntimeException {
      * @param code 内部序号
      * @throws Plat0000CException 若设置的内部码不符合规范
      */
-    public void setCode(int code) throws Plat0000CException {
+    public void setCode(int code) {
         if (code<0||code>9999) throw new Plat0000CException("合法的序号范围是[0..999]，而所设置的序号为："+code+"！");
         this.code = code;
     }
@@ -63,7 +63,7 @@ public abstract class CodeException extends RuntimeException {
      * @return 异常码
      * @throws Plat0000CException 若设置的分类码或内部码不符合规范
      */
-    public String getCategoryCode() throws Plat0000CException {
+    public String getCategoryCode() {
         String eMsg = checkFields();
         if (eMsg!=null) throw new Plat0000CException(eMsg);
 
@@ -75,7 +75,7 @@ public abstract class CodeException extends RuntimeException {
      * @return 干净的异常信息
      * @throws Plat0000CException 若不是合法的“带码异常”
      */
-    public String getPureMsg() throws Plat0000CException{
+    public String getPureMsg() {
         String ret = this.getMessage();
         String _code = getCategoryCode();
         if (!ret.startsWith("["+_code+"]")) throw new Plat0000CException("无法得到异常码，不是合法的“带码异常”！");
@@ -136,7 +136,7 @@ public abstract class CodeException extends RuntimeException {
      * @param bMsg 基础信息
      * @throws Plat0000CException 若设置的分类码或内部码不符合规范
      */
-    protected void init(String s, int c, String bMsg) throws Plat0000CException {
+    protected void init(String s, int c, String bMsg) {
         init(s, c);
         this.setBaseMsg(bMsg);
     }
@@ -147,7 +147,7 @@ public abstract class CodeException extends RuntimeException {
      * @param c 内部码
      * @throws Plat0000CException 若设置的分类码或内部码不符合规范
      */
-    protected void init(String s, int c) throws Plat0000CException {
+    protected void init(String s, int c) {
         String _msg = "";
         try {
             this.setCategory(s);
@@ -171,7 +171,7 @@ public abstract class CodeException extends RuntimeException {
      * @param bMsg 基础信息
      * @throws Plat0000CException 若设置的分类码或内部码不符合规范
      */
-    protected CodeException(String s, int c, String bMsg) throws Plat0000CException {
+    protected CodeException(String s, int c, String bMsg) {
         super();
         init(s, c, bMsg);
     }
@@ -184,7 +184,7 @@ public abstract class CodeException extends RuntimeException {
      * @param message 详细消息，这个消息将和分类码、内部码、基础信息共同组成异常信息
      * @throws Plat0000CException 若设置的分类码或内部码不符合规范
      */
-    protected CodeException(String s, int c, String bMsg, String message) throws Plat0000CException {
+    protected CodeException(String s, int c, String bMsg, String message) {
         super(message);
         init(s, c, bMsg);
     }
@@ -197,7 +197,7 @@ public abstract class CodeException extends RuntimeException {
      * @param cause 异常原因，以后通过Throwable.getCause()方法获取它。允许使用null值，指出原因不存在或者是未知的异常
      * @throws Plat0000CException 若设置的分类码或内部码不符合规范
      */
-    protected CodeException(String s, int c, String bMsg, Throwable cause) throws Plat0000CException {
+    protected CodeException(String s, int c, String bMsg, Throwable cause) {
         super(cause);
         init(s, c, bMsg);
     }
@@ -211,13 +211,13 @@ public abstract class CodeException extends RuntimeException {
      * @param cause 异常原因，以后通过Throwable.getCause()方法获取它。允许使用null值，指出原因不存在或者是未知的异常
      * @throws Plat0000CException 若设置的分类码或内部码不符合规范
      */
-    protected CodeException(String s, int c, String bMsg, String message, Throwable cause) throws Plat0000CException {
+    protected CodeException(String s, int c, String bMsg, String message, Throwable cause) {
         super(message, cause);
         init(s, c, bMsg);
     }
 
     protected CodeException(String s, int c, String bMsg, String message, Throwable cause,
-               boolean enableSuppression, boolean writableStackTrace) throws Plat0000CException {
+               boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
         init(s, c, bMsg);
     }

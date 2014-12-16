@@ -15,9 +15,8 @@ public abstract class PlatCException extends CodeException {
      * 构造没有详细消息内容的——平台“带码异常”
      * @param c 内部码
      * @param bMsg 基础信息
-     * @throws Plat0000CException 若设置的分类码或内部码不符合规范
      */
-    protected PlatCException(int c, String bMsg) throws Plat0000CException {
+    protected PlatCException(int c, String bMsg) {
         super(category, c, bMsg);
     }
 
@@ -26,9 +25,8 @@ public abstract class PlatCException extends CodeException {
      * @param c 内部码
      * @param bMsg 基础信息
      * @param message 详细消息
-     * @throws Plat0000CException 若设置的分类码或内部码不符合规范
      */
-    protected PlatCException(int c, String bMsg, String message) throws Plat0000CException {
+    protected PlatCException(int c, String bMsg, String message) {
         super(category, c, bMsg, message);
     }
 
@@ -37,9 +35,8 @@ public abstract class PlatCException extends CodeException {
      * @param c 内部码
      * @param bMsg 基础信息
      * @param cause 异常原因，以后通过Throwable.getCause()方法获取它。允许使用null值，指出原因不存在或者是未知的异常
-     * @throws Plat0000CException 若设置的分类码或内部码不符合规范
      */
-    protected PlatCException(int c, String bMsg, Throwable cause) throws Plat0000CException {
+    protected PlatCException(int c, String bMsg, Throwable cause) {
         super(category, c, bMsg, cause);
     }
 
@@ -49,14 +46,13 @@ public abstract class PlatCException extends CodeException {
      * @param bMsg 基础信息
      * @param message 详细消息
      * @param cause 异常原因，以后通过Throwable.getCause()方法获取它。允许使用null值，指出原因不存在或者是未知的异常
-     * @throws Plat0000CException 若设置的分类码或内部码不符合规范
      */
-    protected PlatCException(int c, String bMsg, String message, Throwable cause) throws Plat0000CException {
+    protected PlatCException(int c, String bMsg, String message, Throwable cause) {
         super(category, c, bMsg, message, cause);
     }
 
     protected PlatCException(int c, String bMsg, String message,Throwable cause, boolean enableSuppression,
-            boolean writableStackTrace) throws Plat0000CException {
+            boolean writableStackTrace) {
         super(category, c, bMsg, message, cause, enableSuppression, writableStackTrace);
     }
 }
