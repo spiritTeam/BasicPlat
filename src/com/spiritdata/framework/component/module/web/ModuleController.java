@@ -2,7 +2,6 @@ package com.spiritdata.framework.component.module.web;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +18,7 @@ import com.spiritdata.framework.component.module.pojo.Module;
 import com.spiritdata.framework.component.module.service.ModuleService;
 import com.spiritdata.framework.core.model.tree.TreeNode;
 import com.spiritdata.framework.ui.tree.easyUi.EasyUiTree;
+import com.spiritdata.framework.util.SequenceUUID;
 /**
  * moduelController:
  * 包含tree的显示方法，TreeGrid的显示方法
@@ -109,8 +109,7 @@ public class ModuleController {
         Module m =formModule;
         String mName = req.getParameter("moduleName");
         m.setNodeName(mName);
-        UUID uuid = UUID.randomUUID();
-        m.setId(uuid+"");
+        m.setId(SequenceUUID.getPureUUID());
         int rsp = 0;
         try {
             rsp = moduleService.insertModule(m);
