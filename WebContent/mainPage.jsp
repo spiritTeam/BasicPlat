@@ -17,7 +17,7 @@
       for (TreeNode<Module> eut: met.getChildren()) {
           ((EasyUiTree<Module>)eut).setState("open");
       }
-      AuthObjJson = JsonUtils.beanToJson(met.toTreeMap());
+      AuthObjJson = JsonUtils.objToJson(met.toTreeMap());
   }
 %>
 <!DOCTYPE html>

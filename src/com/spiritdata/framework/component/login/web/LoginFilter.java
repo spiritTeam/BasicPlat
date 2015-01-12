@@ -64,7 +64,7 @@ public class LoginFilter implements Filter {
             //errorInfo.put("message", strintPrintWriter.toString().replaceAll("<%", "<％").replaceAll("%>", "％>").replaceAll("\r\n", "").replaceAll("\r", "").replaceAll("\n", ""));
             errorInfo.put("message", e.getMessage());
             errorInfo.put("nextPage", request.getContextPath()+noLogin);
-            request.setAttribute("errorJson", JsonUtils.beanToJson(errorInfo));
+            request.setAttribute("errorJson", JsonUtils.objToJson(errorInfo));
             request.getRequestDispatcher(errorPage).forward(request,response);
         }
     }

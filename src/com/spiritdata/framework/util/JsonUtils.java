@@ -31,7 +31,7 @@ public abstract class JsonUtils {
      * @return json字符串
      * @throws Plat0001CException
      */
-    public static String beanToJson(Object obj) {
+    public static String objToJson(Object obj) {
         try {
             ObjectMapper objectMapper=getMapperInstance(false);
             String json=objectMapper.writeValueAsString(obj);
@@ -48,7 +48,7 @@ public abstract class JsonUtils {
      * @return json字符串
      * @throws Plat0001CException
      */
-    public static String beanToJson(Object obj,Boolean createNew) {
+    public static String objToJson(Object obj,Boolean createNew) {
         try {
             ObjectMapper objectMapper=getMapperInstance(createNew);
             String json=objectMapper.writeValueAsString(obj);
@@ -67,7 +67,7 @@ public abstract class JsonUtils {
      * @throws Plat0001CException 异常 
      */
     public static String Obj2AjaxJson(Object obj, int type) {
-        return JsonUtils.beanToJson(JsonUtils.Obj2AjaxMap(obj, type));
+        return JsonUtils.objToJson(JsonUtils.Obj2AjaxMap(obj, type));
     }
 
     /**
@@ -77,7 +77,7 @@ public abstract class JsonUtils {
      * @return java对象
      * @throws Plat0002CException
      */
-    public static Object jsonToBean(String json, Class<?> cls) {
+    public static Object jsonToObj(String json, Class<?> cls) {
         try {
             ObjectMapper objectMapper=getMapperInstance(false);
             Object vo=objectMapper.readValue(json, cls);
@@ -95,7 +95,7 @@ public abstract class JsonUtils {
      * @return java对象
      * @throws Plat0002CException
      */
-    public static Object jsonToBean(String json, Class<?> cls,Boolean createNew) {
+    public static Object jsonToObj(String json, Class<?> cls,Boolean createNew) {
         try {
             ObjectMapper objectMapper=getMapperInstance(createNew);
             Object vo=objectMapper.readValue(json, cls);

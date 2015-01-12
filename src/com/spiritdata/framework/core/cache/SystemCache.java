@@ -77,6 +77,6 @@ public class SystemCache {
             m.put("cacheEleContentClass", (ce.getContent()).getClass().getName());
             cl.add(m);
         }
-        return JsonUtils.beanToJson(cl);
+        return JsonUtils.objToJson(cl);
     }
 }

@@ -52,7 +52,7 @@ public class MybatisDAO <T extends BaseObject> extends SqlSessionDaoSupport impl
             this.sqlSession.insert(key, newData);
             return 1;
         } catch(Exception e) {
-            throw new Plat0101CException("新增数据异常:采用SQL="+key+",数据["+newData.getClass().getName()+"(@"+newData.hashCode()+")]=["+JsonUtils.beanToJson(newData)+"]", e);
+            throw new Plat0101CException("新增数据异常:采用SQL="+key+",数据["+newData.getClass().getName()+"(@"+newData.hashCode()+")]", e);
         }
     }
 
@@ -87,7 +87,7 @@ public class MybatisDAO <T extends BaseObject> extends SqlSessionDaoSupport impl
             if (sqlSession ==null) this.sqlSession = this.getSqlSession();
             return this.sqlSession.update(key, updateData);
         } catch(Exception e) {
-            throw new Plat0101CException("更新数据异常:采用SQL="+key+",数据["+updateData.getClass().getName()+"(@"+updateData.hashCode()+")]=["+JsonUtils.beanToJson(updateData)+"]", e);
+            throw new Plat0101CException("更新数据异常:采用SQL="+key+",数据["+updateData.getClass().getName()+"(@"+updateData.hashCode()+")]", e);
         }
     }
 
@@ -103,7 +103,7 @@ public class MybatisDAO <T extends BaseObject> extends SqlSessionDaoSupport impl
             if (sqlSession ==null) this.sqlSession = this.getSqlSession();
             return this.sqlSession.delete(key, parameter);
         } catch(Exception e) {
-            throw new Plat0101CException("删除数据异常:采用SQL="+key+",数据["+parameter.getClass().getName()+"(@"+parameter.hashCode()+")]=["+JsonUtils.beanToJson(parameter)+"]", e);
+            throw new Plat0101CException("删除数据异常:采用SQL="+key+",数据["+parameter.getClass().getName()+"(@"+parameter.hashCode()+")]", e);
         }
     }
 
@@ -124,7 +124,7 @@ public class MybatisDAO <T extends BaseObject> extends SqlSessionDaoSupport impl
           if (sqlSession ==null) this.sqlSession = this.getSqlSession();
           return Integer.parseInt(String.valueOf(this.sqlSession.selectOne(key, parameter) ));
         } catch(Exception e) {
-            throw new Plat0101CException("得到数据记录条数异常:采用SQL="+key+",数据["+parameter.getClass().getName()+"(@"+parameter.hashCode()+")]=["+JsonUtils.beanToJson(parameter)+"]", e);
+            throw new Plat0101CException("得到数据记录条数异常:采用SQL="+key+",数据["+parameter.getClass().getName()+"(@"+parameter.hashCode()+")]", e);
         }
     }
 
@@ -140,7 +140,7 @@ public class MybatisDAO <T extends BaseObject> extends SqlSessionDaoSupport impl
             if (sqlSession ==null) this.sqlSession = this.getSqlSession();
             return (T)this.sqlSession.selectOne(key, idObj);
         } catch(Exception e) {
-            throw new Plat0101CException("得到单条(范型)信息异常:采用SQL="+key+",数据["+idObj.getClass().getName()+"(@"+idObj.hashCode()+")]=["+JsonUtils.beanToJson(idObj)+"]", e);
+            throw new Plat0101CException("得到单条(范型)信息异常:采用SQL="+key+",数据["+idObj.getClass().getName()+"(@"+idObj.hashCode()+")]=["+JsonUtils.objToJson(idObj)+"]", e);
         }
     }
 
@@ -166,7 +166,7 @@ public class MybatisDAO <T extends BaseObject> extends SqlSessionDaoSupport impl
             if (sqlSession ==null) this.sqlSession = this.getSqlSession();
             return this.sqlSession.selectList(key, parameter);
         } catch(Exception e) {
-            throw new Plat0101CException("得到(范型)信息列表异常:采用SQL="+key+",数据["+parameter.getClass().getName()+"(@"+parameter.hashCode()+")]=["+JsonUtils.beanToJson(parameter)+"]", e);
+            throw new Plat0101CException("得到(范型)信息列表异常:采用SQL="+key+",数据["+parameter.getClass().getName()+"(@"+parameter.hashCode()+")]", e);
         }
     }
 
@@ -200,7 +200,7 @@ public class MybatisDAO <T extends BaseObject> extends SqlSessionDaoSupport impl
             return rp;
         } catch(Exception e) {
             throw new Plat0101CException("得到(范型)信息列表分页结果异常:采用SQL="+pageQuerySqlId
-                    +",数据["+parameter.getClass().getName()+"(@"+parameter.hashCode()+")]=["+JsonUtils.beanToJson(parameter)+"]"
+                    +",数据["+parameter.getClass().getName()+"(@"+parameter.hashCode()+")]"
                     +",分页参数[第("+pageIndex+")页,每页("+pageSize+")条记录]", e);
         }
     }
@@ -212,7 +212,7 @@ public class MybatisDAO <T extends BaseObject> extends SqlSessionDaoSupport impl
             if (sqlSession ==null) this.sqlSession = this.getSqlSession();
             return (V)this.sqlSession.selectOne(key, parameter);
         } catch(Exception e) {
-            throw new Plat0101CException("得到单条(自由)信息异常:采用SQL="+key+",数据["+parameter.getClass().getName()+"(@"+parameter.hashCode()+")]=["+JsonUtils.beanToJson(parameter)+"]", e);
+            throw new Plat0101CException("得到单条(自由)信息异常:采用SQL="+key+",数据["+parameter.getClass().getName()+"(@"+parameter.hashCode()+")]", e);
         }
     }
 
@@ -223,7 +223,7 @@ public class MybatisDAO <T extends BaseObject> extends SqlSessionDaoSupport impl
             if (sqlSession ==null) this.sqlSession = this.getSqlSession();
             return this.sqlSession.selectList(key, parameter);
         } catch(Exception e) {
-            throw new Plat0101CException("得到(自由)信息列表异常:采用SQL="+key+",数据["+parameter.getClass().getName()+"(@"+parameter.hashCode()+")]=["+JsonUtils.beanToJson(parameter)+"]", e);
+            throw new Plat0101CException("得到(自由)信息列表异常:采用SQL="+key+",数据["+parameter.getClass().getName()+"(@"+parameter.hashCode()+")]", e);
         }
     }
 
@@ -247,7 +247,7 @@ public class MybatisDAO <T extends BaseObject> extends SqlSessionDaoSupport impl
             return rp;
         } catch(Exception e) {
             throw new Plat0101CException("得到(自由)信息列表分页结果异常:采用SQL="+pageQuerySqlId
-                    +",数据["+parameter.getClass().getName()+"(@"+parameter.hashCode()+")]=["+JsonUtils.beanToJson(parameter)+"]"
+                    +",数据["+parameter.getClass().getName()+"(@"+parameter.hashCode()+")]"
                     +",分页参数[第("+pageIndex+")页,每页("+pageSize+")条记录]", e);
         }
     }
@@ -297,7 +297,7 @@ public class MybatisDAO <T extends BaseObject> extends SqlSessionDaoSupport impl
             if (sqlSession ==null) this.sqlSession = this.getSqlSession();
             this.sqlSession.update(key, parameter);
         } catch(Exception e) {
-            throw new Plat0101CException("执行Sql异常:采用SQL="+key+",数据["+parameter.getClass().getName()+"(@"+parameter.hashCode()+")]=["+JsonUtils.beanToJson(parameter)+"]", e);
+            throw new Plat0101CException("执行Sql异常:采用SQL="+key+",数据["+parameter.getClass().getName()+"(@"+parameter.hashCode()+")]", e);
         }
     }
 }
