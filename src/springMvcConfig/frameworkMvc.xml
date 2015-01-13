@@ -16,12 +16,12 @@
     http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
 
   <!-- 扫描类包，将标注Spring注解的类自动转化Bean，同时完成Bean的注入 -->
-  <context:component-scan base-package="com.gmteam.framework.component" use-default-filters="false">
+  <context:component-scan base-package="com.spiritdata.framework.component" use-default-filters="false">
     <context:include-filter type="regex" expression=".*.web.*Controller"/>
   </context:component-scan>
 
   <!-- 文件上传简单模式配置 -->
-  <bean name="/uploadtest.do" class="com.gmteam.framework.component.fileUploadDownload.SimpleFileUploadController">
+  <bean name="/uploadtest.do" class="com.spiritdata.framework.component.fileUploadDownload.SimpleFileUploadController">
     <!-- <property name="savePath" value=""/> 保存的路径 -->
     <!-- <property name="filePrefix" value=""/> 保存文件的前缀名 -->
     <property name="conflictType" value="1"/> <!-- 冲突规则：默认=0命名规则顺序加1，类似windows，这是默认方式，若进行10次仍然重名，则随机删除重名文件删除掉；=1，覆盖同名的文件 -->

@@ -1,11 +1,13 @@
 ﻿/doc
+/doc/javadoc
 /WebContent/log
 /WebContent/WEB-INF/lib
 /WebContent/WEB-INF/classes
 /
-/pom.xml
 
 /.classpath
 /.project
 /target
 /test
+/src/com/spiritdata/test
+/bin/

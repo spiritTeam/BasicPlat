@@ -121,11 +121,12 @@ function getUUID(len,radix) {
 /**
  * 把json串转换为对象
  * @param jsonStr json串
+ * @param varStr 变量名称
  * @returns javascript对象
  */
-function str2JsonObj(jsonStr) {
-  eval("var result = " + decodeURI(jsonStr));
-  return result;
+function str2JsonObj(varName, jsonStr) {
+  eval("var "+varName+"="+jsonStr+";");
+  return eval(varName);
 }
 
 /**

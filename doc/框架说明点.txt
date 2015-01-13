@@ -2,7 +2,7 @@
 
 
   <!-- 以下为文件上传的测试代码 -->
-  <bean name="/uploadtest.do" class="com.gmteam.framework.component.fileUploadDownload.SimpleFileUploadController">
+  <bean name="/uploadtest.do" class="com.spiritdata.framework.component.fileUploadDownload.SimpleFileUploadController">
     <property name="savePath" value="abc"/> <!-- 保存的路径 -->
     <property name="filePrefix" value="aabbcc"/> <!-- 保存文件的前缀名 -->
     <property name="conflictType" value="1"/> <!-- 冲突规则：默认=0命名规则顺序加1，类似windows，这是默认方式，若进行10次仍然重名，则随机删除重名文件删除掉；=1，覆盖同名的文件 -->
@@ -12,7 +12,7 @@
   </bean>
 
   <!-- 以下为文件上传的测试代码 -->
-  <bean name="/uploadtest1.do" class="com.gmteam.framework.component.fileUploadDownload.SimpleFileUploadController">
+  <bean name="/uploadtest1.do" class="com.spiritdata.framework.component.fileUploadDownload.SimpleFileUploadController">
   </bean>
 
   
