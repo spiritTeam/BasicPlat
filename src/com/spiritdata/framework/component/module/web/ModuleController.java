@@ -6,7 +6,6 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,12 +18,12 @@ import com.spiritdata.framework.component.module.service.ModuleService;
 import com.spiritdata.framework.core.model.tree.TreeNode;
 import com.spiritdata.framework.ui.tree.easyUi.EasyUiTree;
 import com.spiritdata.framework.util.SequenceUUID;
+
 /**
  * moduelController:
  * 包含tree的显示方法，TreeGrid的显示方法
  * @author mht，wh
  */
-@Controller
 public class ModuleController {
     @Resource
     private ModuleService moduleService;

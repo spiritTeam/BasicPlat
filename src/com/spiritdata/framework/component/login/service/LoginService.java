@@ -1,13 +1,10 @@
 package com.spiritdata.framework.component.login.service;
 
 import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
-
 import com.spiritdata.framework.UGA.UgaUser;
 
 public interface LoginService {
-
     /**
      * 在用户登录前的处理过程
      * @param req reqeust对象

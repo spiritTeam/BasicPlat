@@ -19,9 +19,9 @@ import com.spiritdata.framework.component.login.pojo.UserLogin;
 import com.spiritdata.framework.FConstants;
 
 /**
- * @author Roy zhu,WH
  * Mar 15, 2010
  * 系统初始化监听器
+ * @author Roy zhu,WH
  */
 public class InitSysConfigListener implements ServletContextListener {
     private Logger logger = Logger.getLogger(InitSysConfigListener.class);
