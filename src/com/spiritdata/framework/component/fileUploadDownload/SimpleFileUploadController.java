@@ -3,6 +3,8 @@ package com.spiritdata.framework.component.fileUploadDownload;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.stereotype.Controller;
+
 import com.spiritdata.framework.core.web.AbstractFileUploadController;
 
 /**
@@ -10,6 +12,7 @@ import com.spiritdata.framework.core.web.AbstractFileUploadController;
  * 对单个文件上传
  * @author wh
  */
+@Controller
 public class SimpleFileUploadController extends AbstractFileUploadController{
 
     @Override

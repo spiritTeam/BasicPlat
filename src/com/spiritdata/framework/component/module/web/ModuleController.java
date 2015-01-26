@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,6 +25,7 @@ import com.spiritdata.framework.util.SequenceUUID;
  * 包含tree的显示方法，TreeGrid的显示方法
  * @author mht，wh
  */
+@Controller
 public class ModuleController {
     @Resource
     private ModuleService moduleService;
