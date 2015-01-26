@@ -9,8 +9,6 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
-import org.springframework.stereotype.Service;
-
 import com.spiritdata.framework.UGA.UgaConstants;
 import com.spiritdata.framework.component.UGA.pojo.User;
 import com.spiritdata.framework.component.module.pojo.Module;
@@ -20,7 +18,6 @@ import com.spiritdata.framework.core.dao.mybatis.MybatisDAO;
 import com.spiritdata.framework.core.model.tree.TreeNode;
 import com.spiritdata.framework.util.TreeUtils;
 
-@Service
 public class UgaCacheService {
     @Resource(name="defaultDAO")
     private MybatisDAO<User> userDao;
