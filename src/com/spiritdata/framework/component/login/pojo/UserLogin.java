@@ -2,6 +2,7 @@ package com.spiritdata.framework.component.login.pojo;
 
 import java.io.Serializable;
 import java.util.Date;
+
 import com.spiritdata.framework.core.model.BaseObject;
 
 /**

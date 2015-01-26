@@ -8,8 +8,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.channels.FileChannel;
+import java.util.Date;
 import java.util.List;
 import java.util.StringTokenizer;
+
+import com.spiritdata.framework.exceptionC.Plat0004CException;
 
 /**
  * 封装了文件操作
@@ -158,25 +161,43 @@ public abstract class FileUtils {
     /**
      * 获取文件创建时间，目前只支持windows操作系统
      * @param f
-     * @return 创建时间的串，若出现异常，返回null
+     * @return 创建时间的串，若出现异常，返回-1
      */
     public static long getFileCreateTime4Win(File f) {
+        if (!(System.getProperties().getProperty("os.name")).toUpperCase().startsWith("WINDOW"))
+            throw new Plat0004CException("获取window系统文件创建时间方法只能在windows系统下运行，目前检测到的操作系统为["+System.getProperties().getProperty("os.name")
+                                           +"("+System.getProperties().getProperty("os.version")+")]");
+        BufferedReader br = null;
         try {
             Process ls_proc = Runtime.getRuntime().exec("cmd.exe /c dir " + f.getAbsolutePath() + " /tc");
-            BufferedReader br = new BufferedReader(new InputStreamReader(ls_proc.getInputStream()));
-            for (int i=0; i<5; i++) {
-                br.readLine();
-            }
-            String stuff = br.readLine();
-            br.close();
+            br = new BufferedReader(new InputStreamReader(ls_proc.getInputStream()));
+            for (int i=0; i<5; i++) br.readLine();
 
-            StringTokenizer st = new StringTokenizer(stuff);
-            String dateC = (st.nextToken()+" ");
-            String time = st.nextToken()+":00";
-            dateC = dateC.concat(time);
-            return (DateUtils.getDateTime("yyyy/MM/dd HH:mm:ss", dateC)).getTime();
+            String stuff = br.readLine();
+            StringTokenizer st;
+            String dateC;
+            Date d;
+
+            try {
+                st = new StringTokenizer(stuff);
+                dateC = (st.nextToken()+" ");
+                dateC = dateC.concat(st.nextToken()+":00");
+                d = DateUtils.getDateTime("yyyy/MM/dd HH:mm:ss", dateC);
+                return d.getTime();
+            } catch(Exception e) {}
+            try {
+                st = new StringTokenizer(stuff);
+                dateC = (st.nextToken()+" ");
+                st.nextToken();
+                dateC = dateC.concat(st.nextToken()+":00");
+                d = DateUtils.getDateTime("yyyy/MM/dd HH:mm:ss", dateC);
+                return d.getTime();
+            } catch(Exception e) {}
+            return -1;
         } catch (Exception e) {
             return -1;
+        } finally {
+           if (br!=null) try { br.close(); } catch (IOException e) { e.printStackTrace(); }
         }
     }
 }

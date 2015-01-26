@@ -6,21 +6,19 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
-import org.springframework.stereotype.Service;
-
 import com.spiritdata.framework.UGA.UgaConstants;
 import com.spiritdata.framework.component.module.pojo.Module;
 import com.spiritdata.framework.core.cache.CacheEle;
 import com.spiritdata.framework.core.cache.SystemCache;
 import com.spiritdata.framework.core.dao.mybatis.MybatisDAO;
 import com.spiritdata.framework.core.model.tree.TreeNode;
+
 /**
  * moduleService：
  * 对module的基本操作(insert,update,delete,select)，
  * 以及对module缓存的一些方法(getModuleTreeById,getModuleById,getModuleListgetModuleRoot)
  * @author mht
  */
-@Service
 public class ModuleService {
     @Resource(name="defaultDAO")
     private MybatisDAO<Module> dao;

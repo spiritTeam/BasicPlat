@@ -9,8 +9,6 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
-import org.springframework.stereotype.Service;
-
 import com.spiritdata.framework.UGA.UgaConstants;
 import com.spiritdata.framework.core.cache.CacheEle;
 import com.spiritdata.framework.core.cache.SystemCache;
@@ -20,7 +18,6 @@ import com.spiritdata.framework.util.TreeUtils;
 import com.spiritdata.plugin.UGA.gisSm.pojo.Function;
 import com.spiritdata.plugin.UGA.gisSm.pojo.User;
 
-@Service
 public class GisSmCacheService {
     @Resource(name="defaultDAO_dcSys")
     private MybatisDAO<User> userDao;
