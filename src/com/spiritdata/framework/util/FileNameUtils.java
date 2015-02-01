@@ -22,9 +22,9 @@ public abstract class FileNameUtils {
     }
 
     /**
-     * 
-     * @param strPath
-     * @return
+     * 转换为Unix格式目录分割符的文件名串
+     * @param strPath 文件名串
+     * @return 转换为Unix格式目录分割符的文件名串
      */
     public static String toUnixFormat(String strPath){
         return strPath.replaceAll("\\", "/");
@@ -66,6 +66,7 @@ public abstract class FileNameUtils {
      */
     public static String getFilePath(String localFullPath){
         int lastDirPos = localFullPath.lastIndexOf(File.separator);
+        if (lastDirPos==-1) lastDirPos = localFullPath.lastIndexOf("/");
         if (lastDirPos!=-1) return localFullPath.substring(0, lastDirPos);
         else return "";
     }
@@ -77,6 +78,7 @@ public abstract class FileNameUtils {
      */
     public static String getFileName(String localFullPath){
         int lastDirPos = localFullPath.lastIndexOf(File.separator);
+        if (lastDirPos==-1) lastDirPos = localFullPath.lastIndexOf("/");
         if (lastDirPos!=-1) return localFullPath.substring(lastDirPos + 1);
         return localFullPath;
     }
