@@ -20,22 +20,6 @@ import com.spiritdata.framework.exceptionC.Plat0004CException;
  */
 public abstract class FileUtils {
     /**
-     * 删除文件或文件夹下的文件，包括子目录中的文件，但不删除文件夹
-     * @param file 欲删除的文件或文件夹
-     * @return 若删除成功返回true
-     */
-    public static boolean deleteFile(File file) {
-        if (file.isDirectory()) {
-            String[] children = file.list();
-            for (int i = 0; i < children.length; i++) {
-                if (!deleteFile(new File(file, children[i])))
-                    return false;
-            }
-        }
-        return file.delete();
-    }
-
-    /**
      * 将一个目录copy到指定目录，包括其下的所有子目录和文件
      * @param sourcePath 源目录
      * @param desPath 目标目录
@@ -124,6 +108,22 @@ public abstract class FileUtils {
         File desFile = new File(desFileName);
         if (desFile.exists()) desFile.delete();
         return sourceFile.renameTo(desFile);
+    }
+
+    /**
+     * 删除文件或文件夹下的文件，包括子目录中的文件，但不删除文件夹
+     * @param file 欲删除的文件或文件夹
+     * @return 若删除成功返回true
+     */
+    public static boolean deleteFile(File file) {
+        if (file.isDirectory()) {
+            String[] children = file.list();
+            for (int i = 0; i < children.length; i++) {
+                if (!deleteFile(new File(file, children[i])))
+                    return false;
+            }
+        }
+        return file.delete();
     }
 
     /**

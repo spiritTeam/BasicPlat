@@ -10,7 +10,7 @@ import com.spiritdata.framework.exceptionC.Plat0000CException;
  * 建议按照如下规则使用CodeException框架。<br/>
  * 在如下情况下，建议设定大分类，对应一个独立的分类码：<br/>
  * ·在一个新项目或系统中，使用一类统一的大分类；<br/>
- * ·项目中有一定规模或独立性的子域(子系统、自功能)；<br/>
+ * ·项目中有一定规模或独立性的子域(子系统、子功能)；<br/>
  * 为此大类编写一个继承自此类的类，这个类中只设置Category，比如TestCException，并建议为abstract类。<br/>
  * 之后按照这个大类中的业务设计异常，并为每一异常编写一个继承自“带码异常”大类(TestCException)的异常类，在此时设置code。<br/>
  * 在系统编写中使用具体的设置了code的“带码异常类，如Test0001CException.<br/>
