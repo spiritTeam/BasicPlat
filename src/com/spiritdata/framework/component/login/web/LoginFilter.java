@@ -39,7 +39,7 @@ public class LoginFilter implements Filter {
         String path=request.getServletPath();
         try {
             String ingoresArray[] = ingores.split(",");
-            if (isIngore(path, ingoresArray)||path.equals("/")||path.equals("")) chain.doFilter(req, res);
+            if (isIngore(path, ingoresArray)) chain.doFilter(req, res);
             else if (path.endsWith(".css")||path.endsWith(".js")||path.endsWith(".json")) chain.doFilter(req, res);
             else if (session.getAttribute(FConstants.SESSION_USER)!=null) {
                 //判断是否用其他Sesson登录了
