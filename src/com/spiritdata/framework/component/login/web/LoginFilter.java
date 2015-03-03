@@ -56,7 +56,9 @@ public class LoginFilter implements Filter {
                 } else chain.doFilter(req, res);
             } else {
                 String newUrl = request.getContextPath()+noLogin;
-                newUrl = (newUrl.indexOf("?")==-1?newUrl+"?"+request.getQueryString():newUrl+"&"+request.getQueryString());
+                if (!request.getQueryString().equals("")&&request.getQueryString()!=null){
+                    newUrl = (newUrl.indexOf("?")==-1?newUrl+"?"+request.getQueryString():newUrl+"&"+request.getQueryString());
+                }
                 response.sendRedirect(newUrl);
             }
         } catch (Exception e) {
