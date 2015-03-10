@@ -6,9 +6,9 @@ package com.spiritdata.framework.exceptionC;
  * {@linkplain com.spiritdata.framework.util.JsonUtils JsonUtils}
  * @author wh
  */
-//此方法在jsond包中也有，为了各包间引用的明确，此方法在平台包中重复实现，这样可以保证基础包不出现向上引用。
+//此方法在jsonD包中也有，为了各包间引用的明确，此方法在平台包中重复实现，这样可以保证基础包不出现向上引用。
 //今后可能把jsonD作为平台包的一部份，这样可能会更好
-//此异常码PLAT-0001对应jsond中的JSND-0101
+//此异常码PLAT-0001对应jsonD中的JSND-0101
 public class Plat0001CException extends PlatCException {
     private static final long serialVersionUID = 7768427009805162092L;
 
