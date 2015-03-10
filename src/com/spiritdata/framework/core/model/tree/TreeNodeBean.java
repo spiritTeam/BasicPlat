@@ -12,8 +12,9 @@ import com.spiritdata.framework.util.StringUtils;
  * @see com.spiritdata.framework.core.model.tree.TreeNode
  * @since 0.1
  */
-@SuppressWarnings("serial")
 public class TreeNodeBean extends BaseObject implements Cloneable {
+    private static final long serialVersionUID = -2142327508636587743L;
+
     //树结点ID
     private String id;
     /**

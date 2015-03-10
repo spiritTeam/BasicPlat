@@ -56,7 +56,7 @@ public class LoginFilter implements Filter {
                 } else chain.doFilter(req, res);
             } else {
                 String newUrl = request.getContextPath()+noLogin;
-                if (!request.getQueryString().equals("")&&request.getQueryString()!=null){
+                if (request.getQueryString()!=null&&!request.getQueryString().equals("")) {
                     newUrl = (newUrl.indexOf("?")==-1?newUrl+"?"+request.getQueryString():newUrl+"&"+request.getQueryString());
                 }
                 response.sendRedirect(newUrl);
