@@ -302,6 +302,7 @@ public class TreeNode<T extends TreeNodeBean> extends BaseObject implements Clon
      * @return 若存在子结点id为给定值得结点，返回这个结点，否则返回null
      */
     public TreeNode<T> getChild(String id) {
+        if (this.children==null) return null;
         TreeNode<T> retNode=null;
         for (int i=0; i<this.children.size(); i++) {
             TreeNode<T> tn = this.children.get(i);
