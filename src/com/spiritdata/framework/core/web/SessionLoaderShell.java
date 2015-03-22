@@ -1,7 +1,6 @@
 package com.spiritdata.framework.core.web;
 
 import java.util.List;
-
 import javax.servlet.http.HttpSession;
 
 /**
