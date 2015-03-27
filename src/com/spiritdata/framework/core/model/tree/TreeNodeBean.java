@@ -32,6 +32,7 @@ public class TreeNodeBean extends BaseObject implements Cloneable {
         if (id.equals("")) this.id=null;
         this.id=id;
     }
+
     //父结点ID
     private String parentId;
     /**
@@ -49,6 +50,7 @@ public class TreeNodeBean extends BaseObject implements Cloneable {
         if (StringUtils.isNullOrEmptyOrSpace(parentId)) this.parentId=null;
         else this.parentId = parentId;
     }
+
     //结点名称
     private String nodeName;
     /**
@@ -65,6 +67,7 @@ public class TreeNodeBean extends BaseObject implements Cloneable {
     public void setNodeName(String nodeName) {
         this.nodeName = (nodeName==null?null:nodeName.trim());
     }
+
     //排序
     private int order;
     /**
@@ -74,7 +77,6 @@ public class TreeNodeBean extends BaseObject implements Cloneable {
     public int getOrder() {
         return this.order;
     }
-
     /**
      * 设置结点的排序序号
      * @param order 树结点的排序号
@@ -92,7 +94,6 @@ public class TreeNodeBean extends BaseObject implements Cloneable {
     public void setOrderType(int orderType) {
         this.orderType = orderType;
     }
-
     /**
      * 浅层Clone方法，树clone时需要。
      */
