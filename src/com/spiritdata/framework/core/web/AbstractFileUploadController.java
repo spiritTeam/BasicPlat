@@ -143,7 +143,7 @@ public abstract class AbstractFileUploadController implements Controller, Handle
                 //处理路径
                 String _path = FileNameUtils.concatPath(this.appOSPath, this.defaultPath);
                 File f;
-                if (this.savePath!=null&&this.savePath.trim().length()>0) {//有路径
+                if (!StringUtils.isNullOrEmptyOrSpace(this.savePath)) {//有路径
                     f = new File(this.savePath);
                     if (f.isAbsolute()) _path=this.savePath;
                     else _path = FileNameUtils.concatPath(_path, this.savePath);
@@ -160,17 +160,17 @@ public abstract class AbstractFileUploadController implements Controller, Handle
                 int fIndex=0;
                 while (iterator.hasNext()) {
                     CommonsMultipartFile file = (CommonsMultipartFile)files.get(iterator.next());
-                    if (file.getOriginalFilename()==null||file.getOriginalFilename().trim().equals("")) continue;
+                    if (StringUtils.isNullOrEmptyOrSpace(file.getOriginalFilename())) continue;
                     //处理文件名
                     String storeFilename = null;
                     if (storeFileNames==null) storeFilename = file.getOriginalFilename();
                     else {
                         storeFilename = storeFileNames[fIndex];
-                        if (storeFilename==null||storeFilename.trim().equals("")) storeFilename = file.getOriginalFilename();
+                        if (StringUtils.isNullOrEmptyOrSpace(storeFilename)) storeFilename = file.getOriginalFilename();
                         else storeFilename += FileNameUtils.getExt(file.getOriginalFilename());
                     }
 
-                    if (this.filePrefix!=null&&this.filePrefix.trim().length()>0) storeFilename = this.filePrefix+"_"+storeFilename;
+                    if (!StringUtils.isNullOrEmptyOrSpace(this.filePrefix)) storeFilename = this.filePrefix+"_"+storeFilename;
                     if (this.datePathModel==2||this.datePathModel==3) storeFilename = FileNameUtils.getDateRuleFileName(storeFilename);
                     storeFilename = FileNameUtils.concatPath(_path, storeFilename);
                     //拷贝文件

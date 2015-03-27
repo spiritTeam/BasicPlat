@@ -12,6 +12,7 @@ import com.spiritdata.framework.core.cache.CacheEle;
 import com.spiritdata.framework.core.cache.SystemCache;
 import com.spiritdata.framework.core.dao.mybatis.MybatisDAO;
 import com.spiritdata.framework.core.model.tree.TreeNode;
+import com.spiritdata.framework.util.StringUtils;
 
 /**
  * moduleService：
@@ -61,7 +62,7 @@ public class ModuleService {
      */
     @SuppressWarnings("unchecked")
     public TreeNode<Module> getModuleTreeById(String id) {
-        if (id==null||id.trim().length()==0) return null;
+        if (StringUtils.isNullOrEmptyOrSpace(id)) return null;
         TreeNode<Module> tnM = null;
         CacheEle<?> mc = SystemCache.getCache(UgaConstants.CATCH_UGA_MODULE);
         if (mc!=null&&mc.getContent()!=null) {

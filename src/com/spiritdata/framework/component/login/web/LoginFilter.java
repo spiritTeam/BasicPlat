@@ -17,6 +17,7 @@ import com.spiritdata.framework.core.cache.CacheEle;
 import com.spiritdata.framework.core.cache.SystemCache;
 import com.spiritdata.framework.component.login.pojo.UserLogin;
 import com.spiritdata.framework.util.JsonUtils;
+import com.spiritdata.framework.util.StringUtils;
 
 public class LoginFilter implements Filter {
     private static Logger logger = Logger.getLogger(LoginFilter.class);
@@ -56,7 +57,7 @@ public class LoginFilter implements Filter {
                 } else chain.doFilter(req, res);
             } else {
                 String newUrl = request.getContextPath()+noLogin;
-                if (request.getQueryString()!=null&&!request.getQueryString().equals("")) {
+                if (!StringUtils.isNullOrEmptyOrSpace(request.getQueryString())) {
                     newUrl = (newUrl.indexOf("?")==-1?newUrl+"?"+request.getQueryString():newUrl+"&"+request.getQueryString());
                 }
                 response.sendRedirect(newUrl);

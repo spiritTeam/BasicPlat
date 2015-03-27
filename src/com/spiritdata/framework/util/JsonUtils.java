@@ -126,7 +126,7 @@ public abstract class JsonUtils {
      * @return 紧凑型Json串
      */
     public static String getCompactJsonStr(String jsonStr) {
-        if (jsonStr==null || jsonStr.trim().length()==0) return null;
+        if (jsonStr==null||jsonStr.trim().length()==0) return null;
 
         int dQuotes = 0, sQuotes=0; //单双引号标志
         int rnFlag = 0; //回车换行标记
@@ -160,7 +160,7 @@ public abstract class JsonUtils {
      * @return 格式化后的字符串
      */
     public static String formatJsonStr(String jsonStr, String indentStr) {
-        if (jsonStr==null || jsonStr.trim().length()==0) return null;
+        if (jsonStr==null||jsonStr.trim().length()==0) return null;
 
         int dQuotes = 0, sQuotes=0; //单双引号标志
         int rnFlag = 0; //回车换行标记
@@ -190,7 +190,7 @@ public abstract class JsonUtils {
         StringBuffer _sb = new StringBuffer();
         //占位符处理
         String _indentStr = indentStr;
-        if (_indentStr==null||_indentStr.length()==0) _indentStr="  ";
+        if (_indentStr==null||_indentStr.trim().length()==0) _indentStr="  ";
         String _is = "";
         for (int i=0; i<sb.length(); i++) {
             char c = sb.charAt(i);

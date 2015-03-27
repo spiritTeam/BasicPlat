@@ -1,5 +1,7 @@
 package com.spiritdata.framework.core.dao.dialect;
 
+import com.spiritdata.framework.util.StringUtils;
+
 /**
  * SQLServer200方言
  * @author wh
@@ -41,9 +43,7 @@ public class SQLServer2005Dialect extends Dialect{
         }
         pagingBuilder.append(sqlPartString);
 
-        if (orderby == null || orderby.length() == 0) {
-            orderby = "ORDER BY CURRENT_TIMESTAMP";
-        }
+        if (StringUtils.isNullOrEmptyOrSpace(orderby)) orderby="ORDER BY CURRENT_TIMESTAMP";
 
         StringBuffer result = new StringBuffer();
         result.append("WITH query AS (SELECT ")

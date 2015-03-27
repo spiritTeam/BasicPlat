@@ -29,8 +29,8 @@ public class TreeNodeBean extends BaseObject implements Cloneable {
      * @param id
      */
     public void setId(String id) {
-        if (id.equals("")) this.id=null;
-        this.id=id;
+        if (StringUtils.isNullOrEmptyOrSpace(id)) this.id=null;
+        else this.id=id;
     }
 
     //父结点ID

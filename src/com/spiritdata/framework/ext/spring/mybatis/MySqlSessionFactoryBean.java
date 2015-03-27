@@ -59,6 +59,7 @@ import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
 
 import com.spiritdata.framework.core.dao.DatabaseType;
 import com.spiritdata.framework.ext.mybatis.interceptor.PageInterceptor;
+import com.spiritdata.framework.util.StringUtils;
 
 /**
  * 为实现多个配置文件的导入
@@ -566,7 +567,7 @@ public class MySqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, 
     }
 
     //处理数据库类型
-    if (this.databaseType==null||this.databaseType.equals("")) {
+    if (StringUtils.isNullOrEmptyOrSpace(this.databaseType)) {
         this.databaseType="MySql";
     }
     DatabaseType.getDatabaseType(this.databaseType);

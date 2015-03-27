@@ -502,7 +502,7 @@ public abstract class ChineseCharactersUtils {
      * @return String 转换成全拼后的字符串
      */
     public static String getFullSpell(String cnStr) {
-        if (null == cnStr || "".equals(cnStr.trim())) return cnStr;
+        if (cnStr==null||cnStr.trim().length()==0) return cnStr;
 
         char[] chars = cnStr.toCharArray();
         StringBuffer retuBuf = new StringBuffer();
@@ -529,7 +529,7 @@ public abstract class ChineseCharactersUtils {
      * @return String 转换成全拼后的字符串
      */
     public static String getFullSpellFirstUp(String cnStr) {
-        if (null == cnStr || "".equals(cnStr.trim())) return cnStr;
+        if (cnStr==null||cnStr.trim().length()==0) return cnStr;
 
         char[] chars = cnStr.toCharArray();
         StringBuffer retuBuf = new StringBuffer();

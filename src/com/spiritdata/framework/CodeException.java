@@ -36,7 +36,7 @@ public abstract class CodeException extends RuntimeException {
      * @throws Plat0000CException若设置的分类码不符合规范
      */
     public void setCategory(String s) {
-        if (s==null||s.length()!=4) throw new Plat0000CException("分类码为4个字符，且不能为空，而所设置的分类码为：'"+s+"'！");
+        if (s==null||s.trim().length()!=4) throw new Plat0000CException("分类码为4个字符，且不能为空，而所设置的分类码为：'"+s+"'！");
         this.category = s.toUpperCase().toCharArray();
     }
 
@@ -110,12 +110,12 @@ public abstract class CodeException extends RuntimeException {
     private String checkFields() {
         String _eMsg = "";
         String s= new String(this.category);
-        if (s==null||s.length()!=4) _eMsg = "分类码为4个字符，且不能为空，而所设置的分类码为：'"+s+"'！";
+        if (s==null||s.trim().length()!=4) _eMsg = "分类码为4个字符，且不能为空，而所设置的分类码为：'"+s+"'！";
         if (this.code<0||this.code>9999) {
-            if (_eMsg.length()>0) _eMsg = _eMsg.substring(0, _eMsg.length()-1)+"；";
+            if (_eMsg.trim().length()>0) _eMsg = _eMsg.substring(0, _eMsg.length()-1)+"；";
             _eMsg += "合法的序号范围是[0..999]，而所设置的序号为："+code+"！";
         }
-        if (_eMsg.length()==0) return null;
+        if (_eMsg.trim().length()==0) return null;
         return _eMsg;
     }
 
@@ -157,10 +157,10 @@ public abstract class CodeException extends RuntimeException {
         try {
             this.setCode(c);
         } catch(Plat0000CException sce) {
-            if (_msg.length()>0) _msg = _msg.substring(0, _msg.length()-1)+"；";
+            if (_msg.trim().length()>0) _msg = _msg.substring(0, _msg.length()-1)+"；";
             _msg += sce.getPureMsg();
         }
-        if (_msg.length()>0) throw new Plat0000CException(_msg);
+        if (_msg.trim().length()>0) throw new Plat0000CException(_msg);
     }
 
     //扩充父类的构造函数
