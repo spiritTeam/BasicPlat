@@ -567,9 +567,7 @@ public class MySqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, 
     }
 
     //处理数据库类型
-    if (StringUtils.isNullOrEmptyOrSpace(this.databaseType)) {
-        this.databaseType="MySql";
-    }
+    if (StringUtils.isNullOrEmptyOrSpace(this.databaseType)) this.databaseType="MySql";
     DatabaseType.getDatabaseType(this.databaseType);
     Properties prop = new Properties();
     prop.put("databaseType", this.databaseType);
