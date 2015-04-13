@@ -463,14 +463,10 @@ public abstract class ChineseCharactersUtils {
      * @return String 拼音
      */
     public static String getSpellByAscii(int ascii) {
-        if (ascii > 0 && ascii < 160) {
-            // 单字符
-            return String.valueOf((char) ascii);
-        }
-        if (ascii < -20319 || ascii > -10247) {
-            // 不知道的字符
-            return null;
-        }
+        // 单字符
+        if (ascii>0 && ascii<160) return String.valueOf((char) ascii);
+        // 不知道的字符
+        if (ascii<-20319 || ascii>-10247) return null;
 
         Set<String> keySet = spellMap.keySet();
         Iterator<String> it = keySet.iterator();
@@ -486,7 +482,7 @@ public abstract class ChineseCharactersUtils {
                 asciiRang = ((Integer) valObj).intValue();
                 if (ascii >= asciiRang0 && ascii < asciiRang) {
                     // 区间找到
-                    return (spell0 == null) ? spell : spell0;
+                    return (spell0 == null)?spell:spell0;
                 } else {
                     spell0 = spell;
                     asciiRang0 = asciiRang;
@@ -609,5 +605,23 @@ public abstract class ChineseCharactersUtils {
                 outStr = outStr + Tstr;
         }
         return outStr;
+    }
+
+    /**
+     * 得到一个字符串（中英文混排）的字节长度，一个汉字计算为几个Byte是需要指定的。
+     * 目前还不能做的很灵活，将来再处理。
+     * 将中文替换为指定的字符,便于计算实际的长度，如替换为**或者***
+     * @param str 被处理的字符串
+     * @param cnLen 每个汉字所占Byte长度，若不设置，或小于1，则按照2处理
+     * @return 中英文混排字符串长度
+     */
+    public static int getStrLen(String str, int cnLen) {
+        if (str==null) return 0;
+        if (cnLen<1) cnLen=2;
+
+        String regEx="[\\u4e00-\\u9fa5]", _replaceStr="";
+        for(int i=0;i<cnLen;i++) _replaceStr+="^";
+
+        return (str.replaceAll(regEx , _replaceStr)).length();
     }
 }

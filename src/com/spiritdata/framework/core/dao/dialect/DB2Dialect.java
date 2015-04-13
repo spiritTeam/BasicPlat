@@ -1,5 +1,7 @@
 package com.spiritdata.framework.core.dao.dialect;
 
+import com.spiritdata.framework.util.ChineseCharactersUtils;
+
 /**
  * DB2方言
  * @author wh
@@ -42,5 +44,15 @@ public class DB2Dialect extends Dialect {
         } else pagingSelect.append("<= "+limit);
 
         return pagingSelect.toString();
+    }
+
+    @Override
+    public int getStrLen(String str, String codeType) {
+        if (codeType==null||codeType.length()==0) return ChineseCharactersUtils.getStrLen(str, 3);
+        else
+        if(codeType.toUpperCase().equals("UTF-8")||codeType.toUpperCase().equals("UTF8")) return ChineseCharactersUtils.getStrLen(str, 3);
+        else
+        if (codeType.toUpperCase().equals("GBK")||codeType.toUpperCase().equals("GB2312")) return ChineseCharactersUtils.getStrLen(str, 2);
+        else return ChineseCharactersUtils.getStrLen(str, 3);
     }
 }

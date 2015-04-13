@@ -22,4 +22,12 @@ public abstract class Dialect {
      * @return 硬分页的Sql语句
      */
     public abstract String getLimitString(String sql, int offset, int limit);
+
+    /**
+     * 得到一个字符串的字节长度，各种编码混排的字符串
+     * @param str 字符串
+     * @param codeType 编码方式，如UTF-8/GBK等，若不设置按UTF-8处理
+     * @return 字符串长度
+     */
+    public abstract int getStrLen(String str, String codeType);
 }

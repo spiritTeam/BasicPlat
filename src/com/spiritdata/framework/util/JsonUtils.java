@@ -201,6 +201,12 @@ public abstract class JsonUtils {
 
             if (sQuotes%2==1||dQuotes%2==1) _sb.append(c);
             else {
+                if ((c=='['&&_c==']')||(c=='{'&&_c=='}')) {
+                    _sb.append(c);
+                    _sb.append(_c);
+                    i++;
+                    continue;
+                }
                 if (c=='{'||c=='['||(c==','&&_c!='['&&_c!='{')) {
                     _sb.append(c);
                     _sb.append("\n");
