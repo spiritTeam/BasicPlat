@@ -1,6 +1,6 @@
 package com.spiritdata.framework.core.dao;
 
-import java.lang.IllegalArgumentException;
+import com.spiritdata.framework.exceptionC.Plat0102CException;
 
 /**
  * 数据库类型枚举值
@@ -10,34 +10,28 @@ public enum DatabaseType {
     Oracle("Oracle"), MySql("MySql"), SqlServer("SqlServer"), SqlServer2005("SqlServer2005"),
     DB2("DB2"), H2("H2"), HSQL("HSQL"), PostgreSQL("PostgreSQL");
 
-    private String name;
+    private String value;
 
-    private DatabaseType(String name) {  
-        this.name = name;
+    private DatabaseType(String value) {  
+        this.value = value;
     }
 
-    public String getName() {
-        return this.name;
+    public String getValue() {
+        return this.value;
     }
 
-    public static DatabaseType getDatabaseType(String name) {
-        if (name==null) name="Oracle";
-        if (name.equalsIgnoreCase("Oracle")) {
-            return DatabaseType.Oracle;
-        } else if (name.equalsIgnoreCase("MySql")) {
-            return DatabaseType.MySql;
-        } else if (name.equalsIgnoreCase("SqlServer")) {
-            return DatabaseType.SqlServer;
-        } else if (name.equalsIgnoreCase("SqlServer2005")) {
-            return DatabaseType.SqlServer2005;
-        } else if (name.equalsIgnoreCase("DB2")) {
-            return DatabaseType.DB2;
-        } else if (name.equalsIgnoreCase("H2")) {
-            return DatabaseType.H2;
-        } else if (name.equalsIgnoreCase("HSQL")) {
-            return DatabaseType.HSQL;
-        } else if (name.equalsIgnoreCase("PostgreSQL")) {
-            return DatabaseType.PostgreSQL;
-        } else throw new IllegalArgumentException("不能识别的数据库类型！");
+    public static DatabaseType getDatabaseType(String value) {
+        if (value==null||value.trim().length()==0) return DatabaseType.Oracle;
+
+        if (value.toUpperCase().equals("ORACLE")) return DatabaseType.Oracle;
+        if (value.toUpperCase().equals("MYSQL")) return DatabaseType.MySql;
+        if (value.toUpperCase().equals("SQLSERVER")) return DatabaseType.SqlServer;
+        if (value.toUpperCase().equals("SQLSERVER2005")) return DatabaseType.SqlServer2005;
+        if (value.toUpperCase().equals("DB2")) return DatabaseType.DB2;
+        if (value.toUpperCase().equals("H2")) return DatabaseType.H2;
+        if (value.toUpperCase().equals("HSQL")) return DatabaseType.HSQL;
+        if (value.toUpperCase().equals("POSTGRESQL")) return DatabaseType.PostgreSQL;
+
+        throw new Plat0102CException("不能识别的数据库类型:"+value+"！");
     }
 }
