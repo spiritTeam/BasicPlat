@@ -1,7 +1,9 @@
 package com.spiritdata.framework.component.login.service;
 
 import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
+
 import com.spiritdata.framework.UGA.UgaUser;
 
 public interface LoginService {
@@ -19,4 +21,11 @@ public interface LoginService {
      * @return 返回为map对象，若成功，必须要放入一个key="success"的键值对；否则把出现的问题组织为Map返回
      */
     Map<String, Object> afterUserLoginOk(UgaUser user, HttpServletRequest req);
+
+    /**
+     * 在用户注销时的处理过程，清除Session中的用户定义的内容
+     * @param req reqeust对象
+     * @return 返回为map对象，若成功，必须要放入一个key="success"的键值对；否则把出现的问题组织为Map返回
+     */
+    Map<String, Object> onLogout(HttpServletRequest req);
 }

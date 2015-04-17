@@ -45,7 +45,11 @@ public class LoginController {
         Map<String,Object> retObj = new HashMap<String,Object>();
         try {
             HttpSession session = req.getSession();
-            Map<String, Object> beforeM = loginService.beforeUserLogin(req);
+            Map<String, Object> beforeM = null;
+            try {//不管是否loginService定义了，逻辑都可向下执行
+                beforeM = loginService.beforeUserLogin(req);
+            } catch(Exception e) {
+            }
             if (beforeM==null||beforeM.get("success")!=null) {
                 //用户处理
                 UgaUser user = ugaUserService.getUserByLoginName(userLogin.getLoginName());
@@ -56,7 +60,11 @@ public class LoginController {
                     retObj.put("type", "2");
                     retObj.put("data", "密码不匹配！");
                 } else {
-                    Map<String, Object> afterM = loginService.afterUserLoginOk(user, req);
+                    Map<String, Object> afterM = null;
+                    try {
+                        afterM = loginService.afterUserLoginOk(user, req);
+                    } catch(Exception e) {
+                    }
                     if (afterM==null||afterM.get("success")!=null) {
                         //设置用户Session缓存
                         UserLogin oldUserLogin = ((CacheEle<Map<String, UserLogin>>)SystemCache.getCache(FConstants.USERSESSIONMAP)).getContent().remove(user.getUserId());
@@ -105,8 +113,18 @@ public class LoginController {
             session.removeAttribute(FConstants.SESSION_USER);
             //清除权限
             session.removeAttribute(FConstants.SESSION_USERAUTHORITY);
-            retObj.put("type", "1");
-            retObj.put("data", null);
+            Map<String, Object> onLogoutM = null;
+            try {
+                onLogoutM = loginService.onLogout(req);
+            } catch(Exception e) {
+            }
+            if (onLogoutM!=null&&onLogoutM.get("success")==null) {
+                retObj.put("type", "-1");
+                retObj.put("data", onLogoutM);
+            } else {
+                retObj.put("type", "1");
+                retObj.put("data", null);
+            }
         } catch(Exception e) {
             retObj.put("type", "-1");
             retObj.put("data", e.getMessage());
