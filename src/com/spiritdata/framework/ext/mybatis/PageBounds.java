@@ -97,11 +97,11 @@ public class PageBounds extends RowBounds implements Serializable {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("PageBounds{");
-        sb.append("page=").append(page);
-        sb.append(", limit=").append(limit);
-        sb.append(", containsTotalCount=").append(containsTotalCount);
-        sb.append(", asyncTotalCount=").append(asyncTotalCount);
+        final StringBuilder sb = new StringBuilder("PageBounds:{");
+        sb.append("page:").append(page);
+        sb.append(", limit:").append(limit);
+        sb.append(", containsTotalCount:").append(containsTotalCount);
+        sb.append(", asyncTotalCount:").append(asyncTotalCount);
         sb.append('}');
         return sb.toString();
     }

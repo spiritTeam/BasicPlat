@@ -220,19 +220,9 @@ public class PageInterceptor implements Interceptor{
     public void setProperties(Properties p) {
         if (p.getProperty("databaseType")!=null) {
             this.databaseType = DatabaseType.getDatabaseType(p.getProperty("databaseType"));
-            switch (this.databaseType) {
-                case Oracle: this.setDialect(new OracleDialect()); break;
-                case MySql: this.setDialect(new MySqlDialect()); break;
-                case SqlServer: this.setDialect(new SQLServerDialect()); break;
-                case SqlServer2005: this.setDialect(new SQLServer2005Dialect()); break;
-                case DB2: this.setDialect(new DB2Dialect()); break;
-                case H2: this.setDialect(new H2Dialect()); break;
-                case HSQL: this.setDialect(new HSQLDialect()); break;
-                case PostgreSQL: this.setDialect(new PostgreSQLDialect()); break;
-                default:this.setDialect(new OracleDialect()); break;
-            }
+            this.setDialect(DialectFactory.Generator(this.databaseType));
         }
-        
+
         boolean b=false;
         try {
             b = Boolean.parseBoolean(p.getProperty("asyncTotalCount"));
