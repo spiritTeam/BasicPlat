@@ -168,12 +168,12 @@ public interface GeneralMybatisDAO<T> extends GeneralDao<T> {
      * 执行Sql，一般为DDL语句
      * @param parameter SQL条件对象
      */
-    public void excute(Object parameter) throws Plat0101CException;
+    public void execute(Object parameter) throws Plat0101CException;
 
     /**
      * 执行Sql，一般为DDL语句
-     * @param excuteSqlId 需执行的sql语句标识
+     * @param executeSqlId 需执行的sql语句标识
      * @param parameter SQL条件对象
      */
-    public void excute(String excuteSqlId, Object parameter) throws Plat0101CException;
+    public void execute(String executeSqlId, Object parameter) throws Plat0101CException;
 }

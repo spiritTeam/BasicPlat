@@ -29,7 +29,7 @@ public class MybatisDAO <T extends BaseObject> extends SqlSessionDaoSupport impl
     private String infokey="getInfo";
     private String listkey="getList";
     private String countkey="getCount";
-    private String excutekey="excute";
+    private String executekey="execute";
 
     /**
      * 初始化
@@ -286,13 +286,13 @@ public class MybatisDAO <T extends BaseObject> extends SqlSessionDaoSupport impl
     }
 
     @Override
-    public void excute(Object parameter) {
-        excute(excutekey, parameter);
+    public void execute(Object parameter) {
+        execute(executekey, parameter);
     }
 
     @Override
-    public void excute(String excuteSqlId, Object parameter) {
-        String key=namespace+"."+excuteSqlId;
+    public void execute(String executeSqlId, Object parameter) {
+        String key=namespace+"."+executeSqlId;
         try {
             if (sqlSession ==null) this.sqlSession = this.getSqlSession();
             this.sqlSession.update(key, parameter);
