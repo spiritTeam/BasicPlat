@@ -88,7 +88,6 @@ public abstract class AbstractFileUploadController implements Controller, Handle
         this.datePathModel = datePathModel;
     }
 
-    
     private int conflictType=0;//解决冲突的方法
     /**
      * 设置文件名冲突时的解决办法<br/>
@@ -140,6 +139,7 @@ public abstract class AbstractFileUploadController implements Controller, Handle
 
             List<Map<String, Object>> retl = new ArrayList<Map<String, Object>>();
             if (files!=null&&files.size()>0) {//返回空
+                this.setMySavePath();
                 //处理路径
                 String _path = FileNameUtils.concatPath(this.appOSPath, this.defaultPath);
                 File f;
@@ -275,7 +275,7 @@ public abstract class AbstractFileUploadController implements Controller, Handle
                     int i=10;
                     while (i>0) {
                         _fPath = FileNameUtils.getFilePath(fileName);
-                        _fPureName = FileNameUtils.getPureFileName(fileName)+"(1)";
+                        _fPureName = _orgFPureName+"("+(11-i)+")";
                         _fExt = FileNameUtils.getExt(fileName);
                         fileName = FileNameUtils.concatPath(_fPath, _fPureName+_fExt);
                         storeFile = new File(fileName);
@@ -427,4 +427,11 @@ public abstract class AbstractFileUploadController implements Controller, Handle
      * @param rqtParams request的参数
      */
     public abstract void afterUploadAllFiles(List<Map<String, Object>> fl, Map<String, Object> rqtAttrs, Map<String, Object> rqtParams);
+
+    /**
+     * 使得上层类可动态设置自己的文件夹
+     */
+    public void setMySavePath() {
+        
+    }
 }
