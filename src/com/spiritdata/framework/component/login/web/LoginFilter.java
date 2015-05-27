@@ -82,7 +82,7 @@ public class LoginFilter implements Filter {
         _path=(_path.indexOf(".do")>0)?(_path.indexOf("!")>0?(_path.substring(0,_path.indexOf("!"))+".do"):_path):_path;
         for (int i=0; i<ingores.length; i++) {
             String ingore=ingores[i];
-            if(_path.indexOf(ingore)>=0 ) return true;
+            if (_path.indexOf(ingore)>=0) return true;
         }
         return false;
     }
