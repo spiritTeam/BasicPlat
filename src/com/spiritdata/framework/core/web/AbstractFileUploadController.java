@@ -220,7 +220,7 @@ public abstract class AbstractFileUploadController implements Controller, Handle
             MappingJackson2JsonView mjjv = new MappingJackson2JsonView();
             response.setHeader("Cache-Control", "no-cache");
             mjjv.setContentType("text/html; charset=UTF-8");
-            mjjv.setAttributesMap(JsonUtils.obj2AjaxMap(retl, 0));
+            mjjv.setAttributesMap(JsonUtils.obj2AjaxMap(retl, 1));
             ModelAndView mav = new ModelAndView();
             mav.setView(mjjv);
             return mav;

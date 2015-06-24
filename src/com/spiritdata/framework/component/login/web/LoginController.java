@@ -65,7 +65,7 @@ public class LoginController {
                         afterM = loginService.afterUserLoginOk(user, req);
                     } catch(Exception e) {
                     }
-                    if (afterM==null||afterM.get("success")!=null) {
+                    if (afterM==null||afterM.get("success")!=null) { //成功登录
                         //设置用户Session缓存
                         UserLogin oldUserLogin = ((CacheEle<Map<String, UserLogin>>)SystemCache.getCache(FConstants.USERSESSIONMAP)).getContent().remove(user.getUserId());
                         userLogin.setSessionId(session.getId());
