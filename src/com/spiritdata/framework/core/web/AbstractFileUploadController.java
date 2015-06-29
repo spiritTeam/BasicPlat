@@ -163,12 +163,13 @@ public abstract class AbstractFileUploadController implements Controller, Handle
                     if (StringUtils.isNullOrEmptyOrSpace(file.getOriginalFilename())) continue;
                     //处理文件名
                     String storeFilename = null;
-                    if (storeFileNames==null) storeFilename = file.getOriginalFilename();
+                    String extFilename = FileNameUtils.getExt(file.getOriginalFilename());
+                    if (storeFileNames==null) storeFilename = FileNameUtils.getPureFileName(file.getOriginalFilename());
                     else {
                         storeFilename = storeFileNames[fIndex];
-                        if (StringUtils.isNullOrEmptyOrSpace(storeFilename)) storeFilename = file.getOriginalFilename();
-                        else storeFilename += FileNameUtils.getExt(file.getOriginalFilename());
+                        if (StringUtils.isNullOrEmptyOrSpace(storeFilename)) storeFilename = FileNameUtils.getPureFileName(file.getOriginalFilename());
                     }
+                    if (!FileNameUtils.getExt(storeFilename).toUpperCase().equals(extFilename.toUpperCase())) storeFilename +="."+extFilename;
 
                     if (!StringUtils.isNullOrEmptyOrSpace(this.filePrefix)) storeFilename = this.filePrefix+"_"+storeFilename;
                     if (this.datePathModel==2||this.datePathModel==3) storeFilename = FileNameUtils.getDateRuleFileName(storeFilename);
@@ -179,9 +180,7 @@ public abstract class AbstractFileUploadController implements Controller, Handle
                     if ((""+oneFileDealRetMap.get("success")).equalsIgnoreCase("TRUE")) {//处理成功
                         //删除临时文件
                         delTempFile(file.getFileItem());
-                        /*
-                         *调用虚方法，处理每个文件的后续部分
-                         */
+                        //调用虚方法，处理每个文件的后续部分
                         oneFileDealRetMap.remove("success");
                         Map<String, Object> myDealRetMap = afterUploadOneFileOnSuccess(oneFileDealRetMap, rqtAttrs, rqtParams);
                         if (myDealRetMap!=null) {
