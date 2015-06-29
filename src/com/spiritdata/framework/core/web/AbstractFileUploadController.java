@@ -184,13 +184,13 @@ public abstract class AbstractFileUploadController implements Controller, Handle
                         oneFileDealRetMap.remove("success");
                         Map<String, Object> myDealRetMap = afterUploadOneFileOnSuccess(oneFileDealRetMap, rqtAttrs, rqtParams);
                         if (myDealRetMap!=null) {
-                            boolean mySuccess = true;
+                            Boolean mySuccess = true;
                             try {
                                 mySuccess = Boolean.parseBoolean((String)myDealRetMap.get("success"));
                             } catch(Exception e) {
-                                mySuccess = true;
+                                mySuccess = false;
                             }
-                            oneFileDealRetMap.put("success", "TRUE");
+                            oneFileDealRetMap.put("success", mySuccess.toString().toUpperCase());
                             if (!mySuccess) {
                                 boolean myOnFaildBreak=false;
                                 try {
