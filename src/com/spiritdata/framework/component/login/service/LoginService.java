@@ -1,9 +1,7 @@
 package com.spiritdata.framework.component.login.service;
 
 import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
-
 import com.spiritdata.framework.UGA.UgaUser;
 
 public interface LoginService {

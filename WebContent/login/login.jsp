@@ -155,7 +155,7 @@ $(function() {
 
 //设置登录功能区域的位置，包括登录区域loginDiv/遮罩区域mask/提示区域footDiv
 function setElementPosition() {
-  //登陆区域位置及样式
+  //登录区域位置及样式
   $("#loginDiv").css({
     "top":"500px"
   });

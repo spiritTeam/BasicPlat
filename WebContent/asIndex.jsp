@@ -111,7 +111,7 @@
 </div>
 
 <!-- 头部:悬浮 -->
-<div id="topSegment">数据是关键！！ 登陆|注册 || 收藏</div>
+<div id="topSegment">数据是关键！！ 登录|注册 || 收藏</div>
 
 <!-- 脚部:悬浮 -->
 <div id="footSegment"></div>

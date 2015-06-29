@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
@@ -41,11 +42,13 @@ public class LoginController {
      * @return 返回登录信息对象
      */
     @RequestMapping("login.do")
-    public @ResponseBody Map<String,Object> Login(UserLogin userLogin, HttpServletRequest req) {
+    public @ResponseBody Map<String,Object> Login(UserLogin userLogin, HttpServletRequest req, HttpServletResponse res) {
         Map<String,Object> retObj = new HashMap<String,Object>();
         try {
             HttpSession session = req.getSession();
             Map<String, Object> beforeM = null;
+            Map<String, Object> afterM = null;
+
             try {//不管是否loginService定义了，逻辑都可向下执行
                 beforeM = loginService.beforeUserLogin(req);
             } catch(Exception e) {
@@ -60,7 +63,6 @@ public class LoginController {
                     retObj.put("type", "2");
                     retObj.put("data", "密码不匹配！");
                 } else {
-                    Map<String, Object> afterM = null;
                     try {
                         afterM = loginService.afterUserLoginOk(user, req);
                     } catch(Exception e) {
@@ -86,6 +88,13 @@ public class LoginController {
             } else {
                 retObj.put("type", "-1");
                 retObj.put("data", beforeM);
+            }
+            //重定向
+            //if ((String)retObj.get("type").equals("1")) {
+            if (retObj.get("type")!=null&&((String)retObj.get("type")).equals("1")) {
+                if (afterM!=null&&afterM.get("redirectUrl")!=null) {//重定向
+                    res.sendRedirect((String)afterM.get("redirectUrl"));
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
