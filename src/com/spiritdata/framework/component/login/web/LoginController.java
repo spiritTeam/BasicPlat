@@ -90,7 +90,6 @@ public class LoginController {
                 retObj.put("data", beforeM);
             }
             //重定向
-            //if ((String)retObj.get("type").equals("1")) {
             if (retObj.get("type")!=null&&((String)retObj.get("type")).equals("1")) {
                 if (afterM!=null&&afterM.get("redirectUrl")!=null) {//重定向
                     res.sendRedirect((String)afterM.get("redirectUrl"));
@@ -106,7 +105,6 @@ public class LoginController {
     /**
      * 用户注销
      * @param req
-     * @return
      */
     @RequestMapping("logout.do")
     public @ResponseBody Map<String,Object> logout(HttpServletRequest req){

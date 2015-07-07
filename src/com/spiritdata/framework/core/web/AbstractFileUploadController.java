@@ -328,9 +328,10 @@ public abstract class AbstractFileUploadController implements Controller, Handle
         StringBuffer _fileItem = new StringBuffer(_m.get("fileItem"));
         m.put("orglFilename", _fileItem.substring(5, _fileItem.indexOf("StoreLocation")-2));
         m.put("FieldName", _fileItem.substring(_fileItem.indexOf("FieldName=")+10));
-        
+
         try {
             File outputFile = new File(fileName);
+            System.out.println("=FINENAME==========("+fileName+")");
             if (!outputFile.isFile()) {
                 if (!outputFile.createNewFile()) {
                     em.put("errCode", "FUE004");
