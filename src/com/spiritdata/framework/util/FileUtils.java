@@ -201,7 +201,7 @@ public abstract class FileUtils {
             } finally {
                if (br!=null) try { br.close(); } catch (IOException e) { e.printStackTrace(); }
             }
-        } else { //非window按照没有穿件时间处理
+        } else { //非window按照没有创建时间
             return f.lastModified();
         }
     }
