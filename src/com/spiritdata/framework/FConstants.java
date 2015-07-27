@@ -5,6 +5,7 @@ public abstract class FConstants {
     public final static String PLATFORM_NAME ="基础平台"; //系统名称
     public final static String APPOSPATH="AppOSPath"; //服务器中，本系统根路径
     public final static String SERVLET_CONTEXT="ServletContext"; //服务上下文环境
+    public final static String SYS_CONFIG="sysConfig"; //系统配置
 
     //-用户及用户管理相关常量-----------------------------------------------------------
     //用户Session缓存，用于处理不同用户的登录

@@ -1,17 +1,24 @@
 package com.spiritdata.framework.core.web;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Properties;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
+import com.spiritdata.framework.core.SysConfigManage;
 import com.spiritdata.framework.core.cache.CacheEle;
 import com.spiritdata.framework.core.cache.CachePool;
 import com.spiritdata.framework.core.cache.SystemCache;
@@ -62,8 +69,14 @@ public class InitSysConfigListener implements ServletContextListener {
             //依赖注入，注入本类，为cacheManager做准备
             dependencyInject(sc);
             //缓存框架存储
-            if (cachePool!=null) {
-                cachePool.initAll();
+            if (cachePool!=null) cachePool.initAll();
+
+            //读取系统配置，目前配置只支持properties文件
+            Map<String, String> cfgKvMap = SysConfigManage.load(FilenameUtils.concat(sc.getRealPath("/"), "WEB-INF"+File.separator+"sysConfig.properties"));
+            if (cfgKvMap!=null&&cfgKvMap.size()>0) {
+                SystemCache.setCache(
+                    new CacheEle<Map<String, String>>(FConstants.SYS_CONFIG, "系统参数", cfgKvMap)
+                );
             }
         } catch (Exception e) {
             logger.error("运行环境初始化失败：",e);

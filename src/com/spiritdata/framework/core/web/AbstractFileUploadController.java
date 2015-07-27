@@ -25,6 +25,7 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.spiritdata.framework.FConstants;
+import com.spiritdata.framework.core.SysConfigManage;
 import com.spiritdata.framework.core.cache.CacheEle;
 import com.spiritdata.framework.core.cache.SystemCache;
 import com.spiritdata.framework.exceptionC.Plat0201CException;
@@ -47,7 +48,7 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 public abstract class AbstractFileUploadController implements Controller, HandlerExceptionResolver {
     private String appOSPath = ((CacheEle<String>)(SystemCache.getCache(FConstants.APPOSPATH))).getContent();
 
-    private final String defaultPath="\\uploadFiles";//默认路径，今后写到配置文件中，配置文件用Json方式
+    private final String _defaultPath="\\uploadFiles";//默认路径，今后写到配置文件中，配置文件用Json方式
 
     private String savePath=null;//保存路径
     /**
@@ -141,7 +142,13 @@ public abstract class AbstractFileUploadController implements Controller, Handle
             if (files!=null&&files.size()>0) {//返回空
                 this.setMySavePath();
                 //处理路径
-                String _path = FileNameUtils.concatPath(this.appOSPath, this.defaultPath);
+                String dataCenterPath = SysConfigManage.getValue("DataCenterPath");
+                String uploadFilePath = SysConfigManage.getValue("UploadFilePath");
+                
+                String _path = uploadFilePath;
+                if (uploadFilePath==null) {
+                    _path = FileNameUtils.concatPath(dataCenterPath==null?this.appOSPath:dataCenterPath, this._defaultPath);
+                }
                 File f;
                 if (!StringUtils.isNullOrEmptyOrSpace(this.savePath)) {//有路径
                     f = new File(this.savePath);
@@ -331,7 +338,6 @@ public abstract class AbstractFileUploadController implements Controller, Handle
 
         try {
             File outputFile = new File(fileName);
-            System.out.println("=FINENAME==========("+fileName+")");
             if (!outputFile.isFile()) {
                 if (!outputFile.createNewFile()) {
                     em.put("errCode", "FUE004");

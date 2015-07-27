@@ -11,7 +11,7 @@
     <property name="locations">
       <list merge="default">
         <value>/WEB-INF/database.properties</value>
-        <value>/WEB-INF/gisSmConfig.properties</value><!-- gis用户管理的对接参数 -->
+        <!-- <value>/WEB-INF/gisSmConfig.properties</value>gis用户管理的对接参数 -->
       </list>
     </property>
   </bean>
