@@ -176,7 +176,7 @@ public abstract class AbstractFileUploadController implements Controller, Handle
                         storeFilename = storeFileNames[fIndex];
                         if (StringUtils.isNullOrEmptyOrSpace(storeFilename)) storeFilename = FileNameUtils.getPureFileName(file.getOriginalFilename());
                     }
-                    if (!FileNameUtils.getExt(storeFilename).toUpperCase().equals(extFilename.toUpperCase())) storeFilename +="."+extFilename;
+                    if (!FileNameUtils.getExt(storeFilename).toUpperCase().equals(extFilename.toUpperCase())) storeFilename +=extFilename;
 
                     if (!StringUtils.isNullOrEmptyOrSpace(this.filePrefix)) storeFilename = this.filePrefix+"_"+storeFilename;
                     if (this.datePathModel==2||this.datePathModel==3) storeFilename = FileNameUtils.getDateRuleFileName(storeFilename);
@@ -198,6 +198,7 @@ public abstract class AbstractFileUploadController implements Controller, Handle
                                 mySuccess = false;
                             }
                             oneFileDealRetMap.put("success", mySuccess.toString().toUpperCase());
+                            oneFileDealRetMap.put("message", myDealRetMap.get("exception"));
                             if (!mySuccess) {
                                 boolean myOnFaildBreak=false;
                                 try {
@@ -335,7 +336,6 @@ public abstract class AbstractFileUploadController implements Controller, Handle
         StringBuffer _fileItem = new StringBuffer(_m.get("fileItem"));
         m.put("orglFilename", _fileItem.substring(5, _fileItem.indexOf("StoreLocation")-2));
         m.put("FieldName", _fileItem.substring(_fileItem.indexOf("FieldName=")+10));
-
         try {
             File outputFile = new File(fileName);
             if (!outputFile.isFile()) {
