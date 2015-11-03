@@ -34,7 +34,7 @@ public class LoginController {
     private UgaAuthorityService ugaAuthorityService;
     @Resource
     private LoginService loginService;
-    
+
     /**
      * 用户登录
      * @param userLogin 用户登录信息
