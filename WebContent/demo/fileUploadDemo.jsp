@@ -19,7 +19,7 @@
   <div>文件上传<input type=button value="添加" onclick="addOneFileSegment()"/></div>
 </div>
 <div id="fileuploadDiv">
-<form method="post" action="/abc/uploadtest.do" enctype="multipart/form-data" id="multipleUpload" target="tframe">
+<form method="post" action="/BasicPlat/uploadtest.do" enctype="multipart/form-data" id="multipleUpload" target="tframe">
   <div>
   <input type="file" name="file1"/><input type="text" name="sFile" value="文件名称11"/><input type="button" value="删" onclick="deleteOneFileSegment(this)"/>
   </div>
@@ -31,7 +31,7 @@
 </div>
 <iframe id="tframe" name="tframe" bordercolor=red frameborder="yes" border=1 width="800" height="400" style="width:800px;heigth:400px; boder:1px solid red;"></iframe>
 
-<form method="post" action="/abc/uploadtest.do?attrU=attrU" enctype="multipart/form-data" id="multipleUpload" target="wframe">
+<form method="post" action="/BasicPlat/uploadtest.do?attrU=attrU" enctype="multipart/form-data" id="multipleUpload" target="wframe">
   <div>
   <input type="file" name="file1"/><input type="text" name="sFile" value="文件名称11"/><input type="button" value="删" onclick="deleteOneFileSegment(this)"/>
   </div>
