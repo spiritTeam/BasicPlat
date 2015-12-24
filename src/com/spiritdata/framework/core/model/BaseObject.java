@@ -56,23 +56,32 @@ public abstract class BaseObject implements Serializable {
     public void fromHashMap(Map<String, Object> propertiesMap) {
         try {
             if(propertiesMap == null || propertiesMap.size() == 0) return;
-            Class<? extends BaseObject> clazz = this.getClass();
-            Field[]  fields =clazz.getDeclaredFields();
-            Iterator<String> it =  propertiesMap.keySet().iterator();
-            while (it.hasNext()) {
-                String propertyName = it.next();
-                for (Field f: fields) {
-                    if(propertyName.equalsIgnoreCase(f.getName())) {
-                        f.setAccessible(true);
-                        //此处有可能因变量的类型不一致导致set值错误，需要对异常作捕捉，以不影响其他属性
-                        try {
-                            f.set(this, propertiesMap.get(propertyName));
-                        } catch(Exception e) {
-                          log.error("转换类"+this.getClass().getName()+"实例的"+propertyName+"属性出现类型不匹配错误！");
+            Class<? extends Object> clazz = this.getClass();
+            Field[]  fields;
+            Iterator<String> it;
+            String propertyName;
+            while (!clazz.getName().equals(BaseObject.class.getName())&&!clazz.getName().equals(Object.class.getName())) {
+                fields =clazz.getDeclaredFields();
+                it =  propertiesMap.keySet().iterator();
+                while (it.hasNext()) {
+                    propertyName = it.next();
+                    for (Field f: fields) {
+                        if(propertyName.equalsIgnoreCase(f.getName())) {
+                            f.setAccessible(true);
+                            //此处有可能因变量的类型不一致导致set值错误，需要对异常作捕捉，以不影响其他属性
+                            try {
+                                if (f.getType().getName().equals("int")) {
+                                    f.set(this, Integer.parseInt(""+propertiesMap.get(propertyName)));
+                                } else {
+                                    f.set(this, propertiesMap.get(propertyName));
+                                }
+                            } catch(Exception e) {
+                              log.error("转换类"+this.getClass().getName()+"实例的"+propertyName+"属性出现类型不匹配错误！", e);
+                            }
                         }
-                        break;
                     }
                 }
+                clazz=clazz.getSuperclass();
             }
         }  catch(Exception e) {
             log.info("转换HASHMAP"+this.getClass().getName()+"为类实例失败",e);
