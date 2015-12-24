@@ -1,9 +1,13 @@
 ﻿/doc
 /doc/javadoc
 /WebContent/log
+/WebContent/m8.jsp
+/WebContent/test.js
+/WebContent/test.jsp
 /WebContent/WEB-INF/lib
 /WebContent/WEB-INF/classes
 /
+/WebContent/uploadFiles
 
 /.classpath
 /.project
