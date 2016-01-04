@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.spiritdata.framework.component.module.pojo.Module;
 import com.spiritdata.framework.component.module.service.ModuleService;
 import com.spiritdata.framework.core.model.tree.TreeNode;
+import com.spiritdata.framework.core.model.tree.TreeNodeBean;
 import com.spiritdata.framework.ui.tree.easyUi.EasyUiTree;
 import com.spiritdata.framework.util.StringUtils;
 import com.spiritdata.framework.util.TreeUtils;
@@ -30,10 +31,10 @@ public class TestTreeController {
         Map<String,Object> map = new HashMap<String, Object>();
         TreeNode<Module> root = moduleService.getModuleRoot();
         String s = request.getParameter("ids");
-        List<TreeNode<Module>> rts = TreeUtils.restructureTree(root.getChildren(), StringUtils.strConvertList(s, ","));
+        List<TreeNode<? extends TreeNodeBean>> rts = TreeUtils.restructureTree(root.getChildren(), StringUtils.strConvertList(s, ","));
         if (rts!=null&&rts.size()>0) {
-            EasyUiTree<Module> met = new EasyUiTree<Module>(rts.get(0));
-            for (TreeNode<Module> eut: met.getChildren()) {
+            EasyUiTree<? extends TreeNodeBean> met = new EasyUiTree<Module>(rts.get(0));
+            for (TreeNode<? extends TreeNodeBean> eut: met.getChildren()) {
                 ((EasyUiTree<Module>)eut).setState("open");
             }
             map = met.toTreeGridMap();

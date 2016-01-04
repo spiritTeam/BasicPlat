@@ -97,7 +97,7 @@ public class TreeNodeBean extends BaseObject implements Cloneable {
     /**
      * 浅层Clone方法，树clone时需要。
      */
-    public TreeNodeBean clone() throws CloneNotSupportedException {
-        return (TreeNodeBean)super.clone();
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }

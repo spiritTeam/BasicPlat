@@ -16,6 +16,7 @@ import com.spiritdata.framework.core.cache.CacheEle;
 import com.spiritdata.framework.core.cache.SystemCache;
 import com.spiritdata.framework.core.dao.mybatis.MybatisDAO;
 import com.spiritdata.framework.core.model.tree.TreeNode;
+import com.spiritdata.framework.core.model.tree.TreeNodeBean;
 import com.spiritdata.framework.util.TreeUtils;
 
 public class UgaCacheService {
@@ -74,7 +75,7 @@ public class UgaCacheService {
             ret.put("list", list);
             Map<String, Object> m = TreeUtils.convertFromList(list);
             if (m!=null&&m.size()>0) {
-                List<TreeNode<Module>> mf = (List<TreeNode<Module>>)m.get("forest");
+                List<TreeNode<? extends TreeNodeBean>> mf = (List<TreeNode<? extends TreeNodeBean>>)m.get("forest");
                 if (mf!=null) {
                     Module rootB = new Module();
                     rootB.setId("-1");
@@ -83,7 +84,7 @@ public class UgaCacheService {
                     TreeNode<Module> root = new TreeNode<Module>(rootB);
                     root.setChildren(mf);
                     ret.put("tree", root);
-                    Map<String, TreeNode<Module>> treeIndexMap = new HashMap<String, TreeNode<Module>>();
+                    Map<String, TreeNode<? extends TreeNodeBean>> treeIndexMap = new HashMap<String, TreeNode<? extends TreeNodeBean>>();
                     TreeUtils.setTreeIndexMap(mf, treeIndexMap);
                     ret.put("treeIndexMap", treeIndexMap);
                 }
@@ -101,20 +102,20 @@ public class UgaCacheService {
      * @return 用户模块权限缓存
      * @throws Exception
      */
-    public Map<String, TreeNode<Module>> makeCacheUserModule() throws Exception {
-        Map<String, TreeNode<Module>> ret = new HashMap<String, TreeNode<Module>>();
+    public Map<String, TreeNode<? extends TreeNodeBean>> makeCacheUserModule() throws Exception {
+        Map<String, TreeNode<? extends TreeNodeBean>> ret = new HashMap<String, TreeNode<? extends TreeNodeBean>>();
         //获取module信息
         CacheEle<?> mc = SystemCache.getCache(UgaConstants.CATCH_UGA_MODULE);
         TreeNode<Module> tnM = null;
         if (mc!=null&&mc.getContent()!=null) tnM = (TreeNode<Module>)((Map<String, Object>)SystemCache.getCache(UgaConstants.CATCH_UGA_MODULE).getContent()).get("tree");
         if (tnM==null||tnM.getAllCount()==0) return null;
-        List<TreeNode<Module>> forest = new ArrayList<TreeNode<Module>>();
+        List<TreeNode<? extends TreeNodeBean>> forest = new ArrayList<TreeNode<? extends TreeNodeBean>>();
         forest.add(tnM);
 
         List<Map<String, String>> urm = userDao.queryForListAutoTranform("getUserModuleList", null);
         String userId=null;
         Collection<String> moduleIds = null;
-        List<TreeNode<Module>> userModuleTree = null;
+        List<TreeNode<? extends TreeNodeBean>> userModuleTree = null;
         if (urm!=null&&urm.size()>0) {
             for (int i=0; i<urm.size(); i++) {
                 if (urm.get(i).get("userId").equals(userId)) {

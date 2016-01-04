@@ -17,6 +17,7 @@ import com.spiritdata.framework.component.cache.FrameworkCLU;
 import com.spiritdata.framework.component.module.pojo.Module;
 import com.spiritdata.framework.component.module.service.ModuleService;
 import com.spiritdata.framework.core.model.tree.TreeNode;
+import com.spiritdata.framework.core.model.tree.TreeNodeBean;
 import com.spiritdata.framework.ui.tree.easyUi.EasyUiTree;
 import com.spiritdata.framework.util.SequenceUUID;
 
@@ -41,7 +42,7 @@ public class ModuleController {
         Map<String,Object> map = new HashMap<String, Object>();
         TreeNode<Module> root = moduleService.getModuleRoot();
         EasyUiTree<Module> met = new EasyUiTree<Module>(root);
-        for (TreeNode<Module> eut: met.getChildren()) {
+        for (TreeNode<? extends TreeNodeBean> eut: met.getChildren()) {
             ((EasyUiTree<Module>)eut).setState("open");
         }
         map = met.toTreeMap();
@@ -57,7 +58,7 @@ public class ModuleController {
         Map<String,Object> map = new HashMap<String, Object>();
         TreeNode<Module> root = moduleService.getModuleRoot();
         EasyUiTree<Module> met = new EasyUiTree<Module>(root);
-        for (TreeNode<Module> eut: met.getChildren()) {
+        for (TreeNode<? extends TreeNodeBean> eut: met.getChildren()) {
             ((EasyUiTree<Module>)eut).setState("open");
         }
         setParentName(met);
@@ -74,7 +75,7 @@ public class ModuleController {
             Map<String,Object> map = new HashMap<String, Object>();
             TreeNode<Module> root = moduleService.getModuleRoot();
             EasyUiTree<Module> met = new EasyUiTree<Module>(root);
-            for (TreeNode<Module> eut: met.getChildren()) {
+            for (TreeNode<? extends TreeNodeBean> eut: met.getChildren()) {
                 ((EasyUiTree<Module>)eut).setState("open");
             }
             setParentName(met);
