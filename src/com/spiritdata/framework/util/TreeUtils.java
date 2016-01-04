@@ -112,9 +112,9 @@ public abstract class TreeUtils {
      * @param forest 树对象的列表
      * @param treeIndexMap 所对应的索引Map
      */
-    public static <V extends TreeNodeBean> void setTreeIndexMap(List<TreeNode<V>> forest, Map<String, TreeNode<V>> treeIndexMap) {
+    public static void setTreeIndexMap(List<TreeNode<? extends TreeNodeBean>> forest, Map<String, TreeNode<? extends TreeNodeBean>> treeIndexMap) {
         if (forest==null||forest.size()==0) return;
-        for (TreeNode<V> tn: forest) {
+        for (TreeNode<? extends TreeNodeBean> tn: forest) {
             treeIndexMap.put(tn.getId(), tn);
             if (!tn.isLeaf()) TreeUtils.setTreeIndexMap(tn.getChildren(), treeIndexMap);
         }
@@ -127,19 +127,19 @@ public abstract class TreeUtils {
      * @return 重组后的树，此树是原树的一个重组后的拷贝
      * @throws CloneNotSupportedException
      */
-    public static <V extends TreeNodeBean> List<TreeNode<V>> restructureTree(List<TreeNode<V>> forest, Collection<String> idc) throws CloneNotSupportedException {
+    public static List<TreeNode<? extends TreeNodeBean>> restructureTree(List<TreeNode<? extends TreeNodeBean>> forest, Collection<String> idc) throws CloneNotSupportedException {
         if (forest==null||forest.size()==0) return null;
         if (idc==null||idc.size()==0) return null;
-        List<TreeNode<V>> restructureForest = new ArrayList<TreeNode<V>>();
+        List<TreeNode<? extends TreeNodeBean>> restructureForest = new ArrayList<TreeNode<? extends TreeNodeBean>>();
         idc = TreeUtils.distinctList(idc);
         for (String id: idc) {
-            for (TreeNode<V> tn: forest) {
-                TreeNode<V> _ftn = tn.getId().equals(id.trim())?tn:tn.findNode(id.trim());//在原树中查找是否有id结点
+            for (TreeNode<? extends TreeNodeBean> tn: forest) {
+                TreeNode<? extends TreeNodeBean> _ftn = tn.getId().equals(id.trim())?tn:tn.findNode(id.trim());//在原树中查找是否有id结点
                 if (_ftn!=null) {//若有
-                    TreeNode<V> ctn = _ftn.clone();//以此id为根的树的克隆
+                    TreeNode<? extends TreeNodeBean> ctn = _ftn.clone();//以此id为根的树的克隆
                     boolean hasDeal = false;
-                    for (TreeNode<V> rn: restructureForest) {
-                        TreeNode<V> _rftn = rn.findNode(ctn.getId());
+                    for (TreeNode<? extends TreeNodeBean> rn: restructureForest) {
+                        TreeNode<? extends TreeNodeBean> _rftn = rn.findNode(ctn.getId());
                         hasDeal = (_rftn!=null);
                     }
                     while (!hasDeal) {
@@ -149,8 +149,8 @@ public abstract class TreeUtils {
                             hasDeal = true;
                         }
                         if (!hasDeal) {
-                            for (TreeNode<V> rn: restructureForest) {//查找合适的位置插入
-                                TreeNode<V> _rftn = rn.getId().equals(_ftn.getId())?rn:rn.findNode(_ftn.getId());
+                            for (TreeNode<? extends TreeNodeBean> rn: restructureForest) {//查找合适的位置插入
+                                TreeNode<? extends TreeNodeBean> _rftn = rn.getId().equals(_ftn.getId())?rn:rn.findNode(_ftn.getId());
                                 if (_rftn!=null) {
                                     _rftn.addChild(ctn);
                                     hasDeal = true;
@@ -159,7 +159,7 @@ public abstract class TreeUtils {
                         }
                         if (!hasDeal) {
                             //造上级结点
-                            TreeNode<V> _ptn = new TreeNode<V>(_ftn.getTnEntity());
+                            TreeNode<? extends TreeNodeBean> _ptn = new TreeNode(_ftn.getTnEntity());
                             _ptn.addChild(ctn);
                             ctn=_ptn;
                         }

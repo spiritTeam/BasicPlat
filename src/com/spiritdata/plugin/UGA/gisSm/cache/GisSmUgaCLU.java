@@ -14,6 +14,7 @@ import com.spiritdata.framework.core.cache.AbstractCacheLifecycleUnit;
 import com.spiritdata.framework.core.cache.CacheEle;
 import com.spiritdata.framework.core.cache.SystemCache;
 import com.spiritdata.framework.core.model.tree.TreeNode;
+import com.spiritdata.framework.core.model.tree.TreeNodeBean;
 import com.spiritdata.plugin.UGA.gisSm.pojo.Function;
 import com.spiritdata.plugin.UGA.gisSm.service.GisSmCacheService;
 import com.spiritdata.plugin.UGA.gisSm.GisSMConstants;
@@ -115,7 +116,7 @@ public class GisSmUgaCLU extends AbstractCacheLifecycleUnit {
      */
     public void loadUserModule() throws Exception {
         try {
-            Map<String, TreeNode<Function>> umo = gisSmCacheService.makeCacheUserModule();
+            Map<String, TreeNode<? extends TreeNodeBean>> umo = gisSmCacheService.makeCacheUserModule();
             if (umo==null||umo.size()==0) throw new Exception("没有[用户模块关联]数据。");
             Iterator<String> iter = umo.keySet().iterator();
             List<String> kl = new ArrayList<String>();
@@ -123,13 +124,13 @@ public class GisSmUgaCLU extends AbstractCacheLifecycleUnit {
                 kl.add(iter.next());
             }
             for (String key: kl) {
-                TreeNode<Function> uft = umo.get(key);
+                TreeNode<? extends TreeNodeBean> uft = umo.get(key);
                 uft = uft.findNode(GisSMConstants.MANAGE_FUNCTION_ROOTID);
                 if (uft==null) umo.remove(key); else umo.put(key, uft);
             }
             //清除空数据
             if (umo.size()==0) throw new Exception("没有[用户模块关联]数据。");
-            SystemCache.setCache(new CacheEle<Map<String, TreeNode<Function>>>(UgaConstants.CATCH_UGA_USERMODULE, "用户模块关联", umo));
+            SystemCache.setCache(new CacheEle<Map<String, TreeNode<? extends TreeNodeBean>>>(UgaConstants.CATCH_UGA_USERMODULE, "用户模块关联", umo));
         } catch(Exception e) {
             throw new Exception("加载缓存项{UGA[用户模块关联]}失败：", e);
         }

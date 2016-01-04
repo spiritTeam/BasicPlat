@@ -18,17 +18,6 @@ import com.spiritdata.framework.core.model.tree.TreeNodeBean;
  */
 @SuppressWarnings("serial")
 public abstract class UiTree<T extends TreeNodeBean> extends TreeNode<T> {
-
-    /**
-     * 构造函数，需要其继承的类实现具体的构造方法
-     * @param tn 需要转换的树
-     * @throws CloneNotSupportedException 
-     */
-    public UiTree(TreeNode<? extends TreeNodeBean> tn) throws CloneNotSupportedException {
-        T tnb = (T)tn.getTnEntity().clone();
-        this.setTnEntity(tnb);
-    }
-
     /**
      * 将显示树转换为Map对象
      * @return 显示树所对应的Map对象，若树为空，则返回null

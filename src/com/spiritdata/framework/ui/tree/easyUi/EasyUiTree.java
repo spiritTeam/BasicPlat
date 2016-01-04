@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import com.spiritdata.framework.core.model.tree.TreeNode;
 import com.spiritdata.framework.core.model.tree.TreeNodeBean;
+import com.spiritdata.framework.exceptionC.Plat0003CException;
 import com.spiritdata.framework.ui.tree.UiTree;
 /**
  * EasyUi中的树，继承自UiTree，所有用easyUi作为前台树显示的模块都可以直接用这个类。
@@ -65,11 +66,49 @@ public class EasyUiTree<T extends TreeNodeBean> extends UiTree<T> {
         this.iconCls = iconCls;
     }
 
+    /**
+     * 构造函数
+     * @param tn 需要转换的结点数据
+     * @throws CloneNotSupportedException 
+     */
+    public EasyUiTree(T tn) {
+        this.setTnEntity(tn);
+    }
+
+    /**
+     * 构造函数，需要其继承的类实现具体的构造方法
+     * @param tn 需要转换的树
+     * @throws CloneNotSupportedException 
+     */
     public EasyUiTree(TreeNode<? extends TreeNodeBean> tn) throws CloneNotSupportedException {
-        super(tn);
+        this.setTnEntity((T)tn.getTnEntity());
         if (tn.isLeaf()) this.state="close"; else {
             this.state="closed";
-            for (TreeNode<?> t: tn.getChildren()) this.addChild(new EasyUiTree<T>(t));
+            for (TreeNode<? extends TreeNodeBean> t: tn.getChildren()) this.addChild(new EasyUiTree(t));
+        }
+    }
+
+    /**
+     * 构造函数，根据原树tn，构造深度遍历树的显示树，并满足如下条件：<br/>
+     * 若原树tn的总结点数大于limitCount，则只返回此树结点下的一级结点树，否则返回整棵树。
+     * @param tn 需要转换的树
+     * @throws CloneNotSupportedException 
+     */
+    public EasyUiTree(TreeNode<? extends TreeNodeBean> tn, int limitCount) throws CloneNotSupportedException {
+        this.setTnEntity((T)tn.getTnEntity());
+        if (limitCount<1) throw new Plat0003CException(new IllegalArgumentException("结点限制数必须大于0"));
+        if (tn.getAllCount()>limitCount) {
+            this.state=tn.isLeaf()?"close":"closed";
+            for (TreeNode<? extends TreeNodeBean> t: tn.getChildren()) {
+                EasyUiTree<? extends TreeNodeBean> uit = new EasyUiTree(t.getTnEntity());
+                uit.state=t.isLeaf()?"close":"closed";
+                this.addChild(uit);
+            }
+        } else {
+            if (tn.isLeaf()) this.state="close"; else {
+                this.state="closed";
+                for (TreeNode<? extends TreeNodeBean> t: tn.getChildren()) this.addChild(new EasyUiTree<T>(t));
+            }
         }
     }
 

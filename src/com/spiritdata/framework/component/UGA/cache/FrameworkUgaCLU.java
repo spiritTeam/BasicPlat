@@ -15,6 +15,7 @@ import com.spiritdata.framework.core.cache.AbstractCacheLifecycleUnit;
 import com.spiritdata.framework.core.cache.CacheEle;
 import com.spiritdata.framework.core.cache.SystemCache;
 import com.spiritdata.framework.core.model.tree.TreeNode;
+import com.spiritdata.framework.core.model.tree.TreeNodeBean;
 import com.spiritdata.framework.exceptionC.Plat0301CException;
 @Component
 public class FrameworkUgaCLU extends AbstractCacheLifecycleUnit {
@@ -101,9 +102,9 @@ public class FrameworkUgaCLU extends AbstractCacheLifecycleUnit {
      */
     public void loadUserModule() throws Exception {
         try {
-            Map<String, TreeNode<Module>> umo = ugaCacheService.makeCacheUserModule();
+            Map<String, TreeNode<? extends TreeNodeBean>> umo = ugaCacheService.makeCacheUserModule();
             if (umo==null) throw new Exception("没有[用户模块关联]数据。");
-            SystemCache.setCache(new CacheEle<Map<String, TreeNode<Module>>>(UgaConstants.CATCH_UGA_USERMODULE, "用户模块关联", umo));
+            SystemCache.setCache(new CacheEle<Map<String, TreeNode<? extends TreeNodeBean>>>(UgaConstants.CATCH_UGA_USERMODULE, "用户模块关联", umo));
         } catch(Exception e) {
             throw new Plat0301CException("[用户模块权限]失败", e);
         }
