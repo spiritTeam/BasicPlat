@@ -107,7 +107,7 @@ public abstract class AbstractFileUploadController implements Controller, Handle
     public void setBreakOnOneFaild(boolean breakOnOneFaild) {
         this.breakOnOneFaild = breakOnOneFaild;
     }
-    
+
     @Override
     public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
         StringPrintWriter strintPrintWriter = new StringPrintWriter();
@@ -194,11 +194,11 @@ public abstract class AbstractFileUploadController implements Controller, Handle
                             Boolean mySuccess = true;
                             try {
                                 mySuccess = Boolean.parseBoolean((String)myDealRetMap.get("success"));
+                                oneFileDealRetMap.put("success", mySuccess.toString().toUpperCase());
                             } catch(Exception e) {
                                 mySuccess = false;
                             }
-                            oneFileDealRetMap.put("success", mySuccess.toString().toUpperCase());
-                            oneFileDealRetMap.put("message", myDealRetMap.get("exception"));
+//                            oneFileDealRetMap.put("message", myDealRetMap.get("exception"));
                             if (!mySuccess) {
                                 boolean myOnFaildBreak=false;
                                 try {
