@@ -325,7 +325,6 @@ public abstract class AbstractFileUploadController implements Controller, Handle
             em.put("errMsg", e.getMessage());
             m.put("error", em);
         }
-
         if (m.get("error")!=null) {
             m.put("success", false);
             return m;
