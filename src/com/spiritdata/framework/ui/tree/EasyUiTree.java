@@ -1,11 +1,10 @@
-package com.spiritdata.framework.ui.tree.easyUi;
+package com.spiritdata.framework.ui.tree;
 
 import java.util.HashMap;
 import java.util.Map;
 import com.spiritdata.framework.core.model.tree.TreeNode;
 import com.spiritdata.framework.core.model.tree.TreeNodeBean;
 import com.spiritdata.framework.exceptionC.Plat0003CException;
-import com.spiritdata.framework.ui.tree.UiTree;
 /**
  * EasyUi中的树，继承自UiTree，所有用easyUi作为前台树显示的模块都可以直接用这个类。
  * 只要设置相应的T就可以了。<br/>

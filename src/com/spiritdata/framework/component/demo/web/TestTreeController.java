@@ -15,7 +15,7 @@ import com.spiritdata.framework.component.module.pojo.Module;
 import com.spiritdata.framework.component.module.service.ModuleService;
 import com.spiritdata.framework.core.model.tree.TreeNode;
 import com.spiritdata.framework.core.model.tree.TreeNodeBean;
-import com.spiritdata.framework.ui.tree.easyUi.EasyUiTree;
+import com.spiritdata.framework.ui.tree.EasyUiTree;
 import com.spiritdata.framework.util.StringUtils;
 import com.spiritdata.framework.util.TreeUtils;
 

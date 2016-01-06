@@ -262,6 +262,34 @@ public class TreeNode<T extends TreeNodeBean> extends BaseObject implements Clon
         return ret;
     }
 
+    /**
+     * 得到结点在树中Id路径
+     * @param split 路径分割符
+     * @param level 取路径的级别。小于等于-1:取全部;0:取到根但不包括跟;n:向上取n级，若n大于总级数，取全部
+     * @return 结点路径名
+     */
+    public String getTreePathId(String split, int level) {
+        int _level = level;
+        String _s = (split==null?"/":split);
+        String ret = this.id;
+        TreeNode<? extends TreeNodeBean> _parent = this.parent;
+        boolean canContinue = true;
+        while(_parent!=null&&canContinue) {
+            if (level<=-1) {
+                canContinue=true;
+                ret = _parent.getId()+_s+ret;
+            } else if (level==0) {
+                if (_parent.isRoot()) canContinue = false;
+                else ret = _parent.getId()+_s+ret;
+            } else {
+                if ((--_level)>0) ret = _parent.getId()+_s+ret;
+                else canContinue = false;
+            }
+            _parent = _parent.getParent();
+        }
+        return ret;
+    }
+
     //以下为计数操作
     /**
      * 得到结点下的所有子结点的个数
