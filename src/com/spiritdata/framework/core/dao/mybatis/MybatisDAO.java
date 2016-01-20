@@ -122,7 +122,7 @@ public class MybatisDAO <T extends BaseObject> extends SqlSessionDaoSupport impl
         String key=namespace+"."+statementId;
         try {
           if (sqlSession ==null) this.sqlSession = this.getSqlSession();
-          return Integer.parseInt(String.valueOf(this.sqlSession.selectOne(key, parameter) ));
+          return this.sqlSession.selectOne(key, parameter);
         } catch(Exception e) {
             throw new Plat0101CException("得到数据记录条数异常:采用SQL="+key+",数据["+parameter.getClass().getName()+"(@"+parameter.hashCode()+")]", e);
         }
