@@ -35,12 +35,12 @@
       <artifactId>mysql-connector-java</artifactId>
       <version>5.1.29</version>
     </dependency>
-    <!-- 加解密包
+    <!-- 加解密包 -->
     <dependency>
       <groupId>commons-codec</groupId>
       <artifactId>commons-codec</artifactId>
       <version>1.9</version>
-    </dependency> -->
+    </dependency>
     <!-- 本地Jar包
     <dependency>
       <groupId>spiritdata.com</groupId>  
