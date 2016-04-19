@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
-
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.spiritdata.framework.UGA.UgaConstants;
 import com.spiritdata.framework.core.cache.AbstractCacheLifecycleUnit;
@@ -21,7 +21,7 @@ import com.spiritdata.plugin.UGA.gisSm.GisSMConstants;
 
 public class GisSmUgaCLU extends AbstractCacheLifecycleUnit {
     /** 日志 */
-    private Logger logger = Logger.getLogger(GisSmUgaCLU.class);
+    private Logger logger=LoggerFactory.getLogger(GisSmUgaCLU.class);
 
     /** 资源类 */
     @Resource

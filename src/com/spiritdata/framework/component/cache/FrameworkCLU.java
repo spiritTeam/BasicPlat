@@ -1,6 +1,7 @@
 package com.spiritdata.framework.component.cache;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.spiritdata.framework.core.cache.AbstractCacheLifecycleUnit;
@@ -14,7 +15,7 @@ public class FrameworkCLU extends AbstractCacheLifecycleUnit {
     /**
      * 日志
      */
-    private Logger logger = Logger.getLogger(FrameworkCLU.class);
+    private Logger logger=LoggerFactory.getLogger(FrameworkCLU.class);
 
     @Override
     public void init() {

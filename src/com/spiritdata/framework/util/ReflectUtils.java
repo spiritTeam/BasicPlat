@@ -6,14 +6,15 @@ import java.lang.reflect.Modifier;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 反射工具类
  * @author zhuhua wh
  */
 public abstract class ReflectUtils {
-    private final static Logger logger = Logger.getLogger(ReflectUtils.class);
+    private final static Logger logger=LoggerFactory.getLogger(ReflectUtils.class);
     private final static String[] classList= {"java.lang.Integer", "java.lang.Short", "java.lang.Long"
         ,"java.lang.Double", "java.lang.Float", "java.lang.Byte", "java.lang.Character", "java.lang.Boolean"
         ,"java.lang.String", "java.util.Date", "java.util.Calendar", "java.lang.StringBuffer"
@@ -31,23 +32,23 @@ public abstract class ReflectUtils {
         if (target==null || fname==null || "".equals(fname)
           ||(fvalue!=null&&!ftype.isAssignableFrom(fvalue.getClass())))  return;
 
-        Class<?> clazz = target.getClass();
+        Class<?> clazz=target.getClass();
         try {
-            Method method = clazz.getDeclaredMethod("set"+Character.toUpperCase(fname.charAt(0))+fname.substring(1), ftype);
+            Method method=clazz.getDeclaredMethod("set"+Character.toUpperCase(fname.charAt(0))+fname.substring(1), ftype);
             if (!Modifier.isPublic(method.getModifiers())) {
                 method.setAccessible(true);
             }
             method.invoke(target, fvalue);
         } catch (Exception me) {
-            logger.debug("赋值错误", me);
+            logger.debug("赋值异常", me);
             try {
-                Field field = clazz.getDeclaredField(fname);
+                Field field=clazz.getDeclaredField(fname);
                 if (!Modifier.isPublic(field.getModifiers())) {
                     field.setAccessible(true);
                 }
                 field.set(target, fvalue);
             } catch (Exception e) {
-                logger.debug(e);
+                logger.debug("赋值异常", e);
             }
         }
     }
@@ -60,20 +61,20 @@ public abstract class ReflectUtils {
      * @return Object 二元数组：Object[0]=值是一个Object；Object[0]=值是一个Object；
      */
     public static Object[] getFieldValue(Class<?> clazz, String property, Object target) {
-        Object objValue[] = new Object[2];
+        Object objValue[]=new Object[2];
         try {
-            Field field = clazz.getDeclaredField(property);
+            Field field=clazz.getDeclaredField(property);
             field.setAccessible(true);
-            Class<?> propertyClass = field.getType();
-            Object value = field.get(target);
-            objValue[0] = value;
-            objValue[1] = propertyClass;
+            Class<?> propertyClass=field.getType();
+            Object value=field.get(target);
+            objValue[0]=value;
+            objValue[1]=propertyClass;
         } catch (NoSuchFieldException e) {
-            objValue = getFieldValue(clazz.getSuperclass(), property, target);
+            objValue=getFieldValue(clazz.getSuperclass(), property, target);
         } catch (IllegalArgumentException e) {
-            logger.debug(e);
+            logger.debug("赋值异常", e);
         } catch (IllegalAccessException e) {
-            logger.debug(e);
+            logger.debug("赋值异常", e);
         }
         return objValue;
     }
@@ -85,22 +86,22 @@ public abstract class ReflectUtils {
      * @return 返回的Map对象，注意这个Map对象中，key是属性的名称，value是属性的值的字符串表现形式
      */
     public static Map<String, String> Object2Map(Class<?> clazz, Object target) {
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map=new HashMap<String, String>();
         try {
-            Field[] fields = clazz.getDeclaredFields();
+            Field[] fields=clazz.getDeclaredFields();
             for (Field f : fields) {
                 f.setAccessible(true);
-                String key = f.getName();
-                Class<?> propertyClass = f.getType();
-                Object propertyValue = f.get(target);
-                String value = formatValue(propertyClass, propertyValue);
+                String key=f.getName();
+                Class<?> propertyClass=f.getType();
+                Object propertyValue=f.get(target);
+                String value=formatValue(propertyClass, propertyValue);
                 map.put(key, value);
             }
             //如果父类不是Object则将递归遍历父类属性
-            Class<?> superClass = clazz.getSuperclass();
+            Class<?> superClass=clazz.getSuperclass();
             if (!superClass.getName().equals("java.lang.Object")) map.putAll(Object2Map(superClass,target));
         } catch (Exception e) {
-            logger.info(e);
+            logger.info("对象转换Map异常", e);
         }
         return map;
     }
@@ -112,24 +113,24 @@ public abstract class ReflectUtils {
      * @return 返回的Map对象，注意这个Map对象中，key是属性的名称，value是属性的值的字符串表现形式
      */
     public static Map<String,Object> Object2MapWithoutNull(Class<?> clazz, Object target) {
-        Map<String,Object>  map = new HashMap<String,Object>();
+        Map<String,Object>  map=new HashMap<String,Object>();
         try {
-            Field[] fields = clazz.getDeclaredFields();
+            Field[] fields=clazz.getDeclaredFields();
             for (Field f : fields) {
                 f.setAccessible(true);
-                String key = f.getName();
-                Class<?> propertyClass = f.getType();
-                Object propertyValue = f.get(target);
+                String key=f.getName();
+                Class<?> propertyClass=f.getType();
+                Object propertyValue=f.get(target);
                 if(propertyValue!= null) {
-                    String value = formatValue(propertyClass, propertyValue);
+                    String value=formatValue(propertyClass, propertyValue);
                     map.put(key, value);
                 }
             }
             //如果父类不是Object则将递归遍历父类属性
-            Class<?> superClass = clazz.getSuperclass();
+            Class<?> superClass=clazz.getSuperclass();
             if (!superClass.getName().equals("java.lang.Object")) map.putAll(Object2MapWithoutNull(superClass,target));
         } catch (Exception e) {
-            logger.info(e);
+            logger.info("对象转换Map异常", e);
         }
         return map;
     }
@@ -141,35 +142,35 @@ public abstract class ReflectUtils {
      * @return 返回的Map对象，注意这个Map对象中，key是属性的名称，value是属性的值的字符串表现形式
      */
     public static Map<String,Object> Bean2MapWithoutNull(Class<?> clazz, Object target) {
-        Map<String,Object> map = new HashMap<String,Object>();
+        Map<String,Object> map=new HashMap<String,Object>();
         try {
             Method[] methods=clazz.getDeclaredMethods();
             for (Method m : methods) {
                 m.setAccessible(true);
-                String key = m.getName();
+                String key=m.getName();
                 if ((key.startsWith("get")&&key.length()>3)||(key.startsWith("is")&&key.length()>2)) {
-                    Class<?> _type = m.getReturnType();
-                    Object value = null;
+                    Class<?> _type=m.getReturnType();
+                    Object value=null;
                     try {
-                        value = m.invoke(target);
+                        value=m.invoke(target);
                     } catch(Exception e) {
                         
                     }
                     if (ReflectUtils.isMyClass(_type, value)) {
                         if ((key.startsWith("get")&&key.length()>3)) {
-                            key = key.substring(3);
-                            key = key.substring(0, 1).toLowerCase()+key.substring(1);
+                            key=key.substring(3);
+                            key=key.substring(0, 1).toLowerCase()+key.substring(1);
                         }
                         map.put(key, formatValue(m.getReturnType(), value));
                     }
                 }
             }
             //如果父类不是Object则将递归遍历父类属性
-            Class<?> superClass = clazz.getSuperclass();
+            Class<?> superClass=clazz.getSuperclass();
             if (!superClass.isInterface()&&!superClass.getName().equals("java.lang.Object")) map.putAll(Bean2MapWithoutNull(superClass, target));
         } catch (Exception e) {
             e.printStackTrace();
-            logger.info(e);
+            logger.info("Map转换为对象异常", e);
         }
         return map;
     }
@@ -183,18 +184,18 @@ public abstract class ReflectUtils {
      * @return
      */
     private static String formatValue(Class<?> baseClass, Object object) {
-        String value = "";
+        String value="";
         try {
-            String typeName = baseClass.getName();
+            String typeName=baseClass.getName();
             if (object!=null) {
                 if (typeName.equals("java.util.Date")) {
-                    Date date = (Date) object;
-                    value = DateUtils.convert2LongLocalStr(date);
-                } else value = object.toString(); //复杂类型暂时不处理，调用默认toString方法。
+                    Date date=(Date) object;
+                    value=DateUtils.convert2LongLocalStr(date);
+                } else value=object.toString(); //复杂类型暂时不处理，调用默认toString方法。
             }
         } catch (Exception e) {
-            logger.info( e);
-            value = "";
+            logger.info("格式化对象异常", e);
+            value="";
         }
         return value;
     }
@@ -202,33 +203,33 @@ public abstract class ReflectUtils {
     private static boolean isMyClass(Class<?> c, Object o) {
         if (o==null) return false;
         //判断是否是基础类
-        Class<?> _c = c;
-        String cName = _c.getName();
-        boolean isBaseClass = false;
+        Class<?> _c=c;
+        String cName=_c.getName();
+        boolean isBaseClass=false;
         for (String s: baseClass) {
             if (cName.equals(s)) {
-                isBaseClass = true;
+                isBaseClass=true;
                 break;
             }
         }
         if (isBaseClass) return true;
         //判断返回类型
-        boolean isMyClass = false;
-        boolean isInterface = false;
+        boolean isMyClass=false;
+        boolean isInterface=false;
         _c=o.getClass();
-        cName = _c.getName();
-        isInterface = _c.isInterface();
+        cName=_c.getName();
+        isInterface=_c.isInterface();
         while (!isInterface&&!cName.equals("java.lang.Object")) {
             for (String s: classList) {
                 if (cName.equals(s)) {
-                    isMyClass = true;
+                    isMyClass=true;
                     break;
                 }
             }
             if (!isMyClass) {
-                _c = _c.getSuperclass();
-                cName = _c.getName();
-                isInterface = _c.isInterface();
+                _c=_c.getSuperclass();
+                cName=_c.getName();
+                isInterface=_c.isInterface();
             } else break;
         }
         return isMyClass;

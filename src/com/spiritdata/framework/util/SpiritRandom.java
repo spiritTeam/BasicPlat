@@ -3,8 +3,8 @@ package com.spiritdata.framework.util;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 随机数生成器。
@@ -18,53 +18,53 @@ import org.apache.log4j.Logger;
  * @author wh
  */
 public class SpiritRandom {
-    private Logger logger = Logger.getLogger(SpiritRandom.class);
+    private Logger logger=LoggerFactory.getLogger(SpiritRandom.class);
 
-    protected Random _r1 = null; //生成随机数用到的
-    protected Random _r2 = null; //从辅助列表中得到数据时用到的
+    protected Random _r1=null; //生成随机数用到的
+    protected Random _r2=null; //从辅助列表中得到数据时用到的
 
     //随机数范围开始值
-    private int beginNum = -1;
+    private int beginNum=-1;
     public int getBeginNum() {
         return beginNum;
     }
     //随机数范围结束值
-    private int endNum = -1;
+    private int endNum=-1;
     public int getEndNum() {
         return endNum;
     }
     //获取随机数个数
-    private int randomSize = -1;
+    private int randomSize=-1;
     public int getRandomSize() {
         return randomSize;
     }
     //随机缓存大小，默认值
-    private int _defaultRandomCachSize = 100;
+    private int _defaultRandomCachSize=100;
     //随机数缓存大小
-    private int randomCachSize = -1;
+    private int randomCachSize=-1;
 
     //以下为标记数据
     private int _rangeSize; //范围内数据的个数
-    private int _remainSize = 0; //范围内未被获取的数据的个数
-    private boolean _isUsed = false; //是否正在被使用
-    private Integer _currentRandom = null; //当前的随机数
+    private int _remainSize=0; //范围内未被获取的数据的个数
+    private boolean _isUsed=false; //是否正在被使用
+    private Integer _currentRandom=null; //当前的随机数
 
     /*
      * 随机数缓存数组，获取随机数就是从这个数组取数据
      */
-    private List<Integer> _randomCache = null;
+    private List<Integer> _randomCache=null;
     /*
      * 被使用的随机数列表
      */
-    private List<Integer> _usedRandom = null;
+    private List<Integer> _usedRandom=null;
     /*
      * 辅助生成随机数的列表
      */
-    private List<int[]> _assistList = null;
+    private List<int[]> _assistList=null;
 
     //===============以下为公共方法
     public SpiritRandom() {
-        this.randomCachSize = -1;
+        this.randomCachSize=-1;
     }
 
     /**
@@ -80,7 +80,7 @@ public class SpiritRandom {
         try {
             init(beginNum, endNum, randomSize);
         } catch(Exception e) {
-            logger.error(e);
+            logger.error("随机数构造器异常", e);
             throw new InstantiationException(e.getMessage());
         }
     }
@@ -99,7 +99,7 @@ public class SpiritRandom {
         try {
             init(beginNum, endNum, randomSize, randomCachSize);
         } catch(Exception e) {
-            logger.error(e);
+            logger.error("随机数构造器异常", e);
             throw new InstantiationException(e.getMessage());
         }
     }
@@ -114,11 +114,11 @@ public class SpiritRandom {
     public void init(int beginNum, int endNum, int randomSize) throws Exception {
         if (isUsed()) throw new Exception("随机数生成器正在使用，不能初始化");
 
-        this.beginNum = beginNum;
-        this.endNum = endNum;
-        this.randomSize = randomSize;
+        this.beginNum=beginNum;
+        this.endNum=endNum;
+        this.randomSize=randomSize;
 
-        this.randomCachSize = -1;
+        this.randomCachSize=-1;
         init();
     }
 
@@ -133,11 +133,11 @@ public class SpiritRandom {
     public void init(int beginNum, int endNum, int randomSize, int randomCachSize) throws Exception {
         if (isUsed()) throw new Exception("随机数生成器正在使用，不能初始化");
 
-        this.beginNum = beginNum;
-        this.endNum = endNum;
-        this.randomSize = randomSize;
+        this.beginNum=beginNum;
+        this.endNum=endNum;
+        this.randomSize=randomSize;
 
-        this.randomCachSize = -1;
+        this.randomCachSize=-1;
         this.setRandamCachSize(randomCachSize);
         init();
     }
@@ -147,8 +147,8 @@ public class SpiritRandom {
      */
     public void setRandamCachSize(int randomCachSize) throws Exception {
         if (isUsed()) throw new Exception("随机数生成器正在使用，不能设置缓存大小");
-        if (randomCachSize-1>this.endNum-this.beginNum) this.randomCachSize = this.endNum-this.beginNum+1;
-        else this.randomCachSize = randomCachSize;
+        if (randomCachSize-1>this.endNum-this.beginNum) this.randomCachSize=this.endNum-this.beginNum+1;
+        else this.randomCachSize=randomCachSize;
     }
 
     /**
@@ -179,9 +179,9 @@ public class SpiritRandom {
             if (_usedRandom!=null&&_usedRandom.size()==randomSize) throw new IndexOutOfBoundsException("有用随机数已经取到了上限["+randomSize+"]");
         }
         if (_randomCache==null||_randomCache.size()==0) buildRandamCache();
-        _currentRandom = _randomCache.remove(0);
+        _currentRandom=_randomCache.remove(0);
         _remainSize--;
-        _isUsed = true; //已经使用
+        _isUsed=true; //已经使用
         return _currentRandom;
     }
 
@@ -189,9 +189,9 @@ public class SpiritRandom {
      * 设置当前随机数为有用
      */
     public void setCurrentRandomUsed() {
-        if (_usedRandom==null) _usedRandom = new ArrayList<Integer>();
+        if (_usedRandom==null) _usedRandom=new ArrayList<Integer>();
         if (_currentRandom!=null) _usedRandom.add(_currentRandom);
-        _currentRandom = null;
+        _currentRandom=null;
     }
 
     /**
@@ -219,7 +219,7 @@ public class SpiritRandom {
      * 清除当前的随机数生成器，当生成器在使用时，不能被清除
      */
     public void clean() throws Exception {
-        if (isComplete()) _isUsed = false;
+        if (isComplete()) _isUsed=false;
         else {
             if (isUsed()) throw new Exception("随机数生成器正在使用，不能进行清除操作");
         }
@@ -245,15 +245,15 @@ public class SpiritRandom {
         if (isUsed()) throw new Exception("随机数生成器正在使用，不能初始化");
         if (beginNum>endNum) throw new Exception("随机数下限beginNum必须小于等于上限endNum，当前输入的值为[beginNum="+beginNum+"][endNum="+endNum+"]");
 
-        _rangeSize = (endNum-beginNum)+1;
-        _remainSize = _rangeSize;
-        _isUsed = false;
-        _currentRandom = null;
-        _randomCache = null;
-        _usedRandom = null;
-        _assistList = null;
-        _r1 = new Random();
-        _r2 = new Random();
+        _rangeSize=(endNum-beginNum)+1;
+        _remainSize=_rangeSize;
+        _isUsed=false;
+        _currentRandom=null;
+        _randomCache=null;
+        _usedRandom=null;
+        _assistList=null;
+        _r1=new Random();
+        _r2=new Random();
         if (this.randomCachSize==-1) caculateDefaultRandomCachSize();
 
         logger.info("初始化成功：数据范围为["+this.beginNum+".."+this.endNum+"],随机数个数为{"+this.randomSize+"},随机数缓存大小为{"+this.getRandamCacheSetSize()+"}");
@@ -261,7 +261,7 @@ public class SpiritRandom {
     }
     private void caculateDefaultRandomCachSize() {
         //计算范围的1/10
-        _defaultRandomCachSize = ((this._rangeSize/10)<_defaultRandomCachSize)?(this._rangeSize/10):_defaultRandomCachSize;
+        _defaultRandomCachSize=((this._rangeSize/10)<_defaultRandomCachSize)?(this._rangeSize/10):_defaultRandomCachSize;
         if (_defaultRandomCachSize==0) _defaultRandomCachSize=this._rangeSize;
     }
 
@@ -282,18 +282,18 @@ public class SpiritRandom {
 
         List<int[]> l;
         int[] range;
-        int cacheSize = this.getRandamCacheSetSize();
+        int cacheSize=this.getRandamCacheSetSize();
         do {
             if (_assistList==null) {
-                _assistList = new ArrayList<int[]>();
-                range = new int[2];
+                _assistList=new ArrayList<int[]>();
+                range=new int[2];
                 range[0]=this.beginNum;
                 range[1]=this.endNum;
             } else {
-                int index = SpiritRandom.getRandom(this._r2, 0, _assistList.size()-1);
+                int index=SpiritRandom.getRandom(this._r2, 0, _assistList.size()-1);
                 range= _assistList.remove(index);
             }
-            l = getRandom(range);
+            l=getRandom(range);
             for (int i=0; i<l.size(); i++) {
                 if (i==0) _randomCache.add(l.get(i)[0]); 
                 else _assistList.add(l.get(i));
@@ -307,23 +307,23 @@ public class SpiritRandom {
      * @return List[0]=[r];List[1]=[b..r-1];List[2]=[r+1..e];分割后的两个范围数组
      */
     private List<int[]> getRandom(int[] range) {
-        List<int[]> ret = new ArrayList<int[]>();
-        int b = range[0], e=range[1];
-        int newR = SpiritRandom.getRandom(this._r1, b, e);
+        List<int[]> ret=new ArrayList<int[]>();
+        int b=range[0], e=range[1];
+        int newR=SpiritRandom.getRandom(this._r1, b, e);
         
         int[] random={newR};
         ret.add(random);
         if (b!=e) {
             if (newR==b) {
-                int[] retRang1 = {b+1, e};
+                int[] retRang1={b+1, e};
                 ret.add(retRang1);
             } else if (newR==e) {
-                int[] retRang2 = {b, e-1};
+                int[] retRang2={b, e-1};
                 ret.add(retRang2);
             } else {
-                int[] retRang1 = {b, newR-1};
+                int[] retRang1={b, newR-1};
                 ret.add(retRang1);
-                int[] retRang2 = {newR+1, e};
+                int[] retRang2={newR+1, e};
                 ret.add(retRang2);
             }
         }
@@ -343,11 +343,11 @@ public class SpiritRandom {
         if (begin==end) return begin;
 
         int _begin=begin-1, _end=end+1;
-        int ret = _begin;
+        int ret=_begin;
         while (ret==_end||ret==_begin) {
-            float fr = r.nextFloat();
-            fr = (_begin+fr*(_end-_begin))+0.5f;
-            Float f = fr;
+            float fr=r.nextFloat();
+            fr=(_begin+fr*(_end-_begin))+0.5f;
+            Float f=fr;
             ret=f.intValue();
         }
         return ret;

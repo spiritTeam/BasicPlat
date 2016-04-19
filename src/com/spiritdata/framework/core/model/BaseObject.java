@@ -5,7 +5,8 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.spiritdata.framework.util.ReflectUtils;
 
 /**
@@ -15,20 +16,20 @@ import com.spiritdata.framework.util.ReflectUtils;
  */
 @SuppressWarnings("serial")
 public abstract class BaseObject implements Serializable {
-    transient protected Logger log = Logger.getLogger(this.getClass());
+    transient protected Logger log=LoggerFactory.getLogger(this.getClass());
 
     /**
      * 将java中不为空的属性放入HashMap
      * @return Map
      */
     public Map<String, Object> toHashMap() {
-        Map<String, Object> propertiesMap = new HashMap<String, Object>();
+        Map<String, Object> propertiesMap=new HashMap<String, Object>();
         try {
-            Class<? extends BaseObject> clazz = this.getClass();
-            propertiesMap = ReflectUtils.Object2MapWithoutNull(clazz, this);
+            Class<? extends BaseObject> clazz=this.getClass();
+            propertiesMap=ReflectUtils.Object2MapWithoutNull(clazz, this);
         } catch(Exception e) {
             log.info("转换类"+this.getClass().getName()+"实例为HASHMAP失败",e);
-            propertiesMap = null;
+            propertiesMap=null;
         }
         return propertiesMap;
     }
@@ -38,13 +39,13 @@ public abstract class BaseObject implements Serializable {
      * @return Map
      */
     public Map<String, Object> toHashMapAsBean() {
-        Map<String, Object> propertiesMap = new HashMap<String, Object>();
+        Map<String, Object> propertiesMap=new HashMap<String, Object>();
         try {
-            Class<? extends BaseObject> clazz = this.getClass();
-            propertiesMap = ReflectUtils.Bean2MapWithoutNull(clazz, this);
+            Class<? extends BaseObject> clazz=this.getClass();
+            propertiesMap=ReflectUtils.Bean2MapWithoutNull(clazz, this);
         } catch(Exception e) {
             log.info("转换类"+this.getClass().getName()+"实例为HASHMAP失败",e);
-            propertiesMap = null;
+            propertiesMap=null;
         }
         return propertiesMap;
     }
@@ -56,15 +57,15 @@ public abstract class BaseObject implements Serializable {
     public void fromHashMap(Map<String, Object> propertiesMap) {
         try {
             if(propertiesMap == null || propertiesMap.size() == 0) return;
-            Class<? extends Object> clazz = this.getClass();
+            Class<? extends Object> clazz=this.getClass();
             Field[]  fields;
             Iterator<String> it;
             String propertyName;
             while (!clazz.getName().equals(BaseObject.class.getName())&&!clazz.getName().equals(Object.class.getName())) {
                 fields =clazz.getDeclaredFields();
-                it =  propertiesMap.keySet().iterator();
+                it= propertiesMap.keySet().iterator();
                 while (it.hasNext()) {
-                    propertyName = it.next();
+                    propertyName=it.next();
                     for (Field f: fields) {
                         if(propertyName.equalsIgnoreCase(f.getName())) {
                             f.setAccessible(true);

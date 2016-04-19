@@ -5,7 +5,8 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.spiritdata.framework.UGA.UgaConstants;
@@ -17,12 +18,13 @@ import com.spiritdata.framework.core.cache.SystemCache;
 import com.spiritdata.framework.core.model.tree.TreeNode;
 import com.spiritdata.framework.core.model.tree.TreeNodeBean;
 import com.spiritdata.framework.exceptionC.Plat0301CException;
+
 @Component
 public class FrameworkUgaCLU extends AbstractCacheLifecycleUnit {
     /**
      * 日志
      */
-    private Logger logger = Logger.getLogger(FrameworkUgaCLU.class);
+    private Logger logger=LoggerFactory.getLogger(FrameworkUgaCLU.class);
 
     @Resource
     private UgaCacheService ugaCacheService;
@@ -49,8 +51,8 @@ public class FrameworkUgaCLU extends AbstractCacheLifecycleUnit {
     public void refresh(String key) {
         String keyName=null;
         try {
-            CacheEle<?> rce = (CacheEle<?>)SystemCache.remove(key);
-            if (rce!=null) keyName = rce.getName();
+            CacheEle<?> rce=(CacheEle<?>)SystemCache.remove(key);
+            if (rce!=null) keyName=rce.getName();
             else throw new Exception("没有值为<"+key+">的缓存");
 
             if (key.equals(UgaConstants.CATCH_UGA_USER)) loadUser();
@@ -69,9 +71,9 @@ public class FrameworkUgaCLU extends AbstractCacheLifecycleUnit {
     @SuppressWarnings("unchecked")
     public void loadModule() throws Exception {
         try {
-            Map<String, Object> mo = ugaCacheService.makeCacheModule();
+            Map<String, Object> mo=ugaCacheService.makeCacheModule();
             if (mo==null) throw new Exception("没有[模块]数据。");
-            List<Module> el = (List<Module>)mo.get("errors");
+            List<Module> el=(List<Module>)mo.get("errors");
             for (Module m: el) {
                 logger.debug("结点没有对应的根结点：{id="+m.getId()+"; name="+m.getNodeName()+"; parentId="+m.getParentId()+"}");
             }
@@ -88,7 +90,7 @@ public class FrameworkUgaCLU extends AbstractCacheLifecycleUnit {
      */
     public void loadUser() throws Exception {
         try {
-            Map<String, Object> uo = ugaCacheService.makeCacheUser();
+            Map<String, Object> uo=ugaCacheService.makeCacheUser();
             if (uo==null) throw new Exception("没有[uga用户]数据。");
             SystemCache.setCache(new CacheEle<Map<String, Object>>(UgaConstants.CATCH_UGA_USER, "uga用户", uo));
         } catch(Exception e) {
@@ -102,7 +104,7 @@ public class FrameworkUgaCLU extends AbstractCacheLifecycleUnit {
      */
     public void loadUserModule() throws Exception {
         try {
-            Map<String, TreeNode<? extends TreeNodeBean>> umo = ugaCacheService.makeCacheUserModule();
+            Map<String, TreeNode<? extends TreeNodeBean>> umo=ugaCacheService.makeCacheUserModule();
             if (umo==null) throw new Exception("没有[用户模块关联]数据。");
             SystemCache.setCache(new CacheEle<Map<String, TreeNode<? extends TreeNodeBean>>>(UgaConstants.CATCH_UGA_USERMODULE, "用户模块关联", umo));
         } catch(Exception e) {

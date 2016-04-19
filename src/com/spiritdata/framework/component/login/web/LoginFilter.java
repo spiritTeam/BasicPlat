@@ -1,7 +1,5 @@
 package com.spiritdata.framework.component.login.web;
 
-import org.apache.log4j.Logger;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,37 +16,39 @@ import com.spiritdata.framework.core.cache.SystemCache;
 import com.spiritdata.framework.component.login.pojo.UserLogin;
 import com.spiritdata.framework.util.JsonUtils;
 import com.spiritdata.framework.util.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class LoginFilter implements Filter {
-    private static Logger logger = Logger.getLogger(LoginFilter.class);
+    private static Logger logger=LoggerFactory.getLogger(LoginFilter.class);
     private String ingores;
     private String noLogin;
     private String hasNewLogin;
     private String errorPage;
 
     public void init(FilterConfig config) throws ServletException {
-        this.ingores = config.getInitParameter("ingores");
-        this.noLogin = config.getInitParameter("noLogin");
-        this.hasNewLogin = config.getInitParameter("hasNewLogin");
-        this.errorPage = config.getInitParameter("errorPage");
+        this.ingores=config.getInitParameter("ingores");
+        this.noLogin=config.getInitParameter("noLogin");
+        this.hasNewLogin=config.getInitParameter("hasNewLogin");
+        this.errorPage=config.getInitParameter("errorPage");
     }
 
     public void doFilter(ServletRequest req, ServletResponse res,FilterChain  chain) throws IOException, ServletException {
-        HttpServletRequest request = (HttpServletRequest)req;
-        HttpServletResponse response = (HttpServletResponse)res;
-        HttpSession session = request.getSession();
+        HttpServletRequest request=(HttpServletRequest)req;
+        HttpServletResponse response=(HttpServletResponse)res;
+        HttpSession session=request.getSession();
         String path=request.getServletPath();
         try {
-            String ingoresArray[] = ingores.split(",");
+            String ingoresArray[]=ingores.split(",");
             if (isIngore(path, ingoresArray)) chain.doFilter(req, res);
             else if (path.endsWith(".css")||path.endsWith(".js")||path.endsWith(".json")) chain.doFilter(req, res);
             else if (session.getAttribute(FConstants.SESSION_USER)!=null) {
                 //判断是否用其他Sesson登录了
-                CacheEle<Map<String, UserLogin>> userSessionMap = (CacheEle<Map<String, UserLogin>>)SystemCache.getCache(FConstants.USERSESSIONMAP);
-                UgaUser user = (UgaUser)session.getAttribute(FConstants.SESSION_USER);
-                UserLogin uli = userSessionMap.getContent().get(user.getUserId());
+                CacheEle<Map<String, UserLogin>> userSessionMap=(CacheEle<Map<String, UserLogin>>)SystemCache.getCache(FConstants.USERSESSIONMAP);
+                UgaUser user=(UgaUser)session.getAttribute(FConstants.SESSION_USER);
+                UserLogin uli=userSessionMap.getContent().get(user.getUserId());
                 if (uli!=null&&!uli.getSessionId().equals(session.getId())) {
-                    String loginInfo = "";
+                    String loginInfo="";
                     loginInfo += "&clientIp="+uli.getClientIp();
                     loginInfo += "&clientMacAddr="+uli.getClientMacAddr();
                     loginInfo += "&browser="+uli.getBrowser();
@@ -56,9 +56,9 @@ public class LoginFilter implements Filter {
                     response.sendRedirect(request.getContextPath()+hasNewLogin+"?"+loginInfo.substring(1));
                 } else chain.doFilter(req, res);
             } else {
-                String newUrl = request.getContextPath()+noLogin;
+                String newUrl=request.getContextPath()+noLogin;
                 if (!StringUtils.isNullOrEmptyOrSpace(request.getQueryString())) {
-                    newUrl = (newUrl.indexOf("?")==-1?newUrl+"?"+request.getQueryString():newUrl+"&"+request.getQueryString());
+                    newUrl=(newUrl.indexOf("?")==-1?newUrl+"?"+request.getQueryString():newUrl+"&"+request.getQueryString());
                 }
                 response.sendRedirect(newUrl);
             }
@@ -67,7 +67,7 @@ public class LoginFilter implements Filter {
             Map<String, String> errorInfo= new HashMap<String, String>();
             errorInfo.put("type", "error");
             errorInfo.put("title", "登录验证过滤器产生异常");
-            //StringPrintWriter strintPrintWriter = new StringPrintWriter();
+            //StringPrintWriter strintPrintWriter=new StringPrintWriter();
             //e.printStackTrace(strintPrintWriter);
             //errorInfo.put("message", strintPrintWriter.toString().replaceAll("<%", "<％").replaceAll("%>", "％>").replaceAll("\r\n", "").replaceAll("\r", "").replaceAll("\n", ""));
             errorInfo.put("message", e.getMessage());

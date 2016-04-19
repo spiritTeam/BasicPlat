@@ -9,7 +9,8 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 import org.apache.commons.io.FilenameUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
@@ -27,7 +28,7 @@ import com.spiritdata.framework.FConstants;
  * @author Roy zhu,WH
  */
 public class InitSysConfigListener implements ServletContextListener {
-    private Logger logger = Logger.getLogger(InitSysConfigListener.class);
+    private Logger logger=LoggerFactory.getLogger(InitSysConfigListener.class);
     /**
      * 缓存管理
      */
@@ -45,7 +46,7 @@ public class InitSysConfigListener implements ServletContextListener {
      */
     public void contextInitialized(ServletContextEvent event) {
         try {
-            ServletContext sc = event.getServletContext();
+            ServletContext sc=event.getServletContext();
 
             //装载系统服务器路径到缓存中
             SystemCache.setCache(
@@ -68,7 +69,7 @@ public class InitSysConfigListener implements ServletContextListener {
             if (cachePool!=null) cachePool.initAll();
 
             //读取系统配置，目前配置只支持properties文件
-            Map<String, String> cfgKvMap = SysConfigManage.load(FilenameUtils.concat(sc.getRealPath("/"), "WEB-INF"+File.separator+"sysConfig.properties"));
+            Map<String, String> cfgKvMap=SysConfigManage.load(FilenameUtils.concat(sc.getRealPath("/"), "WEB-INF"+File.separator+"sysConfig.properties"));
             if (cfgKvMap!=null&&cfgKvMap.size()>0) {
                 SystemCache.setCache(
                     new CacheEle<Map<String, String>>(FConstants.SYS_CONFIG, "系统参数", cfgKvMap)
@@ -87,8 +88,8 @@ public class InitSysConfigListener implements ServletContextListener {
      * 根据TYPE用setter方法做注入，此方法用于把CachePool从bean中引入
      */
     private void dependencyInject(ServletContext sc) {
-        WebApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(sc);
-        AutowireCapableBeanFactory factory = context.getAutowireCapableBeanFactory();
+        WebApplicationContext context=WebApplicationContextUtils.getWebApplicationContext(sc);
+        AutowireCapableBeanFactory factory=context.getAutowireCapableBeanFactory();
         factory.autowireBeanProperties(this, AutowireCapableBeanFactory.AUTOWIRE_BY_TYPE, false);
     }
 }
