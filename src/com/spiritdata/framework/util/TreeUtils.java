@@ -121,6 +121,62 @@ public abstract class TreeUtils {
     }
 
     /**
+     * 得到树t的深度遍历列表
+     * @param t 需要遍历的树结点
+     * @return 返回以树结点为列表的深度遍历树，注意这里的结点与原树中的结点是指针相同的对象
+     */
+    public static List<TreeNode<? extends TreeNodeBean>> getDeepList(TreeNode<? extends TreeNodeBean> t) {
+        if (t==null) return null;
+        if (t.isLeaf()) return null;
+        List<TreeNode<? extends TreeNodeBean>> ret=new ArrayList<TreeNode<? extends TreeNodeBean>>();
+        for (TreeNode<? extends TreeNodeBean> _t: t.getChildren()) {
+            ret.add(_t);
+            List<TreeNode<? extends TreeNodeBean>> _r=getDeepList(_t);
+            if (_r!=null) ret.addAll(_r);
+        }
+        return ret;
+    }
+
+    /**
+     * 把树t按照给定的层级进行裁剪，裁剪的结果作为一棵新树返回
+     * @param t 需要裁剪的树
+     * @param level 需要裁剪的层级
+     * @return 裁剪后的树
+     */
+    public static TreeNode<? extends TreeNodeBean> cutLevelClone(TreeNode<? extends TreeNodeBean> t, int level) {
+        TreeNode<? extends TreeNodeBean> ret=null;
+        try {
+            ret=t.clone();
+            if (level>0) {
+                if (!ret.isLeaf()) {
+                    for (TreeNode<? extends TreeNodeBean> tn: ret.getChildren()) {
+                        TreeUtils.cutLevel(tn, level-1);
+                    }
+                }
+            }
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return ret;
+    }
+
+    /**
+     * 把树t按照给定的层级进行裁剪，注意裁剪后的结果为树本身
+     * @param t 需要裁剪的树
+     * @param level 需要裁剪的层级
+     */
+    public static void cutLevel(TreeNode<? extends TreeNodeBean> t, int level) {
+        if (!t.isLeaf()) {
+            if (level==0) (t.getChildren()).clear();
+            else {
+                for (TreeNode<? extends TreeNodeBean> tn: t.getChildren()) {
+                    cutLevel(tn, level-1);
+                }
+            }
+        }
+    }
+
+    /**
      * 重组树，根据idc中的结点id，重组forest中的树，新的树包括仅包括idc中所有id结点的所有祖宗结点和子结点
      * @param forest 树对象的列表，此对象是需要重组树的全集
      * @param idc 结点id的Collection
@@ -170,7 +226,7 @@ public abstract class TreeUtils {
         return restructureForest;
     }
 
-    /**
+    /*
      * 给list消重
      * @param sl 要消重的list
      * @return 消重后的list

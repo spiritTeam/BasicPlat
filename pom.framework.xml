@@ -89,7 +89,7 @@
     <!-- 这里定义的资源将作为资源拷贝或打包到目标中。所有的配置文件(xml,propertis)都会按目录进行打包了 -->
     <resources>
       <resource>
-        <directory>${build.webProjectDir}\src</directory>
+        <directory>${projectDir}\src</directory>
         <includes>
           <include>**/*.xml</include>
           <include>**/*.properties</include>

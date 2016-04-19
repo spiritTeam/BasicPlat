@@ -4,6 +4,12 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Set;
 
+import net.sourceforge.pinyin4j.PinyinHelper;
+import net.sourceforge.pinyin4j.format.HanyuPinyinCaseType;
+import net.sourceforge.pinyin4j.format.HanyuPinyinOutputFormat;
+import net.sourceforge.pinyin4j.format.HanyuPinyinToneType;
+import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
+
 /**
  * 汉字拼写工具集
  * 1-汉字转全拼
@@ -527,24 +533,20 @@ public abstract class ChineseCharactersUtils {
     public static String getFullSpellFirstUp(String cnStr) {
         if (cnStr==null||cnStr.trim().length()==0) return cnStr;
 
-        char[] chars = cnStr.toCharArray();
-        StringBuffer retuBuf = new StringBuffer();
-        for (int i = 0, Len = chars.length; i < Len; i++) {
-            int ascii = getCnAscii(chars[i]);
-            if (ascii == 0) {
-                // 取ascii时出错
-                retuBuf.append(chars[i]);
-            } else {
-                String spell = getSpellByAscii(ascii);
-                if (spell == null) {
-                    retuBuf.append(chars[i]);
-                } else {
-                    spell=spell.toUpperCase().substring(0,1)+spell.substring(1);
-                    retuBuf.append(spell);
-                }
+        String ret="";
+        try {
+            HanyuPinyinOutputFormat outputFormat = new HanyuPinyinOutputFormat();
+            outputFormat.setCaseType(HanyuPinyinCaseType.LOWERCASE);
+            outputFormat.setToneType(HanyuPinyinToneType.WITHOUT_TONE);
+            String[] py=null;
+            for (char a: cnStr.toCharArray()) {
+                py=PinyinHelper.toHanyuPinyinStringArray(a, outputFormat);
+                if (py!=null) ret+=py[0].toUpperCase().substring(0, 1)+py[0].substring(1);
+                else ret+=a;
             }
+        } catch (BadHanyuPinyinOutputFormatCombination e) {
         }
-        return retuBuf.toString();
+        return ret;
     }
 
     /**

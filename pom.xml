@@ -7,7 +7,7 @@
 
   <!-- 配置编码格式，与eclpse的IDE环境编码格式匹配 -->
   <properties>
-    <build.webProjectDir>D:\workIDE\projects\BasicPlat</build.webProjectDir>
+    <projectDir>D:\workIDE\projects\BasicPlat</projectDir>
   </properties>
 
   <parent>
@@ -41,25 +41,25 @@
       <artifactId>commons-codec</artifactId>
       <version>1.9</version>
     </dependency>
-    <!-- 本地Jar包
+    <!-- 引入汉字转拼音 -->
     <dependency>
-      <groupId>spiritdata.com</groupId>  
-      <artifactId>a</artifactId>  
-      <version>2.0</version>  
-      <scope>system</scope>  
-      <systemPath>D:\workIDE\projects\BasicPlat\target\a.jar</systemPath>  
-    </dependency> -->
+      <groupId>net.sourceforge</groupId>
+      <artifactId>pinyin4j</artifactId>
+      <version>2.5.0</version>
+      <scope>system</scope>
+      <systemPath>${projectDir}/lib/pinyin4j-2.5.0.jar</systemPath>
+    </dependency>
   </dependencies>
 
   <build>
     <!-- 设置源代码的根目录 -->
-    <sourceDirectory>${build.webProjectDir}\src</sourceDirectory>
+    <sourceDirectory>${projectDir}\src</sourceDirectory>
     <!-- 设置测试代码的根目录 -->
-    <testSourceDirectory>${build.webProjectDir}\test</testSourceDirectory>
+    <testSourceDirectory>${projectDir}\test</testSourceDirectory>
     <!-- 设置源代码编译后的字节代码的目录 -->
-    <outputDirectory>${build.webProjectDir}\WebContent\WEB-INF\classes</outputDirectory>
+    <outputDirectory>${projectDir}\WebContent\WEB-INF\classes</outputDirectory>
     <!-- 设置测试代码编译后的字节代码的目录 -->
-    <testOutputDirectory>${build.webProjectDir}\target\test-classes</testOutputDirectory>
+    <testOutputDirectory>${projectDir}\target\test-classes</testOutputDirectory>
 
     <!-- m2e插件 若用myeclipse，可能需要加入如下内容
     <pluginManagement>
