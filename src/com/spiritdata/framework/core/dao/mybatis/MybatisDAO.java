@@ -20,7 +20,7 @@ public class MybatisDAO <T extends BaseObject> extends SqlSessionDaoSupport impl
 
     @Override
     public void setNamespace(String namespace) {
-        this.namespace = namespace;
+        this.namespace=namespace;
     }
     //平台默认的mybatis调用ID
     private String insertkey="insert";
@@ -36,7 +36,7 @@ public class MybatisDAO <T extends BaseObject> extends SqlSessionDaoSupport impl
      * @throws Exception
      */
     public void initialize() {
-        this.sqlSession = this.getSqlSession();
+        this.sqlSession=this.getSqlSession();
     }
 
     @Override
@@ -48,7 +48,7 @@ public class MybatisDAO <T extends BaseObject> extends SqlSessionDaoSupport impl
     public int insert(String statementId, Object newData) {
         String key=namespace+"."+statementId;
         try {
-            if (sqlSession ==null) this.sqlSession = this.getSqlSession();
+            if (sqlSession==null) this.sqlSession=this.getSqlSession();
             this.sqlSession.insert(key, newData);
             return 1;
         } catch(Exception e) {
@@ -58,13 +58,13 @@ public class MybatisDAO <T extends BaseObject> extends SqlSessionDaoSupport impl
 
     @Override
     public int save(Object aData) {
-        String exceptionMsg = "";
-        Exception ei = null;
-        int a = 0;
+        String exceptionMsg="";
+        Exception ei=null;
+        int a=0;
         try {
-            a = insert(insertkey, aData);
+            a=insert(insertkey, aData);
         } catch(Exception e) {
-            exceptionMsg = e.getMessage();
+            exceptionMsg=e.getMessage();
             ei=e;
         }
         try {
@@ -84,7 +84,7 @@ public class MybatisDAO <T extends BaseObject> extends SqlSessionDaoSupport impl
     public int update(String statementId, Object updateData) {
         String key=namespace+"."+statementId;
         try {
-            if (sqlSession ==null) this.sqlSession = this.getSqlSession();
+            if (sqlSession ==null) this.sqlSession=this.getSqlSession();
             return this.sqlSession.update(key, updateData);
         } catch(Exception e) {
             throw new Plat0101CException("更新数据异常:采用SQL="+key+",数据["+updateData.getClass().getName()+"(@"+updateData.hashCode()+")]", e);
@@ -100,7 +100,7 @@ public class MybatisDAO <T extends BaseObject> extends SqlSessionDaoSupport impl
     public int delete(String statementId, Object parameter) {
         String key=namespace+"."+statementId;
         try {
-            if (sqlSession ==null) this.sqlSession = this.getSqlSession();
+            if (sqlSession ==null) this.sqlSession=this.getSqlSession();
             return this.sqlSession.delete(key, parameter);
         } catch(Exception e) {
             throw new Plat0101CException("删除数据异常:采用SQL="+key+",数据["+parameter.getClass().getName()+"(@"+parameter.hashCode()+")]", e);
@@ -121,7 +121,7 @@ public class MybatisDAO <T extends BaseObject> extends SqlSessionDaoSupport impl
     public int getCount(String statementId, Object parameter) {
         String key=namespace+"."+statementId;
         try {
-          if (sqlSession ==null) this.sqlSession = this.getSqlSession();
+          if (sqlSession ==null) this.sqlSession=this.getSqlSession();
           return this.sqlSession.selectOne(key, parameter);
         } catch(Exception e) {
             throw new Plat0101CException("得到数据记录条数异常:采用SQL="+key+",数据["+parameter.getClass().getName()+"(@"+parameter.hashCode()+")]", e);
@@ -137,7 +137,7 @@ public class MybatisDAO <T extends BaseObject> extends SqlSessionDaoSupport impl
     public T getInfoObject(String statementId, Object idObj) {
         String key=namespace+"."+statementId;
         try {
-            if (sqlSession ==null) this.sqlSession = this.getSqlSession();
+            if (sqlSession ==null) this.sqlSession=this.getSqlSession();
             return (T)this.sqlSession.selectOne(key, idObj);
         } catch(Exception e) {
             throw new Plat0101CException("得到单条(范型)信息异常:采用SQL="+key+",数据["+idObj.getClass().getName()+"(@"+idObj.hashCode()+")]=["+JsonUtils.objToJson(idObj)+"]", e);
@@ -163,7 +163,7 @@ public class MybatisDAO <T extends BaseObject> extends SqlSessionDaoSupport impl
     public List<T> queryForList(String statementId, Object parameter) {
         String key=namespace+"."+statementId;
         try {
-            if (sqlSession ==null) this.sqlSession = this.getSqlSession();
+            if (sqlSession ==null) this.sqlSession=this.getSqlSession();
             return this.sqlSession.selectList(key, parameter);
         } catch(Exception e) {
             throw new Plat0101CException("得到(范型)信息列表异常:采用SQL="+key+",数据["+parameter.getClass().getName()+"(@"+parameter.hashCode()+")]", e);
@@ -184,19 +184,19 @@ public class MybatisDAO <T extends BaseObject> extends SqlSessionDaoSupport impl
     public Page<T> pageQuery(String countSqlId, String pageQuerySqlId, Object parameter, int pageIndex, int pageSize) {
         if (pageQuerySqlId==null) pageQuerySqlId=namespace+"."+this.listkey;
         try {
-            PageBounds pageBounds = new PageBounds(pageIndex, pageSize);
+            PageBounds pageBounds=new PageBounds(pageIndex, pageSize);
             pageBounds.setContainsTotalCount(false);
             //计算总数
             Integer totalCount=null;
             if (countSqlId!=null) totalCount=getCount(countSqlId, parameter);
             else pageBounds.setContainsTotalCount(true);
 
-            List<T> l = this.getSqlSession().selectList(pageQuerySqlId, parameter, pageBounds);
+            List<T> l=this.getSqlSession().selectList(pageQuerySqlId, parameter, pageBounds);
             if (countSqlId==null)  {
-                PageList<T> pageList = (PageList<T>)l;
-                totalCount = pageList.getPaginator().getTotalCount(); //得到结果条数
+                PageList<T> pageList=(PageList<T>)l;
+                totalCount=pageList.getPaginator().getTotalCount(); //得到结果条数
             }
-            Page<T> rp = new Page<T>(totalCount, pageSize, pageIndex, l);
+            Page<T> rp=new Page<T>(totalCount, pageSize, pageIndex, l);
             return rp;
         } catch(Exception e) {
             throw new Plat0101CException("得到(范型)信息列表分页结果异常:采用SQL="+pageQuerySqlId
@@ -209,7 +209,7 @@ public class MybatisDAO <T extends BaseObject> extends SqlSessionDaoSupport impl
     public <V> V queryForObjectAutoTranform(String statementId, Object parameter) {
         String key=namespace+"."+statementId;
         try {
-            if (sqlSession ==null) this.sqlSession = this.getSqlSession();
+            if (sqlSession ==null) this.sqlSession=this.getSqlSession();
             return (V)this.sqlSession.selectOne(key, parameter);
         } catch(Exception e) {
             throw new Plat0101CException("得到单条(自由)信息异常:采用SQL="+key+",数据["+parameter.getClass().getName()+"(@"+parameter.hashCode()+")]", e);
@@ -220,7 +220,7 @@ public class MybatisDAO <T extends BaseObject> extends SqlSessionDaoSupport impl
     public <V> List<V> queryForListAutoTranform(String statementId, Object parameter) {
         String key=namespace+"."+statementId;
         try {
-            if (sqlSession ==null) this.sqlSession = this.getSqlSession();
+            if (sqlSession ==null) this.sqlSession=this.getSqlSession();
             return this.sqlSession.selectList(key, parameter);
         } catch(Exception e) {
             throw new Plat0101CException("得到(自由)信息列表异常:采用SQL="+key+",数据["+parameter.getClass().getName()+"(@"+parameter.hashCode()+")]", e);
@@ -231,19 +231,19 @@ public class MybatisDAO <T extends BaseObject> extends SqlSessionDaoSupport impl
     public <V> Page<V> pageQueryAutoTranform(String countSqlId, String pageQuerySqlId, Object parameter, int pageIndex, int pageSize) {
         if (pageQuerySqlId==null) pageQuerySqlId=namespace+"."+this.listkey;
         try {
-            PageBounds pageBounds = new PageBounds(pageIndex, pageSize);
+            PageBounds pageBounds=new PageBounds(pageIndex, pageSize);
             pageBounds.setContainsTotalCount(false);
             //计算总数
             Integer totalCount=null;
             if (countSqlId!=null) totalCount=getCount(countSqlId, parameter);
             else pageBounds.setContainsTotalCount(true);
 
-            List<V> l = this.getSqlSession().selectList(pageQuerySqlId, parameter, pageBounds);
+            List<V> l=this.getSqlSession().selectList(pageQuerySqlId, parameter, pageBounds);
             if (countSqlId==null)  {
-                PageList<V> pageList = (PageList<V>)l;
-                totalCount = pageList.getPaginator().getTotalCount(); //得到结果条数
+                PageList<V> pageList=(PageList<V>)l;
+                totalCount=pageList.getPaginator().getTotalCount(); //得到结果条数
             }
-            Page<V> rp = new Page<V>(totalCount, pageSize, pageIndex, l);
+            Page<V> rp=new Page<V>(totalCount, pageSize, pageIndex, l);
             return rp;
         } catch(Exception e) {
             throw new Plat0101CException("得到(自由)信息列表分页结果异常:采用SQL="+pageQuerySqlId
@@ -294,7 +294,7 @@ public class MybatisDAO <T extends BaseObject> extends SqlSessionDaoSupport impl
     public void execute(String executeSqlId, Object parameter) {
         String key=namespace+"."+executeSqlId;
         try {
-            if (sqlSession ==null) this.sqlSession = this.getSqlSession();
+            if (sqlSession ==null) this.sqlSession=this.getSqlSession();
             this.sqlSession.update(key, parameter);
         } catch(Exception e) {
             throw new Plat0101CException("执行Sql异常:采用SQL="+key+",数据["+parameter.getClass().getName()+"(@"+parameter.hashCode()+")]", e);
