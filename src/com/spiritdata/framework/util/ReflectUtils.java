@@ -188,8 +188,8 @@ public abstract class ReflectUtils {
         try {
             String typeName=baseClass.getName();
             if (object!=null) {
-                if (typeName.equals("java.util.Date")) {
-                    Date date=(Date) object;
+                if (typeName.equals("java.util.Date")||typeName.equals("java.sql.Timestamp")) {
+                    Date date=(Date)object;
                     value=DateUtils.convert2LongLocalStr(date);
                 } else value=object.toString(); //复杂类型暂时不处理，调用默认toString方法。
             }
