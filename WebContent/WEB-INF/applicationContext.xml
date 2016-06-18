@@ -132,7 +132,6 @@
   <bean id="sessionLoaderShell" class="com.spiritdata.framework.core.web.SessionLoaderShell">
     <property name="sessionLoaderList">
       <list>
-        <ref bean="testLoader"/>
       </list>
     </property>
   </bean>
