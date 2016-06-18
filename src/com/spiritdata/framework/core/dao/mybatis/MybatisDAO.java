@@ -172,7 +172,7 @@ public class MybatisDAO <T extends BaseObject> extends SqlSessionDaoSupport impl
 
     @Override
     public Page<T> pageQuery(Object parameter, int pageIndex, int pageSize) {
-        return this.pageQuery(null, this.listkey, parameter, pageIndex, pageSize);
+        return this.pageQuery(null, null, parameter, pageIndex, pageSize);
     }
 
     @Override

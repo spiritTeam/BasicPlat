@@ -7,7 +7,7 @@
 
   <!-- 配置编码格式，与eclpse的IDE环境编码格式匹配 -->
   <properties>
-    <projectDir>D:\workIDE\projects\BasicPlat</projectDir>
+    <projectDir>D:\workIDE\work\BasicPlat</projectDir>
   </properties>
 
   <parent>

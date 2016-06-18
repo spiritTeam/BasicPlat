@@ -4,7 +4,7 @@
 <%@page import="com.spiritdata.framework.core.model.tree.TreeNode"%>
 <%@page import="com.spiritdata.framework.component.module.pojo.Module"%>
 <%@page import="com.spiritdata.framework.FConstants"%>
-<%@page import="com.spiritdata.framework.ui.tree.easyUi.EasyUiTree"%>
+<%@page import="com.spiritdata.framework.ui.tree.EasyUiTree"%>
 <%@page import="com.spiritdata.framework.util.JsonUtils"%>
 
 <%
@@ -14,7 +14,7 @@
   TreeNode<Module> userModuleTree = (TreeNode<Module>)session.getAttribute(FConstants.SESSION_USERAUTHORITY);
   if (userModuleTree!=null) {
       EasyUiTree<Module> met = new EasyUiTree<Module>(userModuleTree);
-      for (TreeNode<Module> eut: met.getChildren()) {
+      for (TreeNode<?> eut: met.getChildren()) {
           ((EasyUiTree<Module>)eut).setState("open");
       }
       AuthObjJson = JsonUtils.objToJson(met.toTreeMap());
