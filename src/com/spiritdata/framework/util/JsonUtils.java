@@ -1,8 +1,5 @@
 package com.spiritdata.framework.util;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spiritdata.framework.exceptionC.Plat0001CException;
@@ -66,18 +63,6 @@ public abstract class JsonUtils {
     }
 
     /**
-     * 将对象转换为Json字符串。type是输出类型。
-     * 输出的json对象为{jsonType:#type, data:#cls2json}
-     * @param obj 欲转换的对象，如果是String 则直接返回到data中
-     * @param type 类型：1是成功，0是失败，其他整型类型可自己定义
-     * @return Json字符串
-     * @throws Plat0001CException 异常 
-     */
-    public static String obj2AjaxJson(Object obj, int type) {
-        return JsonUtils.objToJson(JsonUtils.obj2AjaxMap(obj, type));
-    }
-
-    /**
      * 将json字符串转换成java对象
      * @param json 准备转换的json字符串
      * @param cls  准备转换的类
@@ -118,7 +103,7 @@ public abstract class JsonUtils {
      * @param type 类型：1是成功，0是失败，其他整型类型可自己定义
      * @return AjaxMap对象
      * @throws Exception 异常 
-     */
+     /
     public static Map<String, Object> obj2AjaxMap(Object obj, int type) {
         Map<String, Object> m = new HashMap<String, Object>();
         m.put("jsonType", type);
@@ -126,6 +111,19 @@ public abstract class JsonUtils {
         else m.put("message", obj);
         return m;
     }
+
+    /**
+     * 将对象转换为Json字符串。type是输出类型。
+     * 输出的json对象为{jsonType:#type, data:#cls2json}
+     * @param obj 欲转换的对象，如果是String 则直接返回到data中
+     * @param type 类型：1是成功，0是失败，其他整型类型可自己定义
+     * @return Json字符串
+     * @throws Plat0001CException 异常 
+     /
+    public static String obj2AjaxJson(Object obj, int type) {
+        return JsonUtils.objToJson(JsonUtils.obj2AjaxMap(obj, type));
+    }
+    */
 
     /**
      * 得到紧凑型Json串

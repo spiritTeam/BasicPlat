@@ -31,7 +31,6 @@ import com.spiritdata.framework.core.cache.SystemCache;
 import com.spiritdata.framework.exceptionC.Plat0201CException;
 import com.spiritdata.framework.ext.io.StringPrintWriter;
 import com.spiritdata.framework.util.FileNameUtils;
-import com.spiritdata.framework.util.JsonUtils;
 import com.spiritdata.framework.util.ReflectUtils;
 import com.spiritdata.framework.util.StringUtils;
 
@@ -46,7 +45,7 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
  * @author mht, wh
  */
 public abstract class AbstractFileUploadController implements Controller, HandlerExceptionResolver {
-    private String appOSPath = ((CacheEle<String>)(SystemCache.getCache(FConstants.APPOSPATH))).getContent();
+    private String appOSPath=((CacheEle<String>)(SystemCache.getCache(FConstants.APPOSPATH))).getContent();
 
     private final String _defaultPath="\\uploadFiles";//默认路径，今后写到配置文件中，配置文件用Json方式
 
@@ -56,7 +55,7 @@ public abstract class AbstractFileUploadController implements Controller, Handle
      * @param savePath 保存路径
      */
     public void setSavePath(String savePath) {
-        this.savePath = savePath;
+        this.savePath=savePath;
     }
 
     private String storeFileNameFieldName=null;//上传文件保存时的名称的字段名称，与界面中的内容相互匹配
@@ -67,7 +66,7 @@ public abstract class AbstractFileUploadController implements Controller, Handle
      * @param storeFileNameFieldName 保存上传文件存储文件名的界面字段名称
      */
     public void setStoreFileNameFieldName(String storeFileNameFieldName) {
-        this.storeFileNameFieldName = storeFileNameFieldName;
+        this.storeFileNameFieldName=storeFileNameFieldName;
     }
 
     private String filePrefix=null;//保存文件的前缀名
@@ -76,7 +75,7 @@ public abstract class AbstractFileUploadController implements Controller, Handle
      * @param filePrefix 文件前缀
      */
     public void setFilePrefix(String filePrefix) {
-        this.filePrefix = filePrefix;
+        this.filePrefix=filePrefix;
     }
 
     private int datePathModel=0;//是否采用Date规则生成路径
@@ -86,7 +85,7 @@ public abstract class AbstractFileUploadController implements Controller, Handle
      * @param isDatePath 是否采用Date规则生成路径
      */
     public void setDatePathModel(int datePathModel) {
-        this.datePathModel = datePathModel;
+        this.datePathModel=datePathModel;
     }
 
     private int conflictType=0;//解决冲突的方法
@@ -96,7 +95,7 @@ public abstract class AbstractFileUploadController implements Controller, Handle
      * @param conflictType 冲突解决方法
      */
     public void setconflictType(int conflictType) {
-        this.conflictType = conflictType;
+        this.conflictType=conflictType;
     }
 
     private boolean breakOnOneFaild=false;//当一个文件上传失败后，是否结束后需的所有上传的文件(有点事务的味道)
@@ -105,19 +104,21 @@ public abstract class AbstractFileUploadController implements Controller, Handle
      * @param breakOnOneFaild 某一文件上传失败后的处理模式 
      */
     public void setBreakOnOneFaild(boolean breakOnOneFaild) {
-        this.breakOnOneFaild = breakOnOneFaild;
+        this.breakOnOneFaild=breakOnOneFaild;
     }
 
     @Override
     public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
-        StringPrintWriter strintPrintWriter = new StringPrintWriter();
+        StringPrintWriter strintPrintWriter=new StringPrintWriter();
         ex.printStackTrace(strintPrintWriter);
 
-        MappingJackson2JsonView mjjv = new MappingJackson2JsonView();
+        MappingJackson2JsonView mjjv=new MappingJackson2JsonView();
         response.setHeader("Cache-Control", "no-cache");
         mjjv.setContentType("text/html; charset=UTF-8");
-        mjjv.setAttributesMap(JsonUtils.obj2AjaxMap(strintPrintWriter.getString(), 1));
-        ModelAndView mav = new ModelAndView();
+        Map<String, Object> m = new HashMap<String, Object>();
+        m.put("data", strintPrintWriter.getString());
+        mjjv.setAttributesMap(m);
+        ModelAndView mav=new ModelAndView();
         mav.setView(mjjv);
         return mav;
     }
@@ -128,107 +129,113 @@ public abstract class AbstractFileUploadController implements Controller, Handle
     @Override
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) {
         try {
-            MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest)request;
-            Map<String, MultipartFile> files = multipartRequest.getFileMap();
+            MultipartHttpServletRequest multipartRequest=(MultipartHttpServletRequest)request;
+            Map<String, MultipartFile> files=multipartRequest.getFileMap();
             //得到其他的属性
-            Map<String, Object> rqtParams = new HashMap<String, Object>();
-            List<String> paramNameL = (List<String>)Collections.list(request.getParameterNames());
+            Map<String, Object> rqtParams=new HashMap<String, Object>();
+            List<String> paramNameL=(List<String>)Collections.list(request.getParameterNames());
             for (String n: paramNameL) rqtParams.put(n, request.getParameter(n));
-            Map<String, Object> rqtAttrs = new HashMap<String, Object>();
-            List<String> attrNameL = (List<String>)Collections.list(request.getAttributeNames());
+            Map<String, Object> rqtAttrs=new HashMap<String, Object>();
+            List<String> attrNameL=(List<String>)Collections.list(request.getAttributeNames());
             for (String n: attrNameL) rqtAttrs.put(n, request.getAttribute(n));
 
-            List<Map<String, Object>> retl = new ArrayList<Map<String, Object>>();
-            if (files!=null&&files.size()>0) {//返回空
-                this.setMySavePath();
-                //处理路径
-                String dataCenterPath = SysConfigManage.getValue("DataCenterPath");
-                String uploadFilePath = SysConfigManage.getValue("UploadFilePath");
-                
-                String _path = uploadFilePath;
-                if (uploadFilePath==null) {
-                    _path = FileNameUtils.concatPath(dataCenterPath==null?this.appOSPath:dataCenterPath, this._defaultPath);
-                }
-                File f;
-                if (!StringUtils.isNullOrEmptyOrSpace(this.savePath)) {//有路径
-                    f = new File(this.savePath);
-                    if (f.isAbsolute()) _path=this.savePath;
-                    else _path = FileNameUtils.concatPath(_path, this.savePath);
-                }
-                if (this.datePathModel==1||this.datePathModel==3) _path=FileNameUtils.getDateRulePath(_path);
-                //处理文件名称字段
-                String[] storeFileNames = null;
-                if (this.storeFileNameFieldName!=null) storeFileNames = multipartRequest.getParameterValues(this.storeFileNameFieldName);
-                else storeFileNames = multipartRequest.getParameterValues("storeFilename");
-
-                if (storeFileNames!=null) if (storeFileNames.length==0) storeFileNames=null;
-                //处理每个文件
-                Iterator<String> iterator=files.keySet().iterator();
-                int fIndex=0;
-                while (iterator.hasNext()) {
-                    CommonsMultipartFile file = (CommonsMultipartFile)files.get(iterator.next());
-                    if (StringUtils.isNullOrEmptyOrSpace(file.getOriginalFilename())) continue;
-                    //处理文件名
-                    String storeFilename = null;
-                    String extFilename = FileNameUtils.getExt(file.getOriginalFilename());
-                    if (storeFileNames==null) storeFilename = FileNameUtils.getPureFileName(file.getOriginalFilename());
-                    else {
-                        storeFilename = storeFileNames[fIndex];
-                        if (StringUtils.isNullOrEmptyOrSpace(storeFilename)) storeFilename = FileNameUtils.getPureFileName(file.getOriginalFilename());
+            List<Map<String, Object>> retl=new ArrayList<Map<String, Object>>();
+            Map<String, Object> retMap=beforeUploadFile(rqtAttrs, rqtParams);
+            if (retMap==null) {
+                retMap=new HashMap<String, Object>();
+                if (files!=null&&files.size()>0) {//返回空
+                    this.setMySavePath(rqtAttrs, rqtParams);
+                    //处理路径
+                    String dataCenterPath=SysConfigManage.getValue("DataCenterPath");
+                    String uploadFilePath=SysConfigManage.getValue("UploadFilePath");
+                    
+                    String _path=uploadFilePath;
+                    if (uploadFilePath==null) {
+                        _path=FileNameUtils.concatPath(dataCenterPath==null?this.appOSPath:dataCenterPath, this._defaultPath);
                     }
-                    if (!FileNameUtils.getExt(storeFilename).toUpperCase().equals(extFilename.toUpperCase())) storeFilename +=extFilename;
+                    File f;
+                    if (!StringUtils.isNullOrEmptyOrSpace(this.savePath)) {//有路径
+                        f=new File(this.savePath);
+                        if (f.isAbsolute()) _path=this.savePath;
+                        else _path=FileNameUtils.concatPath(_path, this.savePath);
+                    }
+                    if (this.datePathModel==1||this.datePathModel==3) _path=FileNameUtils.getDateRulePath(_path);
+                    //处理文件名称字段
+                    String[] storeFileNames=null;
+                    if (this.storeFileNameFieldName!=null) storeFileNames=multipartRequest.getParameterValues(this.storeFileNameFieldName);
+                    else storeFileNames=multipartRequest.getParameterValues("storeFilename");
 
-                    if (!StringUtils.isNullOrEmptyOrSpace(this.filePrefix)) storeFilename = this.filePrefix+"_"+storeFilename;
-                    if (this.datePathModel==2||this.datePathModel==3) storeFilename = FileNameUtils.getDateRuleFileName(storeFilename);
-                    storeFilename = FileNameUtils.concatPath(_path, storeFilename);
-                    //拷贝文件
-                    Map<String, Object> oneFileDealRetMap = saveMultipartFile2File(file, storeFilename);
-                    boolean isBreak=false;
-                    if ((""+oneFileDealRetMap.get("success")).equalsIgnoreCase("TRUE")) {//处理成功
-                        //删除临时文件
-                        delTempFile(file.getFileItem());
-                        //调用虚方法，处理每个文件的后续部分
-                        oneFileDealRetMap.remove("success");
-                        Map<String, Object> myDealRetMap = afterUploadOneFileOnSuccess(oneFileDealRetMap, rqtAttrs, rqtParams);
-                        if (myDealRetMap!=null) {
-                            Boolean mySuccess = true;
-                            try {
-                                mySuccess = Boolean.parseBoolean((String)myDealRetMap.get("success"));
-                                oneFileDealRetMap.put("success", mySuccess.toString().toUpperCase());
-                            } catch(Exception e) {
-                                mySuccess = false;
-                            }
-//                            oneFileDealRetMap.put("message", myDealRetMap.get("exception"));
-                            if (!mySuccess) {
-                                boolean myOnFaildBreak=false;
-                                try {
-                                    myOnFaildBreak = Boolean.parseBoolean((String)myDealRetMap.get("onFaildBreak"));
-                                } catch(Exception e) {
-                                    myOnFaildBreak=false;
-                                }
-                                isBreak = myOnFaildBreak;
-                            }
+                    if (storeFileNames!=null) if (storeFileNames.length==0) storeFileNames=null;
+                    //处理每个文件
+                    Iterator<String> iterator=files.keySet().iterator();
+                    int fIndex=0;
+                    while (iterator.hasNext()) {
+                        CommonsMultipartFile file=(CommonsMultipartFile)files.get(iterator.next());
+                        if (StringUtils.isNullOrEmptyOrSpace(file.getOriginalFilename())) continue;
+                        //处理文件名
+                        String storeFilename=null;
+                        String extFilename=FileNameUtils.getExt(file.getOriginalFilename());
+                        if (storeFileNames==null) storeFilename=FileNameUtils.getPureFileName(file.getOriginalFilename());
+                        else {
+                            storeFilename=storeFileNames[fIndex];
+                            if (StringUtils.isNullOrEmptyOrSpace(storeFilename)) storeFilename=FileNameUtils.getPureFileName(file.getOriginalFilename());
                         }
-                    } else {//处理失败
-                        isBreak = this.breakOnOneFaild;
+                        if (!FileNameUtils.getExt(storeFilename).toUpperCase().equals(extFilename.toUpperCase())) storeFilename +=extFilename;
+
+                        if (!StringUtils.isNullOrEmptyOrSpace(this.filePrefix)) storeFilename=this.filePrefix+"_"+storeFilename;
+                        if (this.datePathModel==2||this.datePathModel==3) storeFilename=FileNameUtils.getDateRuleFileName(storeFilename);
+                        storeFilename=FileNameUtils.concatPath(_path, storeFilename);
+                        //拷贝文件
+                        Map<String, Object> oneFileDealRetMap=saveMultipartFile2File(file, storeFilename);
+                        boolean isBreak=false;
+                        if ((""+oneFileDealRetMap.get("success")).equalsIgnoreCase("TRUE")) {//处理成功
+                            //删除临时文件
+                            delTempFile(file.getFileItem());
+                            //调用虚方法，处理每个文件的后续部分
+                            oneFileDealRetMap.remove("success");
+                            Map<String, Object> myDealRetMap=afterUploadOneFileOnSuccess(oneFileDealRetMap, rqtAttrs, rqtParams);
+                            if (myDealRetMap!=null) {
+                                Boolean mySuccess=true;
+                                try {
+                                    mySuccess=Boolean.parseBoolean((String)myDealRetMap.get("success"));
+                                    oneFileDealRetMap.put("success", mySuccess.toString().toUpperCase());
+                                } catch(Exception e) {
+                                    mySuccess=false;
+                                }
+//                                oneFileDealRetMap.put("message", myDealRetMap.get("exception"));
+                                if (!mySuccess) {
+                                    boolean myOnFaildBreak=false;
+                                    try {
+                                        myOnFaildBreak=Boolean.parseBoolean((String)myDealRetMap.get("onFaildBreak"));
+                                    } catch(Exception e) {
+                                        myOnFaildBreak=false;
+                                    }
+                                    isBreak=myOnFaildBreak;
+                                }
+                            }
+                        } else {//处理失败
+                            isBreak=this.breakOnOneFaild;
+                        }
+                        retl.add(oneFileDealRetMap);
+                        if (isBreak) break;
+                        fIndex++;
                     }
-                    retl.add(oneFileDealRetMap);
-                    if (isBreak) break;
-                    fIndex++;
+                    if (retl.size()==0) retl=null;
+                } else {
+                    Map<String, Object> nullM=new HashMap<String, Object>();
+                    nullM.put("warn", "没有文件可以处理。");
+                    retl.add(nullM);
                 }
-                if (retl.size()==0) retl=null;
-                afterUploadAllFiles(retl, rqtAttrs, rqtParams);
-            } else {
-                Map<String, Object> nullM = new HashMap<String, Object>();
-                nullM.put("warn", "没有文件可以处理。");
-                retl.add(nullM);
+                retMap.put("ful", retl);
+                afterUploadAllFiles(retMap, rqtAttrs, rqtParams);
             }
             //json处理
-            MappingJackson2JsonView mjjv = new MappingJackson2JsonView();
+            MappingJackson2JsonView mjjv=new MappingJackson2JsonView();
             response.setHeader("Cache-Control", "no-cache");
             mjjv.setContentType("text/html; charset=UTF-8");
-            mjjv.setAttributesMap(JsonUtils.obj2AjaxMap(retl, 1));
-            ModelAndView mav = new ModelAndView();
+            mjjv.setAttributesMap(retMap);
+            //mjjv.setAttributesMap(JsonUtils.obj2AjaxMap(retl, 1));
+            ModelAndView mav=new ModelAndView();
             mav.setView(mjjv);
             return mav;
         } catch(Exception e) {
@@ -243,21 +250,21 @@ public abstract class AbstractFileUploadController implements Controller, Handle
      * @return 保存file属性的Map，主要是是否成功和文件名称
      */
     private Map<String, Object> saveMultipartFile2File(MultipartFile file,String fileName) {
-        FileOutputStream fileOut = null;
-        InputStream in = null;
+        FileOutputStream fileOut=null;
+        InputStream in=null;
         FileChannel fcOut=null;
-        Map<String, String> em = new HashMap<String, String>();
-        Map<String, Object> m = new HashMap<String, Object>();
+        Map<String, String> em=new HashMap<String, String>();
+        Map<String, Object> m=new HashMap<String, Object>();
 
         m.put("uploadTime", (new Date()).getTime());
         m.put("size", file.getSize());
         //处理文件名
         try {
-            String dirName = FileNameUtils.getFilePath(fileName);
-            File storeFilePath = new File(dirName);
+            String dirName=FileNameUtils.getFilePath(fileName);
+            File storeFilePath=new File(dirName);
             if (!storeFilePath.isDirectory()) storeFilePath.mkdirs();
 
-            File storeFile = new File(fileName);
+            File storeFile=new File(fileName);
             if (storeFile.isDirectory()) {//如果文件名是一个路径，报错
                 em.put("errCode", "FUE003");
                 em.put("errMsg", "指定的上传文件名称已经作为目录存在了");
@@ -281,24 +288,24 @@ public abstract class AbstractFileUploadController implements Controller, Handle
                     String _fPath, _fPureName, _fExt, _orgFPureName=FileNameUtils.getPureFileName(fileName);
                     int i=10;
                     while (i>0) {
-                        _fPath = FileNameUtils.getFilePath(fileName);
-                        _fPureName = _orgFPureName+"("+(11-i)+")";
-                        _fExt = FileNameUtils.getExt(fileName);
-                        fileName = FileNameUtils.concatPath(_fPath, _fPureName+_fExt);
-                        storeFile = new File(fileName);
+                        _fPath=FileNameUtils.getFilePath(fileName);
+                        _fPureName=_orgFPureName+"("+(11-i)+")";
+                        _fExt=FileNameUtils.getExt(fileName);
+                        fileName=FileNameUtils.concatPath(_fPath, _fPureName+_fExt);
+                        storeFile=new File(fileName);
                         if (!storeFile.isFile()) break;
                         i--;
                     }
                     if (i<=1) {//10此重名任然有问题
-                        double d = Math.random();
-                        long l = Math.round(d*10);
+                        double d=Math.random();
+                        long l=Math.round(d*10);
                         for (int j=0; j<l; j++) {
-                            _orgFPureName = _orgFPureName+"(1)";
+                            _orgFPureName=_orgFPureName+"(1)";
                         }
-                        _fPath = FileNameUtils.getFilePath(fileName);
-                        _fExt = FileNameUtils.getExt(fileName);
-                        fileName = FileNameUtils.concatPath(_fPath, _orgFPureName+_fExt);
-                        storeFile = new File(fileName);
+                        _fPath=FileNameUtils.getFilePath(fileName);
+                        _fExt=FileNameUtils.getExt(fileName);
+                        fileName=FileNameUtils.concatPath(_fPath, _orgFPureName+_fExt);
+                        storeFile=new File(fileName);
                         if (storeFile.isFile()) {
                             if (!storeFile.delete()) {
                                 em.put("errCode", "FUE002");
@@ -330,13 +337,13 @@ public abstract class AbstractFileUploadController implements Controller, Handle
             return m;
         }
         //填充返回信息
-        Class<?> clazz = file.getClass();
-        Map<String, String> _m = ReflectUtils.Object2Map(clazz, file);
-        StringBuffer _fileItem = new StringBuffer(_m.get("fileItem"));
+        Class<?> clazz=file.getClass();
+        Map<String, String> _m=ReflectUtils.Object2Map(clazz, file);
+        StringBuffer _fileItem=new StringBuffer(_m.get("fileItem"));
         m.put("orglFilename", _fileItem.substring(5, _fileItem.indexOf("StoreLocation")-2));
         m.put("FieldName", _fileItem.substring(_fileItem.indexOf("FieldName=")+10));
         try {
-            File outputFile = new File(fileName);
+            File outputFile=new File(fileName);
             if (!outputFile.isFile()) {
                 if (!outputFile.createNewFile()) {
                     em.put("errCode", "FUE004");
@@ -348,12 +355,12 @@ public abstract class AbstractFileUploadController implements Controller, Handle
                     return m;
                 }
             }
-            fileOut = new FileOutputStream(outputFile);
-            fcOut = fileOut.getChannel();
+            fileOut=new FileOutputStream(outputFile);
+            fcOut=fileOut.getChannel();
 
-            ByteBuffer buffer = ByteBuffer.allocate(1024);
-            in = file.getInputStream();
-            byte[] inbf = new byte[1024];
+            ByteBuffer buffer=ByteBuffer.allocate(1024);
+            in=file.getInputStream();
+            byte[] inbf=new byte[1024];
             while(in.read(inbf)!=-1) {
                 buffer.put(inbf);
                 buffer.flip();
@@ -388,19 +395,19 @@ public abstract class AbstractFileUploadController implements Controller, Handle
     }
 
     private boolean delTempFile(FileItem fi) {
-        String fiStr = fi.toString();
-        String[] ss = StringUtils.splitString(fiStr, ",");
-        fiStr = null;
+        String fiStr=fi.toString();
+        String[] ss=StringUtils.splitString(fiStr, ",");
+        fiStr=null;
         for (int i=0; i<ss.length; i++) {
             if (ss[i].startsWith(" StoreLocation=")) {
-                fiStr = ss[i];
+                fiStr=ss[i];
                 break;
             }
         }
         if (fiStr!=null) {
-            ss = StringUtils.splitString(fiStr, "=");
-            fiStr = ss[1];
-            File f = new File(fiStr);
+            ss=StringUtils.splitString(fiStr, "=");
+            fiStr=ss[1];
+            File f=new File(fiStr);
             return f.delete();
         }
         return false;
@@ -419,7 +426,9 @@ public abstract class AbstractFileUploadController implements Controller, Handle
      * 如果返回值为空，或没有这些信息，本方法将按照sucess=true进行处理<br/>
      * 若要把自己的处理结果传递到本方法的外面，可以直接修改参数m，在m中加入自己的信息
      */
-    public abstract Map<String, Object> afterUploadOneFileOnSuccess(Map<String, Object> m, Map<String, Object> rqtAttrs, Map<String, Object> rqtParams);
+    public Map<String, Object> afterUploadOneFileOnSuccess(Map<String, Object> m, Map<String, Object> rqtAttrs, Map<String, Object> rqtParams) {
+        return null;
+    }
 
     /**
      * 当上传所有文件后，调用此方法。注意，如果没有任何上传文件，也可以调用此方法，处理后续逻辑，此时fl为空。
@@ -431,12 +440,26 @@ public abstract class AbstractFileUploadController implements Controller, Handle
      * @param rqtAttrs request的属性
      * @param rqtParams request的参数
      */
-    public abstract void afterUploadAllFiles(List<Map<String, Object>> fl, Map<String, Object> rqtAttrs, Map<String, Object> rqtParams);
+    public void afterUploadAllFiles(Map<String, Object> fl, Map<String, Object> rqtAttrs, Map<String, Object> rqtParams) {
+    }
+
+    /**
+     * 上传文件之间，调用此方法。用来进行一些必要的判断。节省上传文件的时间。
+     * @param rqtAttrs request的属性
+     * @param rqtParams request的参数
+     * @return  此方法的返回值是Map，errorMap:Map，错误信息<br/>
+     * 如果返回值为空，则说明处理成功<br/>
+     */
+    public Map<String, Object> beforeUploadFile(Map<String, Object> rqtAttrs, Map<String, Object> rqtParams) {
+        return null;
+    }
 
     /**
      * 使得上层类可动态设置自己的文件夹
+     * @param rqtAttrs request的属性
+     * @param rqtParams request的参数
      */
-    public void setMySavePath() {
+    public void setMySavePath(Map<String, Object> rqtAttrs, Map<String, Object> rqtParams) {
         
     }
 }

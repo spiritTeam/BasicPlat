@@ -18,7 +18,6 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import com.spiritdata.framework.core.cache.CachePool;
 import com.spiritdata.framework.core.cache.CatchLifecycle;
 import com.spiritdata.framework.ext.io.StringPrintWriter;
-import com.spiritdata.framework.util.JsonUtils;
 
 /**
  * 刷新所有缓存
@@ -34,7 +33,9 @@ public class CacheFreshAllControllor implements Controller, HandlerExceptionReso
         MappingJackson2JsonView mjjv = new MappingJackson2JsonView();
         response.setHeader("Cache-Control", "no-cache");
         mjjv.setContentType("text/html; charset=UTF-8");
-        mjjv.setAttributesMap(JsonUtils.obj2AjaxMap(strintPrintWriter.getString(), 0));
+        Map<String, Object> m = new HashMap<String, Object>();
+        m.put("message", strintPrintWriter.getString());
+        mjjv.setAttributesMap(m);
         ModelAndView mav = new ModelAndView();
         mav.setView(mjjv);
         return mav;

@@ -1,13 +1,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <artifactId>BasicPlat</artifactId>
-  <version>0.1.0.8</version>
+  <version>0.1.0.9</version>
   <name>BasicPlat</name>
   <url>http://maven.apache.org</url>
 
   <!-- 配置编码格式，与eclpse的IDE环境编码格式匹配 -->
   <properties>
-    <projectDir>D:\workIDE\work\BasicPlat</projectDir>
+    <projectDir>D:\workIDE\projects\BasicPlat</projectDir>
   </properties>
 
   <parent>
