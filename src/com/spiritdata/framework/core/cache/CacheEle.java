@@ -1,7 +1,5 @@
 package com.spiritdata.framework.core.cache;
 
-import java.util.Date;
-
 /**
  * 缓存项目，所有缓存项目都要继承此类。系统缓存SystemCache的内容就是这个对象。
  * 这里的缓存是程序生命周期中都起作用的缓存
@@ -87,8 +85,8 @@ public class CacheEle<T> {
         this.cacheEleKey = null;
         this.cacheEleName = null;
         this.cacheEleContent = null;
-        this.createTime=(new Date()).getTime();
-        this.lastAccessTime=(new Date()).getTime();
+        this.createTime=System.currentTimeMillis();
+        this.lastAccessTime=System.currentTimeMillis();
         this.timeOuts = -1;
     }
     /**
@@ -101,8 +99,8 @@ public class CacheEle<T> {
         this.cacheEleKey = key;
         this.cacheEleName = name;
         this.cacheEleContent = content;
-        this.createTime=(new Date()).getTime();
-        this.lastAccessTime=(new Date()).getTime();
+        this.createTime=System.currentTimeMillis();
+        this.lastAccessTime=System.currentTimeMillis();
         this.timeOuts = -1;
     }
 
@@ -117,8 +115,8 @@ public class CacheEle<T> {
         this.cacheEleKey = key;
         this.cacheEleName = name;
         this.cacheEleContent = content;
-        this.createTime=(new Date()).getTime();
-        this.lastAccessTime=(new Date()).getTime();
+        this.createTime=System.currentTimeMillis();
+        this.lastAccessTime=System.currentTimeMillis();
         this.timeOuts = timeOuts;
     }
 }

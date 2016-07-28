@@ -68,7 +68,6 @@ public class StrArrayQueue {
             if (ret==null) throw new RuntimeException("读出空对象");
             dataArr[readP]=null;
             readP=getNextPoint(readP);
-            System.out.println("REMOVE_AFTER::"+System.currentTimeMillis()+"["+writeP+"&"+readP+"]>>"+ret);
             return ret;
         }
     }

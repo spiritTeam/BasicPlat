@@ -14,7 +14,7 @@ import com.spiritdata.framework.util.JsonUtils;
  */
 public class SystemCache {
     /** cache的主体，一个线程安全的key-value */
-    public static Map<String, CacheEle<?>> CacheContent = new ConcurrentHashMap<String, CacheEle<?>>();
+    public static Map<String, CacheEle<?>> CacheContent=new ConcurrentHashMap<String, CacheEle<?>>();
 
     private SystemCache(){};
 
@@ -23,6 +23,7 @@ public class SystemCache {
      * @param cacheEle 缓存项目对象 
      */
     public static void setCache(CacheEle<?> cacheEle) {
+        if (cacheEle==null) throw new RuntimeException("缓存对象不能为空");
         CacheContent.put(cacheEle.getKey(), cacheEle);
     }
 
