@@ -15,13 +15,10 @@ import com.spiritdata.framework.util.StringUtils;
 
 /**
  * 以json为格式的配置文件。
- * <pre>
- * 配置文件的json不支持数组，若是数组，所对应的key的值为错误
- * </pre>
  * @author wanghui
  */
-
 public class JsonConfig {
+    private short rootType=1; //根对象类型，若是"{"，则是Map——1，若是"["，则是List——2
     private boolean isLoaded=false;
     private Map<String, String> configSets=null;
 
@@ -110,8 +107,10 @@ public class JsonConfig {
     private void loader(String jsonFileName) throws IOException {
         isLoaded=false;
         String jsonStr=FileUtils.readFileToString(new File(jsonFileName), "utf-8");
-        while (!jsonStr.substring(0, 1).equals("{")) jsonStr=jsonStr.substring(1);
         jsonStr=jsonStr.replaceAll("(?<!:)\\/\\/.*|\\/\\*(\\s|.)*?\\*\\/", "");
+
+        while (!jsonStr.substring(0, 1).equals("{")&&!jsonStr.substring(0, 1).equals("[")) jsonStr=jsonStr.substring(1);
+        if (jsonStr.substring(0, 1).equals("[")) rootType=2; else rootType=1;
 
         ObjectMapper mapper=new ObjectMapper();
         //单引号
@@ -120,9 +119,15 @@ public class JsonConfig {
         mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
         //特殊字符
         mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS, true);
-        @SuppressWarnings("unchecked")
-        Map<String, Object> configMap=(Map<String, Object>)mapper.readValue(jsonStr, Map.class);
-        parseMap(configMap, null);
+        if (rootType==1) {
+            @SuppressWarnings("unchecked")
+            Map<String, Object> configMap=(Map<String, Object>)mapper.readValue(jsonStr, Map.class);
+            parseMap(configMap, null);
+        } else {
+            @SuppressWarnings("unchecked")
+            List<Object> configList=(List<Object>)mapper.readValue(jsonStr, List.class);
+            parseList(configList, null);
+        }
         isLoaded=true;
     }
 
@@ -138,7 +143,6 @@ public class JsonConfig {
                 parseMap((Map<String, Object>)value, (StringUtils.isNullOrEmptyOrSpace(rootStr)?"":(rootStr+"."))+key);
             } else if (value instanceof List) {
                 if (!((List)value).isEmpty()) {
-                    configSets.put((StringUtils.isNullOrEmptyOrSpace(rootStr)?"":(rootStr+"."))+key+"#size", ((List)value).size()+"");
                     parseList((List<Object>)value, (StringUtils.isNullOrEmptyOrSpace(rootStr)?"":(rootStr+"."))+key);
                 }
             } else {
@@ -150,6 +154,8 @@ public class JsonConfig {
     @SuppressWarnings({ "unchecked", "rawtypes" })
     private void parseList(List<Object> configList, String rootStr) {
         if (configList==null||configList.isEmpty()) return;
+
+        configSets.put((StringUtils.isNullOrEmptyOrSpace(rootStr)?"":(rootStr))+"#size", configList.size()+"");
         Object value;
         for (int i=0; i<configList.size(); i++) {
             value=configList.get(i);
@@ -159,7 +165,6 @@ public class JsonConfig {
                 parseMap((Map<String, Object>)value, (StringUtils.isNullOrEmptyOrSpace(rootStr)?"["+i+"]":(rootStr+"["+i+"]")));
             } else if (value instanceof List) {
                 if (!((List)value).isEmpty()) {
-                    configSets.put((StringUtils.isNullOrEmptyOrSpace(rootStr)?"["+i+"]":(rootStr+"["+i+"]"))+"#size", ((List)value).size()+"");
                     parseList((List<Object>)value, (StringUtils.isNullOrEmptyOrSpace(rootStr)?"["+i+"]":(rootStr+"["+i+"]")));
                 }
             } else {
