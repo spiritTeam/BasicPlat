@@ -1,6 +1,7 @@
 package com.spiritdata.framework.util;
 
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spiritdata.framework.exceptionC.Plat0001CException;
 import com.spiritdata.framework.exceptionC.Plat0002CException;
@@ -26,6 +27,11 @@ public abstract class JsonUtils {
         mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
         //特殊字符
         mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS, true);
+        //允许注释
+        mapper.configure(JsonParser.Feature.ALLOW_COMMENTS, true);
+        //字段和值都加引号
+        mapper.configure(JsonGenerator.Feature.WRITE_NUMBERS_AS_STRINGS, true);
+        mapper.configure(JsonGenerator.Feature.QUOTE_NON_NUMERIC_NUMBERS, true); 
         return mapper;
     }
 
