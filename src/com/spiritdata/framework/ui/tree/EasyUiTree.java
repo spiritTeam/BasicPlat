@@ -75,7 +75,7 @@ public class EasyUiTree<T extends TreeNodeBean> extends UiTree<T> {
     }
 
     /**
-     * 构造函数，需要其继承的类实现具体的构造方法
+     * 构造函数
      * @param tn 需要转换的树
      * @throws CloneNotSupportedException 
      */
@@ -128,6 +128,7 @@ public class EasyUiTree<T extends TreeNodeBean> extends UiTree<T> {
     protected Map<String, Object> convert4Attributes() {
         Map<String, Object> retM = this.getTnEntity().toHashMapAsBean();
         retM.putAll(this.getAttributes());
+        retM.put("pathName", this.getTreePathName());
         return retM;
     }
 
