@@ -2,7 +2,9 @@ package com.spiritdata.framework.exceptionC;
 
 /**
  * 从Po得到Model异常，内部码为0006，基本信息为'从Po得到Model'
- * @author wh
+ * 请参看:
+ * {@linkplain com.spiritdata.framework.core.model.ModelSwapPo ModelSwapPo}<br/>
+ * 凡实现ModelSwapPo的接口，在转换为model过程中出现问题，应抛出次异常
  */
 public class Plat0006CException extends PlatCException {
     private static final long serialVersionUID = -8988853813264476752L;

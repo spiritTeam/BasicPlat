@@ -3,7 +3,7 @@ package com.spiritdata.framework.exceptionC;
 import com.spiritdata.framework.CodeException;
 
 /**
- * 平台级“带码异常”，其分类码为category
+ * 平台级“带码异常”，其分类码为PLAT
  * @author wh
  */
 public abstract class PlatCException extends CodeException {

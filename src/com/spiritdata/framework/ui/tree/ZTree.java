@@ -10,7 +10,8 @@ import com.spiritdata.framework.exceptionC.Plat0003CException;
 public class ZTree<T extends TreeNodeBean> extends UiTree<T> {
     private static final long serialVersionUID = -4240752866278555428L;
 
-    private String state;
+    private boolean isParent;
+    private boolean isOpen;
     private boolean checked;
     private String pName;
     public String getNodeName() {
@@ -39,11 +40,17 @@ public class ZTree<T extends TreeNodeBean> extends UiTree<T> {
     public void setChecked(boolean checked) {
         this.checked = checked;
     }
-    public String getState() {
-        return state;
+    public boolean isParent() {
+        return isParent;
     }
-    public void setState(String state) {
-        this.state = state;
+    public void setIsParent(boolean isParent) {
+        this.isParent = isParent;
+    }
+    public boolean isOpen() {
+        return isOpen;
+    }
+    public void setIsOpen(boolean isOpen) {
+        this.isOpen = isOpen;
     }
 
     /**
@@ -60,10 +67,14 @@ public class ZTree<T extends TreeNodeBean> extends UiTree<T> {
      * @param tn 需要转换的树
      * @throws CloneNotSupportedException 
      */
-    public ZTree(TreeNode<? extends TreeNodeBean> tn) throws CloneNotSupportedException {
+    public ZTree(TreeNode<? extends TreeNodeBean> tn) {
         this.setTnEntity((T)tn.getTnEntity());
-        if (tn.isLeaf()) this.state="close"; else {
-            this.state="closed";
+        this.setIsOpen(false);
+        if (tn.isLeaf()) {
+            this.setIsParent(false);
+        } else {
+            this.setIsParent(true);
+            if (tn.getLevel()==0) this.setIsOpen(true);
             for (TreeNode<? extends TreeNodeBean> t: tn.getChildren()) this.addChild(new ZTree(t));
         }
     }
@@ -74,20 +85,24 @@ public class ZTree<T extends TreeNodeBean> extends UiTree<T> {
      * @param tn 需要转换的树
      * @throws CloneNotSupportedException 
      */
-    public ZTree(TreeNode<? extends TreeNodeBean> tn, int limitCount) throws CloneNotSupportedException {
+    public ZTree(TreeNode<? extends TreeNodeBean> tn, int limitCount) {
         this.setTnEntity((T)tn.getTnEntity());
         if (limitCount<1) throw new Plat0003CException(new IllegalArgumentException("结点限制数必须大于0"));
         if (tn.getAllCount()>limitCount) {
-            this.state=tn.isLeaf()?"close":"closed";
+            this.setIsParent(!tn.isLeaf());
             for (TreeNode<? extends TreeNodeBean> t: tn.getChildren()) {
-                ZTree<? extends TreeNodeBean> uit = new ZTree(t.getTnEntity());
-                uit.state=t.isLeaf()?"close":"closed";
+                ZTree<? extends TreeNodeBean> uit=new ZTree(t.getTnEntity());
+                uit.setIsParent(!t.isLeaf());
                 this.addChild(uit);
             }
         } else {
-            if (tn.isLeaf()) this.state="close"; else {
-                this.state="closed";
-                for (TreeNode<? extends TreeNodeBean> t: tn.getChildren()) this.addChild(new ZTree<T>(t));
+            this.setIsOpen(false);
+            if (tn.isLeaf()) {
+                this.setIsParent(false);
+            } else {
+                this.setIsParent(true);
+                if (tn.getLevel()==0) this.setIsOpen(true);
+                for (TreeNode<? extends TreeNodeBean> t: tn.getChildren()) this.addChild(new ZTree(t));
             }
         }
     }
@@ -97,7 +112,8 @@ public class ZTree<T extends TreeNodeBean> extends UiTree<T> {
         Map<String, Object> treeM = new HashMap<String, Object>();
         treeM.put("id", this.getId());
         treeM.put("name", this.getNodeName());
-        treeM.put("state", this.getState());
+        treeM.put("isParent", this.isParent());
+        treeM.put("isOpen", this.isOpen());
         treeM.put("checked", this.isChecked());
         Map<String, Object> m=this.getTnEntity().toHashMapAsBean();
         if (m.get("displayName")!=null) treeM.put("text", m.get("displayName")+"");
@@ -115,10 +131,10 @@ public class ZTree<T extends TreeNodeBean> extends UiTree<T> {
     @Override
     protected Map<String, Object> convert4TreeGrid() {
         Map<String, Object> treeGridM = new HashMap<String, Object>();
-        treeGridM.put("state", this.getState());
+        treeGridM.put("isParent", this.isParent());
+        treeGridM.put("isOpen", this.isOpen());
         treeGridM.put("checked", this.isChecked());
         treeGridM.putAll(this.convert4Attributes());
         return treeGridM;
     }
-
 }

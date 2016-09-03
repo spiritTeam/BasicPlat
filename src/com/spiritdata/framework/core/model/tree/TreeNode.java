@@ -14,13 +14,15 @@ import com.spiritdata.framework.exceptionC.Plat0003CException;
 /**
  * 树结点结构。所有树结构都应以此类为基类。此结构支持各结点数据结构不同的混合树，但要保证这些结点的实体都是TreeNodeBeand的继承类<br/>
  * 树对象是由树结点数据和树结点结构两部分组成的。
+ * 注意树节点的Attribute是用户来扩展树的结构的，修改其中的内容，不会导致树结点对应的属性变化。
+ * 但：Attribute中的数据是树节点数据及treeNodeBean数据的另一种存储方式，因此修改了这其中的属性，讲自动修改attribute中的内容
  * @author wh
  * @param <T> 以TreeNodeBean为基类的类。
  * @see com.spiritdata.framework.core.model.tree.TreeNodeBean
  * @since 0.1
  */
 public class TreeNode<T extends TreeNodeBean> extends BaseObject implements Cloneable, Comparable<TreeNode<? extends TreeNodeBean>> {
-    private static final long serialVersionUID = -4718111007014669779L;
+    private static final long serialVersionUID=-4718111007014669779L;
 
     protected T tnEntity;//树模型实体
 
@@ -29,15 +31,16 @@ public class TreeNode<T extends TreeNodeBean> extends BaseObject implements Clon
      * @param tnEntity 实体
      */
     public void setTnEntity(T tnEntity) {
-        this.tnEntity = tnEntity;
+        this.tnEntity=tnEntity;
         if (this.tnEntity!=null) {
-            this.id = tnEntity.getId();
-            this.parentId = tnEntity.getParentId();
-            this.nodeName = tnEntity.getNodeName();
-            this.order = tnEntity.getOrder();
-            this.orderType = tnEntity.orderType;
-            this.allowChildren = true;
-            this.attributes = tnEntity.toHashMapAsBean();
+            this.id=tnEntity.getId();
+            this.parentId=tnEntity.getParentId();
+            this.nodeName=tnEntity.getNodeName();
+            this.order=tnEntity.getOrder();
+            this.orderType=tnEntity.orderType;
+            this.allowChildren=true;
+            this.attributes=tnEntity.toHashMapAsBean();
+            this.tnEntity.setTreeNode(this);
         }
     }
 
@@ -74,28 +77,27 @@ public class TreeNode<T extends TreeNodeBean> extends BaseObject implements Clon
     public String getId() {
         return this.id;
     }
-
     /**
      * 设置本结点ID,同时把下级结点parentid设置为新的ID
      * @param id
      */
     public void setId(String id) {
         this.id=id;
-        if (tnEntity!=null) tnEntity.setId(id);
+        if (tnEntity!=null&&!tnEntity.getId().equals(id)) tnEntity.setId(id);
+        if (!id.equals(this.getAttribute("id")+"")) this.setAttribute("id", id);
+
         if (!this.isLeaf()) {
             for (TreeNode<? extends TreeNodeBean> c: this.getChildren()) {
                 c.setParentId(id);
             }
         }
     }
-
     public void setId(Serializable id) {
-        this.id = (String)id;
+        this.id=(String)id;
     }
 
     //父结点ID
-    protected String parentId = null;
-
+    protected String parentId=null;
     /**
      * 得到本结点的父结点ID，若本结点是根，则返回null
      * @return 父结点ID，若本结点是根，则返回null
@@ -103,7 +105,6 @@ public class TreeNode<T extends TreeNodeBean> extends BaseObject implements Clon
     public String getParentId() {
         return this.parentId;
     }
-
     /**
      * 设置本结点的父结点ID
      * @param parentId 父结点ID
@@ -115,12 +116,12 @@ public class TreeNode<T extends TreeNodeBean> extends BaseObject implements Clon
             }
         }
         this.parentId=parentId;
-        if (tnEntity!=null) tnEntity.setParentId(parentId);
+        if (tnEntity!=null&&!tnEntity.getParentId().equals(parentId)) tnEntity.setParentId(parentId);
+        if (!parentId.equals(this.getAttribute("parentId")+"")) this.setAttribute("parentId", parentId);
     }
 
     //父结点
     protected TreeNode<? extends TreeNodeBean> parent;
-
     /**
      * 得到本结点的父结点，若本结点是根，则返回null
      * @return 父结点，若本结点是根，则返回null
@@ -128,17 +129,15 @@ public class TreeNode<T extends TreeNodeBean> extends BaseObject implements Clon
     public TreeNode<? extends TreeNodeBean> getParent() {
         return this.parent;
     }
-
     /**
      * 设置本结点的父结点。<br/>
      * 这个方法在使用中不建议调用，否则会引起树结构的不一致，构建树要使用addChild或addChildren的方法
      * @param parent 父结点
      */
     private void setParent(TreeNode<? extends TreeNodeBean> parent) {
-        this.parent = parent;
+        this.parent=parent;
         if (parent!=null) {
-            this.parentId=parent.getId();
-            if (tnEntity!=null) tnEntity.setParentId(parent.getId());
+            this.setParentId(parent.getId());
         } else {
             this.parentId=null;
             if (tnEntity!=null) tnEntity.setParentId(null);
@@ -147,16 +146,15 @@ public class TreeNode<T extends TreeNodeBean> extends BaseObject implements Clon
 
     //树结点名称
     protected String nodeName;
-
     /**
      * 设置本结点名称
      * @param title 结点名称
      */
     public void setNodeName(String nodeName) {
-        this.nodeName = nodeName;
-        if (tnEntity!=null) tnEntity.setNodeName(nodeName);
+        this.nodeName=nodeName;
+        if (tnEntity!=null&&!tnEntity.getNodeName().equals(nodeName)) tnEntity.setNodeName(nodeName);
+        if (!nodeName.equals(this.getAttribute("nodeName")+"")) this.setAttribute("nodeName", nodeName);
     }
-
     /**
      * 得到本结点名称
      * @return 结点名称
@@ -171,8 +169,8 @@ public class TreeNode<T extends TreeNodeBean> extends BaseObject implements Clon
      * @return 层数，根结点的层数是0
      */
     public int getLevel() {
-        int _l = 0;
-        TreeNode<? extends TreeNodeBean> _tn = this;
+        int _l=0;
+        TreeNode<? extends TreeNodeBean> _tn=this;
         while(!_tn.isRoot()) {
             _l++;
             _tn=_tn.getParent();
@@ -182,7 +180,6 @@ public class TreeNode<T extends TreeNodeBean> extends BaseObject implements Clon
 
     //是否允许有子结点
     protected boolean allowChildren;
-
     /**
      * 本结点是否允许有子结点
      * @return true允许有子结点，false不能有子结点
@@ -190,13 +187,12 @@ public class TreeNode<T extends TreeNodeBean> extends BaseObject implements Clon
     public boolean isAllowChildren() {
         return this.allowChildren;
     }
-
     /**
      * 设置本结点是否允许有子结点
      * @param allowChildren true允许有子结点，false不能有子结点
      */
     public void setAllowChildren(boolean allowChildren) {
-        this.allowChildren = allowChildren;
+        this.allowChildren=allowChildren;
     }
 
     //以下为结点操作
@@ -221,7 +217,7 @@ public class TreeNode<T extends TreeNodeBean> extends BaseObject implements Clon
      * @return 此结点的树的根结点
      */
     public TreeNode<? extends TreeNodeBean> getRoot() {
-        TreeNode<? extends TreeNodeBean> rootNode = this;
+        TreeNode<? extends TreeNodeBean> rootNode=this;
         while (!rootNode.isRoot()) rootNode=rootNode.getParent();
         return rootNode;
     }
@@ -241,23 +237,23 @@ public class TreeNode<T extends TreeNodeBean> extends BaseObject implements Clon
      * @return 结点路径名
      */
     public String getTreePathName(String split, int level) {
-        int _level = level;
-        String _s = (split==null?"/":split);
-        String ret = this.nodeName;
-        TreeNode<? extends TreeNodeBean> _parent = this.parent;
-        boolean canContinue = true;
+        int _level=level;
+        String _s=(split==null?"/":split);
+        String ret=this.nodeName;
+        TreeNode<? extends TreeNodeBean> _parent=this.parent;
+        boolean canContinue=true;
         while(_parent!=null&&canContinue) {
             if (level<=-1) {
                 canContinue=true;
-                ret = _parent.getNodeName()+_s+ret;
+                ret=_parent.getNodeName()+_s+ret;
             } else if (level==0) {
-                if (_parent.isRoot()) canContinue = false;
-                else ret = _parent.getNodeName()+_s+ret;
+                if (_parent.isRoot()) canContinue=false;
+                else ret=_parent.getNodeName()+_s+ret;
             } else {
-                if ((--_level)>0) ret = _parent.getNodeName()+_s+ret;
-                else canContinue = false;
+                if ((--_level)>0) ret=_parent.getNodeName()+_s+ret;
+                else canContinue=false;
             }
-            _parent = _parent.getParent();
+            _parent=_parent.getParent();
         }
         return ret;
     }
@@ -269,23 +265,23 @@ public class TreeNode<T extends TreeNodeBean> extends BaseObject implements Clon
      * @return 结点路径名
      */
     public String getTreePathId(String split, int level) {
-        int _level = level;
-        String _s = (split==null?"/":split);
-        String ret = this.id;
-        TreeNode<? extends TreeNodeBean> _parent = this.parent;
-        boolean canContinue = true;
+        int _level=level;
+        String _s=(split==null?"/":split);
+        String ret=this.id;
+        TreeNode<? extends TreeNodeBean> _parent=this.parent;
+        boolean canContinue=true;
         while(_parent!=null&&canContinue) {
             if (level<=-1) {
                 canContinue=true;
-                ret = _parent.getId()+_s+ret;
+                ret=_parent.getId()+_s+ret;
             } else if (level==0) {
-                if (_parent.isRoot()) canContinue = false;
-                else ret = _parent.getId()+_s+ret;
+                if (_parent.isRoot()) canContinue=false;
+                else ret=_parent.getId()+_s+ret;
             } else {
-                if ((--_level)>0) ret = _parent.getId()+_s+ret;
-                else canContinue = false;
+                if ((--_level)>0) ret=_parent.getId()+_s+ret;
+                else canContinue=false;
             }
-            _parent = _parent.getParent();
+            _parent=_parent.getParent();
         }
         return ret;
     }
@@ -297,7 +293,7 @@ public class TreeNode<T extends TreeNodeBean> extends BaseObject implements Clon
      */
     public int getAllCount() {
         if (this.isLeaf()) return 0;
-        int ret = this.children.size();
+        int ret=this.children.size();
         if (ret>0) {
             for (TreeNode<? extends TreeNodeBean> tn: this.getChildren()) {
                 ret += tn.getAllCount();
@@ -332,7 +328,7 @@ public class TreeNode<T extends TreeNodeBean> extends BaseObject implements Clon
         if (this.children==null) return null;
         TreeNode<? extends TreeNodeBean> retNode=null;
         for (int i=0; i<this.children.size(); i++) {
-            TreeNode<? extends TreeNodeBean> tn = this.children.get(i);
+            TreeNode<? extends TreeNodeBean> tn=this.children.get(i);
             if (tn.getId().equals(id)) {
                 retNode=tn;
                 break;
@@ -352,7 +348,7 @@ public class TreeNode<T extends TreeNodeBean> extends BaseObject implements Clon
             for (TreeNode<? extends TreeNodeBean> tn: children) {
                 tn.setParent(this);
             }
-            this.children = children;
+            this.children=children;
         }
         if (this.children.size()>1) Collections.sort(this.children);
     }
@@ -365,7 +361,7 @@ public class TreeNode<T extends TreeNodeBean> extends BaseObject implements Clon
      */
     public void addChild(TreeNode<? extends TreeNodeBean> child) {
         if (!allowChildren) throw new Plat0003CException("本结点[id="+this.id+";nodeName="+this.nodeName+"]不允许有子结点！");
-        if (this.children==null) this.children = new ArrayList<TreeNode<? extends TreeNodeBean>>();
+        if (this.children==null) this.children=new ArrayList<TreeNode<? extends TreeNodeBean>>();
         this.removeChild(child.getId());
         child.setParent(this);
         this.children.add(child);
@@ -380,7 +376,7 @@ public class TreeNode<T extends TreeNodeBean> extends BaseObject implements Clon
      */
     public void appendChildren(List<TreeNode<? extends TreeNodeBean>> children) {
         if (!allowChildren) throw new Plat0003CException("本结点[id="+this.id+";nodeName="+this.nodeName+"]不允许有子结点！");
-        if (this.children==null) this.children = new ArrayList<TreeNode<? extends TreeNodeBean>>();
+        if (this.children==null) this.children=new ArrayList<TreeNode<? extends TreeNodeBean>>();
         for (TreeNode<? extends TreeNodeBean> tn: children) {
             this.removeChild(tn.getId());
             tn.setParent(this);
@@ -397,7 +393,7 @@ public class TreeNode<T extends TreeNodeBean> extends BaseObject implements Clon
     public TreeNode<? extends TreeNodeBean> removeChild(String id) {
         int removeIndex=-1;
         for (int i=0; i<this.children.size(); i++) {
-            TreeNode<? extends TreeNodeBean> tn = this.children.get(i);
+            TreeNode<? extends TreeNodeBean> tn=this.children.get(i);
             if (tn.getId().equals(id)) {
                 removeIndex=i;
                 break;
@@ -405,7 +401,7 @@ public class TreeNode<T extends TreeNodeBean> extends BaseObject implements Clon
         }
         if (removeIndex==-1) return null;
         else {
-            TreeNode<? extends TreeNodeBean> removeNode = this.children.remove(removeIndex);
+            TreeNode<? extends TreeNodeBean> removeNode=this.children.remove(removeIndex);
             return removeNode;
         }
     }
@@ -420,7 +416,7 @@ public class TreeNode<T extends TreeNodeBean> extends BaseObject implements Clon
         if (this.isLeaf()) return null;
         TreeNode<? extends TreeNodeBean> retNode=null;
         for (int i=0; i<this.children.size(); i++) {
-            TreeNode<? extends TreeNodeBean> tn = this.children.get(i);
+            TreeNode<? extends TreeNodeBean> tn=this.children.get(i);
             if (tn.getId().equals(id)) {
                 retNode=tn;
                 break;
@@ -428,8 +424,8 @@ public class TreeNode<T extends TreeNodeBean> extends BaseObject implements Clon
         }
         if (retNode==null) {
             for (int i=0; i<this.children.size(); i++) {
-                TreeNode<? extends TreeNodeBean> tn = this.children.get(i);
-                if (!tn.isLeaf()) retNode = tn.findNode(id);
+                TreeNode<? extends TreeNodeBean> tn=this.children.get(i);
+                if (!tn.isLeaf()) retNode=tn.findNode(id);
                 if (retNode!=null) break;
             }
         }
@@ -464,18 +460,24 @@ public class TreeNode<T extends TreeNodeBean> extends BaseObject implements Clon
      */
     public void setAttribute(String key, Object value) {
         if (key.equalsIgnoreCase("ID")) {
-            if (value instanceof String) this.setId((String)value);
+            if (value instanceof String) {
+                if (!this.getId().equals(value)) this.setId((String)value);
+            }
             else throw new Plat0003CException("当key为["+key+"]时,值的类型应为String类型");
         }
         if (key.equalsIgnoreCase("NODENAME")) {
-            if (value instanceof String) this.setNodeName((String)value);
+            if (value instanceof String) {
+                if (!this.getNodeName().equals(value)) this.setNodeName((String)value);
+            }
             else throw new Plat0003CException("当key为["+key+"]时,值的类型应为String类型");
         }
         if (key.equalsIgnoreCase("PARENTID")) {
-            if (value instanceof String) this.setParentId((String)value);
+            if (value instanceof String) {
+                if (!this.getParentId().equals(value)) this.setParentId((String)value);
+            }
             else throw new Plat0003CException("当key为["+key+"]时,值的类型应为String类型");
         }
-        if (this.attributes==null) this.attributes = new HashMap<String, Object>();
+        if (this.attributes==null) this.attributes=new HashMap<String, Object>();
         this.attributes.put(key, value);
     }
 
@@ -484,21 +486,21 @@ public class TreeNode<T extends TreeNodeBean> extends BaseObject implements Clon
      * @param attributes 属性
      */
     public void setAttributes(Map<String, Object> attributes) {
-        Iterator<String> it =  attributes.keySet().iterator();
+        Iterator<String> it= attributes.keySet().iterator();
         while (it.hasNext()) {
-            String key = it.next();
+            String key=it.next();
             if (key.equalsIgnoreCase("ID")) {
-                Object value = attributes.get(key);
+                Object value=attributes.get(key);
                 if (!(value instanceof String)) throw new Plat0003CException("当key为["+key+"]时,值的类型应为String类型");
             } else if (key.equalsIgnoreCase("NODENAME")) {
-                Object value = attributes.get(key);
+                Object value=attributes.get(key);
                 if (!(value instanceof String)) throw new Plat0003CException("当key为["+key+"]时,值的类型应为String类型");
             } else if (key.equalsIgnoreCase("PARENTID")) {
-                Object value = attributes.get(key);
+                Object value=attributes.get(key);
                 if (!(value instanceof String)) throw new Plat0003CException("当key为["+key+"]时,值的类型应为String类型");
             }
         }
-        this.attributes = attributes;
+        this.attributes=attributes;
     }
 
     /**
@@ -506,21 +508,21 @@ public class TreeNode<T extends TreeNodeBean> extends BaseObject implements Clon
      * @param attributes 追加属性
      */
     public void appendAttributes(Map<String, Object> attributes) {
-        Iterator<String> it =  attributes.keySet().iterator();
+        Iterator<String> it= attributes.keySet().iterator();
         while (it.hasNext()) {
-            String key = it.next();
+            String key=it.next();
             if (key.equalsIgnoreCase("ID")) {
-                Object value = attributes.get(key);
+                Object value=attributes.get(key);
                 if (!(value instanceof String)) throw new Plat0003CException("当key为["+key+"]时,值的类型应为String类型");
             } else if (key.equalsIgnoreCase("NODENAME")) {
-                Object value = attributes.get(key);
+                Object value=attributes.get(key);
                 if (!(value instanceof String)) throw new Plat0003CException("当key为["+key+"]时,值的类型应为String类型");
             } else if (key.equalsIgnoreCase("PARENTID")) {
-                Object value = attributes.get(key);
+                Object value=attributes.get(key);
                 if (!(value instanceof String)) throw new Plat0003CException("当key为["+key+"]时,值的类型应为String类型");
             }
         }
-        if (this.attributes==null) this.attributes = new HashMap<String, Object>();
+        if (this.attributes==null) this.attributes=new HashMap<String, Object>();
         this.attributes.putAll(attributes);
     }
 
@@ -550,6 +552,17 @@ public class TreeNode<T extends TreeNodeBean> extends BaseObject implements Clon
      */
     public void setOrder(int order) {
         this.order=order;
+        //重新排序
+        if (this.parent!=null&&this.parent.getChildren()!=null&&this.parent.getChildren().size()>1) {
+            Collections.sort(this.parent.getChildren());
+        }
+        if (tnEntity!=null&&tnEntity.getOrder()!=order) tnEntity.setOrder(order);
+        int oldOrder=-1;
+        try {
+            oldOrder=Integer.parseInt(this.getAttribute("order")+"");
+        } catch(Exception e) {
+        }
+        if (oldOrder!=order) this.setAttribute("order", order);
     }
 
     //子结点列表的排序模式:若orderType=1从小到大排列，orderType=0从大到小排序，默认为0
@@ -575,7 +588,7 @@ public class TreeNode<T extends TreeNodeBean> extends BaseObject implements Clon
      * 排序方法
      */
     public int compareTo(TreeNode<? extends TreeNodeBean> o) {
-        int _orderType = 0;
+        int _orderType=0;
         if (o.getParent()!=null) _orderType=o.getParent().getOrderType();
         return _orderType==0?(o.getOrder()-this.getOrder()):(this.getOrder()-o.getOrder());
     }
@@ -590,7 +603,7 @@ public class TreeNode<T extends TreeNodeBean> extends BaseObject implements Clon
         if (this.isRoot()) return null;
         int i=0;
         for (; i<this.getParent().getChildren().size()-1; i++) {
-            TreeNode<? extends TreeNodeBean> n = this.getParent().getChildren().get(i);
+            TreeNode<? extends TreeNodeBean> n=this.getParent().getChildren().get(i);
             if (n.getId().equals(this.id)) break;
         }
         return (i==0?this.getParent():this.getParent().getChildren().get(i-1));
@@ -606,10 +619,10 @@ public class TreeNode<T extends TreeNodeBean> extends BaseObject implements Clon
             if (this.isRoot()) return null;
             else {
                 int i=0;
-                TreeNode<? extends TreeNodeBean> p = this.getParent();
+                TreeNode<? extends TreeNodeBean> p=this.getParent();
                 if (p.getChildren().size()>1) {
                     for (;i<p.getChildren().size()-1; i++) {
-                        TreeNode<? extends TreeNodeBean> n = p.getChildren().get(i);
+                        TreeNode<? extends TreeNodeBean> n=p.getChildren().get(i);
                         if (n.getId().equals(this.id)) break;
                     }
                     if (i<p.getChildren().size()-1) {
@@ -618,10 +631,10 @@ public class TreeNode<T extends TreeNodeBean> extends BaseObject implements Clon
                 }
                 //向上查找
                 String pid=p.getId();
-                p = p.getParent();
+                p=p.getParent();
                 while (p!=null) {
                     for (i=0;i<p.getChildren().size()-1; i++) {
-                        TreeNode<? extends TreeNodeBean> n = p.getChildren().get(i);
+                        TreeNode<? extends TreeNodeBean> n=p.getChildren().get(i);
                         if (n.getId().equals(pid)) break;
                     }
                     if (i<p.getChildren().size()-1) {
@@ -642,13 +655,13 @@ public class TreeNode<T extends TreeNodeBean> extends BaseObject implements Clon
      * 深度克隆树，但不包括parent属性。克隆后的结点为根
      */
     public TreeNode<T> clone() throws CloneNotSupportedException {
-        TreeNode<T> cloneTn = new TreeNode<T>(tnEntity);
+        TreeNode<T> cloneTn=new TreeNode<T>(tnEntity);
         cloneTn.setAttributes((HashMap<String, Object>)((HashMap<String, Object>)this.getAttributes()).clone());
         cloneTn.setParent(null);
 
         if (!this.isLeaf()) {
             for (TreeNode<? extends TreeNodeBean> tn: this.getChildren()) {
-                TreeNode<? extends TreeNodeBean> cTn = tn.clone();
+                TreeNode<? extends TreeNodeBean> cTn=tn.clone();
                 cloneTn.addChild(cTn);
             }
         }
@@ -661,7 +674,7 @@ public class TreeNode<T extends TreeNodeBean> extends BaseObject implements Clon
      * @return 树对象列表
      */
     public List<TreeNodeBean> getAllBeansList() {
-        List<TreeNodeBean> l = new ArrayList<TreeNodeBean>();
+        List<TreeNodeBean> l=new ArrayList<TreeNodeBean>();
         l.add(this.getTnEntity());
         if (!this.isLeaf()) {
             for (TreeNode<? extends TreeNodeBean> tn: this.getChildren()) l.addAll(tn.getAllBeansList());
