@@ -2,6 +2,9 @@ package com.spiritdata.framework.exceptionC;
 
 /**
  * Model转换为Po异常，内部码为0005，基本信息为'Model转换为Po'
+ * 请参看:
+ * {@linkplain com.spiritdata.framework.core.model.ModelSwapPo ModelSwapPo}<br/>
+ * 凡实现ModelSwapPo的接口，在转换为po过程中出现问题，应抛出次异常
  * @author wh
  */
 public class Plat0005CException extends PlatCException {
