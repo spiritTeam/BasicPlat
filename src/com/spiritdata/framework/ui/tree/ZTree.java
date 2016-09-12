@@ -59,7 +59,10 @@ public class ZTree<T extends TreeNodeBean> extends UiTree<T> {
      * @throws CloneNotSupportedException 
      */
     public ZTree(T tn) {
-        this.setTnEntity(tn);
+        try {
+            this.setTnEntity((T)tn.clone());
+        } catch(Exception e) {
+        }
     }
 
     /**
@@ -68,7 +71,10 @@ public class ZTree<T extends TreeNodeBean> extends UiTree<T> {
      * @throws CloneNotSupportedException 
      */
     public ZTree(TreeNode<? extends TreeNodeBean> tn) {
-        this.setTnEntity((T)tn.getTnEntity());
+        try {
+            this.setTnEntity((T)((T)tn.getTnEntity()).clone());
+        } catch(Exception e) {
+        }
         this.setIsOpen(false);
         if (tn.isLeaf()) {
             this.setIsParent(false);

@@ -15,6 +15,9 @@ import com.spiritdata.framework.util.StringUtils;
 
 /**
  * 以json为格式的配置文件。
+ * <pre>
+ * 目前不支持文件jar中的文件
+ * </pre>
  * @author wanghui
  */
 public class JsonConfig {
@@ -33,7 +36,7 @@ public class JsonConfig {
      * <pre>
      * 并从文件中读取配置文件结构
      * </pre>
-     * @param jsonFileName
+     * @param jsonFileName 配置文件名称，注意，必须是绝对路径
      * @throws IOException 
      * @throws JsonProcessingException 
      */
@@ -119,6 +122,8 @@ public class JsonConfig {
         mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
         //特殊字符
         mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS, true);
+        //允许注释
+        mapper.configure(JsonParser.Feature.ALLOW_COMMENTS, true);
         if (rootType==1) {
             @SuppressWarnings("unchecked")
             Map<String, Object> configMap=(Map<String, Object>)mapper.readValue(jsonStr, Map.class);

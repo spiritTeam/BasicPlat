@@ -71,7 +71,10 @@ public class EasyUiTree<T extends TreeNodeBean> extends UiTree<T> {
      * @throws CloneNotSupportedException 
      */
     public EasyUiTree(T tn) {
-        this.setTnEntity(tn);
+        try {
+            this.setTnEntity((T)tn.clone());
+        } catch(Exception e) {
+        }
     }
 
     /**
@@ -80,7 +83,10 @@ public class EasyUiTree<T extends TreeNodeBean> extends UiTree<T> {
      * @throws CloneNotSupportedException 
      */
     public EasyUiTree(TreeNode<? extends TreeNodeBean> tn) throws CloneNotSupportedException {
-        this.setTnEntity((T)tn.getTnEntity());
+        try {
+            this.setTnEntity((T)((T)tn.getTnEntity()).clone());
+        } catch(Exception e) {
+        }
         if (tn.isLeaf()) this.state="close"; else {
             this.state="closed";
             for (TreeNode<? extends TreeNodeBean> t: tn.getChildren()) this.addChild(new EasyUiTree(t));

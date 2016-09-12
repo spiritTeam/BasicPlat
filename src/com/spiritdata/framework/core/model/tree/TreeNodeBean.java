@@ -109,7 +109,7 @@ public class TreeNodeBean extends BaseObject implements Cloneable {
     }
 
     //对应的treeNode
-    private TreeNode<? extends TreeNodeBean> treeNode;
+    protected TreeNode<? extends TreeNodeBean> treeNode;
     /**
      * 设置对应的treeNode
      */

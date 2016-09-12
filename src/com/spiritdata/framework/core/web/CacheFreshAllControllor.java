@@ -27,33 +27,33 @@ public class CacheFreshAllControllor implements Controller, HandlerExceptionReso
 
     @Override
     public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
-        StringPrintWriter strintPrintWriter = new StringPrintWriter();
+        StringPrintWriter strintPrintWriter=new StringPrintWriter();
         ex.printStackTrace(strintPrintWriter);
 
-        MappingJackson2JsonView mjjv = new MappingJackson2JsonView();
+        MappingJackson2JsonView mjjv=new MappingJackson2JsonView();
         response.setHeader("Cache-Control", "no-cache");
         mjjv.setContentType("text/html; charset=UTF-8");
-        Map<String, Object> m = new HashMap<String, Object>();
+        Map<String, Object> m=new HashMap<String, Object>();
         m.put("message", strintPrintWriter.getString());
         mjjv.setAttributesMap(m);
-        ModelAndView mav = new ModelAndView();
+        ModelAndView mav=new ModelAndView();
         mav.setView(mjjv);
         return mav;
     }
 
     @Override
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        Map<String, Object> retObj = new HashMap<String, Object>();
+        Map<String, Object> retObj=new HashMap<String, Object>();
         try {
-            ServletContext sc = request.getSession().getServletContext();
-            WebApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(sc);
-            CachePool cachePool = (CachePool)context.getBean("cachePool");
+            ServletContext sc=request.getSession().getServletContext();
+            WebApplicationContext context=WebApplicationContextUtils.getWebApplicationContext(sc);
+            CachePool cachePool=(CachePool)context.getBean("cachePool");
             //缓存框架存储
             if (cachePool!=null) {
-                Map<String,CatchLifecycle> catchMap = new TreeMap<String,CatchLifecycle>();
+                Map<String,CatchLifecycle> catchMap=new TreeMap<String,CatchLifecycle>();
                 catchMap.putAll(cachePool.getCaches());
                 for (String key : catchMap.keySet()) {
-                    CatchLifecycle ic = catchMap.get(key);
+                    CatchLifecycle ic=catchMap.get(key);
                     ic.init();
                 }
             }
@@ -64,11 +64,11 @@ public class CacheFreshAllControllor implements Controller, HandlerExceptionReso
             retObj.put("data", e.getMessage());
         }
         //json处理
-        MappingJackson2JsonView mjjv = new MappingJackson2JsonView();
+        MappingJackson2JsonView mjjv=new MappingJackson2JsonView();
         response.setHeader("Cache-Control", "no-cache");
         mjjv.setContentType("text/html; charset=UTF-8");
         mjjv.setAttributesMap(retObj);
-        ModelAndView mav = new ModelAndView();
+        ModelAndView mav=new ModelAndView();
         mav.setView(mjjv);
         return mav;
     }

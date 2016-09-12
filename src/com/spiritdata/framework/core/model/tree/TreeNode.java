@@ -40,7 +40,10 @@ public class TreeNode<T extends TreeNodeBean> extends BaseObject implements Clon
             this.orderType=tnEntity.orderType;
             this.allowChildren=true;
             this.attributes=tnEntity.toHashMapAsBean();
-            this.tnEntity.setTreeNode(this);
+            if (this.tnEntity.treeNode==null) this.tnEntity.setTreeNode(this);
+            else {
+                if (this.tnEntity.treeNode.getClass().getName().equals(this.getClass().getName())) this.tnEntity.setTreeNode(this);
+            }
         }
     }
 
@@ -116,7 +119,7 @@ public class TreeNode<T extends TreeNodeBean> extends BaseObject implements Clon
             }
         }
         this.parentId=parentId;
-        if (tnEntity!=null&&!tnEntity.getParentId().equals(parentId)) tnEntity.setParentId(parentId);
+        if (tnEntity!=null&&(tnEntity.getParentId()==null||!tnEntity.getParentId().equals(parentId))) tnEntity.setParentId(parentId);
         if (!parentId.equals(this.getAttribute("parentId")+"")) this.setAttribute("parentId", parentId);
     }
 
