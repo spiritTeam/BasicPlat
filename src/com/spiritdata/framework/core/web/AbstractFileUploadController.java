@@ -16,6 +16,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.fileupload.FileItem;
 import org.springframework.web.multipart.MultipartFile;
@@ -140,11 +141,11 @@ public abstract class AbstractFileUploadController implements Controller, Handle
             for (String n: attrNameL) rqtAttrs.put(n, request.getAttribute(n));
 
             List<Map<String, Object>> retl=new ArrayList<Map<String, Object>>();
-            Map<String, Object> retMap=beforeUploadFile(rqtAttrs, rqtParams);
+            Map<String, Object> retMap=beforeUploadFile(rqtAttrs, rqtParams, request.getSession());
             if (retMap==null) {
                 retMap=new HashMap<String, Object>();
                 if (files!=null&&files.size()>0) {//返回空
-                    this.setMySavePath(rqtAttrs, rqtParams);
+                    this.setMySavePath(rqtAttrs, rqtParams, request.getSession());
                     //处理路径
                     String dataCenterPath=SysConfigManage.getValue("DataCenterPath");
                     String uploadFilePath=SysConfigManage.getValue("UploadFilePath");
@@ -193,7 +194,7 @@ public abstract class AbstractFileUploadController implements Controller, Handle
                             delTempFile(file.getFileItem());
                             //调用虚方法，处理每个文件的后续部分
                             oneFileDealRetMap.remove("success");
-                            Map<String, Object> myDealRetMap=afterUploadOneFileOnSuccess(oneFileDealRetMap, rqtAttrs, rqtParams);
+                            Map<String, Object> myDealRetMap=afterUploadOneFileOnSuccess(oneFileDealRetMap, rqtAttrs, rqtParams, request.getSession());
                             if (myDealRetMap!=null) {
                                 Boolean mySuccess=true;
                                 try {
@@ -227,7 +228,7 @@ public abstract class AbstractFileUploadController implements Controller, Handle
                     retl.add(nullM);
                 }
                 retMap.put("ful", retl);
-                afterUploadAllFiles(retMap, rqtAttrs, rqtParams);
+                afterUploadAllFiles(retMap, rqtAttrs, rqtParams, request.getSession());
             }
             //json处理
             MappingJackson2JsonView mjjv=new MappingJackson2JsonView();
@@ -426,7 +427,7 @@ public abstract class AbstractFileUploadController implements Controller, Handle
      * 如果返回值为空，或没有这些信息，本方法将按照sucess=true进行处理<br/>
      * 若要把自己的处理结果传递到本方法的外面，可以直接修改参数m，在m中加入自己的信息
      */
-    public Map<String, Object> afterUploadOneFileOnSuccess(Map<String, Object> m, Map<String, Object> rqtAttrs, Map<String, Object> rqtParams) {
+    public Map<String, Object> afterUploadOneFileOnSuccess(Map<String, Object> m, Map<String, Object> rqtAttrs, Map<String, Object> rqtParams, HttpSession session) {
         return null;
     }
 
@@ -440,7 +441,7 @@ public abstract class AbstractFileUploadController implements Controller, Handle
      * @param rqtAttrs request的属性
      * @param rqtParams request的参数
      */
-    public void afterUploadAllFiles(Map<String, Object> fl, Map<String, Object> rqtAttrs, Map<String, Object> rqtParams) {
+    public void afterUploadAllFiles(Map<String, Object> fl, Map<String, Object> rqtAttrs, Map<String, Object> rqtParams, HttpSession session) {
     }
 
     /**
@@ -450,7 +451,7 @@ public abstract class AbstractFileUploadController implements Controller, Handle
      * @return  此方法的返回值是Map，errorMap:Map，错误信息<br/>
      * 如果返回值为空，则说明处理成功<br/>
      */
-    public Map<String, Object> beforeUploadFile(Map<String, Object> rqtAttrs, Map<String, Object> rqtParams) {
+    public Map<String, Object> beforeUploadFile(Map<String, Object> rqtAttrs, Map<String, Object> rqtParams, HttpSession session) {
         return null;
     }
 
@@ -459,7 +460,7 @@ public abstract class AbstractFileUploadController implements Controller, Handle
      * @param rqtAttrs request的属性
      * @param rqtParams request的参数
      */
-    public void setMySavePath(Map<String, Object> rqtAttrs, Map<String, Object> rqtParams) {
+    public void setMySavePath(Map<String, Object> rqtAttrs, Map<String, Object> rqtParams, HttpSession session) {
         
     }
 }

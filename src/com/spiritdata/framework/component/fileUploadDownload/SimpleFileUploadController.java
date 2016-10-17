@@ -2,6 +2,8 @@ package com.spiritdata.framework.component.fileUploadDownload;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 
 import com.spiritdata.framework.core.web.AbstractFileUploadController;
@@ -14,13 +16,13 @@ import com.spiritdata.framework.core.web.AbstractFileUploadController;
 @Controller
 public class SimpleFileUploadController extends AbstractFileUploadController{
     @Override
-    public Map<String, Object> afterUploadOneFileOnSuccess(Map<String, Object> m, Map<String, Object> a, Map<String, Object> p) {
+    public Map<String, Object> afterUploadOneFileOnSuccess(Map<String, Object> m, Map<String, Object> a, Map<String, Object> p, HttpSession session) {
         //System.out.println(m.toString());
         return null;
     }
 
     @Override
-    public void afterUploadAllFiles(Map<String, Object> fl, Map<String, Object> a, Map<String, Object> p) {
+    public void afterUploadAllFiles(Map<String, Object> fl, Map<String, Object> a, Map<String, Object> p, HttpSession session) {
         //System.out.println(fl.toString());
     }
 }
