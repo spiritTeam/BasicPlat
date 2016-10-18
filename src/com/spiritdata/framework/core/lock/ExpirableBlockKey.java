@@ -1,4 +1,4 @@
-package com.spiritdata.framework.ext.redis;
+package com.spiritdata.framework.core.lock;
 
 import com.spiritdata.framework.exceptionC.Plat5001CException;
 

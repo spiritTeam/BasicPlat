@@ -3,7 +3,7 @@ package com.spiritdata.framework.exceptionC;
 /**
  * 阻塞锁异常，内部码为5001，基本信息为'阻塞锁异常'。
  * 请参看:
- * {@linkplain com.spiritdata.framework.ext.redis.RedisBlockLock RedisBlockLock}
+ * {@linkplain com.spiritdata.framework.ext.redis.lock.RedisBlockLock RedisBlockLock}
  * @author wh
  */
 public class Plat5001CException extends PlatCException {

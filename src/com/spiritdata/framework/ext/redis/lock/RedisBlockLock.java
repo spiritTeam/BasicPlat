@@ -1,7 +1,9 @@
-package com.spiritdata.framework.ext.redis;
+package com.spiritdata.framework.ext.redis.lock;
 
-import org.springframework.data.redis.connection.RedisConnection;
+import com.spiritdata.framework.core.lock.BlockLockConfig;
+import com.spiritdata.framework.core.lock.ExpirableBlockKey;
 import com.spiritdata.framework.exceptionC.Plat5001CException;
+import com.spiritdata.framework.ext.spring.redis.RedisOperService;
 import com.spiritdata.framework.util.SequenceUUID;
 
 /**
@@ -11,10 +13,10 @@ import com.spiritdata.framework.util.SequenceUUID;
  */
 public class RedisBlockLock implements ExpirableBlockKey {
     private BlockLockConfig blConf; //阻塞锁设置
-    private RedisConnection conn; //redis连接
+    private RedisOperService roSer; //redis连接
 
-    private byte[] lockKey; //锁标识
-    private byte[] lockValue; //锁值，尽量是一个随机数
+    private String lockKey; //锁标识
+    private String lockValue; //锁值，尽量是一个随机数
     private long expireTime=30000; //过期时间，默认锁的时间是30秒钟
 
     public BlockLockConfig getBlConf() {
@@ -22,7 +24,7 @@ public class RedisBlockLock implements ExpirableBlockKey {
     }
 
     public void setBlConf(BlockLockConfig blConf) {
-        this.blConf = blConf;
+        this.blConf=blConf;
     }
 
     public long getExpireTime() {
@@ -31,50 +33,50 @@ public class RedisBlockLock implements ExpirableBlockKey {
 
     @Override
     public void setExpireTime(long expireTime) {
-        this.expireTime = expireTime;
+        this.expireTime=expireTime;
     }
 
     /**
      * 构造函数，其他未设定的值将按如下配置设置：
      * <pre>
-     * 阻塞锁设置：采用默认设置{@linkplain com.spiritdata.framework.ext.redis.BlockLockConfig BlockLockConfig}
+     * 阻塞锁设置：采用默认设置{@linkplain com.spiritdata.framework.ext.redis.lock.BlockLockConfig BlockLockConfig}
      * 锁值：此时锁的值为系统给出的一个随机数
      * 过期时间：采用默认只100毫秒
      * <pre>
      * @param key 锁的key值
      * @param conn redis连接
      */
-    public RedisBlockLock(String key, RedisConnection conn) {
+    public RedisBlockLock(String key, RedisOperService roService) {
         super();
 
-        if (conn==null) throw new IllegalArgumentException();
-        this.conn=conn;
+        if (roService==null) throw new IllegalArgumentException("必须设置Redis操作服务类");
+        this.roSer=roService;
 
         this.blConf=new BlockLockConfig();
 
-        this.lockKey=key.getBytes();
-        this.lockValue=SequenceUUID.getPureUUID().getBytes();
+        this.lockKey=key;
+        this.lockValue=SequenceUUID.getPureUUID();
     }
 
     /**
      * 构造函数，其他未设定的值将按如下配置设置：
      * <pre>
-     * 阻塞锁设置：采用默认设置{@linkplain com.spiritdata.framework.ext.redis.BlockLockConfig BlockLockConfig}
+     * 阻塞锁设置：采用默认设置{@linkplain com.spiritdata.framework.ext.redis.lock.BlockLockConfig BlockLockConfig}
      * 锁值：此时锁的值为系统给出的一个随机数
      * <pre>
      * @param key 锁的key值
      * @param conn redis连接
      * @param expireTime 过期时间
      */
-    public RedisBlockLock(String key, RedisConnection conn, long expireTime) {
+    public RedisBlockLock(String key, RedisOperService roService, long expireTime) {
         super();
-        if (conn==null) throw new IllegalArgumentException();
-        this.conn=conn;
+        if (roSer==null) throw new IllegalArgumentException("必须设置Redis操作服务类");
+        this.roSer=roService;
 
         this.blConf=new BlockLockConfig();
 
-        this.lockKey=key.getBytes();
-        this.lockValue=SequenceUUID.getPureUUID().getBytes();
+        this.lockKey=key;
+        this.lockValue=SequenceUUID.getPureUUID();
 
         this.expireTime=expireTime;
     }
@@ -89,15 +91,15 @@ public class RedisBlockLock implements ExpirableBlockKey {
      * @param conn redis连接
      * @param blConf 锁配置信息
      */
-    public RedisBlockLock(String key, RedisConnection conn, BlockLockConfig blConf) {
+    public RedisBlockLock(String key, RedisOperService roService, BlockLockConfig blConf) {
         super();
-        if (conn==null) throw new IllegalArgumentException();
-        this.conn=conn;
+        if (roSer==null) throw new IllegalArgumentException("必须设置Redis操作服务类");
+        this.roSer=roService;
 
         this.blConf=(blConf==null?new BlockLockConfig():blConf);
 
-        this.lockKey=key.getBytes();
-        this.lockValue=SequenceUUID.getPureUUID().getBytes();
+        this.lockKey=key;
+        this.lockValue=SequenceUUID.getPureUUID();
     }
 
     /**
@@ -110,60 +112,60 @@ public class RedisBlockLock implements ExpirableBlockKey {
      * @param expireTime 过期时间
      * @param blConf 锁配置信息
      */
-    public RedisBlockLock(String key, RedisConnection conn, long expireTime, BlockLockConfig blConf) {
+    public RedisBlockLock(String key, RedisOperService roService, long expireTime, BlockLockConfig blConf) {
         super();
 
-        if (conn==null) throw new IllegalArgumentException();
-        this.conn=conn;
+        if (roSer==null) throw new IllegalArgumentException("必须设置Redis操作服务类");
+        this.roSer=roService;
 
         this.blConf=(blConf==null?new BlockLockConfig():blConf);
 
-        this.lockKey=key.getBytes();
-        this.lockValue=SequenceUUID.getPureUUID().getBytes();
+        this.lockKey=key;
+        this.lockValue=SequenceUUID.getPureUUID();
     }
 
     /**
      * 构造函数，其他未设定的值将按如下配置设置：
      * <pre>
-     * 阻塞锁设置：采用默认设置{@linkplain com.spiritdata.framework.ext.redis.BlockLockConfig BlockLockConfig}
+     * 阻塞锁设置：采用默认设置{@linkplain com.spiritdata.framework.ext.redis.lock.BlockLockConfig BlockLockConfig}
      * 过期时间：采用默认只100毫秒
      * <pre>
      * @param key 锁的key
      * @param value 锁的值
      * @param conn redis连接
      */
-    public RedisBlockLock(String key, String value, RedisConnection conn) {
+    public RedisBlockLock(String key, String value, RedisOperService roService) {
         super();
 
-        if (conn==null) throw new IllegalArgumentException();
-        this.conn=conn;
+        if (roSer==null) throw new IllegalArgumentException("必须设置Redis操作服务类");
+        this.roSer=roService;
 
         this.blConf=new BlockLockConfig();
 
-        this.lockKey=key.getBytes();
-        this.lockValue=value.getBytes();
+        this.lockKey=key;
+        this.lockValue=SequenceUUID.getPureUUID();
     }
 
     /**
      * 构造函数，其他未设定的值将按如下配置设置：
      * <pre>
-     * 阻塞锁设置：采用默认设置{@linkplain com.spiritdata.framework.ext.redis.BlockLockConfig BlockLockConfig}
+     * 阻塞锁设置：采用默认设置{@linkplain com.spiritdata.framework.ext.redis.lock.BlockLockConfig BlockLockConfig}
      * <pre>
      * @param key 锁的key
      * @param value 锁的值
      * @param conn redis连接
      * @param expireTime 过期时间
      */
-    public RedisBlockLock(String key, String value, RedisConnection conn, long expireTime) {
+    public RedisBlockLock(String key, String value, RedisOperService roService, long expireTime) {
         super();
 
-        if (conn==null) throw new IllegalArgumentException();
-        this.conn=conn;
+        if (roSer==null) throw new IllegalArgumentException("必须设置Redis操作服务类");
+        this.roSer=roService;
 
         this.blConf=(blConf==null?new BlockLockConfig():blConf);
 
-        this.lockKey=key.getBytes();
-        this.lockValue=value.getBytes();
+        this.lockKey=key;
+        this.lockValue=SequenceUUID.getPureUUID();
 
         this.expireTime=expireTime;
     }
@@ -178,16 +180,16 @@ public class RedisBlockLock implements ExpirableBlockKey {
      * @param conn redis连接
      * @param blConf 锁配置信息
      */
-    public RedisBlockLock(String key, String value, RedisConnection conn, BlockLockConfig blConf) {
+    public RedisBlockLock(String key, String value, RedisOperService roService, BlockLockConfig blConf) {
         super();
 
-        if (conn==null) throw new IllegalArgumentException();
-        this.conn=conn;
+        if (roSer==null) throw new IllegalArgumentException("必须设置Redis操作服务类");
+        this.roSer=roService;
 
         this.blConf=new BlockLockConfig();
 
-        this.lockKey=key.getBytes();
-        this.lockValue=value.getBytes();
+        this.lockKey=key;
+        this.lockValue=SequenceUUID.getPureUUID();
     }
 
     /**
@@ -198,16 +200,16 @@ public class RedisBlockLock implements ExpirableBlockKey {
      * @param expireTime 过期时间
      * @param blConf 锁配置信息
      */
-    public RedisBlockLock(String key, String value, RedisConnection conn, long expireTime, BlockLockConfig blConf) {
+    public RedisBlockLock(String key, String value, RedisOperService roService, long expireTime, BlockLockConfig blConf) {
         super();
 
-        if (conn==null) throw new IllegalArgumentException();
-        this.conn=conn;
+        if (roSer==null) throw new IllegalArgumentException("必须设置Redis操作服务类");
+        this.roSer=roService;
 
         this.blConf=new BlockLockConfig();
 
-        this.lockKey=key.getBytes();
-        this.lockValue=value.getBytes();
+        this.lockKey=key;
+        this.lockValue=SequenceUUID.getPureUUID();
 
         this.expireTime=expireTime;
     }
@@ -224,10 +226,9 @@ public class RedisBlockLock implements ExpirableBlockKey {
         int loopIndex=0;
         int waitType=this.blConf.getWaitingType();
         while (true) {
-            canContinue=conn.setNX(this.lockKey, this.lockValue);
-            if (canContinue) canContinue=conn.pExpire(this.lockKey, this.expireTime);
-            byte[] _value=conn.get(this.lockKey);
-            canContinue=equalValue(_value);
+            canContinue=roSer.set(this.lockKey, this.lockValue, "NX", this.expireTime);
+            if (canContinue) return;
+            canContinue=this.lockValue.equals(roSer.get(this.lockKey));
             if (canContinue) return;
 
             curTime=System.currentTimeMillis();
@@ -240,7 +241,7 @@ public class RedisBlockLock implements ExpirableBlockKey {
             } else  if (waitType==4) {
                 canContinue=(loopIndex<this.blConf.getWaitingLoopCount())||(curTime-beginTime<this.blConf.getWaitingTime());
             }
-            if (!canContinue) throw new Plat5001CException("获取所失败");
+            if (!canContinue) throw new Plat5001CException("获取锁失败");
 
             canContinue=false;
             loopIndex++;
@@ -248,7 +249,7 @@ public class RedisBlockLock implements ExpirableBlockKey {
             try {
                 Thread.sleep(this.blConf.getLoopIntervalTime());
             } catch(Exception e) {
-                new Plat5001CException("获取所失败", e);
+                new Plat5001CException("获取锁失败", e);
             }
         }
     }
@@ -268,9 +269,8 @@ public class RedisBlockLock implements ExpirableBlockKey {
      */
     @Override
     public void extendExpire(long extendTime) {
-        byte[] _value=conn.get(lockKey);
-        if (!equalValue(_value)) throw new Plat5001CException("延长锁过期时间时发现锁值被改变");
-        if (!conn.pExpire(this.lockKey, extendTime)) throw new Plat5001CException("延长锁过期时间失败");
+        if (!this.lockValue.equals(roSer.get(this.lockKey))) throw new Plat5001CException("延长锁过期时间时发现锁值被改变");
+        if (!roSer.pExpire(this.lockKey, extendTime)) throw new Plat5001CException("延长锁过期时间失败");
         
     }
     /**
@@ -280,30 +280,30 @@ public class RedisBlockLock implements ExpirableBlockKey {
      */
     @Override
     public boolean unlock() throws Plat5001CException {
-        byte[] _value=conn.get(this.lockKey);
-        long ret=conn.del(this.lockKey);
+        String _value=roSer.get(this.lockKey);
+        long ret=roSer.del(this.lockKey);
         if (ret==0) return false; //加锁过程中，锁被莫名/恶意删除了
         if (ret!=1) throw new Plat5001CException("释放锁");
-        return equalValue(_value);
+        return this.lockValue.equals(_value);
     }
-
-    /*
-     * 给定的值是否与锁的值相同
-     * @param value 给的的值，byte数组
-     * @return 相同返回true，否则返回false
-     */
-    private boolean equalValue(byte[] value) {
-        if (this.lockValue==null&&value==null) return true;
-        if (value==null) return false;
-
-        if (this.lockValue.length!=value.length) return false;
-        else {
-            for (int i=0; i<value.length; i++) {
-                if (value[i]!=this.lockValue[i]) return false;
-            }
-            return true;
-        }
-    }
+//
+//    /*
+//     * 给定的值是否与锁的值相同
+//     * @param value 给的的值，byte数组
+//     * @return 相同返回true，否则返回false
+//     */
+//    private boolean equalValue(byte[] value) {
+//        if (this.lockValue==null&&value==null) return true;
+//        if (value==null) return false;
+//
+//        if (this.lockValue.length!=value.length) return false;
+//        else {
+//            for (int i=0; i<value.length; i++) {
+//                if (value[i]!=this.lockValue[i]) return false;
+//            }
+//            return true;
+//        }
+//    }
 
     //以下为静态方法，为便于锁的使用
     /**
@@ -313,8 +313,8 @@ public class RedisBlockLock implements ExpirableBlockKey {
      * @param conn redis连接
      * @return 可过期阻塞锁
      */
-    public static ExpirableBlockKey lock(String key, RedisConnection conn) {
-        ExpirableBlockKey retLock=new RedisBlockLock(key, conn);
+    public static ExpirableBlockKey lock(String key, RedisOperService roService) {
+        ExpirableBlockKey retLock=new RedisBlockLock(key, roService);
         retLock.lock();
         return retLock;
     }
@@ -327,8 +327,8 @@ public class RedisBlockLock implements ExpirableBlockKey {
      * @param expireTime 过期时间
      * @return 可过期阻塞锁
      */
-    public static ExpirableBlockKey lock(String key, RedisConnection conn, long expireTime) {
-        ExpirableBlockKey retLock=new RedisBlockLock(key, conn, expireTime);
+    public static ExpirableBlockKey lock(String key, RedisOperService roService, long expireTime) {
+        ExpirableBlockKey retLock=new RedisBlockLock(key, roService, expireTime);
         retLock.lock();
         return retLock;
     }
@@ -341,8 +341,8 @@ public class RedisBlockLock implements ExpirableBlockKey {
      * @param blConf 锁配置信息
      * @return 可过期阻塞锁
      */
-    public static ExpirableBlockKey lock(String key, RedisConnection conn, BlockLockConfig blConf) {
-        ExpirableBlockKey retLock=new RedisBlockLock(key, conn, blConf);
+    public static ExpirableBlockKey lock(String key, RedisOperService roService, BlockLockConfig blConf) {
+        ExpirableBlockKey retLock=new RedisBlockLock(key, roService, blConf);
         retLock.lock();
         return retLock;
     }
@@ -356,8 +356,8 @@ public class RedisBlockLock implements ExpirableBlockKey {
      * @param blConf 锁配置信息
      * @return 可过期阻塞锁
      */
-    public static ExpirableBlockKey lock(String key, RedisConnection conn, long expireTime, BlockLockConfig blConf) {
-        ExpirableBlockKey retLock=new RedisBlockLock(key, conn, expireTime, blConf);
+    public static ExpirableBlockKey lock(String key, RedisOperService roService, long expireTime, BlockLockConfig blConf) {
+        ExpirableBlockKey retLock=new RedisBlockLock(key, roService, expireTime, blConf);
         retLock.lock();
         return retLock;
     }
@@ -370,8 +370,8 @@ public class RedisBlockLock implements ExpirableBlockKey {
      * @param conn redis连接
      * @return 可过期阻塞锁
      */
-    public static ExpirableBlockKey lock(String key, String value, RedisConnection conn) {
-        ExpirableBlockKey retLock=new RedisBlockLock(key, value, conn);
+    public static ExpirableBlockKey lock(String key, String value, RedisOperService roService) {
+        ExpirableBlockKey retLock=new RedisBlockLock(key, value, roService);
         retLock.lock();
         return retLock;
     }
@@ -385,8 +385,8 @@ public class RedisBlockLock implements ExpirableBlockKey {
      * @param expireTime 过期时间
      * @return 可过期阻塞锁
      */
-    public static ExpirableBlockKey lock(String key, String value, RedisConnection conn, long expireTime) {
-        ExpirableBlockKey retLock=new RedisBlockLock(key, value, conn, expireTime);
+    public static ExpirableBlockKey lock(String key, String value, RedisOperService roService, long expireTime) {
+        ExpirableBlockKey retLock=new RedisBlockLock(key, value, roService, expireTime);
         retLock.lock();
         return retLock;
     }
@@ -400,8 +400,8 @@ public class RedisBlockLock implements ExpirableBlockKey {
      * @param blConf 锁配置信息
      * @return 可过期阻塞锁
      */
-    public static ExpirableBlockKey lock(String key, String value, RedisConnection conn, BlockLockConfig blConf) {
-        ExpirableBlockKey retLock=new RedisBlockLock(key, value, conn, blConf);
+    public static ExpirableBlockKey lock(String key, String value, RedisOperService roService, BlockLockConfig blConf) {
+        ExpirableBlockKey retLock=new RedisBlockLock(key, value, roService, blConf);
         retLock.lock();
         return retLock;
     }
@@ -416,8 +416,8 @@ public class RedisBlockLock implements ExpirableBlockKey {
      * @param blConf 锁配置信息
      * @return 可过期阻塞锁
      */
-    public static ExpirableBlockKey lock(String key, String value, RedisConnection conn, long expireTime, BlockLockConfig blConf) {
-        ExpirableBlockKey retLock=new RedisBlockLock(key, value, conn, expireTime, blConf);
+    public static ExpirableBlockKey lock(String key, String value, RedisOperService roService, long expireTime, BlockLockConfig blConf) {
+        ExpirableBlockKey retLock=new RedisBlockLock(key, value, roService, expireTime, blConf);
         retLock.lock();
         return retLock;
     }
