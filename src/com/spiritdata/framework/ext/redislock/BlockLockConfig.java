@@ -1,4 +1,4 @@
-package com.spiritdata.framework.ext.redis;
+package com.spiritdata.framework.ext.redislock;
 
 /**
  * 阻塞锁的设置参数：
@@ -21,28 +21,50 @@ public class BlockLockConfig {
     private long waitingLoopCount=1; //容忍的最大循环次数，默认=1次
     private long waitingTime=5; //容忍的最长时间，默认为5毫秒
 
+    /**
+     * 全部使用默认值的配置
+     */
+    public BlockLockConfig() {
+        super();
+    }
+
+    /**
+     * 给出全部配置的构造函数
+     * @param loopIntervalTime 每次循环间隔时间
+     * @param waitingType 容忍方式
+     * @param waitingLoopCount 容忍的最大循环次数
+     * @param waitingTime 容忍的最长时间
+     */
+    public BlockLockConfig(long loopIntervalTime, int waitingType, long waitingLoopCount, long waitingTime) {
+        super();
+        this.loopIntervalTime=loopIntervalTime;
+        this.waitingType=waitingType;
+        this.waitingLoopCount=waitingLoopCount;
+        this.waitingTime=waitingTime;
+    }
+
     public long getLoopIntervalTime() {
         return loopIntervalTime;
     }
     public void setLoopIntervalTime(long loopIntervalTime) {
-        this.loopIntervalTime = loopIntervalTime;
+        this.loopIntervalTime=loopIntervalTime;
     }
     public int getWaitingType() {
         return waitingType;
     }
     public void setWaitingType(int waitingType) {
-        this.waitingType = waitingType;
+        this.waitingType=waitingType;
     }
     public long getWaitingLoopCount() {
         return waitingLoopCount;
     }
     public void setWaitingLoopCount(long waitingLoopCount) {
-        this.waitingLoopCount = waitingLoopCount;
+        this.waitingLoopCount=waitingLoopCount;
     }
     public long getWaitingTime() {
         return waitingTime;
     }
     public void setWaitingTime(long waitingTime) {
-        this.waitingTime = waitingTime;
+        this.waitingTime=waitingTime;
     }
 }
