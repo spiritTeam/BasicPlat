@@ -67,10 +67,27 @@ public class RedisOperService {
         String _sta="";
         String _option=(option==null?"":(option.equals("NX")||option.equals("XX")?option:"")); //处理操作
 
-        if (expireTime>0) _sta=jedis.set(key, value, _option, "PX", expireTime);
-        else _sta=jedis.set(key, value, _option);
+        if (_option.equals("")) {
+            if (expireTime>0) return set(key, value, expireTime);
+            else return set(key, value);
+        } else {
+            if (expireTime>0) _sta=jedis.set(key, value, _option, "PX", expireTime);
+            else _sta=jedis.set(key, value, _option);
+            return _sta.equals("OK");
+        }
+    }
 
-        return _sta.equals("OK");
+    /**
+     * 设置数据
+     * @param key 数据的key
+     * @param value 数据的值
+     * @param expireTime 过期时间，只支持毫秒，若是-1则表示没有过期时间
+     * @param optin 操作 只支持NX,XX其他都按无处理
+     */
+    public boolean set(String key, String value, long expireTime) {
+        String _sta=jedis.set(key, value);
+        if (!_sta.equals("OK")) return false;
+        return this.pExpire(key, expireTime);
     }
 
     /**
@@ -108,8 +125,8 @@ public class RedisOperService {
      * @param milliseconds 过期时间
      * @return 设置成功返回true，设置失败(key不存在，或[在redis2.1.3版本之前]已经有过期时间)返回false
      */
-    public boolean pExpire(String key, long milliseconds) {
-        return jedis.pexpire(key, milliseconds)==1;
+    public boolean pExpire(String key, long expireTime) {
+        return jedis.pexpire(key, expireTime)==1;
     }
 
     /**
