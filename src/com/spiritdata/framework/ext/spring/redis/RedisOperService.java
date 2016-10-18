@@ -26,8 +26,19 @@ public class RedisOperService {
      */
     public RedisOperService(JedisConnectionFactory conn) {
         super();
-        Assert.isNull(conn, "请设置Spring-Redis的连接类");
+        Assert.notNull(conn, "请设置Spring-Redis的连接类");
         this.jedis=conn.getShardInfo().createResource();
+        this.jedis.select(0);//默认用第0个数据库
+    }
+    /**
+     * 构造函数，必须要设置连接
+     * @param conn
+     */
+    public RedisOperService(JedisConnectionFactory conn, int dbIndex) {
+        super();
+        Assert.notNull(conn, "请设置Spring-Redis的连接类");
+        this.jedis=conn.getShardInfo().createResource();
+        this.jedis.select(dbIndex);//默认用第0个数据库
     }
     /**
      * 关闭此连接
@@ -37,7 +48,16 @@ public class RedisOperService {
     }
 
     /**
-     * 设置数据，注意，这里根本没有
+     * 设置数据
+     * @param key 数据的key
+     * @param value 数据的值
+     */
+    public boolean set(String key, String value) {
+        return (jedis.set(key, value)).equals("OK");
+    }
+
+    /**
+     * 设置数据
      * @param key 数据的key
      * @param value 数据的值
      * @param expireTime 过期时间，只支持毫秒，若是-1则表示没有过期时间
@@ -90,6 +110,15 @@ public class RedisOperService {
      */
     public boolean pExpire(String key, long milliseconds) {
         return jedis.pexpire(key, milliseconds)==1;
+    }
+
+    /**
+     * 向key中插入一组数据
+     * @param key 数据的key
+     * @param values 插入数据后，数组的长度
+     */
+    public void rPush(String key, String... values) {
+        jedis.rpush(key, values);
     }
 
     /**

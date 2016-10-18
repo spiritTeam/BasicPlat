@@ -70,7 +70,7 @@ public class RedisBlockLock implements ExpirableBlockKey {
      */
     public RedisBlockLock(String key, RedisOperService roService, long expireTime) {
         super();
-        if (roSer==null) throw new IllegalArgumentException("必须设置Redis操作服务类");
+        if (roService==null) throw new IllegalArgumentException("必须设置Redis操作服务类");
         this.roSer=roService;
 
         this.blConf=new BlockLockConfig();
@@ -93,7 +93,7 @@ public class RedisBlockLock implements ExpirableBlockKey {
      */
     public RedisBlockLock(String key, RedisOperService roService, BlockLockConfig blConf) {
         super();
-        if (roSer==null) throw new IllegalArgumentException("必须设置Redis操作服务类");
+        if (roService==null) throw new IllegalArgumentException("必须设置Redis操作服务类");
         this.roSer=roService;
 
         this.blConf=(blConf==null?new BlockLockConfig():blConf);
@@ -115,7 +115,7 @@ public class RedisBlockLock implements ExpirableBlockKey {
     public RedisBlockLock(String key, RedisOperService roService, long expireTime, BlockLockConfig blConf) {
         super();
 
-        if (roSer==null) throw new IllegalArgumentException("必须设置Redis操作服务类");
+        if (roService==null) throw new IllegalArgumentException("必须设置Redis操作服务类");
         this.roSer=roService;
 
         this.blConf=(blConf==null?new BlockLockConfig():blConf);
@@ -137,7 +137,7 @@ public class RedisBlockLock implements ExpirableBlockKey {
     public RedisBlockLock(String key, String value, RedisOperService roService) {
         super();
 
-        if (roSer==null) throw new IllegalArgumentException("必须设置Redis操作服务类");
+        if (roService==null) throw new IllegalArgumentException("必须设置Redis操作服务类");
         this.roSer=roService;
 
         this.blConf=new BlockLockConfig();
@@ -159,7 +159,7 @@ public class RedisBlockLock implements ExpirableBlockKey {
     public RedisBlockLock(String key, String value, RedisOperService roService, long expireTime) {
         super();
 
-        if (roSer==null) throw new IllegalArgumentException("必须设置Redis操作服务类");
+        if (roService==null) throw new IllegalArgumentException("必须设置Redis操作服务类");
         this.roSer=roService;
 
         this.blConf=(blConf==null?new BlockLockConfig():blConf);
@@ -183,7 +183,7 @@ public class RedisBlockLock implements ExpirableBlockKey {
     public RedisBlockLock(String key, String value, RedisOperService roService, BlockLockConfig blConf) {
         super();
 
-        if (roSer==null) throw new IllegalArgumentException("必须设置Redis操作服务类");
+        if (roService==null) throw new IllegalArgumentException("必须设置Redis操作服务类");
         this.roSer=roService;
 
         this.blConf=new BlockLockConfig();
@@ -203,7 +203,7 @@ public class RedisBlockLock implements ExpirableBlockKey {
     public RedisBlockLock(String key, String value, RedisOperService roService, long expireTime, BlockLockConfig blConf) {
         super();
 
-        if (roSer==null) throw new IllegalArgumentException("必须设置Redis操作服务类");
+        if (roService==null) throw new IllegalArgumentException("必须设置Redis操作服务类");
         this.roSer=roService;
 
         this.blConf=new BlockLockConfig();
