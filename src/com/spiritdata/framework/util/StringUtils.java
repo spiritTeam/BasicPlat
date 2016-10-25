@@ -1,5 +1,7 @@
 package com.spiritdata.framework.util;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
@@ -82,5 +84,17 @@ public class StringUtils {
 		String[] strArr = splitString(str, regex);
 		List<String> list = strArrConvertList(strArr);
 		return list;
+	}
+
+	/**
+	 * 把Exception转换为字符串，注意这个字符串包括换行符号
+	 * @param e 要转换的异常
+	 * @return 异常锁定影的字符串
+	 */
+	public static String getAllMessage(Exception e) {
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        e.printStackTrace(pw);
+        return sw.toString();
 	}
 }
