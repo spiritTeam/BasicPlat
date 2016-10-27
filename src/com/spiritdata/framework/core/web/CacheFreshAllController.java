@@ -23,7 +23,7 @@ import com.spiritdata.framework.ext.io.StringPrintWriter;
  * 刷新所有缓存
  * @author wh
  */
-public class CacheFreshAllControllor implements Controller, HandlerExceptionResolver {
+public class CacheFreshAllController implements Controller, HandlerExceptionResolver {
 
     @Override
     public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
