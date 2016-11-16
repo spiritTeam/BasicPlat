@@ -11,6 +11,7 @@ import org.apache.commons.io.FileUtils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.spiritdata.framework.util.JsonUtils;
 import com.spiritdata.framework.util.StringUtils;
 
 /**
@@ -181,5 +182,14 @@ public class JsonConfig {
     private void checkKey(String key) {
         if (!isLoaded) throw new RuntimeException("未加载完成，不能读取");
         if (!configSets.containsKey(key)) throw new RuntimeException("key["+key+"]不存在");
+    }
+
+    /**
+     * 获得配置信息的
+     * @return
+     */
+    public String getAllConfInfo() {
+        if (!isLoaded) throw new RuntimeException("未加载完成，不能读取");
+        return JsonUtils.objToJson(this.configSets);
     }
 }

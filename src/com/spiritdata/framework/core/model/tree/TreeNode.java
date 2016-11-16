@@ -119,8 +119,12 @@ public class TreeNode<T extends TreeNodeBean> extends BaseObject implements Clon
             }
         }
         this.parentId=parentId;
-        if (tnEntity!=null&&(tnEntity.getParentId()==null||!tnEntity.getParentId().equals(parentId))) tnEntity.setParentId(parentId);
-        if (!parentId.equals(this.getAttribute("parentId")+"")) this.setAttribute("parentId", parentId);
+        if (tnEntity!=null) {
+            if (parentId==null&&tnEntity.getParentId()!=null) tnEntity.setParentId(parentId);
+            if (tnEntity.getParentId()!=null&&!tnEntity.getParentId().equals(parentId)) tnEntity.setParentId(parentId);
+        }
+        if (parentId!=null&&!parentId.equals(this.getAttribute("parentId")+"")) this.setAttribute("parentId", parentId);
+        if (parentId==null) this.removeAttribute("parentId");
     }
 
     //父结点
@@ -352,8 +356,8 @@ public class TreeNode<T extends TreeNodeBean> extends BaseObject implements Clon
                 tn.setParent(this);
             }
             this.children=children;
+            if (this.children.size()>1) Collections.sort(this.children);
         }
-        if (this.children.size()>1) Collections.sort(this.children);
     }
 
     /**
@@ -363,6 +367,7 @@ public class TreeNode<T extends TreeNodeBean> extends BaseObject implements Clon
      * @exception IllegalStateException 如果结点不允许有子结点
      */
     public void addChild(TreeNode<? extends TreeNodeBean> child) {
+        if (child==null) return;
         if (!allowChildren) throw new Plat0003CException("本结点[id="+this.id+";nodeName="+this.nodeName+"]不允许有子结点！");
         if (this.children==null) this.children=new ArrayList<TreeNode<? extends TreeNodeBean>>();
         this.removeChild(child.getId());
@@ -657,7 +662,8 @@ public class TreeNode<T extends TreeNodeBean> extends BaseObject implements Clon
     /**
      * 深度克隆树，但不包括parent属性。克隆后的结点为根
      */
-    public TreeNode<T> clone() throws CloneNotSupportedException {
+    @SuppressWarnings("unchecked")
+    public TreeNode<? extends TreeNodeBean> clone() throws CloneNotSupportedException {
         TreeNode<T> cloneTn=new TreeNode<T>(tnEntity);
         cloneTn.setAttributes((HashMap<String, Object>)((HashMap<String, Object>)this.getAttributes()).clone());
         cloneTn.setParent(null);
@@ -676,7 +682,7 @@ public class TreeNode<T extends TreeNodeBean> extends BaseObject implements Clon
      * 按深度遍历，得到本结点以及所有下级结点的树对象列表
      * @return 树对象列表
      */
-    public List<TreeNodeBean> getAllBeansList() {
+    public List<? extends TreeNodeBean> getAllBeansList() {
         List<TreeNodeBean> l=new ArrayList<TreeNodeBean>();
         l.add(this.getTnEntity());
         if (!this.isLeaf()) {

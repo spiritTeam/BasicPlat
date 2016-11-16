@@ -215,6 +215,7 @@ public abstract class TreeUtils {
                         }
                         if (!hasDeal) {
                             //造上级结点
+                            @SuppressWarnings({ "rawtypes", "unchecked" })
                             TreeNode<? extends TreeNodeBean> _ptn = new TreeNode(_ftn.getTnEntity());
                             _ptn.addChild(ctn);
                             ctn=_ptn;
