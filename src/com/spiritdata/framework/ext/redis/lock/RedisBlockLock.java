@@ -122,6 +122,8 @@ public class RedisBlockLock implements ExpirableBlockKey {
 
         this.lockKey=key;
         this.lockValue=SequenceUUID.getPureUUID();
+
+        this.expireTime=expireTime;
     }
 
     /**
@@ -143,7 +145,7 @@ public class RedisBlockLock implements ExpirableBlockKey {
         this.blConf=new BlockLockConfig();
 
         this.lockKey=key;
-        this.lockValue=SequenceUUID.getPureUUID();
+        this.lockValue=value;
     }
 
     /**
@@ -165,7 +167,7 @@ public class RedisBlockLock implements ExpirableBlockKey {
         this.blConf=(blConf==null?new BlockLockConfig():blConf);
 
         this.lockKey=key;
-        this.lockValue=SequenceUUID.getPureUUID();
+        this.lockValue=value;
 
         this.expireTime=expireTime;
     }
@@ -186,10 +188,10 @@ public class RedisBlockLock implements ExpirableBlockKey {
         if (roService==null) throw new IllegalArgumentException("必须设置Redis操作服务类");
         this.roSer=roService;
 
-        this.blConf=new BlockLockConfig();
+        this.blConf=(blConf==null?new BlockLockConfig():blConf);
 
         this.lockKey=key;
-        this.lockValue=SequenceUUID.getPureUUID();
+        this.lockValue=value;
     }
 
     /**
@@ -206,10 +208,10 @@ public class RedisBlockLock implements ExpirableBlockKey {
         if (roService==null) throw new IllegalArgumentException("必须设置Redis操作服务类");
         this.roSer=roService;
 
-        this.blConf=new BlockLockConfig();
+        this.blConf=(blConf==null?new BlockLockConfig():blConf);
 
         this.lockKey=key;
-        this.lockValue=SequenceUUID.getPureUUID();
+        this.lockValue=value;
 
         this.expireTime=expireTime;
     }
