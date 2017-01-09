@@ -26,6 +26,8 @@ public class JsonConfig {
     private boolean isLoaded=false;
     private Map<String, String> configSets=null;
 
+    private Object loadLck=new Object();
+
     //以下为公用方法
     public JsonConfig() {
         isLoaded=false;
@@ -92,7 +94,7 @@ public class JsonConfig {
      * @return 是否是key
      */
     public boolean isList(String key) {
-        if (!isLoaded) throw new RuntimeException("未加载完成，不能读取");
+        checkKey(key);
         return configSets.containsKey(key+"#size");
     }
 
@@ -102,39 +104,62 @@ public class JsonConfig {
      * @return list配置的size(个数)
      */
     public int getListSize(String key) {
-        if (!isLoaded) throw new RuntimeException("未加载完成，不能读取");
-        if (!isList(key)) throw new RuntimeException("不是List类型的配置项，不能读取配置");
+        checkKey(key);
+        if (!isList(key)) throw new IllegalArgumentException("不是List类型的配置项，不能读取配置");
         return Integer.parseInt(configSets.get(key+"#size"));
     }
 
+    /**
+     * 获得配置信息的
+     * @return
+     */
+    public String getAllConfInfo() {
+        while (!isLoaded) {
+            synchronized(loadLck) {
+                try {
+                    loadLck.wait();
+                } catch (InterruptedException e) {
+                } finally {
+                    loadLck.notifyAll();
+                }
+            }
+        }
+        return JsonUtils.objToJson(this.configSets);
+    }
+
     //以下私有方法================================================================================
+    @SuppressWarnings("unchecked")
     private void loader(String jsonFileName) throws IOException {
         isLoaded=false;
-        String jsonStr=FileUtils.readFileToString(new File(jsonFileName), "utf-8");
-        jsonStr=jsonStr.replaceAll("(?<!:)\\/\\/.*|\\/\\*(\\s|.)*?\\*\\/", "");
+        synchronized(loadLck) {
+            try {
+                String jsonStr=FileUtils.readFileToString(new File(jsonFileName), "utf-8");
+                jsonStr=jsonStr.replaceAll("(?<!:)\\/\\/.*|\\/\\*(\\s|.)*?\\*\\/", "");
 
-        while (!jsonStr.substring(0, 1).equals("{")&&!jsonStr.substring(0, 1).equals("[")) jsonStr=jsonStr.substring(1);
-        if (jsonStr.substring(0, 1).equals("[")) rootType=2; else rootType=1;
+                while (!jsonStr.substring(0, 1).equals("{")&&!jsonStr.substring(0, 1).equals("[")) jsonStr=jsonStr.substring(1);
+                if (jsonStr.substring(0, 1).equals("[")) rootType=2; else rootType=1;
 
-        ObjectMapper mapper=new ObjectMapper();
-        //单引号
-        mapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
-        //无引号
-        mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
-        //特殊字符
-        mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS, true);
-        //允许注释
-        mapper.configure(JsonParser.Feature.ALLOW_COMMENTS, true);
-        if (rootType==1) {
-            @SuppressWarnings("unchecked")
-            Map<String, Object> configMap=(Map<String, Object>)mapper.readValue(jsonStr, Map.class);
-            parseMap(configMap, null);
-        } else {
-            @SuppressWarnings("unchecked")
-            List<Object> configList=(List<Object>)mapper.readValue(jsonStr, List.class);
-            parseList(configList, null);
+                ObjectMapper mapper=new ObjectMapper();
+                //单引号
+                mapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
+                //无引号
+                mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
+                //特殊字符
+                mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS, true);
+                //允许注释
+                mapper.configure(JsonParser.Feature.ALLOW_COMMENTS, true);
+                if (rootType==1) {
+                    Map<String, Object> configMap=(Map<String, Object>)mapper.readValue(jsonStr, Map.class);
+                    parseMap(configMap, null);
+                } else {
+                    List<Object> configList=(List<Object>)mapper.readValue(jsonStr, List.class);
+                    parseList(configList, null);
+                }
+            } finally {
+                isLoaded=true;
+                loadLck.notifyAll();
+            }
         }
-        isLoaded=true;
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -180,16 +205,16 @@ public class JsonConfig {
     }
 
     private void checkKey(String key) {
-        if (!isLoaded) throw new RuntimeException("未加载完成，不能读取");
+        while (!isLoaded) {
+            synchronized(loadLck) {
+                try {
+                    loadLck.wait();
+                } catch (InterruptedException e) {
+                } finally {
+                    loadLck.notifyAll();
+                }
+            }
+        }
         if (!configSets.containsKey(key)) throw new RuntimeException("key["+key+"]不存在");
-    }
-
-    /**
-     * 获得配置信息的
-     * @return
-     */
-    public String getAllConfInfo() {
-        if (!isLoaded) throw new RuntimeException("未加载完成，不能读取");
-        return JsonUtils.objToJson(this.configSets);
     }
 }

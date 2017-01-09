@@ -73,6 +73,7 @@ public class RedisOperService {
         } else {
             if (expireTime>0) _sta=jedis.set(key, value, _option, "PX", expireTime);
             else _sta=jedis.set(key, value, _option);
+            if (_sta==null) return false;
             return _sta.equals("OK");
         }
     }
