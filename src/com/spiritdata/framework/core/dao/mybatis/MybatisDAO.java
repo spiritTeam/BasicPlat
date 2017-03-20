@@ -133,6 +133,7 @@ public class MybatisDAO <T extends BaseObject> extends SqlSessionDaoSupport impl
         return (T)this.getInfoObject(infokey, idObj);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public T getInfoObject(String statementId, Object idObj) {
         String key=namespace+"."+statementId;
@@ -205,6 +206,7 @@ public class MybatisDAO <T extends BaseObject> extends SqlSessionDaoSupport impl
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <V> V queryForObjectAutoTranform(String statementId, Object parameter) {
         String key=namespace+"."+statementId;

@@ -5,6 +5,9 @@ import java.util.List;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.util.Assert;
 
+import com.spiritdata.framework.ext.redis.GetBizData;
+import com.spiritdata.framework.util.StringUtils;
+
 import redis.clients.jedis.Jedis;
 
 /**
@@ -22,13 +25,14 @@ public class RedisOperService {
 
     /**
      * 构造函数，必须要设置连接
+     * 并按照设定的数据库index连接数据库
      * @param conn
      */
     public RedisOperService(JedisConnectionFactory conn) {
         super();
         Assert.notNull(conn, "请设置Spring-Redis的连接类");
         this.jedis=conn.getShardInfo().createResource();
-        this.jedis.select(0);//默认用第0个数据库
+        this.jedis.select(conn.getDatabase());
     }
     /**
      * 构造函数，必须要设置连接
@@ -166,5 +170,30 @@ public class RedisOperService {
      */
     public long del(String... keys) {
         return jedis.del(keys);
+    }
+
+    /**
+     * 清除该库下的所有key
+     */
+    public void cleanDB() {
+        jedis.flushDB();
+    }
+
+    /**
+     * 获得并设置Key值
+     * @param key key值
+     * @param getData 获得业务数据的类
+     * @param expiredTime 过期时间
+     * @return 所获得的值
+     */
+    public String getAndSet(String key, GetBizData getData, long expiredTime) {
+        String _ret=jedis.get(key);
+        if (StringUtils.isNullOrEmptyOrSpace(_ret)) {
+            _ret=getData.getBizData();
+            if (!StringUtils.isNullOrEmptyOrSpace(_ret)) {
+                set(key, _ret, expiredTime);
+            }
+        }
+        return _ret;
     }
 }
