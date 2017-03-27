@@ -5,7 +5,10 @@ import java.util.List;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.util.Assert;
 
+import com.spiritdata.framework.core.lock.BlockLockConfig;
+import com.spiritdata.framework.core.lock.ExpirableBlockKey;
 import com.spiritdata.framework.ext.redis.GetBizData;
+import com.spiritdata.framework.ext.redis.lock.RedisBlockLock;
 import com.spiritdata.framework.util.StringUtils;
 
 import redis.clients.jedis.Jedis;
@@ -187,13 +190,20 @@ public class RedisOperService {
      * @return 所获得的值
      */
     public String getAndSet(String key, GetBizData getData, long expiredTime) {
-        String _ret=jedis.get(key);
-        if (StringUtils.isNullOrEmptyOrSpace(_ret)) {
-            _ret=getData.getBizData();
-            if (!StringUtils.isNullOrEmptyOrSpace(_ret)) {
-                set(key, _ret, expiredTime);
+        ExpirableBlockKey rLock=RedisBlockLock.lock(key+"=LOCK", this, new BlockLockConfig(500, 2, 0, 60*1000));
+        try {
+            String _ret=jedis.get(key);
+            if (StringUtils.isNullOrEmptyOrSpace(_ret)) {
+                _ret=getData.getBizData();
+                if (!StringUtils.isNullOrEmptyOrSpace(_ret)&&_ret.trim().length()>4) {
+                    set(key, _ret, expiredTime);
+                }
             }
+            return _ret;
+        } catch(Exception e) {
+            return null;
+        } finally {
+            rLock.unlock();
         }
-        return _ret;
     }
 }

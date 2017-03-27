@@ -11,10 +11,10 @@ import com.spiritdata.framework.core.model.BaseObject;
 public abstract class UgaUser extends BaseObject {
     private static final long serialVersionUID = -2467050195321143589L;
 
-    private String userId;
-    private String userName;
-    private String loginName;
-    private String password;
+    protected String userId;
+    protected String userName;
+    protected String loginName;
+    protected String password;
 
     /**
      * 得到用户Id

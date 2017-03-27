@@ -42,5 +42,5 @@
   </bean>
 
   <!-- 以下为缓存刷新 -->
-  <bean name="/cacheRefresh.do" class="com.spiritdata.framework.core.web.CacheFreshAllControllor"></bean>
+  <bean name="/cacheRefresh.do" class="com.spiritdata.framework.core.web.CacheFreshAllController"></bean>
 </beans>
