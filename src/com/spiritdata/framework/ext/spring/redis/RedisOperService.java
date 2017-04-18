@@ -189,7 +189,7 @@ public class RedisOperService {
      * @param expiredTime 过期时间
      * @return 所获得的值
      */
-    public String getAndSet(String key, GetBizData getData, long expiredTime) {
+    public String getAndSet(String key, GetBizData getData, long expiredTime, boolean isResident) {
         ExpirableBlockKey rLock=RedisBlockLock.lock(key+"=LOCK", this, new BlockLockConfig(500, 2, 0, 60*1000));
         try {
             String _ret=jedis.get(key);
@@ -198,6 +198,8 @@ public class RedisOperService {
                 if (!StringUtils.isNullOrEmptyOrSpace(_ret)&&_ret.trim().length()>4) {
                     set(key, _ret, expiredTime);
                 }
+            } else {
+                if (isResident) pExpire(key, expiredTime);
             }
             return _ret;
         } catch(Exception e) {

@@ -183,7 +183,7 @@ public class MybatisDAO <T extends BaseObject> extends SqlSessionDaoSupport impl
 
     @Override
     public Page<T> pageQuery(String countSqlId, String pageQuerySqlId, Object parameter, int pageIndex, int pageSize) {
-        if (pageQuerySqlId==null) pageQuerySqlId=namespace+"."+this.listkey;
+        String key=namespace+"."+(pageQuerySqlId==null?this.listkey:pageQuerySqlId);
         try {
             PageBounds pageBounds=new PageBounds(pageIndex, pageSize);
             pageBounds.setContainsTotalCount(false);
@@ -192,7 +192,7 @@ public class MybatisDAO <T extends BaseObject> extends SqlSessionDaoSupport impl
             if (countSqlId!=null) totalCount=getCount(countSqlId, parameter);
             else pageBounds.setContainsTotalCount(true);
 
-            List<T> l=this.getSqlSession().selectList(pageQuerySqlId, parameter, pageBounds);
+            List<T> l=this.getSqlSession().selectList(key, parameter, pageBounds);
             if (countSqlId==null)  {
                 PageList<T> pageList=(PageList<T>)l;
                 totalCount=pageList.getPaginator().getTotalCount(); //得到结果条数
@@ -200,7 +200,7 @@ public class MybatisDAO <T extends BaseObject> extends SqlSessionDaoSupport impl
             Page<T> rp=new Page<T>(totalCount, pageSize, pageIndex, l);
             return rp;
         } catch(Exception e) {
-            throw new Plat0101CException("得到(范型)信息列表分页结果异常:采用SQL="+pageQuerySqlId
+            throw new Plat0101CException("得到(范型)信息列表分页结果异常:采用SQL="+key
                     +",数据["+parameter.getClass().getName()+"(@"+parameter.hashCode()+")]"
                     +",分页参数[第("+pageIndex+")页,每页("+pageSize+")条记录]", e);
         }
@@ -231,7 +231,7 @@ public class MybatisDAO <T extends BaseObject> extends SqlSessionDaoSupport impl
 
     @Override
     public <V> Page<V> pageQueryAutoTranform(String countSqlId, String pageQuerySqlId, Object parameter, int pageIndex, int pageSize) {
-        if (pageQuerySqlId==null) pageQuerySqlId=namespace+"."+this.listkey;
+        String key=namespace+"."+(pageQuerySqlId==null?this.listkey:pageQuerySqlId);
         try {
             PageBounds pageBounds=new PageBounds(pageIndex, pageSize);
             pageBounds.setContainsTotalCount(false);
@@ -240,7 +240,7 @@ public class MybatisDAO <T extends BaseObject> extends SqlSessionDaoSupport impl
             if (countSqlId!=null) totalCount=getCount(countSqlId, parameter);
             else pageBounds.setContainsTotalCount(true);
 
-            List<V> l=this.getSqlSession().selectList(pageQuerySqlId, parameter, pageBounds);
+            List<V> l=this.getSqlSession().selectList(key, parameter, pageBounds);
             if (countSqlId==null)  {
                 PageList<V> pageList=(PageList<V>)l;
                 totalCount=pageList.getPaginator().getTotalCount(); //得到结果条数
