@@ -7,8 +7,5 @@ public abstract class GetBizData {
     public GetBizData(Map<String, Object> param) {
         this.param=param;
     }
-    public String getBizData() {
-        return _getBizData();
-    }
-    public abstract String _getBizData();
+    public abstract Object getBizData();
 }

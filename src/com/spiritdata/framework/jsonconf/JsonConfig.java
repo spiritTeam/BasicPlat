@@ -24,14 +24,14 @@ import com.spiritdata.framework.util.StringUtils;
 public class JsonConfig {
     private short rootType=1; //根对象类型，若是"{"，则是Map——1，若是"["，则是List——2
     private boolean isLoaded=false;
-    private Map<String, String> configSets=null;
+    private Map<String, Object> configSets=null;
 
     private Object loadLck=new Object();
 
     //以下为公用方法
     public JsonConfig() {
         isLoaded=false;
-        configSets=new HashMap<String, String>();
+        configSets=new HashMap<String, Object>();
     }
 
     /**
@@ -44,7 +44,7 @@ public class JsonConfig {
      * @throws JsonProcessingException 
      */
     public JsonConfig(String jsonFileName) throws IOException {
-        configSets=new HashMap<String, String>();
+        configSets=new HashMap<String, Object>();
         loader(jsonFileName);
     }
 
@@ -55,7 +55,7 @@ public class JsonConfig {
      */
     public int getInt(String key) {
         checkKey(key);
-        return Integer.parseInt(configSets.get(key));
+        return Integer.parseInt(configSets.get(key)+"");
     }
 
     /**
@@ -65,7 +65,7 @@ public class JsonConfig {
      */
     public long getLong(String key) {
         checkKey(key);
-        return Long.parseLong(configSets.get(key));
+        return Long.parseLong(configSets.get(key)+"");
     }
 
     /**
@@ -75,7 +75,7 @@ public class JsonConfig {
      */
     public float getFloat(String key) {
         checkKey(key);
-        return Float.parseFloat(configSets.get(key));
+        return Float.parseFloat(configSets.get(key)+"");
     }
 
     /**
@@ -85,7 +85,7 @@ public class JsonConfig {
      */
     public String getString(String key) {
         checkKey(key);
-        return configSets.get(key);
+        return configSets.get(key)+"";
     }
 
     /**
@@ -106,7 +106,17 @@ public class JsonConfig {
     public int getListSize(String key) {
         checkKey(key);
         if (!isList(key)) throw new IllegalArgumentException("不是List类型的配置项，不能读取配置");
-        return Integer.parseInt(configSets.get(key+"#size"));
+        return Integer.parseInt(configSets.get(key+"#size")+"");
+    }
+
+    /**
+     * 得到配置的值，是一个对象
+     * @param key 配置项的key
+     * @return 配置项的值
+     */
+    public Object getValue(String key) {
+        checkKey(key);
+        return configSets.get(key);
     }
 
     /**
@@ -148,6 +158,7 @@ public class JsonConfig {
                 mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS, true);
                 //允许注释
                 mapper.configure(JsonParser.Feature.ALLOW_COMMENTS, true);
+
                 if (rootType==1) {
                     Map<String, Object> configMap=(Map<String, Object>)mapper.readValue(jsonStr, Map.class);
                     parseMap(configMap, null);
@@ -165,6 +176,8 @@ public class JsonConfig {
     @SuppressWarnings({ "unchecked", "rawtypes" })
     private void parseMap(Map<String, Object> configMap, String rootStr) {
         if (configMap==null||configMap.isEmpty()) return;
+        configSets.put(StringUtils.isNullOrEmptyOrSpace(rootStr)?"#Root":rootStr, configMap);
+
         Object value;
         for (String key: configMap.keySet()) {
             value=configMap.get(key);
@@ -185,6 +198,7 @@ public class JsonConfig {
     @SuppressWarnings({ "unchecked", "rawtypes" })
     private void parseList(List<Object> configList, String rootStr) {
         if (configList==null||configList.isEmpty()) return;
+        configSets.put(StringUtils.isNullOrEmptyOrSpace(rootStr)?"#Root":rootStr, configList);
 
         configSets.put((StringUtils.isNullOrEmptyOrSpace(rootStr)?"":(rootStr))+"#size", configList.size()+"");
         Object value;

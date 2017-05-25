@@ -10,10 +10,8 @@ public abstract class FileNameUtils {
      * @return 连接好的路径
      */
     public static String concatPath(String path1, String path2) {
-        String firstPath = path1.replace("/", File.separator);
-        firstPath = firstPath.replace("\\", File.separator);
-        String secondPath = path2.replace("/", File.separator);
-        secondPath = secondPath.replace("\\", File.separator);
+        String firstPath = path1.replace("\\", "/");
+        String secondPath = path2.replace("\\", "/");
 
         if (!firstPath.endsWith(File.separator)) firstPath+=File.separator;
         if (secondPath.startsWith(File.separator)) secondPath = secondPath.substring(1);
