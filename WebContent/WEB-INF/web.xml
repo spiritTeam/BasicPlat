@@ -81,7 +81,7 @@
   <!-- end过滤器 -->
 
   <!-- begin Servlet设置 -->
-  <!-- Spring MVC配置 -->
+  <!-- Spring MVC配置：注意名称必须为springMvc -->
   <servlet>
     <servlet-name>springMvc</servlet-name>
     <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>

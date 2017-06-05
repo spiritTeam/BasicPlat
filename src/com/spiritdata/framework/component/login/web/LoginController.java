@@ -23,6 +23,7 @@ import com.spiritdata.framework.core.cache.CacheEle;
 import com.spiritdata.framework.core.cache.SystemCache;
 import com.spiritdata.framework.core.model.tree.TreeNode;
 import com.spiritdata.framework.core.web.SessionLoaderShell;
+import com.spiritdata.framework.ext.spring.SpringGetBean;
 
 @Controller
 public class LoginController {
