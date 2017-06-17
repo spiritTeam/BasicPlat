@@ -1,14 +1,9 @@
 package com.spiritdata.framework.ext.spring;
 
-import java.util.Enumeration;
-
-import javax.servlet.Servlet;
 import javax.servlet.ServletContext;
-
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
-
 import com.spiritdata.framework.core.cache.SystemCache;
 import com.spiritdata.framework.util.StringUtils;
 import com.spiritdata.framework.FConstants;
@@ -23,7 +18,7 @@ public class SpringGetBean {
      * @param beanName bean名称
      * @return bean对象
      */
-    @SuppressWarnings({ "unchecked", "deprecation" })
+    @SuppressWarnings({ "unchecked"})
     public static  <T> T getBean(String beanName) {
         try {
             //得到上下文
