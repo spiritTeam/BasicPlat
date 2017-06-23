@@ -1,5 +1,7 @@
 package com.spiritdata.framework.UGA;
 
+import java.sql.Timestamp;
+
 import com.spiritdata.framework.core.model.BaseObject;
 
 /**
@@ -9,73 +11,63 @@ import com.spiritdata.framework.core.model.BaseObject;
  * @author wanghui
  */
 public abstract class UgaUser extends BaseObject {
-    private static final long serialVersionUID = -2467050195321143589L;
+    private static final long serialVersionUID=-2467050195321143589L;
 
-    protected String userId;
-    protected String userName;
-    protected String loginName;
-    protected String password;
+    protected String userId;//用户Id
+    protected String loginName;//用户登录名称
+    protected String password;//密码
+    protected String salt;//密码
+    protected int isValidate;//是否生效
+    protected Timestamp CTime;//创建时间
+    protected Timestamp lmTime;//最后修改时间
+    protected String userName;//用户实名
 
-    /**
-     * 得到用户Id
-     * @return 用户Id
-     */
     public String getUserId() {
         return userId;
     }
-    /**
-     * 设置用户Id
-     * @param userId 用户Id
-     */
     public void setUserId(String userId) {
-        this.userId = userId;
+        this.userId=userId;
     }
-
-    /**
-     * 得到用户名称
-     * @return 用户名称
-     */
-    public String getUserName() {
-        return userName;
-    }
-
-    /**
-     * 设置用户名称
-     * @param userName 用户Name
-     */
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    /**
-     * 得到用户登录名
-     * @return 用户登录名
-     */
     public String getLoginName() {
         return loginName;
     }
-
-    /**
-     * 设置用户登录名
-     * @param loginName 用户登录名
-     */
     public void setLoginName(String loginName) {
-        this.loginName = loginName;
+        this.loginName=loginName;
     }
-
-    /**
-     * 得到用户登录密码
-     * @return 用户登录密码
-     */
     public String getPassword() {
         return password;
     }
-
-    /**
-     * 设置用户登录密码
-     * @param password 用户登录密码
-     */
     public void setPassword(String password) {
-        this.password = password;
+        this.password=password;
+    }
+    public String getSalt() {
+        return salt;
+    }
+    public void setSalt(String salt) {
+        this.salt=salt;
+    }
+    public int getIsValidate() {
+        return isValidate;
+    }
+    public void setIsValidate(int isValidate) {
+        this.isValidate=isValidate;
+    }
+    public Timestamp getCTime() {
+        return CTime;
+    }
+    public void setCTime(Timestamp cTime) {
+        CTime=cTime;
+    }
+    public Timestamp getLmTime() {
+        return lmTime;
+    }
+    public void setLmTime(Timestamp lmTime) {
+        this.lmTime=lmTime;
+    }
+    public String getUserName() {
+        return userName;
+    }
+    public void setUserName(String userName) {
+        this.userName=userName;
     }
 }

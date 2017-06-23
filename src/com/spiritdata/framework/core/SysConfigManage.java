@@ -52,6 +52,7 @@ public class SysConfigManage {
      * @param key 系统配置项名称
      * @return 系统配置项值
      */
+    @SuppressWarnings("unchecked")
     public static String getValue(String key) {
         if (SysConfigManage.sysConfigMap==null) {
             if (SystemCache.getCache(FConstants.SYS_CONFIG)!=null) {
