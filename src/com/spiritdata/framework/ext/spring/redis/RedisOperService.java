@@ -1,17 +1,17 @@
 package com.spiritdata.framework.ext.spring.redis;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.util.Assert;
 
-import com.spiritdata.framework.core.lock.BlockLockConfig;
-import com.spiritdata.framework.core.lock.ExpirableBlockKey;
-import com.spiritdata.framework.ext.redis.GetBizData;
-import com.spiritdata.framework.ext.redis.lock.RedisBlockLock;
-import com.spiritdata.framework.util.JsonUtils;
+//import java.util.HashMap;
+//import java.util.Map;
+//import com.spiritdata.framework.core.lock.BlockLockConfig;
+//import com.spiritdata.framework.core.lock.ExpirableBlockKey;
+//import com.spiritdata.framework.ext.redis.lock.RedisBlockLock;
+//import com.spiritdata.framework.util.JsonUtils;
+//import com.spiritdata.framework.ext.redis.GetBizData;
 
 import redis.clients.jedis.Jedis;
 
@@ -183,36 +183,36 @@ public class RedisOperService {
     public void cleanDB() {
         jedis.flushDB();
     }
-
-    /**
-     * 获得并设置Key值
-     * @param key key值
-     * @param getData 获得业务数据的类
-     * @param expiredTime 过期时间
-     * @param isResident 如果Redis中有数据，是否钉在内存中，若是false，则该条数据将按照过期时间失效
-     * @return 所获得的值
-     */
-    public Map<String, Object> getAndSet(String key, GetBizData getData, long expiredTime, boolean isResident) {
-        ExpirableBlockKey rLock=RedisBlockLock.lock(key+"=LOCK", this, new BlockLockConfig(500, 2, 0, 60*1000));
-        Map<String, Object> ret=new HashMap<String, Object>();
-        try {
-            Object _ret=jedis.get(key);
-            if (_ret==null) {
-                _ret=getData.getBizData();
-                if (_ret!=null) {
-                    set(key, JsonUtils.objToJson(_ret), expiredTime);
-                    ret.put("FromBiz", _ret);
-                }
-            } else {
-                if (isResident) pExpire(key, expiredTime);
-                ret.put("FromRedis", _ret);
-            }
-            return ret.size()==0?null:ret;
-        } catch(Exception e) {
-            e.printStackTrace();
-            return null;
-        } finally {
-            rLock.unlock();
-        }
-    }
+//
+//    /**
+//     * 获得并设置Key值
+//     * @param key key值
+//     * @param getData 获得业务数据的类
+//     * @param expiredTime 过期时间
+//     * @param isResident 如果Redis中有数据，是否钉在内存中，若是false，则该条数据将按照过期时间失效
+//     * @return 所获得的值
+//     */
+//    public Map<String, Object> getAndSet(String key, RedisGetAndSet getData, long expiredTime, boolean isResident) {
+//        ExpirableBlockKey rLock=RedisBlockLock.lock(key+"=LOCK", this, new BlockLockConfig(500, 2, 0, 60*1000));
+//        Map<String, Object> ret=new HashMap<String, Object>();
+//        try {
+//            Object _ret=jedis.get(key);
+//            if (_ret==null) {
+//                _ret=getData.getBizData();
+//                if (_ret!=null) {
+//                    set(key, JsonUtils.objToJson(_ret), expiredTime);
+//                    ret.put("FromBiz", _ret);
+//                }
+//            } else {
+//                if (isResident) pExpire(key, expiredTime);
+//                ret.put("FromRedis", _ret);
+//            }
+//            return ret.size()==0?null:ret;
+//        } catch(Exception e) {
+//            e.printStackTrace();
+//            return null;
+//        } finally {
+//            rLock.unlock();
+//        }
+//    }
 }
