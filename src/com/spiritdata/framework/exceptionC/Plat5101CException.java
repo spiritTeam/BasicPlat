@@ -3,7 +3,6 @@ package com.spiritdata.framework.exceptionC;
 /**
  * 阻塞锁异常，内部码为5101，基本信息为'K-V中K生成异常'。
  * 请参看:
- * {@linkplain com.woting.passport.session 包[com.woting.passport.session]}
  * @author wh
  */
 public class Plat5101CException extends PlatCException {

@@ -141,7 +141,7 @@ public class RedisOperService {
 
     /**
      * 向key中插入一组数据
-     * @param key 数据的key
+     * @param key 数组的key
      * @param values 插入数据后，数组的长度
      */
     public void rPush(String key, String... values) {
@@ -150,7 +150,7 @@ public class RedisOperService {
 
     /**
      * 得到key对应的数组的子数组，子数组从下标start到end，注意Redis的下标从0开始
-     * @param key 数据的key
+     * @param key 数组的key
      * @param start 开始下标
      * @param end 结束下标
      * @return 子数组，以String为元素
@@ -161,11 +161,21 @@ public class RedisOperService {
 
     /**
      * 得到key对应的数组的长度
-     * @param key 数据的key
+     * @param key 数组的key
      * @return 数组的长度
      */
     public Long lLen(String key) {
         return jedis.llen(key);
+    }
+
+    /**
+     * 从key对应的数据中，删除值为value的元素
+     * @param key 数组的key
+     * @param value 数组中预删除的值
+     * @return 删除掉的元素的个数
+     */
+    public Long lRemove(String key, String value) {
+        return jedis.lrem(key, 0, value);
     }
 
     /**

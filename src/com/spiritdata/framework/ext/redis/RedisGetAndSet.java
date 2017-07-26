@@ -41,9 +41,23 @@ public abstract class RedisGetAndSet<T> extends GetAndSet<T> {
         }
     }
 
+    /**
+     * 得到Redis中的Key值
+     * @return Key值
+     */
     protected abstract String getKey();
 
+    /**
+     * 把从Redis中读出的字符串转换为对象
+     * @param s 字符串Json格式的
+     * @return 对象
+     */
     protected abstract T convert(String s);
 
+    /**
+     * 把对象转换为字符串，为存入Redis做准备
+     * @param item 对象
+     * @return Json字符串
+     */
     protected abstract String convert(T item);
 }
