@@ -85,7 +85,7 @@ public class PageInterceptor implements Interceptor{
                 countTask = new Callable<Paginator>() {
                     public Paginator call() throws Exception {
                         Integer count = null;
-                        MetaObject mo = MetaObject.forObject(invocation.getTarget(), DEFAULT_OBJECT_FACTORY, DEFAULT_OBJECT_WRAPPER_FACTORY);
+                        MetaObject mo = MetaObject.forObject(invocation.getTarget(), DEFAULT_OBJECT_FACTORY, DEFAULT_OBJECT_WRAPPER_FACTORY, null);
                         DataSource ds = (DataSource)mo.getValue("delegate.configuration.environment.dataSource");
                         Connection conn = null;//ds.getConnection();
                         try {
