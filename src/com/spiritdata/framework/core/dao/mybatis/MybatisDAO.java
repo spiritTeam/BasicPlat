@@ -194,7 +194,7 @@ public class MybatisDAO <T extends BaseObject> extends SqlSessionDaoSupport impl
 
             List<T> l=this.getSqlSession().selectList(key, parameter, pageBounds);
             if (countSqlId==null)  {
-                PageList<T> pageList=(PageList<T>)l;
+                PageList<T> pageList=new PageList<T>(l);
                 totalCount=pageList.getPaginator().getTotalCount(); //得到结果条数
             }
             Page<T> rp=new Page<T>(totalCount, pageSize, pageIndex, l);

@@ -19,7 +19,7 @@ public class SpringGetBean {
      * @return bean对象
      */
     @SuppressWarnings({ "unchecked"})
-    public static  <T> T getBean(String beanName) {
+    public static <T> T getBean(String beanName) {
         try {
             //得到上下文
             ServletContext sc=(SystemCache.getCache(FConstants.SERVLET_CONTEXT)==null?null:(ServletContext)SystemCache.getCache(FConstants.SERVLET_CONTEXT).getContent());
@@ -55,4 +55,18 @@ public class SpringGetBean {
         return null;
     }
 
+    @SuppressWarnings({ "unchecked"})
+    public static <T> T getBeanFromCache(String beanName, String springCacheKey) {
+        if (StringUtils.isNullOrEmptyOrSpace(beanName)||StringUtils.isNullOrEmptyOrSpace(springCacheKey)) return null;
+        ApplicationContext ac=(SystemCache.getCache(springCacheKey)==null?null:(ApplicationContext)SystemCache.getCache(springCacheKey).getContent());
+        if (ac==null) return null;
+
+        T retBean=null;
+        try {
+            retBean=(T)ac.getBean(beanName);
+        } catch(Exception e) {
+            LoggerFactory.getLogger(SpringGetBean.class).error("得到名称为[{}]的bean对象出现异常：\n{}", beanName, StringUtils.getAllMessage(e));
+        }
+        return retBean;
+    }
 }
