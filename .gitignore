@@ -1,5 +1,4 @@
 ﻿/logs
-/doc
 /WebContent/log
 /WebContent/m8.jsp
 /WebContent/test.js
@@ -8,7 +7,7 @@
 /WebContent/WEB-INF/classes
 /
 /WebContent/uploadFiles
-
+/logs/*
 /.classpath
 /.project
 /target
