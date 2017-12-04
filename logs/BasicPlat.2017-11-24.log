@@ -1,0 +1,92 @@
+2017-11-24 03:40:41.340|a [localhost-startStop-1] org.springframework.web.context.ContextLoader
+2017-11-24 03:40:41.340|b [localhost-startStop-1] -- Root WebApplicationContext: initialization started
+2017-11-24 03:40:41.378|a [localhost-startStop-1] org.springframework.web.context.support.XmlWebApplicationContext
+2017-11-24 03:40:41.378|b [localhost-startStop-1] -- Refreshing Root WebApplicationContext: startup date [Fri Nov 24 03:40:41 CST 2017]; root of context hierarchy
+2017-11-24 03:40:41.424|a [localhost-startStop-1] org.springframework.beans.factory.xml.XmlBeanDefinitionReader
+2017-11-24 03:40:41.424|b [localhost-startStop-1] -- Loading XML bean definitions from file [D:\Work\projects\BasicPlat\WebContent\WEB-INF\classes\springConfig\frameworkSpring.xml]
+2017-11-24 03:40:41.740|a [localhost-startStop-1] org.springframework.beans.factory.xml.XmlBeanDefinitionReader
+2017-11-24 03:40:41.740|b [localhost-startStop-1] -- Loading XML bean definitions from file [D:\Work\projects\BasicPlat\WebContent\WEB-INF\classes\springConfig\gisSmSpring.xml]
+2017-11-24 03:40:41.793|a [localhost-startStop-1] org.springframework.beans.factory.xml.XmlBeanDefinitionReader
+2017-11-24 03:40:41.793|b [localhost-startStop-1] -- Loading XML bean definitions from ServletContext resource [/WEB-INF/applicationContext.xml]
+2017-11-24 03:40:43.374|a [localhost-startStop-1] org.springframework.web.context.ContextLoader
+2017-11-24 03:40:43.374|b [localhost-startStop-1] -- Root WebApplicationContext: initialization completed in 2034 ms
+2017-11-24 03:40:43.442|a [localhost-startStop-1] org.springframework.web.servlet.DispatcherServlet
+2017-11-24 03:40:43.442|b [localhost-startStop-1] -- FrameworkServlet 'springMvc': initialization started
+2017-11-24 03:40:43.453|a [localhost-startStop-1] org.springframework.web.context.support.XmlWebApplicationContext
+2017-11-24 03:40:43.453|b [localhost-startStop-1] -- Refreshing WebApplicationContext for namespace 'springMvc-servlet': startup date [Fri Nov 24 03:40:43 CST 2017]; parent: Root WebApplicationContext
+2017-11-24 03:40:43.453|a [localhost-startStop-1] org.springframework.beans.factory.xml.XmlBeanDefinitionReader
+2017-11-24 03:40:43.453|b [localhost-startStop-1] -- Loading XML bean definitions from file [D:\Work\projects\BasicPlat\WebContent\WEB-INF\classes\springMvcConfig\coreMvc.xml]
+2017-11-24 03:40:43.519|a [localhost-startStop-1] org.springframework.beans.factory.xml.XmlBeanDefinitionReader
+2017-11-24 03:40:43.519|b [localhost-startStop-1] -- Loading XML bean definitions from file [D:\Work\projects\BasicPlat\WebContent\WEB-INF\classes\springMvcConfig\frameworkMvc.xml]
+2017-11-24 03:40:43.698|a [localhost-startStop-1] org.springframework.web.servlet.handler.SimpleUrlHandlerMapping
+2017-11-24 03:40:43.698|b [localhost-startStop-1] -- Mapped URL path [/resources/**] onto handler 'org.springframework.web.servlet.resource.ResourceHttpRequestHandler#0'
+2017-11-24 03:40:43.726|a [localhost-startStop-1] org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping
+2017-11-24 03:40:43.726|b [localhost-startStop-1] -- Mapped URL path [/cacheRefresh.do] onto handler '/cacheRefresh.do'
+2017-11-24 03:40:43.733|a [localhost-startStop-1] org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping
+2017-11-24 03:40:43.733|b [localhost-startStop-1] -- Mapped URL path [/uploadtest.do] onto handler '/uploadtest.do'
+2017-11-24 03:40:43.792|a [localhost-startStop-1] o.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping
+2017-11-24 03:40:43.792|b [localhost-startStop-1] -- Mapped "{[/testRestructureTree.do]}" onto public java.util.Map<java.lang.String, java.lang.Object> com.spiritdata.framework.component.demo.web.TestTreeController.showAllTree(javax.servlet.http.HttpServletRequest) throws java.lang.CloneNotSupportedException
+2017-11-24 03:40:43.795|a [localhost-startStop-1] o.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping
+2017-11-24 03:40:43.795|b [localhost-startStop-1] -- Mapped "{[/logout.do]}" onto public java.util.Map<java.lang.String, java.lang.Object> com.spiritdata.framework.component.login.web.LoginController.logout(javax.servlet.http.HttpServletRequest)
+2017-11-24 03:40:43.796|a [localhost-startStop-1] o.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping
+2017-11-24 03:40:43.796|b [localhost-startStop-1] -- Mapped "{[/login.do]}" onto public java.util.Map<java.lang.String, java.lang.Object> com.spiritdata.framework.component.login.web.LoginController.Login(com.spiritdata.framework.component.login.pojo.UserLogin,javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+2017-11-24 03:40:43.797|a [localhost-startStop-1] o.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping
+2017-11-24 03:40:43.797|b [localhost-startStop-1] -- Mapped "{[/updateModule.do],methods=[POST]}" onto public int com.spiritdata.framework.component.module.web.ModuleController.updateModule(com.spiritdata.framework.component.module.pojo.Module,javax.servlet.http.HttpServletRequest)
+2017-11-24 03:40:43.797|a [localhost-startStop-1] o.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping
+2017-11-24 03:40:43.797|b [localhost-startStop-1] -- Mapped "{[/insertModule.do],methods=[POST]}" onto public int com.spiritdata.framework.component.module.web.ModuleController.insertModule(com.spiritdata.framework.component.module.pojo.Module,javax.servlet.http.HttpServletRequest)
+2017-11-24 03:40:43.797|a [localhost-startStop-1] o.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping
+2017-11-24 03:40:43.797|b [localhost-startStop-1] -- Mapped "{[/deleteModule.do],methods=[POST]}" onto public int com.spiritdata.framework.component.module.web.ModuleController.deleteModule(javax.servlet.http.HttpServletRequest)
+2017-11-24 03:40:43.797|a [localhost-startStop-1] o.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping
+2017-11-24 03:40:43.797|b [localhost-startStop-1] -- Mapped "{[/refreshManager.do],methods=[POST]}" onto public java.util.Map<java.lang.String, java.lang.Object> com.spiritdata.framework.component.module.web.ModuleController.refreshModule()
+2017-11-24 03:40:43.797|a [localhost-startStop-1] o.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping
+2017-11-24 03:40:43.797|b [localhost-startStop-1] -- Mapped "{[/showAllTree.do]}" onto public java.util.Map<java.lang.String, java.lang.Object> com.spiritdata.framework.component.module.web.ModuleController.showAllTree() throws java.lang.CloneNotSupportedException
+2017-11-24 03:40:43.797|a [localhost-startStop-1] o.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping
+2017-11-24 03:40:43.797|b [localhost-startStop-1] -- Mapped "{[/showAllTreeGrid.do]}" onto public java.util.Map<java.lang.String, java.lang.Object> com.spiritdata.framework.component.module.web.ModuleController.showAllTreeGrid() throws java.lang.CloneNotSupportedException
+2017-11-24 03:40:44.028|a [localhost-startStop-1] o.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter
+2017-11-24 03:40:44.028|b [localhost-startStop-1] -- Looking for @ControllerAdvice: WebApplicationContext for namespace 'springMvc-servlet': startup date [Fri Nov 24 03:40:43 CST 2017]; parent: Root WebApplicationContext
+2017-11-24 03:40:44.060|a [localhost-startStop-1] org.springframework.web.context.support.XmlWebApplicationContext
+2017-11-24 03:40:44.060|b [localhost-startStop-1] -- Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'loginController': Injection of resource dependencies failed; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'com.spiritdata.framework.component.login.service.LoginService' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@javax.annotation.Resource(shareable=true, lookup=, name=, description=, authenticationType=CONTAINER, type=class java.lang.Object, mappedName=)}
+2017-11-24 03:40:44.075|a [localhost-startStop-1] org.springframework.web.servlet.DispatcherServlet
+2017-11-24 03:40:44.075|b [localhost-startStop-1] -- Context initialization failed
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'loginController': Injection of resource dependencies failed; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'com.spiritdata.framework.component.login.service.LoginService' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@javax.annotation.Resource(shareable=true, lookup=, name=, description=, authenticationType=CONTAINER, type=class java.lang.Object, mappedName=)}
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.postProcessPropertyValues(CommonAnnotationBeanPostProcessor.java:321) ~[spring-context-4.3.8.RELEASE.jar:4.3.8.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1264) ~[spring-beans-4.3.8.RELEASE.jar:4.3.8.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:553) ~[spring-beans-4.3.8.RELEASE.jar:4.3.8.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:483) ~[spring-beans-4.3.8.RELEASE.jar:4.3.8.RELEASE]
+	at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:306) ~[spring-beans-4.3.8.RELEASE.jar:4.3.8.RELEASE]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:230) ~[spring-beans-4.3.8.RELEASE.jar:4.3.8.RELEASE]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:302) ~[spring-beans-4.3.8.RELEASE.jar:4.3.8.RELEASE]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:197) ~[spring-beans-4.3.8.RELEASE.jar:4.3.8.RELEASE]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:761) ~[spring-beans-4.3.8.RELEASE.jar:4.3.8.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:866) ~[spring-context-4.3.8.RELEASE.jar:4.3.8.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:542) ~[spring-context-4.3.8.RELEASE.jar:4.3.8.RELEASE]
+	at org.springframework.web.servlet.FrameworkServlet.configureAndRefreshWebApplicationContext(FrameworkServlet.java:668) ~[spring-webmvc-4.3.8.RELEASE.jar:4.3.8.RELEASE]
+	at org.springframework.web.servlet.FrameworkServlet.createWebApplicationContext(FrameworkServlet.java:634) ~[spring-webmvc-4.3.8.RELEASE.jar:4.3.8.RELEASE]
+	at org.springframework.web.servlet.FrameworkServlet.createWebApplicationContext(FrameworkServlet.java:682) ~[spring-webmvc-4.3.8.RELEASE.jar:4.3.8.RELEASE]
+	at org.springframework.web.servlet.FrameworkServlet.initWebApplicationContext(FrameworkServlet.java:553) ~[spring-webmvc-4.3.8.RELEASE.jar:4.3.8.RELEASE]
+	at org.springframework.web.servlet.FrameworkServlet.initServletBean(FrameworkServlet.java:494) ~[spring-webmvc-4.3.8.RELEASE.jar:4.3.8.RELEASE]
+	at org.springframework.web.servlet.HttpServletBean.init(HttpServletBean.java:138) [spring-webmvc-4.3.8.RELEASE.jar:4.3.8.RELEASE]
+	at javax.servlet.GenericServlet.init(GenericServlet.java:158) [servlet-api.jar:3.1.FR]
+	at org.apache.catalina.core.StandardWrapper.initServlet(StandardWrapper.java:1238) [catalina.jar:8.0.36]
+	at org.apache.catalina.core.StandardWrapper.loadServlet(StandardWrapper.java:1151) [catalina.jar:8.0.36]
+	at org.apache.catalina.core.StandardWrapper.load(StandardWrapper.java:1038) [catalina.jar:8.0.36]
+	at org.apache.catalina.core.StandardContext.loadOnStartup(StandardContext.java:5027) [catalina.jar:8.0.36]
+	at org.apache.catalina.core.StandardContext.startInternal(StandardContext.java:5337) [catalina.jar:8.0.36]
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:147) [catalina.jar:8.0.36]
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1407) [catalina.jar:8.0.36]
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1397) [catalina.jar:8.0.36]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) [na:1.8.0_144]
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149) [na:1.8.0_144]
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624) [na:1.8.0_144]
+	at java.lang.Thread.run(Thread.java:748) [na:1.8.0_144]
+Caused by: org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'com.spiritdata.framework.component.login.service.LoginService' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@javax.annotation.Resource(shareable=true, lookup=, name=, description=, authenticationType=CONTAINER, type=class java.lang.Object, mappedName=)}
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.raiseNoMatchingBeanFound(DefaultListableBeanFactory.java:1486) ~[spring-beans-4.3.8.RELEASE.jar:4.3.8.RELEASE]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1104) ~[spring-beans-4.3.8.RELEASE.jar:4.3.8.RELEASE]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1066) ~[spring-beans-4.3.8.RELEASE.jar:4.3.8.RELEASE]
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.autowireResource(CommonAnnotationBeanPostProcessor.java:518) ~[spring-context-4.3.8.RELEASE.jar:4.3.8.RELEASE]
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.getResource(CommonAnnotationBeanPostProcessor.java:496) ~[spring-context-4.3.8.RELEASE.jar:4.3.8.RELEASE]
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor$ResourceElement.getResourceToInject(CommonAnnotationBeanPostProcessor.java:627) ~[spring-context-4.3.8.RELEASE.jar:4.3.8.RELEASE]
+	at org.springframework.beans.factory.annotation.InjectionMetadata$InjectedElement.inject(InjectionMetadata.java:169) ~[spring-beans-4.3.8.RELEASE.jar:4.3.8.RELEASE]
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:88) ~[spring-beans-4.3.8.RELEASE.jar:4.3.8.RELEASE]
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.postProcessPropertyValues(CommonAnnotationBeanPostProcessor.java:318) ~[spring-context-4.3.8.RELEASE.jar:4.3.8.RELEASE]
+	... 29 common frames omitted

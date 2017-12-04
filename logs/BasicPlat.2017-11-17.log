@@ -1,0 +1,86 @@
+2017-11-17 09:42:21.981|a [localhost-startStop-1] org.springframework.web.context.ContextLoader
+2017-11-17 09:42:21.981|b [localhost-startStop-1] -- Root WebApplicationContext: initialization started
+2017-11-17 09:42:22.029|a [localhost-startStop-1] org.springframework.web.context.support.XmlWebApplicationContext
+2017-11-17 09:42:22.029|b [localhost-startStop-1] -- Refreshing Root WebApplicationContext: startup date [Fri Nov 17 09:42:22 CST 2017]; root of context hierarchy
+2017-11-17 09:42:22.084|a [localhost-startStop-1] org.springframework.beans.factory.xml.XmlBeanDefinitionReader
+2017-11-17 09:42:22.084|b [localhost-startStop-1] -- Loading XML bean definitions from file [D:\Work\projects\BasicPlat\WebContent\WEB-INF\classes\springConfig\frameworkSpring.xml]
+2017-11-17 09:42:22.499|a [localhost-startStop-1] org.springframework.beans.factory.xml.XmlBeanDefinitionReader
+2017-11-17 09:42:22.499|b [localhost-startStop-1] -- Loading XML bean definitions from file [D:\Work\projects\BasicPlat\WebContent\WEB-INF\classes\springConfig\gisSmSpring.xml]
+2017-11-17 09:42:22.574|a [localhost-startStop-1] org.springframework.beans.factory.xml.XmlBeanDefinitionReader
+2017-11-17 09:42:22.574|b [localhost-startStop-1] -- Loading XML bean definitions from ServletContext resource [/WEB-INF/applicationContext.xml]
+2017-11-17 09:42:24.527|a [localhost-startStop-1] org.springframework.web.context.ContextLoader
+2017-11-17 09:42:24.527|b [localhost-startStop-1] -- Root WebApplicationContext: initialization completed in 2536 ms
+2017-11-17 09:42:24.606|a [localhost-startStop-1] org.springframework.web.servlet.DispatcherServlet
+2017-11-17 09:42:24.606|b [localhost-startStop-1] -- FrameworkServlet 'springMvc': initialization started
+2017-11-17 09:42:24.615|a [localhost-startStop-1] org.springframework.web.context.support.XmlWebApplicationContext
+2017-11-17 09:42:24.615|b [localhost-startStop-1] -- Refreshing WebApplicationContext for namespace 'springMvc-servlet': startup date [Fri Nov 17 09:42:24 CST 2017]; parent: Root WebApplicationContext
+2017-11-17 09:42:24.616|a [localhost-startStop-1] org.springframework.beans.factory.xml.XmlBeanDefinitionReader
+2017-11-17 09:42:24.616|b [localhost-startStop-1] -- Loading XML bean definitions from file [D:\Work\projects\BasicPlat\WebContent\WEB-INF\classes\springMvcConfig\coreMvc.xml]
+2017-11-17 09:42:24.744|a [localhost-startStop-1] org.springframework.beans.factory.xml.XmlBeanDefinitionReader
+2017-11-17 09:42:24.744|b [localhost-startStop-1] -- Loading XML bean definitions from file [D:\Work\projects\BasicPlat\WebContent\WEB-INF\classes\springMvcConfig\frameworkMvc.xml]
+2017-11-17 09:42:25.115|a [localhost-startStop-1] org.springframework.web.servlet.handler.SimpleUrlHandlerMapping
+2017-11-17 09:42:25.115|b [localhost-startStop-1] -- Mapped URL path [/resources/**] onto handler 'org.springframework.web.servlet.resource.ResourceHttpRequestHandler#0'
+2017-11-17 09:42:25.154|a [localhost-startStop-1] org.springframework.web.context.support.XmlWebApplicationContext
+2017-11-17 09:42:25.154|b [localhost-startStop-1] -- Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping': Initialization of bean failed; nested exception is org.springframework.beans.factory.CannotLoadBeanClassException: Cannot find class [com.spiritdata.test.TestLoginService] for bean with name 'loginService' defined in file [D:\Work\projects\BasicPlat\WebContent\WEB-INF\classes\springMvcConfig\frameworkMvc.xml]; nested exception is java.lang.ClassNotFoundException: com.spiritdata.test.TestLoginService
+Related cause: org.springframework.beans.factory.CannotLoadBeanClassException: Cannot find class [com.spiritdata.test.TestLoginService] for bean with name 'loginService' defined in file [D:\Work\projects\BasicPlat\WebContent\WEB-INF\classes\springMvcConfig\frameworkMvc.xml]; nested exception is java.lang.ClassNotFoundException: com.spiritdata.test.TestLoginService
+2017-11-17 09:42:25.163|a [localhost-startStop-1] org.springframework.web.servlet.DispatcherServlet
+2017-11-17 09:42:25.163|b [localhost-startStop-1] -- Context initialization failed
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping': Initialization of bean failed; nested exception is org.springframework.beans.factory.CannotLoadBeanClassException: Cannot find class [com.spiritdata.test.TestLoginService] for bean with name 'loginService' defined in file [D:\Work\projects\BasicPlat\WebContent\WEB-INF\classes\springMvcConfig\frameworkMvc.xml]; nested exception is java.lang.ClassNotFoundException: com.spiritdata.test.TestLoginService
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:564) ~[spring-beans-4.3.8.RELEASE.jar:4.3.8.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:483) ~[spring-beans-4.3.8.RELEASE.jar:4.3.8.RELEASE]
+	at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:306) ~[spring-beans-4.3.8.RELEASE.jar:4.3.8.RELEASE]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:230) ~[spring-beans-4.3.8.RELEASE.jar:4.3.8.RELEASE]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:302) ~[spring-beans-4.3.8.RELEASE.jar:4.3.8.RELEASE]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:197) ~[spring-beans-4.3.8.RELEASE.jar:4.3.8.RELEASE]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:761) ~[spring-beans-4.3.8.RELEASE.jar:4.3.8.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:866) ~[spring-context-4.3.8.RELEASE.jar:4.3.8.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:542) ~[spring-context-4.3.8.RELEASE.jar:4.3.8.RELEASE]
+	at org.springframework.web.servlet.FrameworkServlet.configureAndRefreshWebApplicationContext(FrameworkServlet.java:668) ~[spring-webmvc-4.3.8.RELEASE.jar:4.3.8.RELEASE]
+	at org.springframework.web.servlet.FrameworkServlet.createWebApplicationContext(FrameworkServlet.java:634) ~[spring-webmvc-4.3.8.RELEASE.jar:4.3.8.RELEASE]
+	at org.springframework.web.servlet.FrameworkServlet.createWebApplicationContext(FrameworkServlet.java:682) ~[spring-webmvc-4.3.8.RELEASE.jar:4.3.8.RELEASE]
+	at org.springframework.web.servlet.FrameworkServlet.initWebApplicationContext(FrameworkServlet.java:553) ~[spring-webmvc-4.3.8.RELEASE.jar:4.3.8.RELEASE]
+	at org.springframework.web.servlet.FrameworkServlet.initServletBean(FrameworkServlet.java:494) ~[spring-webmvc-4.3.8.RELEASE.jar:4.3.8.RELEASE]
+	at org.springframework.web.servlet.HttpServletBean.init(HttpServletBean.java:138) [spring-webmvc-4.3.8.RELEASE.jar:4.3.8.RELEASE]
+	at javax.servlet.GenericServlet.init(GenericServlet.java:158) [servlet-api.jar:3.1.FR]
+	at org.apache.catalina.core.StandardWrapper.initServlet(StandardWrapper.java:1238) [catalina.jar:8.0.36]
+	at org.apache.catalina.core.StandardWrapper.loadServlet(StandardWrapper.java:1151) [catalina.jar:8.0.36]
+	at org.apache.catalina.core.StandardWrapper.load(StandardWrapper.java:1038) [catalina.jar:8.0.36]
+	at org.apache.catalina.core.StandardContext.loadOnStartup(StandardContext.java:5027) [catalina.jar:8.0.36]
+	at org.apache.catalina.core.StandardContext.startInternal(StandardContext.java:5337) [catalina.jar:8.0.36]
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:147) [catalina.jar:8.0.36]
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1407) [catalina.jar:8.0.36]
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1397) [catalina.jar:8.0.36]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266) [na:1.8.0_144]
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149) [na:1.8.0_144]
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624) [na:1.8.0_144]
+	at java.lang.Thread.run(Thread.java:748) [na:1.8.0_144]
+Caused by: org.springframework.beans.factory.CannotLoadBeanClassException: Cannot find class [com.spiritdata.test.TestLoginService] for bean with name 'loginService' defined in file [D:\Work\projects\BasicPlat\WebContent\WEB-INF\classes\springMvcConfig\frameworkMvc.xml]; nested exception is java.lang.ClassNotFoundException: com.spiritdata.test.TestLoginService
+	at org.springframework.beans.factory.support.AbstractBeanFactory.resolveBeanClass(AbstractBeanFactory.java:1385) ~[spring-beans-4.3.8.RELEASE.jar:4.3.8.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.determineTargetType(AbstractAutowireCapableBeanFactory.java:641) ~[spring-beans-4.3.8.RELEASE.jar:4.3.8.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.predictBeanType(AbstractAutowireCapableBeanFactory.java:609) ~[spring-beans-4.3.8.RELEASE.jar:4.3.8.RELEASE]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.isFactoryBean(AbstractBeanFactory.java:1484) ~[spring-beans-4.3.8.RELEASE.jar:4.3.8.RELEASE]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doGetBeanNamesForType(DefaultListableBeanFactory.java:425) ~[spring-beans-4.3.8.RELEASE.jar:4.3.8.RELEASE]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.getBeanNamesForType(DefaultListableBeanFactory.java:403) ~[spring-beans-4.3.8.RELEASE.jar:4.3.8.RELEASE]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.getBeanNamesForType(DefaultListableBeanFactory.java:389) ~[spring-beans-4.3.8.RELEASE.jar:4.3.8.RELEASE]
+	at org.springframework.context.support.AbstractApplicationContext.getBeanNamesForType(AbstractApplicationContext.java:1177) ~[spring-context-4.3.8.RELEASE.jar:4.3.8.RELEASE]
+	at org.springframework.web.servlet.handler.AbstractDetectingUrlHandlerMapping.detectHandlers(AbstractDetectingUrlHandlerMapping.java:75) ~[spring-webmvc-4.3.8.RELEASE.jar:4.3.8.RELEASE]
+	at org.springframework.web.servlet.handler.AbstractDetectingUrlHandlerMapping.initApplicationContext(AbstractDetectingUrlHandlerMapping.java:58) ~[spring-webmvc-4.3.8.RELEASE.jar:4.3.8.RELEASE]
+	at org.springframework.context.support.ApplicationObjectSupport.initApplicationContext(ApplicationObjectSupport.java:120) ~[spring-context-4.3.8.RELEASE.jar:4.3.8.RELEASE]
+	at org.springframework.web.context.support.WebApplicationObjectSupport.initApplicationContext(WebApplicationObjectSupport.java:76) ~[spring-web-4.3.8.RELEASE.jar:4.3.8.RELEASE]
+	at org.springframework.context.support.ApplicationObjectSupport.setApplicationContext(ApplicationObjectSupport.java:74) ~[spring-context-4.3.8.RELEASE.jar:4.3.8.RELEASE]
+	at org.springframework.context.support.ApplicationContextAwareProcessor.invokeAwareInterfaces(ApplicationContextAwareProcessor.java:121) ~[spring-context-4.3.8.RELEASE.jar:4.3.8.RELEASE]
+	at org.springframework.context.support.ApplicationContextAwareProcessor.postProcessBeforeInitialization(ApplicationContextAwareProcessor.java:97) ~[spring-context-4.3.8.RELEASE.jar:4.3.8.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyBeanPostProcessorsBeforeInitialization(AbstractAutowireCapableBeanFactory.java:409) ~[spring-beans-4.3.8.RELEASE.jar:4.3.8.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1620) ~[spring-beans-4.3.8.RELEASE.jar:4.3.8.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:555) ~[spring-beans-4.3.8.RELEASE.jar:4.3.8.RELEASE]
+	... 27 common frames omitted
+Caused by: java.lang.ClassNotFoundException: com.spiritdata.test.TestLoginService
+	at org.apache.catalina.loader.WebappClassLoaderBase.loadClass(WebappClassLoaderBase.java:1332) ~[catalina.jar:8.0.36]
+	at org.apache.catalina.loader.WebappClassLoaderBase.loadClass(WebappClassLoaderBase.java:1166) ~[catalina.jar:8.0.36]
+	at org.springframework.util.ClassUtils.forName(ClassUtils.java:250) ~[spring-core-4.3.8.RELEASE.jar:4.3.8.RELEASE]
+	at org.springframework.beans.factory.support.AbstractBeanDefinition.resolveBeanClass(AbstractBeanDefinition.java:401) ~[spring-beans-4.3.8.RELEASE.jar:4.3.8.RELEASE]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doResolveBeanClass(AbstractBeanFactory.java:1432) ~[spring-beans-4.3.8.RELEASE.jar:4.3.8.RELEASE]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.resolveBeanClass(AbstractBeanFactory.java:1377) ~[spring-beans-4.3.8.RELEASE.jar:4.3.8.RELEASE]
+	... 44 common frames omitted
+2017-11-17 10:27:58.018|a [localhost-startStop-2] org.springframework.web.context.support.XmlWebApplicationContext
+2017-11-17 10:27:58.018|b [localhost-startStop-2] -- Closing Root WebApplicationContext: startup date [Fri Nov 17 09:42:22 CST 2017]; root of context hierarchy
