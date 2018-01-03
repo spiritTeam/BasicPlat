@@ -15,6 +15,14 @@
       </list>
     </property>
   </bean>
+  <bean id="jsonConfigurer" class="com.spiritdata.framework.jsonconf.spring.JconfPlaceholderConfigurer">
+    <property name="locations">
+      <list merge="default">
+        <value>/WEB-INF/app.jconf</value>
+        <!-- <value>/WEB-INF/gisSmConfig.properties</value>gis用户管理的对接参数 -->
+      </list>
+    </property>
+  </bean>
 
   <!-- 平台管理数据库 -->
   <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" lazy-init="false">
