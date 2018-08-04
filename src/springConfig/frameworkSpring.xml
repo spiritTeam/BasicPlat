@@ -20,6 +20,7 @@
     <context:include-filter type="regex" expression=".*.service.*"/>
     <context:exclude-filter type="assignable" expression="com.spiritdata.framework.component.UGA.service.UserService"/>
     <context:exclude-filter type="assignable" expression="com.spiritdata.framework.component.UGA.service.AuthorityService"/>
+    <context:exclude-filter type="assignable" expression="com.spiritdata.framework.component.login.service.LoginService"/>
   </context:component-scan>
   <!-- 扫描类包，将标注Spring注解的类自动转化Bean，同时完成Bean的注入 -->
   <context:component-scan base-package="com.spiritdata.test">

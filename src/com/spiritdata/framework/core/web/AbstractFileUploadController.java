@@ -46,6 +46,7 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
  * @author mht, wh
  */
 public abstract class AbstractFileUploadController implements Controller, HandlerExceptionResolver {
+    @SuppressWarnings("unchecked")
     private String appOSPath=((CacheEle<String>)(SystemCache.getCache(FConstants.APPOSPATH))).getContent();
 
     private final String _defaultPath="\\uploadFiles";//默认路径，今后写到配置文件中，配置文件用Json方式

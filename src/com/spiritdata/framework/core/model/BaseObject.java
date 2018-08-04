@@ -58,12 +58,13 @@ public abstract class BaseObject implements Serializable {
         try {
             if(propertiesMap == null || propertiesMap.size() == 0) return;
             Class<? extends Object> clazz=this.getClass();
-            Field[]  fields;
+            Field[] fields;
             Iterator<String> it;
             String propertyName;
+            long tmpL=0l;
             while (!clazz.getName().equals(BaseObject.class.getName())&&!clazz.getName().equals(Object.class.getName())) {
-                fields =clazz.getDeclaredFields();
-                it= propertiesMap.keySet().iterator();
+                fields=clazz.getDeclaredFields();
+                it=propertiesMap.keySet().iterator();
                 while (it.hasNext()) {
                     propertyName=it.next();
                     for (Field f: fields) {
@@ -73,12 +74,26 @@ public abstract class BaseObject implements Serializable {
                             try {
                                 if (f.getType().getName().equals("int")) {
                                     f.set(this, Integer.parseInt(""+propertiesMap.get(propertyName)));
+                                } else if (f.getType().getName().equals("long")) {
+                                    f.set(this, Long.parseLong(""+propertiesMap.get(propertyName)));
+                                } else if (f.getType().getName().equals("java.sql.Timestamp")||f.getType().getName().equals("java.util.Date")) {
+                                    tmpL=Long.parseLong(""+propertiesMap.get(propertyName));
+                                    if (tmpL!=0) {
+                                        if (f.getType().getName().equals("java.sql.Timestamp")) {
+                                            java.sql.Timestamp tp=new java.sql.Timestamp(tmpL);
+                                            f.set(this, tp);
+                                        } else if (f.getType().getName().equals("java.util.Date")) {
+                                            java.util.Date td=new java.util.Date(tmpL);
+                                            f.set(this, td);
+                                        }
+                                    }
                                 } else {
                                     f.set(this, propertiesMap.get(propertyName));
                                 }
                             } catch(Exception e) {
                               log.error("转换类"+this.getClass().getName()+"实例的"+propertyName+"属性出现类型不匹配错误！", e);
                             }
+                            break;
                         }
                     }
                 }

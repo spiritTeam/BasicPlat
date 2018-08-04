@@ -117,6 +117,36 @@ public abstract class RequestUtils {
             }
         }
 
+//        //3-从?号参数中获得数据
+//        if (retM==null) retM=new HashMap<String, Object>();
+//        String urlParamStr=req.getQueryString();
+//        if (!StringUtils.isNullOrEmptyOrSpace(urlParamStr)) {
+//            String[] paramArray=urlParamStr.split("&");
+//            if (paramArray!=null&&paramArray.length>0) {
+//                for (String oneParam: paramArray) {
+//                    String[] paramKeyValArray=oneParam.split("=");
+//                    String key=null, val=null;
+//                    if (paramKeyValArray.length==1) {
+//                        try {
+//                            key=URLDecoder.decode(oneParam, "utf-8");
+//                        } catch(Exception e) {};
+//                    } else if (paramKeyValArray.length==2) {
+//                        try {
+//                            key=URLDecoder.decode(paramKeyValArray[0], "utf-8");
+//                        } catch(Exception e) {};
+//                        try {
+//                            val=URLDecoder.decode(paramKeyValArray[1], "utf-8");
+//                        } catch(Exception e) {};
+//                    }
+//                    if (StringUtils.isNullOrEmptyOrSpace(key)) {
+//                        //合并参数，若已经存在，此参数作废
+//                        if (retM.get(key)!=null) {
+//                            retM.put(key, val);
+//                        }
+//                    }
+//                }
+//            }
+//        }
         if (retM==null||retM.isEmpty()) return null;
         return retM;
     }
