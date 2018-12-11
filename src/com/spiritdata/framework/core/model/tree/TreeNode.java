@@ -86,7 +86,7 @@ public class TreeNode<T extends TreeNodeBean> extends BaseObject implements Clon
      */
     public void setId(String id) {
         this.id=id;
-        if (tnEntity!=null&&!tnEntity.getId().equals(id)) tnEntity.setId(id);
+        if (tnEntity!=null&&tnEntity.getId()!=null&&!tnEntity.getId().equals(id)) tnEntity.setId(id);
         if (!id.equals(this.getAttribute("id")+"")) this.setAttribute("id", id);
 
         if (!this.isLeaf()) {
