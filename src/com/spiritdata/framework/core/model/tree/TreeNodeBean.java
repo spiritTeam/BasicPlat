@@ -52,6 +52,7 @@ public class TreeNodeBean extends BaseObject implements Cloneable {
      */
     public void setParentId(String parentId) {
         if (StringUtils.isNullOrEmptyOrSpace(parentId)) this.parentId=null;
+        if (this.getParentId()!=null&&this.getParentId().equals(parentId)) return ;
         else this.parentId=parentId;
         if (this.treeNode!=null) {
             this.treeNode.setParentId(parentId);

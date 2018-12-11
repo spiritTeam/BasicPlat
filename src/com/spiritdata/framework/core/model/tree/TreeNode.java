@@ -36,8 +36,8 @@ public class TreeNode<T extends TreeNodeBean> extends BaseObject implements Clon
             this.id=tnEntity.getId();
             this.parentId=tnEntity.getParentId();
             this.nodeName=tnEntity.getNodeName();
-            this.order=tnEntity.getOrder();
             this.orderType=tnEntity.orderType;
+            this.setOrder(tnEntity.getOrder());
             this.allowChildren=true;
             this.attributes=tnEntity.toHashMapAsBean();
             if (this.tnEntity.treeNode==null) this.tnEntity.setTreeNode(this);
@@ -112,8 +112,10 @@ public class TreeNode<T extends TreeNodeBean> extends BaseObject implements Clon
      * 设置本结点的父结点ID
      * @param parentId 父结点ID
      */
+    @SuppressWarnings("unused")
     public void setParentId(String parentId) {
-        if (this.getParent()!=null) {
+        if (parentId==null) return;
+        if (this.getParent()!=null&&this.getParent().getId()!=null) {
             if (!this.getParent().getId().equals(parentId)) {
                 throw new Plat0003CException("预设值的父结点ID与已设置的父结点对象ID不相符合！");
             }
